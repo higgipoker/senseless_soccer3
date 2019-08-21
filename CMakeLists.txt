@@ -41,6 +41,7 @@ endif (UNIX)
 # --------------------------------------------------
 add_executable(senseless_soccer3
     src/main.cpp
+    src/ball/ball.cpp
 )
 
 # --------------------------------------------------

@@ -3,6 +3,10 @@
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 #endif
 
+#include "ball/ball.hpp"
+#include "globals.hpp"
+
+#include <gamelib3/graphics/renderable.h>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/View.hpp>
 #include <gamelib3/engine/engine.hpp>
@@ -11,47 +15,38 @@
 
 #include <iostream>
 using namespace gamelib3;
+using namespace senseless_soccer3;
 
-struct MyPlayer {
-  MyPlayer() = default;
-  MyPlayer(int s) { shirt_number = s; }
-  MovablePair movable;
-  RenderablePair renderable;
-  int shirt_number = 0;
-
-  void addToEngine(Engine &engine) {
-    movable.id = engine.addMovable(movable.entity);
-    renderable.id = engine.addRenderable(renderable.entity);
+class TiledBackground : public gamelib3::Renderable {
+ public:
+  TiledBackground(const std::string& imagefile, const sf::IntRect& world_rect) {
+    tex.loadFromFile(imagefile);
+    tex.setRepeated(true);
+    sprite.setTexture(tex);
+    sprite.setTextureRect(world_rect);
+    zorder = 0;
   }
+  virtual void Render(sf::RenderTarget& target) override {
+    target.draw(sprite);
+  }
+
+ protected:
+  sf::Texture tex;
+  sf::Sprite sprite;
 };
 
-struct TiledBackground {
-  TiledBackground(const std::string &filename, const sf::IntRect world_rect) {
-    tex.loadFromFile(filename);
-    tex.setRepeated(true);
-    renderable.sprite.setTexture(tex);
-    renderable.sprite.setTextureRect(world_rect);
-  }
+class Pitch : public Movable {
+  virtual void Step(float dt) override {}
+};
 
-  void addToEngine(Engine &engine) { engine.addRenderable(renderable); }
-
-  Renderable renderable;
-  sf::Texture tex;
+class BallSprite : public Renderable {
+ public:
+  virtual void Render(sf::RenderTarget& target) override {}
 };
 
 int main() {
   Engine engine;
-  engine.init("name", 800, 600, false);
-
-  std::vector<MyPlayer> players;
-  for (int i = 1; i <= 11; ++i) {
-    MyPlayer player(i);
-    player.addToEngine(engine);
-    players.push_back(player);
-  }
-
-  std::string dir = Files::getWorkingDirectory();
-
+  engine.Init("name", 800, 600, false);
   static const int world_width = 1600;
   static const int world_height = 1200;
 
@@ -59,9 +54,17 @@ int main() {
       "grass_checked",    "grass_dry",   "grass_hard",
       "grass_horizontal", "grass_plain", "grass_plain_horizontal"};
 
-  TiledBackground grass(dir + "/gfx/" + grasses.at(0) + ".png",
-                        sf::IntRect(0, 0, world_width, world_height));
-  grass.addToEngine(engine);
+  TiledBackground grass_renderable(
+      GFX_FOLDER + grasses.at(1) + ".png",
+      sf::IntRect(0, 0, world_width, world_height));
+  Pitch dummy;
+  GameEntity grass(&dummy, &grass_renderable);
+  engine.AddEntity(&grass);
+
+  Ball ball;
+  BallSprite bs;
+  GameEntity ball_entity(&ball, &bs);
+  engine.AddEntity(&ball_entity);
 
   float x = 800 / 2;
   float y = 600 / 2;
@@ -71,9 +74,8 @@ int main() {
   while (engine.running) {
     v.setCenter(x, y);
     x += 1;
-    engine.main_view = v;
-    engine.window.setView(v);
-    engine.step();
+    engine.camera.viewport = v;
+    engine.Step();
   }
 
   return 0;
