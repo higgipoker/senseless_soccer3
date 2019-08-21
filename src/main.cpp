@@ -38,12 +38,14 @@ int main() {
 
   std::string dir = Files::getWorkingDirectory();
 
+  static const int world_width = 1600;
+  static const int world_height = 1200;
   Renderable grass;
   sf::Texture tex;
-  tex.loadFromFile(dir + "/gfx/grass_dry.png");
+  tex.loadFromFile(dir + "/gfx/grass_hard.png");
   tex.setRepeated(true);
   grass.sprite.setTexture(tex);
-  grass.sprite.setTextureRect(sf::IntRect(0, 0, 1000000, 1000000));
+  grass.sprite.setTextureRect(sf::IntRect(0, 0, world_width, world_height));
   engine.addRenderable(grass);
 
   int x = 800 / 2;
@@ -52,7 +54,8 @@ int main() {
   engine.window.setView(v);
 
   while (engine.running) {
-    v.setCenter(x++, y++) ;
+    v.setCenter(x, y) ;
+    x+=10;
     engine.main_view = v;
     engine.window.setView(v);
     engine.step();
