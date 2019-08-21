@@ -25,6 +25,20 @@ struct MyPlayer {
   }
 };
 
+struct TiledBackground {
+  TiledBackground(const std::string &filename, const sf::IntRect world_rect) {
+    tex.loadFromFile(filename);
+    tex.setRepeated(true);
+    renderable.sprite.setTexture(tex);
+    renderable.sprite.setTextureRect(world_rect);
+  }
+
+  void addToEngine(Engine &engine) { engine.addRenderable(renderable); }
+
+  Renderable renderable;
+  sf::Texture tex;
+};
+
 int main() {
   Engine engine;
   engine.init("name", 800, 600, false);
@@ -40,22 +54,23 @@ int main() {
 
   static const int world_width = 1600;
   static const int world_height = 1200;
-  Renderable grass;
-  sf::Texture tex;
-  tex.loadFromFile(dir + "/gfx/grass_hard.png");
-  tex.setRepeated(true);
-  grass.sprite.setTexture(tex);
-  grass.sprite.setTextureRect(sf::IntRect(0, 0, world_width, world_height));
-  engine.addRenderable(grass);
 
-  int x = 800 / 2;
-  int y = 600 / 2;
+  std::vector<std::string> grasses = {
+      "grass_checked",    "grass_dry",   "grass_hard",
+      "grass_horizontal", "grass_plain", "grass_plain_horizontal"};
+
+  TiledBackground grass(dir + "/gfx/" + grasses.at(0) + ".png",
+                        sf::IntRect(0, 0, world_width, world_height));
+  grass.addToEngine(engine);
+
+  float x = 800 / 2;
+  float y = 600 / 2;
   sf::View v(sf::FloatRect(0, 0, 800, 600));
   engine.window.setView(v);
 
   while (engine.running) {
-    v.setCenter(x, y) ;
-    x+=10;
+    v.setCenter(x, y);
+    x += 1;
     engine.main_view = v;
     engine.window.setView(v);
     engine.step();
