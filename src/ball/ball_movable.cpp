@@ -1,4 +1,4 @@
-#include "ball.hpp"
+#include "ball_movable.hpp"
 #include "../globals.hpp"
 
 #include <gamelib3/math/vector.hpp>
@@ -13,7 +13,10 @@ const float CLAMP_INF_BOUNCE = 0.01f;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Ball::Ball() {}
+Ball::Ball() {
+  collidable.setRadius(3);
+  width = collidable.getRadius() * 2;
+}
 
 // -----------------------------------------------------------------------------
 //
