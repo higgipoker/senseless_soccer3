@@ -6,7 +6,7 @@
 #include "ball/ball.hpp"
 #include "globals.hpp"
 
-#include <gamelib3/graphics/renderable.h>
+#include <gamelib3/graphics/renderable.hpp>
 #include <gamelib3/graphics/tiled_background.hpp>
 
 #include <SFML/Graphics/Texture.hpp>
@@ -30,42 +30,46 @@ std::vector<std::string> grasses = {
   "grass_checked",    "grass_dry",   "grass_hard",
   "grass_horizontal", "grass_plain", "grass_plain_horizontal"};
 
-const std::string grass_tile {GFX_FOLDER + grasses.at(1) + ".png"};
-
-static const sf::IntRect world_rect{0, 0, world_width, world_height};
-static sf::View viewport{sf::FloatRect(0, 0, window_width, window_height)};
+const std::string grass_tile {GFX_FOLDER + grasses.at(0) + ".png"};
 
 class Game : public gamelib3::InputCallback{
 public:
-  virtual void HandleEvent(sf::Event event) override{
-   // std::cout << "input event happened: " << event.type << std::endl;
+  Game(){
   }
+
+  virtual void HandleEvent(sf::Event event) override{
+   std::cout << "input event happened: " << event.type << std::endl;
+  }
+
+  void Run(){
+
+    // init engine
+    engine.Init("senseless soccer 3.0", window_width, window_height, false);
+    engine.registerInputCallback(this);
+
+    gamelib3::TiledBackground grass_renderable(grass_tile, world_rect);
+    GameEntity grass(&grass_renderable);
+
+    Ball ball;
+    GameEntity ball_entity(&ball);
+
+    // add entities
+    engine.AddEntity(&grass);
+    engine.AddEntity(&ball_entity);
+    while (engine.running) {
+      engine.camera.viewport.move(1,0);
+      engine.Step();
+    }
+  }
+
+private:
+  Engine engine;
+
+  const sf::IntRect world_rect{0, 0, world_width, world_height};
 };
 
-int main() {
-  Game game;
-  Engine engine;
-  engine.Init("senseless soccer 3.0", window_width, window_height, false);
-  engine.registerInputCallback(&game);
-
-  // pitch
-  gamelib3::TiledBackground grass_renderable(grass_tile,world_rect);
-  GameEntity grass(&grass_renderable);
-  engine.AddEntity(&grass);
-
-  // ball
-  Ball ball;
-  GameEntity ball_entity(&ball);
-  engine.AddEntity(&ball_entity);
-
-  int direction = 1;
-  int ticks = 0;
-
-  while (engine.running) {
-    //viewport.move(1*direction,0);
-    //engine.camera.viewport = viewport;
-    engine.Step();
-  }
-
+int main(int argc, char *argv[]) {
+  Game senseless_soccer;
+  senseless_soccer.Run();
   return 0;
 }
