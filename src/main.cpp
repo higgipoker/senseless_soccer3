@@ -5,6 +5,7 @@
 
 #include "ball/ball_movable.hpp"
 #include "globals.hpp"
+#include "player/player.hpp"
 
 #include <gamelib3/physics/metrics.h>
 #include <gamelib3/graphics/renderable.hpp>
@@ -44,20 +45,29 @@ class Game : public gamelib3::InputCallback {
     engine.Init("senseless soccer 3.0", window_width, window_height, false);
     engine.registerInputCallback(this);
 
+    // pitch
     gamelib3::TiledBackground grass_renderable(grass_tile, world_rect);
     GameEntity grass(&grass_renderable);
     engine.AddEntity(&grass);
 
+    // ball
     Ball ball;
     Sprite ballsprite(GFX_FOLDER + "ball_new.png", 4, 2);
     GameEntity ball_entity(&ball, &ballsprite);
     engine.AddEntity(&ball_entity);
 
-    ball.force.z = 100;
-    ballsprite.SetPosition(100, 800);
+    // player
+    Player player;
+    Sprite playersprite(GFX_FOLDER + "player/player.png", 6, 24);
+    GameEntity player_entity(&player, &playersprite);
+    player.Init();
+    engine.AddEntity(&player_entity);
 
+    ball.SetPosition(200, 200);
+    player.SetPosition(100, 100);
+
+    player.StartAnimation("run_east");
     while (engine.running) {
-      ball.position.z += 0.01;
       engine.Step();
     }
   }

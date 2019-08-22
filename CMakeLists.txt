@@ -43,6 +43,7 @@ add_executable(senseless_soccer3
     src/main.cpp
     src/ball/ball_movable.cpp
     src/ball/ball_sprite.cpp
+    src/player/player.cpp
 )
 
 # --------------------------------------------------
