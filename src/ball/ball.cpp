@@ -1,7 +1,6 @@
 #include "ball.hpp"
 #include "../globals.hpp"
 
-#include <gamelib3/physics/metrics.h>
 #include <gamelib3/math/vector.hpp>
 
 #include <iostream>
@@ -32,32 +31,11 @@ void Ball::Step(float dt) {
     }
     apply_spin();
     decay_spin();
-    integrate(dt);
+    integrate_improved_euler(dt);
   }
   collidable.setPosition(position.x, position.y);
   force.reset();
   forces.reset();
-}
-
-void Ball::integrate(float dt) {
-  // step 1
-  force = (force - (velocity.multiply(friction)));
-  Vector3 acceleration = force / mass;
-  Vector3 k1 = acceleration * dt;
-
-  // step 2
-  force = (force - (velocity + k1).multiply(friction));
-  acceleration = force / mass;
-  Vector3 k2 = acceleration * dt;
-
-  // update entity.velocity
-  velocity = velocity + (k1 + k2) / 2;
-
-  // change in position (converted to pixels)
-  Vector3 dp = MetersToPixels(velocity * dt);
-
-  // apply new position
-  position = position + dp;
 }
 
 // -----------------------------------------------------------------------------

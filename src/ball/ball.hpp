@@ -49,11 +49,6 @@ class Ball : public gamelib3::Movable {
   sf::CircleShape collidable;
 
   /**
-   * @brief integrate
-   * @param dt
-   */
-  void integrate(float dt);
-  /**
    * @brief collide_ground
    * @return
    */
