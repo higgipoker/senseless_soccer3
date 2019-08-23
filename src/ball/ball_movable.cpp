@@ -94,23 +94,23 @@ void Ball::apply_friction() {
 //
 // -----------------------------------------------------------------------------
 void Ball::apply_spin() {
-  force += forces.sidespin;
-  force += forces.topspin;
+  if (forces.topspin.y) {
+    force += forces.sidespin;
+  }
+  if (forces.sidespin.x) {
+    force += forces.topspin;
+  }
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
 void Ball::decay_spin() {
-  if (Floats::greater_than(forces.topspin.magnitude(), 0)) {
+  if (forces.topspin.y) {
     forces.topspin = forces.topspin * environment.co_spin_decay;
-  } else {
-    forces.topspin.reset();
   }
-  if (Floats::greater_than(forces.sidespin.magnitude(), 0)) {
+  if (forces.sidespin.x) {
     forces.sidespin = forces.sidespin * environment.co_spin_decay;
-  } else {
-    forces.sidespin.reset();
   }
 }
 

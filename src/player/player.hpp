@@ -1,5 +1,6 @@
 #pragma once
 #include <gamelib3/compass/compass.hpp>
+#include <gamelib3/physics/metrics.hpp>
 #include <gamelib3/physics/movable.hpp>
 
 namespace senseless_soccer3 {
@@ -15,18 +16,20 @@ class Player : public gamelib3::Movable {
   Player();
 
   /**
+   * @brief ~Player
+   */
+  virtual ~Player();
+
+  /**
    * @brief Init
    */
-  void Init();
+  virtual void PopulateAnimations() override;
 
-  // map animations based on direction
+  // map animations based on gamelib3::Direction
   static std::map<gamelib3::Direction, std::string> standmap;
   static std::map<gamelib3::Direction, std::string> runmap;
   static std::map<gamelib3::Direction, std::string> slidemap;
-
- private:
-
-
 };
+#include "player_statics.hpp"
 
-}  // namespace senseless_Soccer3
+}  // namespace senseless_soccer3

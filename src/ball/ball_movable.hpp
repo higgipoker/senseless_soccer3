@@ -20,6 +20,11 @@ class Ball : public gamelib3::Movable {
   virtual void Step(float dt) override;
 
   /**
+   * @brief PopulateAnimations
+   */
+  virtual void PopulateAnimations() override{};
+
+  /**
    * @brief applyForce
    * @param force
    */

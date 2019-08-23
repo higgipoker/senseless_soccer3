@@ -7,9 +7,9 @@
 #include "globals.hpp"
 #include "player/player.hpp"
 
-#include <gamelib3/physics/metrics.h>
 #include <gamelib3/graphics/renderable.hpp>
 #include <gamelib3/graphics/tiled_background.hpp>
+#include <gamelib3/physics/metrics.hpp>
 
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -60,7 +60,6 @@ class Game : public gamelib3::InputCallback {
     Player player;
     Sprite playersprite(GFX_FOLDER + "player/player.png", 6, 24);
     GameEntity player_entity(&player, &playersprite);
-    player.Init();
     engine.AddEntity(&player_entity);
 
     ball.SetPosition(200, 200);
@@ -70,6 +69,7 @@ class Game : public gamelib3::InputCallback {
     while (engine.running) {
       engine.Step();
     }
+    engine.Shutdown();
   }
 
  private:
