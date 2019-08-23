@@ -6,6 +6,7 @@
 #include "ball/ball_movable.hpp"
 #include "globals.hpp"
 #include "player/player.hpp"
+#include "player/player_movable.hpp"
 
 #include <gamelib3/graphics/renderable.hpp>
 #include <gamelib3/graphics/tiled_background.hpp>
@@ -57,16 +58,20 @@ class Game : public gamelib3::InputCallback {
     engine.AddEntity(&ball_entity);
 
     // player
-    Player player;
+    PlayerMovable player;
     Sprite playersprite(GFX_FOLDER + "player/player.png", 6, 24);
-    GameEntity player_entity(&player, &playersprite);
+    Player player_entity(&player, &playersprite);
     engine.AddEntity(&player_entity);
+
+    engine.gamepad.AddListener(&player_entity);
+    player_entity.controller = &engine.gamepad;
 
     ball.SetPosition(200, 200);
     player.SetPosition(100, 100);
 
     player.StartAnimation("run_east");
     while (engine.running) {
+      player_entity.Update();
       engine.Step();
     }
     engine.Shutdown();

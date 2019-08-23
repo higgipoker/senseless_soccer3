@@ -1,35 +1,33 @@
 #pragma once
-#include <gamelib3/compass/compass.hpp>
-#include <gamelib3/physics/metrics.hpp>
-#include <gamelib3/physics/movable.hpp>
+#include <gamelib3/engine/entity.hpp>
+
+#include <gamelib3/input/controller.hpp>
 
 namespace senseless_soccer3 {
 
 /**
  * @brief The Player class
  */
-class Player : public gamelib3::Movable {
+class Player : public gamelib3::GameEntity,
+               public gamelib3::ControllerListener {
  public:
   /**
    * @brief Player
    */
-  Player();
+  Player(gamelib3::Movable* m, gamelib3::Renderable* r);
 
   /**
-   * @brief ~Player
+   * @brief OnControllerEvent
+   * @param event
    */
-  virtual ~Player();
+  void OnControllerEvent(const gamelib3::ControllerEvent& event);
 
   /**
-   * @brief Init
+   * @brief Update
    */
-  virtual void PopulateAnimations() override;
+  void Update();
 
-  // map animations based on gamelib3::Direction
-  static std::map<gamelib3::Direction, std::string> standmap;
-  static std::map<gamelib3::Direction, std::string> runmap;
-  static std::map<gamelib3::Direction, std::string> slidemap;
+  gamelib3::Controller* controller = nullptr;
 };
-#include "player_statics.hpp"
 
 }  // namespace senseless_soccer3
