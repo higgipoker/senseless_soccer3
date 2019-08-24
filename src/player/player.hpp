@@ -1,7 +1,8 @@
 #pragma once
 #include <gamelib3/engine/entity.hpp>
-
 #include <gamelib3/input/controller.hpp>
+
+#include <SFML/Graphics/CircleShape.hpp>
 
 namespace senseless_soccer3 {
 
@@ -28,6 +29,8 @@ class Player : public gamelib3::GameEntity,
   void Update();
 
   gamelib3::Controller* controller = nullptr;
+  sf::CircleShape feet_collider;
+  gamelib3::Sprite& sprite;
 };
 
 }  // namespace senseless_soccer3
