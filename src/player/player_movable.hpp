@@ -18,12 +18,13 @@ class PlayerMovable : public gamelib3::Movable {
   /**
    * @brief ~PlayerMovable
    */
-  virtual ~PlayerMovable();
+  ~PlayerMovable() override;
 
   /**
    * @brief Init
    */
-  virtual void PopulateAnimations() override;
+  void PopulateAnimations() override;
+  void Step(float dt) override {}
 
   // map animations based on gamelib3::Direction
   static std::map<gamelib3::Direction, std::string> standmap;

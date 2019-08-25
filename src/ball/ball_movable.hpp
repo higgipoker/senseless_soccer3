@@ -6,23 +6,23 @@
 
 namespace senseless_soccer3 {
 
-class Ball : public gamelib3::Movable {
+class BallMovable : public gamelib3::Movable {
  public:
   /**
    * @brief Ball
    */
-  Ball();
+  BallMovable();
 
   /**
    * @brief accumulate_forces
    * @param dt
    */
-  virtual void Step(float dt) override;
+  void Step(float dt) override;
 
   /**
    * @brief PopulateAnimations
    */
-  virtual void PopulateAnimations() override{};
+  void PopulateAnimations() override{};
 
   /**
    * @brief applyForce
@@ -57,7 +57,7 @@ class Ball : public gamelib3::Movable {
    * @brief collide_ground
    * @return
    */
-  bool collide_ground(void);
+  bool collide_ground();
 
   /**
    * @brief bounce
@@ -93,7 +93,7 @@ class Ball : public gamelib3::Movable {
   /**
    * @brief clamp_to_ground
    */
-  void clamp_to_ground(void);
+  void clamp_to_ground();
 
   /**
    * @brief perspectivize
@@ -109,11 +109,10 @@ class Ball : public gamelib3::Movable {
 
   // ball environment for physics
   struct {
-    float gravity = 9.8f;
+    float gravity = 0.02f;
     float air_density = 1.0f;
-    float co_drag = 0.9f;
-    float co_friction = 0.01f;
-    float co_friction_bounce = 0.9f;
+    float co_drag = 0.0f;
+    float co_friction_bounce = 0.0f;
     float co_bounciness = 0.9f;
     float co_spin_decay = 0.8f;
   } environment;

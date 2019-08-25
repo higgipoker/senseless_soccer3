@@ -2,8 +2,8 @@
 
 #include <gamelib3/utils/files.hpp>
 #include <string>
-namespace senseless_soccer3 {
 
+namespace Globals {
 static const std::string GFX_FOLDER =
-   gamelib3:: Files::getWorkingDirectory() + "/gfx/";
+    gamelib3::Files::getWorkingDirectory() + "/gfx/";
 }

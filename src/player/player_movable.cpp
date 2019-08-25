@@ -13,7 +13,10 @@ std::map<Direction, std::string> PlayerMovable::slidemap;
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-PlayerMovable::PlayerMovable() { width = 32; }
+PlayerMovable::PlayerMovable() {
+  width = 32;
+  co_friction = 0.1f;
+}
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -26,4 +29,5 @@ void PlayerMovable::PopulateAnimations() {
   assert(renderable);
   populate_animations(*this);
 }
+
 }  // namespace senseless_soccer3

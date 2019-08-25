@@ -8,20 +8,23 @@
 using namespace gamelib3;
 namespace senseless_soccer3 {
 
-const float CLAMP_INF_BOUNCE = 0.01f;
+const float CLAMP_INF_BOUNCE = 0.001f;
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Ball::Ball() {
-  collidable.setRadius(3);
+BallMovable::BallMovable() {
+  collidable.setRadius(2);
   width = collidable.getRadius() * 2;
+  co_friction = 0.1f;
+  // position.z = 19;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Ball::Step(float dt) {
+void BallMovable::Step(float dt) {
+  bool need_friction = false;
   if (collide_ground()) {
     bounce();
   } else {
@@ -30,26 +33,49 @@ void Ball::Step(float dt) {
       apply_gravity(dt);
       apply_drag(dt);
     } else {
-      apply_friction();
+      need_friction = true;
     }
     apply_spin();
     decay_spin();
-    integrate_improved_euler(dt);
+    // step 1
+    if (velocity.magnitude2d()) {
+      bool vr = true;
+    }
+    if (need_friction) {
+      velocity = (velocity.multiply2d(co_friction));
+    }
+    Vector3 acceleration = force / mass;
+    Vector3 k1 = acceleration * dt;
+
+    // step 2
+    if (need_friction)
+      velocity = (velocity - (velocity + k1).multiply2d(co_friction));
+    acceleration = force / mass;
+    Vector3 k2 = acceleration * dt;
+
+    // update velocity
+    velocity = velocity + (k1 + k2) / 2;
+
+    // change in position (converted to pixels)
+    Vector3 dp = (velocity * dt);
+
+    // apply new position
+    position = position + dp;
+
+    force.reset();
   }
   collidable.setPosition(position.x, position.y);
-  force.reset();
-  forces.reset();
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Ball::applyForce(gamelib3::Vector3 _force) { force += force; }
+void BallMovable::applyForce(gamelib3::Vector3 _force) { force += force; }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-bool Ball::collide_ground() {
+bool BallMovable::collide_ground() {
   // moving down
   if (Floats::less_than(velocity.z, 0)) {
     // touched ground
@@ -63,7 +89,7 @@ bool Ball::collide_ground() {
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Ball::bounce() {
+void BallMovable::bounce() {
   position.z = 0;
   if (Floats::abs_less_than(velocity.z, CLAMP_INF_BOUNCE)) {
     velocity.z = 0;
@@ -76,24 +102,15 @@ void Ball::bounce() {
 // -----------------------------------------------------------------------------
 // apply_gravity
 // -----------------------------------------------------------------------------
-void Ball::apply_gravity(float dt) {
-  forces.gravity.z = -environment.gravity;
+void BallMovable::apply_gravity(float dt) {
+  forces.gravity.z = -environment.gravity * dt;
   force += forces.gravity * mass * dt;
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Ball::apply_friction() {
-  forces.friction.x = environment.co_friction;
-  forces.friction.y = environment.co_friction;
-  forces.friction.z = 0;
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-void Ball::apply_spin() {
+void BallMovable::apply_spin() {
   if (forces.topspin.y) {
     force += forces.sidespin;
   }
@@ -105,7 +122,7 @@ void Ball::apply_spin() {
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Ball::decay_spin() {
+void BallMovable::decay_spin() {
   if (forces.topspin.y) {
     forces.topspin = forces.topspin * environment.co_spin_decay;
   }
@@ -117,7 +134,7 @@ void Ball::decay_spin() {
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void Ball::apply_drag(float dt) {
+void BallMovable::apply_drag(float dt) {
   // drag = (air density * co_drag * cross section area) / 2
   // in the opposite direction to velocity
   Vector3 dir = velocity.reverse().normalise();
@@ -130,7 +147,7 @@ void Ball::apply_drag(float dt) {
 // -----------------------------------------------------------------------------
 // clamp_to_ground
 // -----------------------------------------------------------------------------
-void Ball::clamp_to_ground() {
+void BallMovable::clamp_to_ground() {
   if (Floats::less_than(position.z, 0)) {
     position.z = 0;
     velocity.z = 0;
@@ -140,17 +157,17 @@ void Ball::clamp_to_ground() {
 // -----------------------------------------------------------------------------
 // addSideSpin
 // -----------------------------------------------------------------------------
-void Ball::addSideSpin(const Vector3 &s) { forces.sidespin += s; }
+void BallMovable::addSideSpin(const Vector3 &s) { forces.sidespin += s; }
 
 // -----------------------------------------------------------------------------
 // addTopSpin
 // -----------------------------------------------------------------------------
-void Ball::addTopSpin(const Vector3 &s) { forces.topspin += s; }
+void BallMovable::addTopSpin(const Vector3 &s) { forces.topspin += s; }
 
 // -----------------------------------------------------------------------------
 // rebound
 // -----------------------------------------------------------------------------
-void Ball::rebound(Vector3 &wall, const Vector3 dampen) {
+void BallMovable::rebound(Vector3 &wall, const Vector3 dampen) {
   wall = wall.normalise();
   velocity *= dampen;
   velocity = velocity.reflect(wall);
@@ -160,7 +177,7 @@ void Ball::rebound(Vector3 &wall, const Vector3 dampen) {
 // -----------------------------------------------------------------------------
 // perspectivize
 // -----------------------------------------------------------------------------
-void Ball::perspectivize(float camera_height) {
+void BallMovable::perspectivize(float camera_height) {
   // size depending on distance from camera
   //  float dimensions = collidable.getRadius() * 2;
   //  float dist_from_camera = camera_height - position.z;

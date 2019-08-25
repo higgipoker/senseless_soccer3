@@ -83,7 +83,7 @@ static std::vector<int> slide_northeast() {
  * @brief populate_animations
  * @param m
  */
-void populate_animations(gamelib3::Movable &m) {
+inline void populate_animations(gamelib3::Movable &m) {
   m.AddAnimation("stand_east", anim_speed, true, stand_east());
   m.AddAnimation("stand_southeast", anim_speed, true, stand_southeast());
   m.AddAnimation("stand_south", anim_speed, true, stand_south());
