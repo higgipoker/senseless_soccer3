@@ -5,6 +5,7 @@
 
 #include "ball.hpp"
 #include "entity.hpp"
+#include "framerate.hpp"
 #include "globals.hpp"
 #include "grass.hpp"
 #include "physics.hpp"
@@ -98,12 +99,21 @@ void handle_input(sf::RenderWindow &window) {
 }
 
 // -----------------------------------------------------------------------------
+// sort_sprites
+// -----------------------------------------------------------------------------
+inline bool sprite_sort_predicate(const Entity::SortableSprite &s1,
+                                  const Entity::SortableSprite &s2) {
+  return s1.z_order < s2.z_order;
+}
+
+// -----------------------------------------------------------------------------
 // render
 // -----------------------------------------------------------------------------]
-static void render(sf::RenderWindow &window) {
-  Entity::sort_sprites();
+static void render(sf::RenderWindow &window,
+                   std::vector<Entity::SortableSprite> &sprite_list) {
+  std::sort(sprite_list.begin(), sprite_list.end(), sprite_sort_predicate);
   window.clear(sf::Color::Blue);
-  for (auto &sprite : Entity::sprites) {
+  for (auto &sprite : sprite_list) {
     window.draw(sprite.sprite);
   }
   window.display();
@@ -130,7 +140,11 @@ static void update_players(std::vector<Player::Player> &players) {
 // -----------------------------------------------------------------------------
 // update_ball
 // -----------------------------------------------------------------------------
-static void update_ball(Ball::Ball &ball) { Ball::apply_forces(ball); }
+static void update_ball(Ball::Ball &ball) {
+  Ball::apply_forces(ball);
+  ball.sprite->sprite.setPosition(ball.entity->position.x,
+                                  ball.entity->position.y);
+}
 
 // -----------------------------------------------------------------------------
 // main
@@ -146,6 +160,7 @@ int main(int argc, char *argv[]) {
                       sf::Style::Default);
   Window::init_camera(camera, window_width, window_height);
   window.setView(camera);
+  Framerate::Framerate framerate;
 
   // --------------------------------------------------
   //
@@ -173,6 +188,7 @@ int main(int argc, char *argv[]) {
   Ball::populate_ball_sprite_frames(Ball::ball_frames);
   ball.sprite->sprite.setTextureRect(Ball::ball_frames[0]);
   ball.sprite->sprite.move(0, 60);
+  ball.entity->force.x = 10;
 
   // --------------------------------------------------
   //
@@ -187,13 +203,26 @@ int main(int argc, char *argv[]) {
   // main loop
   //
   // --------------------------------------------------
+  std::vector<Entity::SortableSprite> live_sprites;
+  for (auto sprite : Entity::sprites) {
+    if (sprite.live) {
+      live_sprites.push_back(sprite);
+    }
+  }
   while (game_running) {
+    framerate.on_frame_started();
+
     handle_input(window);
-    render(window);
+    render(window, live_sprites);
 
     update_ball(ball);
     update_players(players);
-    step_sim();
+
+    while (framerate.time_left(target_frame_time) >= 0) {
+      step_sim();
+    }
+
+    framerate.on_frame_ended();
   }
 
   // --------------------------------------------------

@@ -23,6 +23,8 @@ struct Entity {
   int id = -1;  // this is always the index of the array
   EntityType type = EntityType::Anonymous;
   gamelib3::Vector3 position, velocity, force;
+  float co_friction = 0.01f;
+  float mass = 1;
   sf::Sprite sprite;
 };
 
@@ -35,6 +37,7 @@ inline const int MAX_ENTITIES = 100;
 struct SortableSprite {
   int z_order = 0;
   sf::Sprite sprite;
+  bool live = false;
 };
 
 inline std::array<SortableSprite, MAX_SPRITES> sprites;
@@ -48,20 +51,6 @@ inline std::array<Entity, 22> players;
 inline int used_entity_count = 0;
 inline int used_sprite_count = 0;
 
-// -----------------------------------------------------------------------------
-// sort_sprites
-// -----------------------------------------------------------------------------
-inline bool sprite_sort_predicate(const SortableSprite& s1,
-                                  const SortableSprite& s2) {
-  return s1.z_order < s2.z_order;
-}
-
-// -----------------------------------------------------------------------------
-// sort_sprites
-// -----------------------------------------------------------------------------
-inline void sort_sprites() {
-  std::sort(sprites.begin(), sprites.end(), sprite_sort_predicate);
-}
 // -----------------------------------------------------------------------------
 // acquire_entity
 // -----------------------------------------------------------------------------
@@ -100,6 +89,7 @@ inline void release_entity(int id) {
 inline SortableSprite* acquire_sprite() {
   for (auto& sprite : sprites) {
     if (used_sprites.find(&sprite.sprite) == used_sprites.end()) {
+      sprite.live = true;
       used_sprites.insert(&sprite.sprite);
       ++used_sprite_count;
       std::cout << "acquire_sprite: used entities : " << used_sprite_count
@@ -117,6 +107,7 @@ inline SortableSprite* acquire_sprite() {
 inline void release_sprite(SortableSprite* sprite) {
   if (used_sprites.find(&sprite->sprite) != used_sprites.end()) {
     used_sprites.erase(&sprite->sprite);
+    sprite->live = false;
     --used_sprite_count;
     std::cout << "release_sprite: used sprites : " << used_sprite_count
               << std::endl;
