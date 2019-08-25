@@ -26,8 +26,8 @@ struct Entity {
   sf::Sprite sprite;
 };
 
-static const int MAX_SPRITES = 100;
-static const int MAX_ENTITIES = 100;
+inline const int MAX_SPRITES = 100;
+inline const int MAX_ENTITIES = 100;
 
 /**
  * @brief The SortableSprite struct
@@ -37,16 +37,16 @@ struct SortableSprite {
   sf::Sprite sprite;
 };
 
-static std::array<SortableSprite, MAX_SPRITES> sprites;
-static std::set<sf::Sprite*> used_sprites;
+inline std::array<SortableSprite, MAX_SPRITES> sprites;
+inline std::set<sf::Sprite*> used_sprites;
 
-static std::array<Entity, MAX_ENTITIES> entities;
-static std::array<bool, MAX_ENTITIES> used_entities;
+inline std::array<Entity, MAX_ENTITIES> entities;
+inline std::array<bool, MAX_ENTITIES> used_entities;
 
-static std::array<Entity, 22> players;
+inline std::array<Entity, 22> players;
 
-static int used_entity_count = 0;
-static int used_sprite_count = 0;
+inline int used_entity_count = 0;
+inline int used_sprite_count = 0;
 
 // -----------------------------------------------------------------------------
 // sort_sprites
@@ -57,15 +57,15 @@ inline bool sprite_sort_predicate(const SortableSprite& s1,
 }
 
 // -----------------------------------------------------------------------------
-//
+// sort_sprites
 // -----------------------------------------------------------------------------
-static void sort_sprites() {
+inline void sort_sprites() {
   std::sort(sprites.begin(), sprites.end(), sprite_sort_predicate);
 }
 // -----------------------------------------------------------------------------
-//
+// acquire_entity
 // -----------------------------------------------------------------------------
-static Entity* acquire_entity() {
+inline Entity* acquire_entity() {
   for (size_t i = 0; i < MAX_ENTITIES; ++i) {
     if (!used_entities[i]) {
       used_entities[i] = true;
@@ -81,9 +81,9 @@ static Entity* acquire_entity() {
 }
 
 // -----------------------------------------------------------------------------
-//
+// release_entity
 // -----------------------------------------------------------------------------
-static void release_entity(int id) {
+inline void release_entity(int id) {
   assert(id >= 0);
   assert(id < MAX_ENTITIES);
   assert(used_entities[id]);
@@ -95,9 +95,9 @@ static void release_entity(int id) {
 }
 
 // -----------------------------------------------------------------------------
-//
+// acquire_sprite
 // -----------------------------------------------------------------------------
-static SortableSprite* acquire_sprite() {
+inline SortableSprite* acquire_sprite() {
   for (auto& sprite : sprites) {
     if (used_sprites.find(&sprite.sprite) == used_sprites.end()) {
       used_sprites.insert(&sprite.sprite);
@@ -112,9 +112,9 @@ static SortableSprite* acquire_sprite() {
 }
 
 // -----------------------------------------------------------------------------
-//
+// release_sprite
 // -----------------------------------------------------------------------------
-static void release_sprite(SortableSprite* sprite) {
+inline void release_sprite(SortableSprite* sprite) {
   if (used_sprites.find(&sprite->sprite) != used_sprites.end()) {
     used_sprites.erase(&sprite->sprite);
     --used_sprite_count;
@@ -127,9 +127,9 @@ static void release_sprite(SortableSprite* sprite) {
 }
 
 // -----------------------------------------------------------------------------
-//
+// think
 // -----------------------------------------------------------------------------
-static void think(Entity& entity) {
+inline void think(Entity& entity) {
   switch (entity.type) {
     default:
     case EntityType::Anonymous:

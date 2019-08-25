@@ -6,6 +6,8 @@
 #include "ball.hpp"
 #include "entity.hpp"
 #include "globals.hpp"
+#include "grass.hpp"
+#include "physics.hpp"
 #include "player.hpp"
 #include "window.hpp"
 
@@ -27,17 +29,10 @@ static const float target_frame_time = 1.0f / fps;
 
 // physics timestep
 static const float timestep = 0.01f;
-
-static const std::array<std::string, 6> grasses{
-    "grass_checked",    "grass_dry",   "grass_hard",
-    "grass_horizontal", "grass_plain", "grass_plain_horizontal"};
-
-const std::string grass_tile{Globals::GFX_FOLDER + grasses.at(0) + ".png"};
-Entity::SortableSprite *grass = Entity::acquire_sprite();
 sf::View camera;
 
 // -----------------------------------------------------------------------------
-//
+// handle_input
 // -----------------------------------------------------------------------------
 void handle_input(sf::RenderWindow &window) {
   static sf::Event event;
@@ -103,7 +98,7 @@ void handle_input(sf::RenderWindow &window) {
 }
 
 // -----------------------------------------------------------------------------
-//
+// render
 // -----------------------------------------------------------------------------]
 static void render(sf::RenderWindow &window) {
   Entity::sort_sprites();
@@ -115,21 +110,16 @@ static void render(sf::RenderWindow &window) {
 }
 
 // -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-static void integrate(Entity::Entity &entity) {}
-
-// -----------------------------------------------------------------------------
-//
+// step_sim
 // -----------------------------------------------------------------------------
 static void step_sim() {
   for (auto &entity : Entity::entities) {
-    integrate(entity);
+    Physics::integrate(entity, timestep);
   }
 }
 
 // -----------------------------------------------------------------------------
-//
+// update_players
 // -----------------------------------------------------------------------------
 static void update_players(std::vector<Player::Player> &players) {
   for (auto &player : players) {
@@ -138,12 +128,12 @@ static void update_players(std::vector<Player::Player> &players) {
 }
 
 // -----------------------------------------------------------------------------
-//
+// update_ball
 // -----------------------------------------------------------------------------
 static void update_ball(Ball::Ball &ball) { Ball::apply_forces(ball); }
 
 // -----------------------------------------------------------------------------
-//
+// main
 // -----------------------------------------------------------------------------
 int main(int argc, char *argv[]) {
   // --------------------------------------------------
@@ -189,11 +179,8 @@ int main(int argc, char *argv[]) {
   // grass
   //
   // --------------------------------------------------
-  sf::Texture *tex = Texture::acquire_texture(grass_tile);
-  tex->setRepeated(true);
-  grass->sprite.setTexture(*tex);
-  grass->sprite.setTextureRect(sf::IntRect(0, 0, window_width, window_height));
-  grass->z_order = -1;
+  Grass::Grass grass;
+  Grass::init_grass(grass, 0, 0, window_width, window_height);
 
   // --------------------------------------------------
   //

@@ -5,12 +5,14 @@
 
 namespace Ball {
 
-static const int BALL_SPRITESHEET_ROWS = 4;
-static const int BALL_SPRITESHEET_COLS = 2;
-static const int BALL_SPRITE_FRAMES =
+inline const int BALL_SPRITESHEET_ROWS = 4;
+inline const int BALL_SPRITESHEET_COLS = 2;
+inline const int BALL_SPRITE_FRAMES =
     BALL_SPRITESHEET_ROWS * BALL_SPRITESHEET_COLS;
-static const int BALL_SPRITE_WIDTH = 64;
-static const int BALL_SPRITE_HEIGHT = 64;
+inline const int BALL_SPRITE_WIDTH = 64;
+inline const int BALL_SPRITE_HEIGHT = 64;
+
+inline std::array<sf::IntRect, BALL_SPRITE_FRAMES> ball_frames;
 
 /**
  * @brief The Ball struct
@@ -19,13 +21,13 @@ struct Ball {
   Entity::Entity *entity = nullptr;
   Entity::SortableSprite *sprite = nullptr;
   std::string spritesheet;
-  int current_frame;
+  int current_frame = 0;
 };
 
 // -----------------------------------------------------------------------------
-//
+// populate_ball_sprite_frames
 // -----------------------------------------------------------------------------
-static void populate_ball_sprite_frames(
+inline void populate_ball_sprite_frames(
     std::array<sf::IntRect, BALL_SPRITE_FRAMES> &frames) {
   int x = 0;
   int y = 0;
@@ -47,21 +49,20 @@ static void populate_ball_sprite_frames(
   }
 }
 
-static std::array<sf::IntRect, BALL_SPRITE_FRAMES> ball_frames;
-
 // -----------------------------------------------------------------------------
-//
+// make_ball_sprite
 // -----------------------------------------------------------------------------
-static void make_ball_sprite(Entity::SortableSprite *sprite,
+inline void make_ball_sprite(Entity::SortableSprite *sprite,
                              const std::string &spritesheet) {
   sf::Texture *tex = Texture::acquire_texture(spritesheet);
   sprite->sprite.setTexture(*tex);
+  sprite->z_order = 1;
 }
 
 // -----------------------------------------------------------------------------
-//
+// init_ball
 // -----------------------------------------------------------------------------
-static void init_ball(Ball &ball) {
+inline void init_ball(Ball &ball) {
   Entity::Entity *e = Entity::acquire_entity();
   e->type = Entity::EntityType::Ball;
 
@@ -72,10 +73,10 @@ static void init_ball(Ball &ball) {
 }
 
 // -----------------------------------------------------------------------------
-//
+// apply_forces
 // -----------------------------------------------------------------------------
-static void apply_forces(Ball &ball) {
-    gamelib3::Vector3 tmp(0.01, 0.01);
-    ball.entity->velocity *= tmp;
+inline void apply_forces(Ball &ball) {
+  gamelib3::Vector3 tmp(0.01, 0.01);
+  ball.entity->velocity *= tmp;
 }
 }  // namespace Ball

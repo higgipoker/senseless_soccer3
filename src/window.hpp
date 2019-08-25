@@ -1,13 +1,13 @@
 #pragma once
 
-#include <SFML/Window/WindowStyle.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Window/WindowStyle.hpp>
 
 namespace Window {
 // -----------------------------------------------------------------------------
-//
+// valid_videomode
 // -----------------------------------------------------------------------------
-static bool valid_videomode(int width, int height) {
+inline bool valid_videomode(int width, int height) {
   // get list of supported video modes
   std::vector<sf::VideoMode> modes = sf::VideoMode::getFullscreenModes();
 
@@ -21,10 +21,11 @@ static bool valid_videomode(int width, int height) {
 }
 
 // -----------------------------------------------------------------------------
-//
+// init_window
 // -----------------------------------------------------------------------------
-void init_window(sf::RenderWindow &window, const std::string &title, const int width, const int height,
-                 int flags, bool fullscreen = false) {
+inline void init_window(sf::RenderWindow &window, const std::string &title,
+                        const int width, const int height, int flags,
+                        bool fullscreen = false) {
   sf::VideoMode video_mode;
   video_mode.width = width;
   video_mode.height = height;
@@ -39,9 +40,9 @@ void init_window(sf::RenderWindow &window, const std::string &title, const int w
 }
 
 // -----------------------------------------------------------------------------
-//
+// init_camera
 // -----------------------------------------------------------------------------
-void init_camera(sf::View &view, const int width, const int height) {
+inline void init_camera(sf::View &view, const int width, const int height) {
   view.setCenter(width / 2, height / 2);
   view.setSize(width, height);
 }

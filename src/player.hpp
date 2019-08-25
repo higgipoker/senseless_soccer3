@@ -10,17 +10,19 @@
 #include <vector>
 
 namespace Player {
-static const int PLAYER_SPRITESHEET_ROWS = 3;
-static const int PLAYER_SPRITESHEET_COLS = 24;
-static const int PLAYER_SPRITE_FRAMES =
+inline const int PLAYER_SPRITESHEET_ROWS = 3;
+inline const int PLAYER_SPRITESHEET_COLS = 24;
+inline const int PLAYER_SPRITE_FRAMES =
     PLAYER_SPRITESHEET_ROWS * PLAYER_SPRITESHEET_COLS;
-static const int PLAYER_SPRITE_WIDTH = 32;
-static const int PLAYER_SPRITE_HEIGHT = 32;
+inline const int PLAYER_SPRITE_WIDTH = 32;
+inline const int PLAYER_SPRITE_HEIGHT = 32;
+
+inline std::array<sf::IntRect, PLAYER_SPRITE_FRAMES> player_frames;
 
 // -----------------------------------------------------------------------------
-//
+// populate_player_sprite_frames
 // -----------------------------------------------------------------------------
-static void populate_player_sprite_frames(
+inline void populate_player_sprite_frames(
     std::array<sf::IntRect, PLAYER_SPRITE_FRAMES> &frames) {
   int x = 0;
   int y = 0;
@@ -42,7 +44,6 @@ static void populate_player_sprite_frames(
   }
 }
 
-static std::array<sf::IntRect, PLAYER_SPRITE_FRAMES> player_frames;
 /**
  * @brief The Player struct
  */
@@ -55,18 +56,19 @@ struct Player {
 };
 
 // -----------------------------------------------------------------------------
-//
+// make_player_sprite
 // -----------------------------------------------------------------------------
-static void make_player_sprite(Entity::SortableSprite *sprite,
+inline void make_player_sprite(Entity::SortableSprite *sprite,
                                const std::string &spritesheet) {
   sf::Texture *tex = Texture::acquire_texture(spritesheet);
   sprite->sprite.setTexture(*tex);
+  sprite->z_order = 1;
 }
 
 // -----------------------------------------------------------------------------
-//
+// init_players
 // -----------------------------------------------------------------------------
-static void init_players(std::vector<Player> &players) {
+inline void init_players(std::vector<Player> &players) {
   for (int i = 0; i < 11; ++i) {
     Entity::Entity *e = Entity::acquire_entity();
     e->type = Entity::EntityType::Player;
@@ -82,9 +84,9 @@ static void init_players(std::vector<Player> &players) {
 }
 
 // -----------------------------------------------------------------------------
-//
+// release_players
 // -----------------------------------------------------------------------------
-static void release_players(std::vector<Player> &players) {
+inline void release_players(std::vector<Player> &players) {
   for (auto &player : players) {
     Entity::release_entity(player.entity->id);
     Entity::release_sprite(player.sprite);
@@ -93,9 +95,9 @@ static void release_players(std::vector<Player> &players) {
 }
 
 // -----------------------------------------------------------------------------
-//
+// think
 // -----------------------------------------------------------------------------
-static void think(Player &player) {
+inline void think(Player &player) {
   std::cout << "player " << player.shirt_number << " thinking..." << std::endl;
 }
 }  // namespace Player

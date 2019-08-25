@@ -17,12 +17,12 @@ struct CountedTexture {
   int count = 1;
 };
 
-static std::map<std::string, CountedTexture> textures;
+inline std::map<std::string, CountedTexture> textures;
 
 // -----------------------------------------------------------------------------
-//
+// acquire_texture
 // -----------------------------------------------------------------------------
-static sf::Texture *acquire_texture(const std::string &filename) {
+inline sf::Texture *acquire_texture(const std::string &filename) {
   sf::Texture *texture = nullptr;
   // only create new texture if doesnt exist already
   auto tex = textures.find(filename);
@@ -40,10 +40,10 @@ static sf::Texture *acquire_texture(const std::string &filename) {
 }
 
 // -----------------------------------------------------------------------------
-//
+// release_texture
 // -----------------------------------------------------------------------------
-static void release_texture(const std::string filename) {
-  std::map<std::string, CountedTexture>::iterator it = textures.find(filename);
+inline void release_texture(const std::string filename) {
+  auto it = textures.find(filename);
   if (it != textures.end()) {
     if (--(*it).second.count == 0) {
       delete (*it).second.texture;
@@ -58,9 +58,9 @@ static void release_texture(const std::string filename) {
 }
 
 // -----------------------------------------------------------------------------
-//
+// cleanup
 // -----------------------------------------------------------------------------
-static void cleanup() {
+inline void cleanup() {
   for (auto &texture : textures) {
     delete texture.second.texture;
   }
