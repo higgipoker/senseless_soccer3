@@ -43,7 +43,7 @@ inline void init_window(sf::RenderWindow &window, const std::string &title,
 // init_camera
 // -----------------------------------------------------------------------------
 inline void init_camera(sf::View &view, const int width, const int height) {
-  view.setCenter(width / 2, height / 2);
+  view.setCenter(static_cast<float>(width) / 2, static_cast<float>(height) / 2);
   view.setSize(width, height);
 }
 }  // namespace Window

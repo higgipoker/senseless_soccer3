@@ -42,7 +42,7 @@ inline sf::Texture *acquire_texture(const std::string &filename) {
 // -----------------------------------------------------------------------------
 // release_texture
 // -----------------------------------------------------------------------------
-inline void release_texture(const std::string filename) {
+inline void release_texture(const std::string &filename) {
   auto it = textures.find(filename);
   if (it != textures.end()) {
     if (--(*it).second.count == 0) {

@@ -1,5 +1,5 @@
 #pragma once
-#include "entity.hpp"
+#include "data.hpp"
 #include "globals.hpp"
 #include "texture.hpp"
 
@@ -48,8 +48,12 @@ inline void populate_player_sprite_frames(
  * @brief The Player struct
  */
 struct Player {
-  Entity::Entity *entity = nullptr;
-  Entity::SortableSprite *sprite = nullptr;
+  // give a nice interface to ball stuff -> these are just aliases
+  sf::Sprite &Sprite() {
+    return Data::sprite_pool[Data::entity_pool[entity].sprite];
+  }
+  Data::Entity &Entity() { return Data::entity_pool[entity]; }
+  int entity = 0;
   std::string spritesheet;
   int current_frame = 0;
   int shirt_number = 0;
@@ -58,11 +62,9 @@ struct Player {
 // -----------------------------------------------------------------------------
 // make_player_sprite
 // -----------------------------------------------------------------------------
-inline void make_player_sprite(Entity::SortableSprite *sprite,
-                               const std::string &spritesheet) {
+inline void make_player_sprite(int sprite, const std::string &spritesheet) {
   sf::Texture *tex = Texture::acquire_texture(spritesheet);
-  sprite->sprite.setTexture(*tex);
-  sprite->z_order = 1;
+  Data::sprite_pool[sprite].setTexture(*tex);
 }
 
 // -----------------------------------------------------------------------------
@@ -70,15 +72,29 @@ inline void make_player_sprite(Entity::SortableSprite *sprite,
 // -----------------------------------------------------------------------------
 inline void init_players(std::vector<Player> &players) {
   for (int i = 0; i < 11; ++i) {
-    Entity::Entity *e = Entity::acquire_entity();
-    e->type = Entity::EntityType::Player;
+    int e = Data::acquire_entity();
 
+    if (e == -1) {
+      std::cout << "no entity" << std::endl;
+      continue;
+    }
+
+    Data::entity_pool[e].type = Data::EntityType::Player;
     Player p;
     p.shirt_number = i + 1;
     p.entity = e;
     p.spritesheet = Globals::GFX_FOLDER + "player/player.png";
-    p.sprite = Entity::acquire_sprite();
-    make_player_sprite(p.sprite, p.spritesheet);
+
+    int s = Data::acquire_sprite(&Data::entity_pool[e]);
+    if (s == -1) {
+      std::cout << "no sprite" << std::endl;
+      Data::release_entity(e);
+      continue;
+    }
+
+    Data::entity_pool[e].sprite = s;
+    make_player_sprite(Data::entity_pool[e].sprite, p.spritesheet);
+    Data::sprite_pool[Data::entity_pool[e].sprite].set_z(i + 1);
     players.push_back(p);
   }
 }
@@ -88,8 +104,8 @@ inline void init_players(std::vector<Player> &players) {
 // -----------------------------------------------------------------------------
 inline void release_players(std::vector<Player> &players) {
   for (auto &player : players) {
-    Entity::release_entity(player.entity->id);
-    Entity::release_sprite(player.sprite);
+    Data::release_entity(player.entity);
+    Data::release_sprite(Data::entity_pool[player.entity].sprite);
     Texture::release_texture(player.spritesheet);
   }
 }
@@ -98,6 +114,7 @@ inline void release_players(std::vector<Player> &players) {
 // think
 // -----------------------------------------------------------------------------
 inline void think(Player &player) {
-  std::cout << "player " << player.shirt_number << " thinking..." << std::endl;
+  // std::cout << "player " << player.shirt_number << " thinking..." <<
+  // std::endl;
 }
 }  // namespace Player

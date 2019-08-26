@@ -4,7 +4,7 @@
 #endif
 
 #include "ball.hpp"
-#include "entity.hpp"
+#include "data.hpp"
 #include "framerate.hpp"
 #include "globals.hpp"
 #include "grass.hpp"
@@ -99,23 +99,17 @@ void handle_input(sf::RenderWindow &window) {
 }
 
 // -----------------------------------------------------------------------------
-// sort_sprites
-// -----------------------------------------------------------------------------
-inline bool sprite_sort_predicate(const Entity::SortableSprite &s1,
-                                  const Entity::SortableSprite &s2) {
-  return s1.z_order < s2.z_order;
-}
-
-// -----------------------------------------------------------------------------
 // render
 // -----------------------------------------------------------------------------]
-static void render(sf::RenderWindow &window,
-                   std::vector<Entity::SortableSprite> &sprite_list) {
-  std::sort(sprite_list.begin(), sprite_list.end(), sprite_sort_predicate);
+static void render(sf::RenderWindow &window) {
   window.clear(sf::Color::Blue);
-  for (auto &sprite : sprite_list) {
-    window.draw(sprite.sprite);
+  if (Data::sprite_pool_unsorted) {
+    Data::sort_sprite_pool();
   }
+  for (auto i = 0; i < Data::used_sprite_count; ++i) {
+    window.draw(Data::sprite_pool[i]);
+  }
+
   window.display();
 }
 
@@ -123,8 +117,8 @@ static void render(sf::RenderWindow &window,
 // step_sim
 // -----------------------------------------------------------------------------
 static void step_sim() {
-  for (auto &entity : Entity::entities) {
-    Physics::integrate(entity, timestep);
+  for (auto i = 0; i < Data::used_entity_count; ++i) {
+    Physics::integrate(Data::entity_pool[i], timestep);
   }
 }
 
@@ -134,6 +128,10 @@ static void step_sim() {
 static void update_players(std::vector<Player::Player> &players) {
   for (auto &player : players) {
     Player::think(player);
+
+    int f = rand() % Player::PLAYER_SPRITE_FRAMES;
+    player.Sprite().setTextureRect(
+        Player::player_frames[f]);
   }
 }
 
@@ -142,14 +140,16 @@ static void update_players(std::vector<Player::Player> &players) {
 // -----------------------------------------------------------------------------
 static void update_ball(Ball::Ball &ball) {
   Ball::apply_forces(ball);
-  ball.sprite->sprite.setPosition(ball.entity->position.x,
-                                  ball.entity->position.y);
+  ball.Sprite().setPosition(ball.Entity().position.x,
+                               ball.Entity().position.y);
 }
 
 // -----------------------------------------------------------------------------
 // main
 // -----------------------------------------------------------------------------
 int main(int argc, char *argv[]) {
+  std::cout << "MEMORY NEEDED: " << Data::calc_mem_needed() << " bytes"
+            << std::endl;
   // --------------------------------------------------
   //
   // window
@@ -164,6 +164,14 @@ int main(int argc, char *argv[]) {
 
   // --------------------------------------------------
   //
+  // grass
+  //
+  // --------------------------------------------------
+  Grass::Grass grass;
+  Grass::init_grass(grass, 0, 0, window_width, window_height);
+
+  // --------------------------------------------------
+  //
   // players
   //
   // --------------------------------------------------
@@ -171,10 +179,12 @@ int main(int argc, char *argv[]) {
   Player::init_players(players);
   Player::populate_player_sprite_frames(Player::player_frames);
   int x = 0;
+  srand(time(nullptr));
   for (auto &player : players) {
-    player.sprite->sprite.move(x, 0);
+    player.Sprite().move(x, 0);
     int f = rand() % Player::PLAYER_SPRITE_FRAMES;
-    player.sprite->sprite.setTextureRect(Player::player_frames[f]);
+    player.Sprite().setTextureRect(
+        Player::player_frames[f]);
     x += 32;
   }
 
@@ -184,36 +194,29 @@ int main(int argc, char *argv[]) {
   //
   // --------------------------------------------------
   Ball::Ball ball;
-  Ball::init_ball(ball);
-  Ball::populate_ball_sprite_frames(Ball::ball_frames);
-  ball.sprite->sprite.setTextureRect(Ball::ball_frames[0]);
-  ball.sprite->sprite.move(0, 60);
-  ball.entity->force.x = 10;
+  if (Ball::init_ball(ball) == 0) {
+    ball.inited = true;
+    Ball::populate_ball_sprite_frames(Ball::ball_frames);
+    ball.Sprite().setTextureRect(
+        Ball::ball_frames[0]);
+    ball.Sprite().move(0, 60);
+    ball.Entity().force = gamelib3::Vector3(10, 0);
+  }
 
-  // --------------------------------------------------
-  //
-  // grass
-  //
-  // --------------------------------------------------
-  Grass::Grass grass;
-  Grass::init_grass(grass, 0, 0, window_width, window_height);
+  for (int i = 0; i < 100; ++i) {
+    // int id = Data::acquire_sprite();
+  }
 
   // --------------------------------------------------
   //
   // main loop
   //
   // --------------------------------------------------
-  std::vector<Entity::SortableSprite> live_sprites;
-  for (auto sprite : Entity::sprites) {
-    if (sprite.live) {
-      live_sprites.push_back(sprite);
-    }
-  }
   while (game_running) {
     framerate.on_frame_started();
 
     handle_input(window);
-    render(window, live_sprites);
+    render(window);
 
     update_ball(ball);
     update_players(players);
@@ -231,6 +234,21 @@ int main(int argc, char *argv[]) {
   //
   // --------------------------------------------------
   // only testing, the os will do this and quite the program faster
+  Data::release_sprite(grass.Entity().sprite);
+  Data::release_entity(grass.entity);
+
+  if (ball.inited) {
+    Data::release_sprite(ball.Entity().sprite);
+    Data::release_entity(ball.entity);
+  }
+
+  Player::release_players(players);
   Texture::cleanup();
+
+  std::cout << "entities still in use at exit: " << Data::used_entity_count
+            << std::endl;
+
+  std::cout << "sprites still in use at exit: " << Data::used_sprite_count
+            << std::endl;
   return 0;
 }

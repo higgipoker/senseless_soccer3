@@ -1,5 +1,6 @@
 #pragma once
-#include "entity.hpp"
+#include "data.hpp"
+
 #include "globals.hpp"
 #include "texture.hpp"
 
@@ -18,10 +19,16 @@ inline std::array<sf::IntRect, BALL_SPRITE_FRAMES> ball_frames;
  * @brief The Ball struct
  */
 struct Ball {
-  Entity::Entity *entity = nullptr;
-  Entity::SortableSprite *sprite = nullptr;
+  // give a nice interface to ball stuff -> these are just aliases
+  sf::Sprite &Sprite() {
+    return Data::sprite_pool[Data::entity_pool[entity].sprite];
+  }
+  Data::Entity &Entity() { return Data::entity_pool[entity]; }
+
+  int entity = 0;
   std::string spritesheet;
   int current_frame = 0;
+  bool inited = false;
 };
 
 // -----------------------------------------------------------------------------
@@ -52,31 +59,38 @@ inline void populate_ball_sprite_frames(
 // -----------------------------------------------------------------------------
 // make_ball_sprite
 // -----------------------------------------------------------------------------
-inline void make_ball_sprite(Entity::SortableSprite *sprite,
-                             const std::string &spritesheet) {
+inline int make_ball_sprite(int sprite, const std::string &spritesheet) {
   sf::Texture *tex = Texture::acquire_texture(spritesheet);
-  sprite->sprite.setTexture(*tex);
-  sprite->z_order = 1;
+  Data::sprite_pool[sprite].setTexture(*tex);
+  Data::sprite_pool[sprite].set_z(3);
+  return 0;
 }
 
 // -----------------------------------------------------------------------------
 // init_ball
 // -----------------------------------------------------------------------------
-inline void init_ball(Ball &ball) {
-  Entity::Entity *e = Entity::acquire_entity();
-  e->type = Entity::EntityType::Ball;
+inline int init_ball(Ball &ball) {
+  int e = Data::acquire_entity();
+
+  if (e == -1) {
+    return -1;
+  }
+
+  Data::entity_pool[e].type = Data::EntityType::Ball;
 
   ball.entity = e;
   ball.spritesheet = Globals::GFX_FOLDER + "/ball_new.png";
-  ball.sprite = Entity::acquire_sprite();
-  make_ball_sprite(ball.sprite, ball.spritesheet);
+  Data::entity_pool[e].sprite = Data::acquire_sprite(&Data::entity_pool[e]);
+  if (Data::entity_pool[e].sprite == -1) {
+    Data::release_entity(e);
+    return -1;
+  }
+  make_ball_sprite(Data::entity_pool[e].sprite, ball.spritesheet);
+  return 0;
 }
 
 // -----------------------------------------------------------------------------
 // apply_forces
 // -----------------------------------------------------------------------------
-inline void apply_forces(Ball &ball) {
-  gamelib3::Vector3 tmp(0.01, 0.01);
-  ball.entity->velocity *= tmp;
-}
+inline void apply_forces(Ball &ball) {}
 }  // namespace Ball

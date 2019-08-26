@@ -1,5 +1,5 @@
 #pragma once
-#include "entity.hpp"
+#include "data.hpp"
 
 #include "gamelib3/math/vector.hpp"
 
@@ -9,7 +9,7 @@ namespace Physics {
 // -----------------------------------------------------------------------------
 //  integrate
 // -----------------------------------------------------------------------------
-inline void integrate(Entity::Entity &entity, const float dt) {
+inline void integrate(Data::Entity &entity, const float dt) {
   // step 1
   entity.force = (entity.force - (entity.velocity.multiply2d(entity.co_friction * dt)));
   Vector3 acceleration = entity.force / entity.mass;
