@@ -41,6 +41,10 @@ endif (UNIX)
 # --------------------------------------------------
 add_executable(senseless_soccer3
     src/main.cpp
+    src/data.cpp
+    src/ball.cpp
+    src/player.cpp
+    src/input.cpp
 )
 
 # --------------------------------------------------

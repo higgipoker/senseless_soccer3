@@ -19,42 +19,26 @@ inline std::array<sf::IntRect, BALL_SPRITE_FRAMES> ball_frames;
  * @brief The Ball struct
  */
 struct Ball {
-  // give a nice interface to ball stuff -> these are just aliases
-  sf::Sprite &Sprite() {
-    return Data::sprite_pool[Data::entity_pool[entity].sprite];
-  }
-  Data::Entity &Entity() { return Data::entity_pool[entity]; }
-
   int entity = 0;
   std::string spritesheet;
   int current_frame = 0;
   bool inited = false;
 };
 
-// -----------------------------------------------------------------------------
-// populate_ball_sprite_frames
-// -----------------------------------------------------------------------------
-inline void populate_ball_sprite_frames(
-    std::array<sf::IntRect, BALL_SPRITE_FRAMES> &frames) {
-  int x = 0;
-  int y = 0;
-  int row = 0;
-  int col = 0;
-  for (auto &rect : frames) {
-    rect.left = x;
-    rect.top = y;
-    rect.width = BALL_SPRITE_WIDTH;
-    rect.height = BALL_SPRITE_HEIGHT;
-
-    x += BALL_SPRITE_WIDTH;
-
-    if (++col == BALL_SPRITESHEET_COLS) {
-      x = 0;
-      y += BALL_SPRITE_HEIGHT;
-      col = 0;
-    }
-  }
+inline Data::Entity &get_entity(Ball &ball) {
+  return Data::entity_pool[ball.entity];
 }
+
+inline sf::Sprite &get_sprite(Ball &ball) {
+  return Data::sprite_pool[get_entity(ball).sprite];
+}
+
+/**
+ * @brief populate_ball_sprite_frames
+ * @param frames
+ */
+void populate_ball_sprite_frames(
+    std::array<sf::IntRect, BALL_SPRITE_FRAMES> &frames);
 
 // -----------------------------------------------------------------------------
 // make_ball_sprite
@@ -71,21 +55,19 @@ inline int make_ball_sprite(int sprite, const std::string &spritesheet) {
 // -----------------------------------------------------------------------------
 inline int init_ball(Ball &ball) {
   int e = Data::acquire_entity();
-
   if (e == -1) {
     return -1;
   }
 
-  Data::entity_pool[e].type = Data::EntityType::Ball;
-
   ball.entity = e;
+  get_entity(ball).type = Data::EntityType::Ball;
   ball.spritesheet = Globals::GFX_FOLDER + "/ball_new.png";
-  Data::entity_pool[e].sprite = Data::acquire_sprite(&Data::entity_pool[e]);
-  if (Data::entity_pool[e].sprite == -1) {
+  get_entity(ball).sprite = Data::acquire_sprite(&get_entity(ball));
+  if (get_entity(ball).sprite == -1) {
     Data::release_entity(e);
     return -1;
   }
-  make_ball_sprite(Data::entity_pool[e].sprite, ball.spritesheet);
+  make_ball_sprite(get_entity(ball).sprite, ball.spritesheet);
   return 0;
 }
 
