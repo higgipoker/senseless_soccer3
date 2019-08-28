@@ -23,20 +23,17 @@ void populate_player_sprite_frames(
     std::array<sf::IntRect, PLAYER_SPRITE_FRAMES> &frames) {
   int x = 0;
   int y = 0;
-  int row = 0;
-  int col = 0;
   for (auto &rect : frames) {
     rect.left = x;
     rect.top = y;
     rect.width = PLAYER_SPRITE_WIDTH;
     rect.height = PLAYER_SPRITE_HEIGHT;
-
+    int col = 0;
     x += PLAYER_SPRITE_WIDTH;
 
     if (++col == PLAYER_SPRITESHEET_COLS) {
       x = 0;
       y += PLAYER_SPRITE_HEIGHT;
-      col = 0;
     }
   }
 }

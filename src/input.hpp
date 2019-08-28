@@ -1,11 +1,11 @@
 #pragma once
-#include "game.hpp"
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Joystick.hpp>
 #include <cstring>
 #include <iostream>
 #include <map>
 #include <string>
+#include "game.hpp"
 
 namespace Input {
 
@@ -88,7 +88,7 @@ struct Gamepad {
   float trigger_threshold = 0;
   float thumbstick_threshold = 50.0f;
 };
-void handle_input(Game &game, Input::Gamepad &gamepad) ;
+void handle_input(Game &game, Input::Gamepad &gamepad);
 void init(Gamepad &gamepad);
 bool isConnected(Gamepad &gamepad);
 bool A(Gamepad &gamepad);

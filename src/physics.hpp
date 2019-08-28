@@ -11,12 +11,14 @@ namespace Physics {
 // -----------------------------------------------------------------------------
 inline void integrate(Data::Entity &entity, const float dt) {
   // step 1
-  entity.force = (entity.force - (entity.velocity.multiply2d(entity.co_friction * dt)));
+  entity.force =
+      (entity.force - (entity.velocity.multiply2d(entity.co_friction * dt)));
   Vector3 acceleration = entity.force / entity.mass;
   Vector3 k1 = acceleration * dt;
 
   // step 2
-  entity.force = (entity.force - (entity.velocity + k1).multiply2d(entity.co_friction));
+  entity.force =
+      (entity.force - (entity.velocity + k1).multiply2d(entity.co_friction));
   acceleration = entity.force / entity.mass;
   Vector3 k2 = acceleration * dt;
 

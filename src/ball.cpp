@@ -9,7 +9,6 @@ void populate_ball_sprite_frames(
     std::array<sf::IntRect, BALL_SPRITE_FRAMES> &frames) {
   int x = 0;
   int y = 0;
-  int row = 0;
   int col = 0;
   for (auto &rect : frames) {
     rect.left = x;

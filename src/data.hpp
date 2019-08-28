@@ -44,24 +44,24 @@ inline bool sprite_pool_unsorted = false;  // need to sort the pool
 Entity* find_sprite_callback(int i);
 
 /**
- * @brief swap_sprites
+ * @brief swaps 2 sprites (eg for sorting algorithm)
  * @param idx1
  * @param idx2
  */
 void swap_sprites(const int idx1, const int idx2);
 
 /**
- * @brief pack_sprite_pool
+ * @brief moves all sprites to the top of the list
  */
 void pack_sprite_pool();
 
 /**
- * @brief sort_sprite_pool
+ * @brief sorts sprite pool in render order
  */
 void sort_sprite_pool();
 
 /**
- * @brief acquire_entity
+ * @brief reserves an entity from the pool
  * @return
  */
 int acquire_entity();

@@ -12,7 +12,7 @@ namespace Texture {
  * @brief The CountedTexture struct
  */
 struct CountedTexture {
-  CountedTexture(sf::Texture *tex) : texture(tex) {}
+  explicit CountedTexture(sf::Texture *tex) : texture(tex) {}
   sf::Texture *texture;
   int count = 1;
 };

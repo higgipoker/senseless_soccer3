@@ -2,7 +2,7 @@
 
 namespace Data {
 
-bool* SortableSprite::sort_flag = nullptr;
+bool* SortableSprite::sort_flag = &sprite_pool_unsorted;
 
 // -----------------------------------------------------------------------------
 // acquire_entity
@@ -42,9 +42,6 @@ int acquire_sprite(Entity* e) {
   if (used_sprite_count == MAX_SPRITES) {
     std::cout << "ran out of sprites. Max: " << MAX_SPRITES << std::endl;
     return -1;
-  }
-  if (SortableSprite::sort_flag == nullptr) {
-    SortableSprite::sort_flag = &sprite_pool_unsorted;
   }
   for (size_t i = 0; i < MAX_SPRITES; ++i) {
     SortableSprite* addr = &sprite_pool[i];
