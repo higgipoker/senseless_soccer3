@@ -28,7 +28,9 @@ inline sf::Sprite &get_sprite(Grass &grass) {
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-inline Entity &get_entity(Grass &grass) { return entity_pool[grass.entity]; }
+inline Entity &get_ball_entity(Grass &grass) {
+  return entity_pool[grass.entity];
+}
 
 // -----------------------------------------------------------------------------
 // make_grass_sprite

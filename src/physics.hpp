@@ -4,7 +4,6 @@
 #include "gamelib3/math/vector.hpp"
 
 using namespace gamelib3;
-namespace Physics {
 
 // -----------------------------------------------------------------------------
 //  integrate
@@ -33,5 +32,3 @@ inline void integrate(Entity &entity, const float dt) {
 
   entity.force.reset();
 }
-
-}  // namespace Physics

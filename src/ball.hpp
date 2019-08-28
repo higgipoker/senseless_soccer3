@@ -27,7 +27,7 @@ struct Ball {
  * @param ball
  * @return
  */
-Entity &get_entity(Ball &ball);
+Entity &get_ball_entity(Ball &ball);
 
 /**
  * @brief get_sprite

@@ -20,9 +20,8 @@ bool valid_videomode(int width, int height);
  * @param flags
  * @param fullscreen
  */
-void init_window(sf::RenderWindow &window, const std::string &title,
-                 const int width, const int height, int flags,
-                 bool fullscreen = false);
+void init_window(sf::RenderWindow &window, const std::string &title, int width,
+                 int height, int flags, bool fullscreen = false);
 
 /**
  * @brief init_camera

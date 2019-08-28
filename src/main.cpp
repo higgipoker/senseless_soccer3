@@ -35,7 +35,7 @@ static void render(sf::RenderWindow &window) {
 // -----------------------------------------------------------------------------
 static void step_sim(float timestep) {
   for (auto i = 0; i < used_entity_count; ++i) {
-    Physics::integrate(entity_pool[i], timestep);
+    integrate(entity_pool[i], timestep);
   }
 }
 
@@ -45,6 +45,8 @@ static void step_sim(float timestep) {
 static void update_players(std::vector<Player> &players) {
   for (auto &player : players) {
     think(player);
+    get_sprite(player).setPosition(get_player_entity(player).position.x,
+                                   get_player_entity(player).position.y);
   }
   update_animations();
 }
@@ -54,9 +56,9 @@ static void update_players(std::vector<Player> &players) {
 // -----------------------------------------------------------------------------
 static void update_ball(Ball &ball) {
   apply_forces(ball);
-  get_sprite(ball).setPosition(get_entity(ball).position.x,
-                               get_entity(ball).position.y);
-  set_sprite_z(sprite_pool[get_entity(ball).sprite], rand() % 20);
+  get_sprite(ball).setPosition(get_ball_entity(ball).position.x,
+                               get_ball_entity(ball).position.y);
+  set_sprite_z(sprite_pool[get_ball_entity(ball).sprite], rand() % 20);
 }
 
 // -----------------------------------------------------------------------------
@@ -72,6 +74,21 @@ int main(int argc, char *argv[]) {
   init(game);
   Framerate framerate;
   init(framerate, game.target_frame_time);
+
+  // --------------------------------------------------
+  //
+  // ball
+  //
+  // --------------------------------------------------
+  Ball ball;
+  if (init_ball(ball) == 0) {
+    ball.inited = true;
+    populate_frames(ball_frames, BALL_SPRITESHEET_COLS, BALL_SPRITE_WIDTH,
+                    BALL_SPRITE_HEIGHT, BALL_SPRITE_FRAMES);
+    get_sprite(ball).setTextureRect(ball_frames[0]);
+    get_sprite(ball).move(0, 60);
+    // get_entity(ball).force = gamelib3::Vector3(1, 0);
+  }
 
   // --------------------------------------------------
   //
@@ -104,28 +121,16 @@ int main(int argc, char *argv[]) {
 
   // --------------------------------------------------
   //
-  // ball
-  //
-  // --------------------------------------------------
-  Ball ball;
-  if (init_ball(ball) == 0) {
-    ball.inited = true;
-    populate_frames(ball_frames, BALL_SPRITESHEET_COLS, BALL_SPRITE_WIDTH,
-                    BALL_SPRITE_HEIGHT, BALL_SPRITE_FRAMES);
-    get_sprite(ball).setTextureRect(ball_frames[0]);
-    get_sprite(ball).move(0, 60);
-    // get_entity(ball).force = gamelib3::Vector3(1, 0);
-  }
-
-  // --------------------------------------------------
-  //
   // gamepad
   //
   // -------------------------------------------------
   Gamepad gamepad;
   init(gamepad);
   controllers.insert(&gamepad);
-  controlled_entities.insert(std::make_pair(&get_entity(ball), &gamepad));
+  // controlled_entities.insert(std::make_pair(&get_ball_entity(ball),
+  // &gamepad));
+  controlled_entities.insert(
+      std::make_pair(&get_player_entity(players[0]), &gamepad));
 
   // --------------------------------------------------
   //
@@ -134,6 +139,11 @@ int main(int argc, char *argv[]) {
   // --------------------------------------------------
   while (game.game_running) {
     on_frame_started(framerate);
+
+    //    auto c = game.camera.getCenter();
+    //    c = c + sf::Vector2f(1, 0);
+    //    game.camera.setCenter(c);
+    game.window.setView(game.camera);
 
     handle_input(game);
     render(game.window);
@@ -154,11 +164,11 @@ int main(int argc, char *argv[]) {
   //
   // --------------------------------------------------
   // only testing, the os will do this and quite the program faster
-  release_sprite(get_entity(grass).sprite);
+  release_sprite(get_ball_entity(grass).sprite);
   release_entity(grass.entity);
 
   if (ball.inited) {
-    release_sprite(get_entity(ball).sprite);
+    release_sprite(get_ball_entity(ball).sprite);
     release_entity(ball.entity);
   }
 

@@ -8,12 +8,12 @@
 struct SortableSprite : public sf::Sprite {
   /// for sorting
   static bool* sort_flag;
-  int z = 0;
+  float z = 0;
 };
 
 inline void set_sprite_z(SortableSprite& sprite, float z) {
   if (sprite.z != z) {
     sprite.z = z;
-    *sprite.sort_flag = true;
+    *SortableSprite::sort_flag = true;
   }
 }

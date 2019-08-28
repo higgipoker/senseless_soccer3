@@ -158,19 +158,23 @@ bool RightThumbstickClick(Gamepad &gamepad) {
 }
 
 bool DpadLeft(Gamepad &gamepad) {
-  return sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::PovX) < 0;
+  return sf::Joystick::getAxisPosition(gamepad.sf_joystick_index,
+                                       sf::Joystick::Axis::PovX) < 0;
 }
 
 bool DpadRight(Gamepad &gamepad) {
-  return sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::PovX) > 0;
+  return sf::Joystick::getAxisPosition(gamepad.sf_joystick_index,
+                                       sf::Joystick::Axis::PovX) > 0;
 }
 
 bool DpadUp(Gamepad &gamepad) {
-  return sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::PovY) < 0;
+  return sf::Joystick::getAxisPosition(gamepad.sf_joystick_index,
+                                       sf::Joystick::Axis::PovY) < 0;
 }
 
 bool DpadDown(Gamepad &gamepad) {
-  return sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::PovY) > 0;
+  return sf::Joystick::getAxisPosition(gamepad.sf_joystick_index,
+                                       sf::Joystick::Axis::PovY) > 0;
 }
 
 float LeftTriggerValue(Gamepad &gamepad) {

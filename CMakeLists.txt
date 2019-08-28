@@ -47,6 +47,7 @@ add_executable(senseless_soccer3
     src/input.cpp
     src/texture.cpp
     src/window.cpp
+    src/entity.cpp
 )
 
 # --------------------------------------------------

@@ -15,7 +15,7 @@ struct Animation {
   int current_frame = 0;
   bool loop = true;
   bool running = true;
-  std::array<int, MAX_ANIMATION_FRAMES> frames;
+  std::array<int, MAX_ANIMATION_FRAMES> frames{};
 };
 
 // -----------------------------------------------------------------------------

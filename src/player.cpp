@@ -10,7 +10,7 @@ sf::Sprite &get_sprite(Player &player) {
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-Entity &get_entity(Player &player) { return entity_pool[player.entity]; }
+Entity &get_player_entity(Player &player) { return entity_pool[player.entity]; }
 
 // -----------------------------------------------------------------------------
 // make_player_sprite

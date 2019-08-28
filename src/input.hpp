@@ -63,7 +63,7 @@ static const int fire_tap_length = 5;
 static const int fire_double_tap_length = 15;
 
 struct Gamepad {
-  int states[InputState::Totalevents];
+  int states[InputState::Totalevents]{};
   int fire_ticks = 0;
   int sf_joystick_index = 0;
   float trigger_threshold = 0;

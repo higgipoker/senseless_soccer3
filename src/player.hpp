@@ -34,18 +34,18 @@ struct Player {
 inline std::map<Player *, Animation> live_animations;
 
 /**
+ * @brief get_entity
+ * @param ball
+ * @return
+ */
+Entity &get_player_entity(Player &player);
+
+/**
  * @brief get_sprite
  * @param player
  * @return
  */
 sf::Sprite &get_sprite(Player &player);
-
-/**
- * @brief get_entity
- * @param player
- * @return
- */
-Entity &get_entity(Player &player);
 
 /**
  * @brief make_player_sprite
