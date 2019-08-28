@@ -2,7 +2,6 @@
 #include "data.hpp"
 #include "globals.hpp"
 #include "texture.hpp"
-namespace Grass {
 
 inline const std::array<std::string, 6> grasses{
     "grass_checked",    "grass_dry",   "grass_hard",
@@ -23,24 +22,22 @@ struct Grass {
 //
 // -----------------------------------------------------------------------------
 inline sf::Sprite &get_sprite(Grass &grass) {
-  return Data::sprite_pool[Data::entity_pool[grass.entity].sprite];
+  return sprite_pool[entity_pool[grass.entity].sprite];
 }
 
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-inline Data::Entity &get_entity(Grass &grass) {
-  return Data::entity_pool[grass.entity];
-}
+inline Entity &get_entity(Grass &grass) { return entity_pool[grass.entity]; }
 
 // -----------------------------------------------------------------------------
 // make_grass_sprite
 // -----------------------------------------------------------------------------
 inline void make_grass_sprite(int sprite, const std::string &spritesheet) {
-  sf::Texture *tex = Texture::acquire_texture(spritesheet);
+  sf::Texture *tex = acquire_texture(spritesheet);
   tex->setRepeated(true);
-  Data::sprite_pool[sprite].setTexture(*tex);
-  Data::sprite_pool[sprite].set_z(0);
+  sprite_pool[sprite].setTexture(*tex);
+  set_sprite_z(sprite_pool[sprite], 0);
 }
 
 // -----------------------------------------------------------------------------
@@ -48,14 +45,12 @@ inline void make_grass_sprite(int sprite, const std::string &spritesheet) {
 // -----------------------------------------------------------------------------
 inline void init_grass(Grass &grass, const int x, const int y, const int w,
                        const int h) {
-  int e = Data::acquire_entity();
-  Data::entity_pool[e].type = Data::EntityType::Background;
+  int e = acquire_entity();
+  entity_pool[e].type = EntityType::Background;
 
   grass.entity = e;
   grass.spritesheet = grass_tile;
-  Data::entity_pool[e].sprite = Data::acquire_sprite(&Data::entity_pool[e]);
-  make_grass_sprite(Data::entity_pool[e].sprite, grass.spritesheet);
+  entity_pool[e].sprite = acquire_sprite(&entity_pool[e]);
+  make_grass_sprite(entity_pool[e].sprite, grass.spritesheet);
   get_sprite(grass).setTextureRect(sf::IntRect(x, y, w, h));
 }
-
-}  // namespace Grass

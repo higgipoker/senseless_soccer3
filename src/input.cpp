@@ -4,14 +4,13 @@
 #include <SFML/Window/Event.hpp>
 
 // todo separate out into input / gamepad / keyboard
-namespace Input {
 
 static const bool DO_POLL_EVENT = true;
 
 // -----------------------------------------------------------------------------
 // handle_input
 // -----------------------------------------------------------------------------
-void handle_input(Game &game, Input::Gamepad &gamepad) {
+void handle_input(Game &game) {
   if (DO_POLL_EVENT) {
     static sf::Event event;
     while (game.window.pollEvent(event)) {
@@ -76,7 +75,8 @@ void handle_input(Game &game, Input::Gamepad &gamepad) {
   } else {
     sf::Joystick::update();
   }
-  update(gamepad);
+  poll_controllers();
+  update_controlled_entities();
 }
 
 /// map button id's to string identifiers
@@ -333,4 +333,3 @@ void update(Gamepad &gamepad) {
     }
   }
 }
-}  // namespace Input

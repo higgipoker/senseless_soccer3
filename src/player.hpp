@@ -13,7 +13,6 @@
 #include <string>
 #include <vector>
 
-namespace Player {
 inline const int PLAYER_SPRITESHEET_ROWS = 3;
 inline const int PLAYER_SPRITESHEET_COLS = 24;
 inline const int PLAYER_SPRITE_FRAMES =
@@ -21,7 +20,7 @@ inline const int PLAYER_SPRITE_FRAMES =
 inline const int PLAYER_SPRITE_WIDTH = 32;
 inline const int PLAYER_SPRITE_HEIGHT = 32;
 
-inline std::array<sf::IntRect, PLAYER_SPRITE_FRAMES> player_frames;
+inline std::vector<sf::IntRect> player_frames;
 
 /**
  * @brief The Player struct
@@ -32,7 +31,7 @@ struct Player {
   int shirt_number = 0;
 };
 
-inline std::map<Player *, Animation::Animation> live_animations;
+inline std::map<Player *, Animation> live_animations;
 
 /**
  * @brief get_sprite
@@ -46,14 +45,7 @@ sf::Sprite &get_sprite(Player &player);
  * @param player
  * @return
  */
-Data::Entity &get_entity(Player &player);
-
-/**
- * @brief populate_player_sprite_frames
- * @param frames
- */
-void populate_player_sprite_frames(
-    std::array<sf::IntRect, PLAYER_SPRITE_FRAMES> &frames);
+Entity &get_entity(Player &player);
 
 /**
  * @brief make_player_sprite
@@ -97,4 +89,3 @@ void stop_animation(Player &player);
  * @brief update_animations
  */
 void update_animations();
-}  // namespace Player

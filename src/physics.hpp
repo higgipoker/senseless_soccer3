@@ -9,7 +9,7 @@ namespace Physics {
 // -----------------------------------------------------------------------------
 //  integrate
 // -----------------------------------------------------------------------------
-inline void integrate(Data::Entity &entity, const float dt) {
+inline void integrate(Entity &entity, const float dt) {
   // step 1
   entity.force =
       (entity.force - (entity.velocity.multiply2d(entity.co_friction * dt)));

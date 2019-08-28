@@ -1,7 +1,6 @@
 #pragma once
 #include <SFML/System/Clock.hpp>
 
-namespace Framerate {
 /**
  * @brief a struct to manage constant frame rates
  */
@@ -57,4 +56,3 @@ inline float time_left(Framerate &framerate) {
   float target = framerate.target_frame_time * 1000;
   return target - frame_time;
 }
-}  // namespace Framerate

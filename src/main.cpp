@@ -12,6 +12,7 @@
 #include "input.hpp"
 #include "physics.hpp"
 #include "player.hpp"
+#include "sprite_tools.hpp"
 #include "window.hpp"
 
 // -----------------------------------------------------------------------------
@@ -19,11 +20,11 @@
 // -----------------------------------------------------------------------------]
 static void render(sf::RenderWindow &window) {
   window.clear(sf::Color::Blue);
-  if (Data::sprite_pool_unsorted) {
-    Data::sort_sprite_pool();
+  if (sprite_pool_unsorted) {
+    sort_sprite_pool();
   }
-  for (auto i = 0; i < Data::used_sprite_count; ++i) {
-    window.draw(Data::sprite_pool[i]);
+  for (auto i = 0; i < used_sprite_count; ++i) {
+    window.draw(sprite_pool[i]);
   }
 
   window.display();
@@ -33,29 +34,29 @@ static void render(sf::RenderWindow &window) {
 // step_sim
 // -----------------------------------------------------------------------------
 static void step_sim(float timestep) {
-  for (auto i = 0; i < Data::used_entity_count; ++i) {
-    Physics::integrate(Data::entity_pool[i], timestep);
+  for (auto i = 0; i < used_entity_count; ++i) {
+    Physics::integrate(entity_pool[i], timestep);
   }
 }
 
 // -----------------------------------------------------------------------------
 // update_players
 // -----------------------------------------------------------------------------
-static void update_players(std::vector<Player::Player> &players) {
+static void update_players(std::vector<Player> &players) {
   for (auto &player : players) {
-    Player::think(player);
+    think(player);
   }
-  Player::update_animations();
+  update_animations();
 }
 
 // -----------------------------------------------------------------------------
 // update_ball
 // -----------------------------------------------------------------------------
-static void update_ball(Ball::Ball &ball) {
-  Ball::apply_forces(ball);
-  Ball::get_sprite(ball).setPosition(Ball::get_entity(ball).position.x,
-                                     Ball::get_entity(ball).position.y);
-  Data::sprite_pool[Ball::get_entity(ball).sprite].set_z(rand() % 20);
+static void update_ball(Ball &ball) {
+  apply_forces(ball);
+  get_sprite(ball).setPosition(get_entity(ball).position.x,
+                               get_entity(ball).position.y);
+  set_sprite_z(sprite_pool[get_entity(ball).sprite], rand() % 20);
 }
 
 // -----------------------------------------------------------------------------
@@ -69,36 +70,36 @@ int main(int argc, char *argv[]) {
   // --------------------------------------------------
   Game game;
   init(game);
-  Framerate::Framerate framerate;
-  Framerate::init(framerate, game.target_frame_time);
+  Framerate framerate;
+  init(framerate, game.target_frame_time);
 
   // --------------------------------------------------
   //
   // grass
   //
   // --------------------------------------------------
-  Grass::Grass grass;
-  Grass::init_grass(grass, 0, 0, game.window_width, game.window_height);
+  Grass grass;
+  init_grass(grass, 0, 0, game.window_width, game.window_height);
 
   // --------------------------------------------------
   //
   // players
   //
   // --------------------------------------------------
-  std::vector<Player::Player> players;
-  Player::init_players(players);
-  Player::populate_player_sprite_frames(Player::player_frames);
+  std::vector<Player> players;
+  init_players(players);
+  populate_frames(player_frames, PLAYER_SPRITESHEET_COLS, PLAYER_SPRITE_WIDTH,
+                  PLAYER_SPRITE_HEIGHT, PLAYER_SPRITE_FRAMES);
   int x = 0;
   srand(time(nullptr));
   for (auto &player : players) {
-    Player::get_sprite(player).move(x, 0);
-    int f = rand() % Player::PLAYER_SPRITE_FRAMES;
-    Player::get_sprite(player).setTextureRect(Player::player_frames[f]);
+    get_sprite(player).move(x, 0);
+    int f = rand() % PLAYER_SPRITE_FRAMES;
+    get_sprite(player).setTextureRect(player_frames[f]);
     x += 32;
 
     int a = (rand() % 8) + 8;
-    Player::start_animation(player,
-                            static_cast<PlayerAnimations::AnimationID>(a));
+    start_animation(player, static_cast<PlayerAnimations::AnimationID>(a));
   }
 
   // --------------------------------------------------
@@ -106,13 +107,14 @@ int main(int argc, char *argv[]) {
   // ball
   //
   // --------------------------------------------------
-  Ball::Ball ball;
-  if (Ball::init_ball(ball) == 0) {
+  Ball ball;
+  if (init_ball(ball) == 0) {
     ball.inited = true;
-    Ball::populate_ball_sprite_frames(Ball::ball_frames);
-    Ball::get_sprite(ball).setTextureRect(Ball::ball_frames[0]);
-    Ball::get_sprite(ball).move(0, 60);
-    Ball::get_entity(ball).force = gamelib3::Vector3(1, 0);
+    populate_frames(ball_frames, BALL_SPRITESHEET_COLS, BALL_SPRITE_WIDTH,
+                    BALL_SPRITE_HEIGHT, BALL_SPRITE_FRAMES);
+    get_sprite(ball).setTextureRect(ball_frames[0]);
+    get_sprite(ball).move(0, 60);
+    // get_entity(ball).force = gamelib3::Vector3(1, 0);
   }
 
   // --------------------------------------------------
@@ -120,8 +122,10 @@ int main(int argc, char *argv[]) {
   // gamepad
   //
   // -------------------------------------------------
-  Input::Gamepad gamepad;
-  Input::init(gamepad);
+  Gamepad gamepad;
+  init(gamepad);
+  controllers.insert(&gamepad);
+  controlled_entities.insert(std::make_pair(&get_entity(ball), &gamepad));
 
   // --------------------------------------------------
   //
@@ -129,19 +133,19 @@ int main(int argc, char *argv[]) {
   //
   // --------------------------------------------------
   while (game.game_running) {
-    Framerate::on_frame_started(framerate);
+    on_frame_started(framerate);
 
-    Input::handle_input(game, gamepad);
+    handle_input(game);
     render(game.window);
 
     update_ball(ball);
     update_players(players);
 
-    while (Framerate::time_left(framerate) >= 0) {
+    while (time_left(framerate) >= 0) {
       step_sim(game.timestep);
     }
 
-    Framerate::on_frame_ended(framerate);
+    on_frame_ended(framerate);
   }
 
   // --------------------------------------------------
@@ -150,23 +154,21 @@ int main(int argc, char *argv[]) {
   //
   // --------------------------------------------------
   // only testing, the os will do this and quite the program faster
-  Data::release_sprite(Grass::get_entity(grass).sprite);
-  Data::release_entity(grass.entity);
+  release_sprite(get_entity(grass).sprite);
+  release_entity(grass.entity);
 
   if (ball.inited) {
-    Data::release_sprite(Ball::get_entity(ball).sprite);
-    Data::release_entity(ball.entity);
+    release_sprite(get_entity(ball).sprite);
+    release_entity(ball.entity);
   }
 
-  Player::release_players(players);
-  Texture::cleanup();
+  release_players(players);
+  cleanup();
 
   std::cout << std::endl;
-  std::cout << "entities still in use:\t" << Data::used_entity_count
-            << std::endl;
+  std::cout << "entities still in use:\t" << used_entity_count << std::endl;
 
-  std::cout << "sprites still in use:\t" << Data::used_sprite_count
-            << std::endl;
+  std::cout << "sprites still in use:\t" << used_sprite_count << std::endl;
   std::cout << std::endl;
   return 0;
 }

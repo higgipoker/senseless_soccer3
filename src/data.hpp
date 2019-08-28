@@ -1,6 +1,7 @@
 #pragma once
 
 #include "entity.hpp"
+#include "input.hpp"
 #include "sprite.hpp"
 
 #include <gamelib3/math/vector.hpp>
@@ -9,8 +10,6 @@
 #include <cassert>
 #include <iostream>
 #include <map>
-
-namespace Data {
 
 // -----------------------------------------------------------------------------
 //
@@ -96,4 +95,3 @@ int entities_available();
  * @return
  */
 int sprites_available();
-}  // namespace Data

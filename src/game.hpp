@@ -1,6 +1,7 @@
 #pragma once
-#include <SFML/Graphics/RenderWindow.hpp>
 #include "window.hpp"
+
+#include <SFML/Graphics/RenderWindow.hpp>
 
 struct Game {
   sf::RenderWindow window;
@@ -23,8 +24,8 @@ struct Game {
 };
 
 inline void init(Game& game) {
-  Window::init_window(game.window, game.window_title, game.window_width,
-                      game.window_height, sf::Style::Default);
-  Window::init_camera(game.camera, game.window_width, game.window_height);
+  init_window(game.window, game.window_title, game.window_width,
+              game.window_height, sf::Style::Default);
+  init_camera(game.camera, game.window_width, game.window_height);
   game.window.setView(game.camera);
 }

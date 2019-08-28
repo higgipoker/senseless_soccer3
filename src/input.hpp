@@ -1,13 +1,17 @@
 #pragma once
+#include "entity.hpp"
+#include "game.hpp"
+
+#include <gamelib3/math/vector.hpp>
+
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Joystick.hpp>
+
 #include <cstring>
 #include <iostream>
 #include <map>
+#include <set>
 #include <string>
-#include "game.hpp"
-
-namespace Input {
 
 /**
  * @brief The InputState enum
@@ -67,7 +71,11 @@ struct Gamepad {
   bool cached_tap = false;
   int ticks_since_tap = 0;
 };
-void handle_input(Game &game, Input::Gamepad &gamepad);
+
+inline std::set<Gamepad *> controllers;
+inline std::map<Entity *, Gamepad *> controlled_entities;
+
+void handle_input(Game &game);
 void init(Gamepad &gamepad);
 bool isConnected(Gamepad &gamepad);
 bool A(Gamepad &gamepad);
@@ -98,4 +106,25 @@ bool UniDown(Gamepad &gamepad);
 bool UniLeft(Gamepad &gamepad);
 bool UniRight(Gamepad &gamepad);
 void update(Gamepad &gamepad);
-}  // namespace Input
+
+inline void poll_controllers() {
+  for (auto &controller : controllers) {
+    update(*controller);
+  }
+}
+inline void update_controlled_entities() {
+  for (auto &entry : controlled_entities) {
+    if (entry.second->states[InputState::Left]) {
+      apply_force(*entry.first, gamelib3::Vector3(-1, 0));
+    }
+    if (entry.second->states[InputState::Right]) {
+      apply_force(*entry.first, gamelib3::Vector3(1, 0));
+    }
+    if (entry.second->states[InputState::Up]) {
+      apply_force(*entry.first, gamelib3::Vector3(0, -1));
+    }
+    if (entry.second->states[InputState::Down]) {
+      apply_force(*entry.first, gamelib3::Vector3(0, 1));
+    }
+  }
+}

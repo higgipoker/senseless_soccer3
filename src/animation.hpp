@@ -5,8 +5,6 @@
 
 static const int MAX_ANIMATION_FRAMES = 50;
 
-namespace Animation {
-
 /**
  * @brief The Animation struct
  */
@@ -64,4 +62,3 @@ inline void step(Animation &anim) {
 //
 // -----------------------------------------------------------------------------
 inline int frame(Animation &anim) { return anim.frames[anim.current_frame]; }
-}  // namespace Animation

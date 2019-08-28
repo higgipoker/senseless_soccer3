@@ -1,7 +1,5 @@
 #include "data.hpp"
 
-namespace Data {
-
 bool* SortableSprite::sort_flag = &sprite_pool_unsorted;
 
 // -----------------------------------------------------------------------------
@@ -162,7 +160,7 @@ void sort_sprite_pool() {
     int swaps = 0;
 
     for (size_t i = 0; i < used_sprites.size() - 1; ++i) {
-      if (sprite_pool[i].get_z() > sprite_pool[i + 1].get_z()) {
+      if (sprite_pool[i].z > sprite_pool[i + 1].z) {
         swap_sprites(i, i + 1);
         ++swaps;
         continue;
@@ -174,5 +172,3 @@ void sort_sprite_pool() {
   }
   sprite_pool_unsorted = false;
 }
-
-}  // namespace Data

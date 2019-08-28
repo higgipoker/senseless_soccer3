@@ -104,7 +104,7 @@ static std::vector<int> slide_northeast() {
 // -----------------------------------------------------------------------------
 // load_animation_frames
 // -----------------------------------------------------------------------------
-inline void load_animation_frames(Animation::Animation &anim, AnimationID id) {
+inline void load_animation_frames(Animation &anim, AnimationID id) {
   std::vector<int> frames;
   switch (id) {
     case AnimationID::RunEast:
