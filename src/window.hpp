@@ -22,11 +22,3 @@ bool valid_videomode(int width, int height);
  */
 void init_window(sf::RenderWindow &window, const std::string &title, int width,
                  int height, int flags, bool fullscreen = false);
-
-/**
- * @brief init_camera
- * @param view
- * @param width
- * @param height
- */
-void init_camera(sf::View &view, const int width, const int height);

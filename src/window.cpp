@@ -34,11 +34,3 @@ void init_window(sf::RenderWindow &window, const std::string &title,
     window.create(vm, title, flags);
   }
 }
-
-// -----------------------------------------------------------------------------
-// init_camera
-// -----------------------------------------------------------------------------
-void init_camera(sf::View &view, const int width, const int height) {
-  view.setCenter(static_cast<float>(width) / 2, static_cast<float>(height) / 2);
-  view.setSize(width, height);
-}

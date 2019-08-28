@@ -4,6 +4,7 @@
 #endif
 
 #include "ball.hpp"
+#include "camera.hpp"
 #include "data.hpp"
 #include "framerate.hpp"
 #include "game.hpp"
@@ -74,6 +75,8 @@ int main(int argc, char *argv[]) {
   init(game);
   Framerate framerate;
   init(framerate, game.target_frame_time);
+  Camera camera;
+  init_camera(camera, game);
 
   // --------------------------------------------------
   //
@@ -96,7 +99,7 @@ int main(int argc, char *argv[]) {
   //
   // --------------------------------------------------
   Grass grass;
-  init_grass(grass, 0, 0, game.window_width, game.window_height);
+  init_grass(grass, 0, 0, game.window_width * 4, game.window_height * 4);
 
   // --------------------------------------------------
   //
@@ -129,8 +132,9 @@ int main(int argc, char *argv[]) {
   controllers.insert(&gamepad);
   // controlled_entities.insert(std::make_pair(&get_ball_entity(ball),
   // &gamepad));
-  controlled_entities.insert(
-      std::make_pair(&get_player_entity(players[0]), &gamepad));
+  //  controlled_entities.insert(
+  //      std::make_pair(&get_player_entity(players[0]), &gamepad));
+  controlled_entities.insert(std::make_pair(camera.entity, &gamepad));
 
   // --------------------------------------------------
   //
@@ -143,11 +147,12 @@ int main(int argc, char *argv[]) {
     //    auto c = game.camera.getCenter();
     //    c = c + sf::Vector2f(1, 0);
     //    game.camera.setCenter(c);
-    game.window.setView(game.camera);
+    game.window.setView(camera.view);
 
-    handle_input(game);
+    handle_input(game, camera);
     render(game.window);
 
+    update_camera(camera);
     update_ball(ball);
     update_players(players);
 

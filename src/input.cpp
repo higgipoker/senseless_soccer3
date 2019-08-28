@@ -1,4 +1,5 @@
 #include "input.hpp"
+
 #include <iostream>
 
 #include <SFML/Window/Event.hpp>
@@ -10,7 +11,7 @@ static const bool DO_POLL_EVENT = true;
 // -----------------------------------------------------------------------------
 // handle_input
 // -----------------------------------------------------------------------------
-void handle_input(Game &game) {
+void handle_input(Game &game, Camera &camera) {
   if (DO_POLL_EVENT) {
     static sf::Event event;
     while (game.window.pollEvent(event)) {
@@ -19,7 +20,7 @@ void handle_input(Game &game) {
           game.game_running = false;
           break;
         case sf::Event::Resized:
-          game.camera.setSize(event.size.width, event.size.height);
+          camera.view.setSize(event.size.width, event.size.height);
           break;
         case sf::Event::LostFocus:
           break;

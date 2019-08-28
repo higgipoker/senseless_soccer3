@@ -1,5 +1,5 @@
 #pragma once
-#include "entity.hpp"
+#include "camera.hpp"
 #include "game.hpp"
 
 #include <gamelib3/math/vector.hpp>
@@ -75,7 +75,7 @@ struct Gamepad {
 inline std::set<Gamepad *> controllers;
 inline std::map<Entity *, Gamepad *> controlled_entities;
 
-void handle_input(Game &game);
+void handle_input(Game &game, Camera &camera);
 void init(Gamepad &gamepad);
 bool isConnected(Gamepad &gamepad);
 bool A(Gamepad &gamepad);

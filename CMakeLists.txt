@@ -48,6 +48,7 @@ add_executable(senseless_soccer3
     src/texture.cpp
     src/window.cpp
     src/entity.cpp
+    src/camera.cpp
 )
 
 # --------------------------------------------------
