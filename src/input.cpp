@@ -226,10 +226,11 @@ bool UniRight(Gamepad &gamepad) {
 }
 
 void update(Gamepad &gamepad) {
-  /////////////////////////////////////////////////////////
-  /// test
-  ///
-  /////////////////////////////////////////////////////////
+  // //////////////////////////////////////////////////////
+  //
+  // test
+  //
+  // //////////////////////////////////////////////////////
   //  unsigned int buttonCount = sf::Joystick::getButtonCount(0);
   //  for (auto i = 0; i < buttonCount; ++i) {
   //    if (sf::Joystick::isButtonPressed(0, i)) {
@@ -301,10 +302,26 @@ void update(Gamepad &gamepad) {
   //
   // Fire event
   //
+  if (gamepad.cached_tap) {
+    if (++gamepad.ticks_since_tap > fire_double_tap_length) {
+      gamepad.cached_tap = false;
+      gamepad.ticks_since_tap = 0;
+      std::cout << "tap" << std::endl;
+    }
+  }
   if (old_states[InputState::FireDown]) {
     if (gamepad.states[InputState::FireUp]) {
-      if (gamepad.states[InputState::FireLengthCached] < fire_tap_length) {
-        std::cout << "fire tap released" << std::endl;
+      if (gamepad.states[InputState::FireLengthCached] <= fire_tap_length) {
+        gamepad.ticks_since_tap = 0;
+        if (gamepad.cached_tap) {
+          std::cout << "==========" << std::endl;
+          std::cout << "double tap" << std::endl;
+          std::cout << "==========" << std::endl;
+          gamepad.cached_tap = false;
+        } else {
+          gamepad.cached_tap = true;
+        }
+
       } else {
         std::cout << "fire released" << std::endl;
       }
