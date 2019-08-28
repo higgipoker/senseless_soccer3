@@ -8,7 +8,7 @@ set nu rnu
 
 function! OpenOther()
     if expand("%:e") == "cpp"
-        exe "split" fnameescape(expand("%:p:r:s?src?include?").".h")
+        exe "split" fnameescape(expand("%:p:r:s?src?include?").".hpp")
     elseif expand("%:e") == "h"
         exe "split" fnameescape(expand("%:p:r:s?include?src?").".cpp")
     endif
@@ -64,3 +64,14 @@ filetype plugin indent on    " required
 " Put your non-Plugin stuff after this line
 "
 colorscheme codedark
+
+set expandtab
+set shiftwidth=2
+set softtabstop=2
+
+map <C-K> ggVG :py3f /usr/share/clang/clang-format-8/clang-format.py<cr>
+imap <C-K> <c-o>:py3f /usr/share/clang/clang-format-8/clang-format.py<cr>
+
+map <Space>c :e %<.cpp<cr>
+map <Space>h :e %<.hpp<cr>
+
