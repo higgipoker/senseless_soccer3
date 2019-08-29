@@ -64,7 +64,7 @@ void clamp_camera(Camera &camera, sf::IntRect bounds) {
 
   if (bound) {
     camera.entity->force.reset();
-    camera.entity->velocity.reset();
+    camera.entity->velocity = camera.entity->velocity.reverse();
     camera.entity->position = Vector3(act_x + camera.view.getSize().x / 2,
                                       act_y + camera.view.getSize().y / 2);
   }

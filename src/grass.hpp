@@ -41,7 +41,7 @@ void make_grass_sprite(int sprite, const std::string &spritesheet);
  * @param grass
  * @param world_rect
  */
-void init_grass(Grass &grass, sf::IntRect world_rect);
+void init_grass(Grass &grass, Camera &camera);
 /**
  * @brief update_grass
  * @param grass

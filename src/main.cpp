@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
   //
   // --------------------------------------------------
   Grass grass;
-  init_grass(grass, game.window_rect);
+  init_grass(grass, camera);
 
   // --------------------------------------------------
   //
