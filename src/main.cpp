@@ -8,6 +8,7 @@
 #include "data.hpp"
 #include "framerate.hpp"
 #include "game.hpp"
+#include "gamepad.hpp"
 #include "globals.hpp"
 #include "grass.hpp"
 #include "input.hpp"
@@ -37,7 +38,8 @@ static void render(sf::RenderWindow &window, Camera &camera) {
 // -----------------------------------------------------------------------------
 static void step_sim(float timestep) {
   for (auto i = 0; i < used_entity_count; ++i) {
-    integrate_improved_euler(entity_pool[i], timestep);
+    // integrate_improved_euler(entity_pool[i], timestep);
+    integrate_euler(entity_pool[i], timestep);
   }
 }
 
@@ -125,6 +127,7 @@ int main(int argc, char *argv[]) {
   //  controlled_entities.insert(
   //      std::make_pair(&get_player_entity(players[0]), &gamepad));
 
+  // controlled_entities.insert(std::make_pair(camera.entity, &gamepad.device));
   controlled_entities.insert(std::make_pair(camera.entity, &keyboard.device));
 
   // --------------------------------------------------

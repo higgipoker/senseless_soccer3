@@ -5,6 +5,14 @@
 
 using namespace gamelib3;
 
+inline Vector3 friction;
+inline Vector3 acceleration;
+inline Vector3 dv;
+inline Vector3 dp;
+
+inline Vector3 k1;
+inline Vector3 k2;
+
 /**
  * @brief integrate_euler
  * @param entity

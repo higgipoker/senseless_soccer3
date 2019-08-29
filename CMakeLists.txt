@@ -57,6 +57,8 @@ add_executable(senseless_soccer3
     src/player_animations.cpp
     src/sprite.cpp
     src/sprite_tools.cpp
+    src/gamepad.cpp
+    src/keyboard.cpp
 )
 
 # --------------------------------------------------

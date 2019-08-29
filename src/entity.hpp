@@ -1,14 +1,22 @@
 #pragma once
 #include "gamelib3/math/vector.hpp"
-enum class EntityType { Anonymous, Match, Player, Ball, Background, Goal };
+enum class EntityType {
+  Anonymous,
+  Camera,
+  Match,
+  Player,
+  Ball,
+  Background,
+  Goal
+};
 /**
  * @brief The Entity struct
  */
 struct Entity {
-  int id=-1;
+  int id = -1;
   EntityType type = EntityType::Anonymous;
   gamelib3::Vector3 position, velocity, force, terminal_velocity;
-  float co_friction = 0.00f;
+  float co_friction = 0.01f;
   float mass = 1;
   int sprite = 0;
 };
@@ -17,4 +25,4 @@ struct Entity {
  * @param entity
  * @param force
  */
-void apply_force(Entity& entity, gamelib3::Vector3 force) ;
+void apply_force(Entity& entity, gamelib3::Vector3 force);

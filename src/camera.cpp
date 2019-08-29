@@ -19,7 +19,8 @@ void init_camera(Camera &camera, Game &game) {
   game.window.setView(camera.view);
   camera.entity->position.x = static_cast<float>(game.window_rect.width) / 2;
   camera.entity->position.y = static_cast<float>(game.window_rect.height) / 2;
-  camera.entity->co_friction = 0.001f;
+  camera.entity->co_friction = 0.01f;
+  camera.entity->type = EntityType::Camera;
 }
 
 // -----------------------------------------------------------------------------
@@ -30,9 +31,9 @@ void update_camera(Camera &camera, sf::IntRect world_rect) {
   clamp_camera(camera, world_rect);
   camera.view.setCenter(camera.entity->position.x, camera.entity->position.y);
 
-  if (camera.entity->velocity.magnitude() > 0.25f) {
-    camera.entity->velocity = camera.entity->velocity.setMagnitude(0.25f);
-  }
+  //  if (camera.entity->velocity.magnitude() > 0.25f) {
+  //    camera.entity->velocity = camera.entity->velocity.setMagnitude(0.25f);
+  //  }
 }
 
 // -----------------------------------------------------------------------------
@@ -44,27 +45,31 @@ void clamp_camera(Camera &camera, sf::IntRect bounds) {
 
   bool bound = false;
 
-  if (act_x < bounds.left) {
-    act_x = bounds.left;
-    bound = true;
-  }
-  if (act_y < bounds.top) {
-    act_y = bounds.top;
-    bound = true;
-  }
+  //  if (act_x < bounds.left) {
+  //    act_x = bounds.left;
+  //    camera.entity->velocity.x = -camera.entity->velocity.x;
+  //    bound = true;
+  //  }
+  // else if (act_y < bounds.top) {
+  //    act_y = bounds.top;
+  //    camera.entity->velocity.y = -camera.entity->velocity.y;
+  //    bound = true;
+  //  }
 
-  if (act_x + camera.view.getSize().x > bounds.left + bounds.width) {
-    act_x = bounds.left + bounds.width - camera.view.getSize().x;
-    bound = true;
-  }
-  if (act_y + camera.view.getSize().y > bounds.top + bounds.height) {
-    act_y = bounds.top + bounds.height - camera.view.getSize().y;
-    bound = true;
-  }
+  //  else if (act_x + camera.view.getSize().x > bounds.left + bounds.width) {
+  //    act_x = bounds.left + bounds.width - camera.view.getSize().x;
+  //    camera.entity->velocity.x = -camera.entity->velocity.x;
+  //    bound = true;
+
+  //  } else if (act_y + camera.view.getSize().y > bounds.top + bounds.height)
+  //  {
+  //    act_y = bounds.top + bounds.height - camera.view.getSize().y;
+  //    camera.entity->velocity.y = -camera.entity->velocity.y;
+  //    bound = true;
+  //  }
 
   if (bound) {
     camera.entity->force.reset();
-    camera.entity->velocity = camera.entity->velocity.reverse();
     camera.entity->position = Vector3(act_x + camera.view.getSize().x / 2,
                                       act_y + camera.view.getSize().y / 2);
   }
