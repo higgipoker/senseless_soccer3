@@ -21,7 +21,6 @@ inline const int PLAYER_SPRITE_WIDTH = 32;
 inline const int PLAYER_SPRITE_HEIGHT = 32;
 
 inline std::vector<sf::IntRect> player_frames;
-
 /**
  * @brief The Player struct
  */
@@ -30,23 +29,19 @@ struct Player {
   std::string spritesheet;
   int shirt_number = 0;
 };
-
 inline std::map<Player *, Animation> live_animations;
-
 /**
  * @brief get_entity
  * @param ball
  * @return
  */
 Entity &get_player_entity(Player &player);
-
 /**
  * @brief get_sprite
  * @param player
  * @return
  */
 sf::Sprite &get_sprite(Player &player);
-
 /**
  * @brief make_player_sprite
  * @param sprite
@@ -59,32 +54,27 @@ void make_player_sprite(int sprite, const std::string &spritesheet);
  * @param players
  */
 void init_players(std::vector<Player> &players);
-
 /**
  * @brief release_players
  * @param players
  */
 void release_players(std::vector<Player> &players);
-
 /**
  * @brief think
  * @param player
  */
 void think(Player &player);
-
 /**
  * @brief start_animation
  * @param player
  * @param id
  */
-void start_animation(Player &player, PlayerAnimations::AnimationID id);
-
+void start_animation(Player &player, AnimationID id);
 /**
  * @brief stop_animation
  * @param player
  */
 void stop_animation(Player &player);
-
 /**
  * @brief update_animations
  */

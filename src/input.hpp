@@ -62,21 +62,45 @@ struct ControllerEvent {
 static const int fire_tap_length = 5;
 static const int fire_double_tap_length = 15;
 
-struct Gamepad {
+/**
+ * @brief The InputDevice struct
+ */
+struct InputDevice {
   int states[InputState::Totalevents]{};
   int fire_ticks = 0;
-  int sf_joystick_index = 0;
-  float trigger_threshold = 0;
-  float thumbstick_threshold = 50.0f;
   bool cached_tap = false;
   int ticks_since_tap = 0;
 };
 
-inline std::set<Gamepad *> controllers;
-inline std::map<Entity *, Gamepad *> controlled_entities;
+/**
+ * @brief The Keyboard struct
+ */
+struct Keyboard {
+  InputDevice device;
+};
 
+/**
+ * @brief The Gamepad struct
+ */
+struct Gamepad {
+  InputDevice device;
+  int sf_joystick_index = 0;
+  float trigger_threshold = 0;
+  float thumbstick_threshold = 50.0f;
+};
+
+// list of gamepads/joysticks
+inline std::set<Gamepad *> gamepads;
+
+// map entities to the device that controls them
+inline std::map<Entity *, InputDevice *> controlled_entities;
+
+// seems reasonable to have one global keyboard for our purposes
+inline Keyboard keyboard;
+
+void reset_device(InputDevice &device);
+void init_gamepad(Gamepad &gamepad);
 void handle_input(Game &game, Camera &camera);
-void init(Gamepad &gamepad);
 bool isConnected(Gamepad &gamepad);
 bool A(Gamepad &gamepad);
 bool B(Gamepad &gamepad);
@@ -105,26 +129,7 @@ bool UniUp(Gamepad &gamepad);
 bool UniDown(Gamepad &gamepad);
 bool UniLeft(Gamepad &gamepad);
 bool UniRight(Gamepad &gamepad);
-void update(Gamepad &gamepad);
-
-inline void poll_controllers() {
-  for (auto &controller : controllers) {
-    update(*controller);
-  }
-}
-inline void update_controlled_entities() {
-  for (auto &entry : controlled_entities) {
-    if (entry.second->states[InputState::Left]) {
-      apply_force(*entry.first, gamelib3::Vector3(-1, 0));
-    }
-    if (entry.second->states[InputState::Right]) {
-      apply_force(*entry.first, gamelib3::Vector3(1, 0));
-    }
-    if (entry.second->states[InputState::Up]) {
-      apply_force(*entry.first, gamelib3::Vector3(0, -1));
-    }
-    if (entry.second->states[InputState::Down]) {
-      apply_force(*entry.first, gamelib3::Vector3(0, 1));
-    }
-  }
-}
+void update_keyboard(Game &game);
+void update_gamepad(Gamepad &gamepad);
+void poll_controllers();
+void update_controlled_entities();

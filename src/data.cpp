@@ -14,6 +14,7 @@ int acquire_entity() {
     if (!used_entities[i]) {
       used_entities[i] = true;
       ++used_entity_count;
+      entity_pool[i].id = i;
       return i;
     }
   }
@@ -29,6 +30,7 @@ void release_entity(int id) {
   assert(id >= 0);
   assert(id < MAX_ENTITIES);
   assert(used_entities[id]);
+  entity_pool[id].id = -1;
   --used_entity_count;
   used_entities[id] = false;
 }

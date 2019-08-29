@@ -3,7 +3,7 @@
 #include "globals.hpp"
 #include "texture.hpp"
 
-inline const std::array<std::string, 6> grasses{
+const std::array<std::string, 6> grasses{
     "grass_checked",    "grass_dry",   "grass_hard",
     "grass_horizontal", "grass_plain", "grass_plain_horizontal"};
 
@@ -18,41 +18,33 @@ struct Grass {
   int current_frame = 0;
 };
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-inline sf::Sprite &get_sprite(Grass &grass) {
-  return sprite_pool[entity_pool[grass.entity].sprite];
-}
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-inline Entity &get_ball_entity(Grass &grass) {
-  return entity_pool[grass.entity];
-}
-
-// -----------------------------------------------------------------------------
-// make_grass_sprite
-// -----------------------------------------------------------------------------
-inline void make_grass_sprite(int sprite, const std::string &spritesheet) {
-  sf::Texture *tex = acquire_texture(spritesheet);
-  tex->setRepeated(true);
-  sprite_pool[sprite].setTexture(*tex);
-  set_sprite_z(sprite_pool[sprite], 0);
-}
-
-// -----------------------------------------------------------------------------
-// init_grass
-// -----------------------------------------------------------------------------
-inline void init_grass(Grass &grass, const int x, const int y, const int w,
-                       const int h) {
-  int e = acquire_entity();
-  entity_pool[e].type = EntityType::Background;
-
-  grass.entity = e;
-  grass.spritesheet = grass_tile;
-  entity_pool[e].sprite = acquire_sprite(&entity_pool[e]);
-  make_grass_sprite(entity_pool[e].sprite, grass.spritesheet);
-  get_sprite(grass).setTextureRect(sf::IntRect(x, y, w, h));
-}
+/**
+ * @brief get_sprite
+ * @param grass
+ * @return
+ */
+sf::Sprite &get_sprite(Grass &grass);
+/**
+ * @brief get_ball_entity
+ * @param grass
+ * @return
+ */
+Entity &get_ball_entity(Grass &grass);
+/**
+ * @brief make_grass_sprite
+ * @param sprite
+ * @param spritesheet
+ */
+void make_grass_sprite(int sprite, const std::string &spritesheet);
+/**
+ * @brief init_grass
+ * @param grass
+ * @param world_rect
+ */
+void init_grass(Grass &grass, sf::IntRect world_rect);
+/**
+ * @brief update_grass
+ * @param grass
+ * @param window_rect
+ */
+void update_grass(Grass &grass, Camera &camera);

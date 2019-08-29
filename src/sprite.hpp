@@ -11,9 +11,9 @@ struct SortableSprite : public sf::Sprite {
   float z = 0;
 };
 
-inline void set_sprite_z(SortableSprite& sprite, float z) {
-  if (sprite.z != z) {
-    sprite.z = z;
-    *SortableSprite::sort_flag = true;
-  }
-}
+/**
+ * @brief set_sprite_z
+ * @param sprite
+ * @param z
+ */
+void set_sprite_z(SortableSprite& sprite, float z);

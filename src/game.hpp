@@ -3,14 +3,20 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
+static const int WINDOW_WIDTH = 800;
+static const int WINDOW_HEIGHT = 600;
+static const int WORLD_WIDTH = WINDOW_WIDTH * 2;
+static const int WORLD_HEIGHT = WINDOW_HEIGHT * 3;
+
+/**
+ * @brief The Game struct
+ */
 struct Game {
   sf::RenderWindow window;
   bool game_running = true;
   std::string window_title = "Senseless Soccer 3";
-  int world_width = 1600;
-  int world_height = 1200;
-  int window_width = 1280;
-  int window_height = 720;
+  sf::IntRect window_rect = sf::IntRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+  sf::IntRect world_rect = sf::IntRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
 
   // target fps
   float fps = 60.0f;
@@ -21,8 +27,8 @@ struct Game {
   // physics timestep
   float timestep = 0.01f;
 };
-
-inline void init(Game &game) {
-  init_window(game.window, game.window_title, game.window_width,
-              game.window_height, sf::Style::Default);
-}
+/**
+ * @brief init
+ * @param game
+ */
+void init(Game &game);

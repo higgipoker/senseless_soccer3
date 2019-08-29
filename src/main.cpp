@@ -19,11 +19,12 @@
 // -----------------------------------------------------------------------------
 // render
 // -----------------------------------------------------------------------------]
-static void render(sf::RenderWindow &window) {
+static void render(sf::RenderWindow &window, Camera &camera) {
   window.clear(sf::Color::Blue);
   if (sprite_pool_unsorted) {
     sort_sprite_pool();
   }
+  window.setView(camera.view);
   for (auto i = 0; i < used_sprite_count; ++i) {
     window.draw(sprite_pool[i]);
   }
@@ -36,7 +37,7 @@ static void render(sf::RenderWindow &window) {
 // -----------------------------------------------------------------------------
 static void step_sim(float timestep) {
   for (auto i = 0; i < used_entity_count; ++i) {
-    integrate(entity_pool[i], timestep);
+    integrate_improved_euler(entity_pool[i], timestep);
   }
 }
 
@@ -50,16 +51,6 @@ static void update_players(std::vector<Player> &players) {
                                    get_player_entity(player).position.y);
   }
   update_animations();
-}
-
-// -----------------------------------------------------------------------------
-// update_ball
-// -----------------------------------------------------------------------------
-static void update_ball(Ball &ball) {
-  apply_forces(ball);
-  get_sprite(ball).setPosition(get_ball_entity(ball).position.x,
-                               get_ball_entity(ball).position.y);
-  set_sprite_z(sprite_pool[get_ball_entity(ball).sprite], rand() % 20);
 }
 
 // -----------------------------------------------------------------------------
@@ -90,7 +81,6 @@ int main(int argc, char *argv[]) {
                     BALL_SPRITE_HEIGHT, BALL_SPRITE_FRAMES);
     get_sprite(ball).setTextureRect(ball_frames[0]);
     get_sprite(ball).move(0, 60);
-    // get_entity(ball).force = gamelib3::Vector3(1, 0);
   }
 
   // --------------------------------------------------
@@ -99,7 +89,7 @@ int main(int argc, char *argv[]) {
   //
   // --------------------------------------------------
   Grass grass;
-  init_grass(grass, 0, 0, game.window_width * 4, game.window_height * 4);
+  init_grass(grass, game.window_rect);
 
   // --------------------------------------------------
   //
@@ -119,7 +109,7 @@ int main(int argc, char *argv[]) {
     x += 32;
 
     int a = (rand() % 8) + 8;
-    start_animation(player, static_cast<PlayerAnimations::AnimationID>(a));
+    start_animation(player, static_cast<AnimationID>(a));
   }
 
   // --------------------------------------------------
@@ -128,13 +118,14 @@ int main(int argc, char *argv[]) {
   //
   // -------------------------------------------------
   Gamepad gamepad;
-  init(gamepad);
-  controllers.insert(&gamepad);
+  init_gamepad(gamepad);
+  gamepads.insert(&(gamepad));
   // controlled_entities.insert(std::make_pair(&get_ball_entity(ball),
   // &gamepad));
   //  controlled_entities.insert(
   //      std::make_pair(&get_player_entity(players[0]), &gamepad));
-  controlled_entities.insert(std::make_pair(camera.entity, &gamepad));
+
+  controlled_entities.insert(std::make_pair(camera.entity, &keyboard.device));
 
   // --------------------------------------------------
   //
@@ -147,14 +138,12 @@ int main(int argc, char *argv[]) {
     //    auto c = game.camera.getCenter();
     //    c = c + sf::Vector2f(1, 0);
     //    game.camera.setCenter(c);
-    game.window.setView(camera.view);
-
     handle_input(game, camera);
-    render(game.window);
-
-    update_camera(camera);
+    update_camera(camera, game.world_rect);
+    render(game.window, camera);
     update_ball(ball);
     update_players(players);
+    update_grass(grass, camera);
 
     while (time_left(framerate) >= 0) {
       step_sim(game.timestep);
@@ -171,6 +160,7 @@ int main(int argc, char *argv[]) {
   // only testing, the os will do this and quite the program faster
   release_sprite(get_ball_entity(grass).sprite);
   release_entity(grass.entity);
+  release_entity(camera.entity->id);
 
   if (ball.inited) {
     release_sprite(get_ball_entity(ball).sprite);
@@ -182,7 +172,6 @@ int main(int argc, char *argv[]) {
 
   std::cout << std::endl;
   std::cout << "entities still in use:\t" << used_entity_count << std::endl;
-
   std::cout << "sprites still in use:\t" << used_sprite_count << std::endl;
   std::cout << std::endl;
   return 0;

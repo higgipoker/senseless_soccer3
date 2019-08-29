@@ -5,13 +5,16 @@ enum class EntityType { Anonymous, Match, Player, Ball, Background, Goal };
  * @brief The Entity struct
  */
 struct Entity {
+  int id=-1;
   EntityType type = EntityType::Anonymous;
-  gamelib3::Vector3 position, velocity, force;
+  gamelib3::Vector3 position, velocity, force, terminal_velocity;
   float co_friction = 0.00f;
   float mass = 1;
   int sprite = 0;
 };
-
-inline void apply_force(Entity& entity, gamelib3::Vector3 force) {
-  entity.force += force;
-}
+/**
+ * @brief apply_force
+ * @param entity
+ * @param force
+ */
+void apply_force(Entity& entity, gamelib3::Vector3 force) ;

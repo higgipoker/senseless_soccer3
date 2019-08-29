@@ -74,9 +74,9 @@ void think(Player &player) {
 // -----------------------------------------------------------------------------
 // set_animation
 // -----------------------------------------------------------------------------
-void start_animation(Player &player, PlayerAnimations::AnimationID id) {
+void start_animation(Player &player, AnimationID id) {
   Animation anim;
-  PlayerAnimations::load_animation_frames(anim, id);
+  load_animation_frames(anim, id);
   live_animations.insert(std::make_pair(&player, anim));
 }
 

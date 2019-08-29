@@ -1,7 +1,10 @@
-#include "entity.hpp"
+#include "sprite.hpp"
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void apply_force(Entity& entity, gamelib3::Vector3 force) {
-  entity.force += force;
+void set_sprite_z(SortableSprite& sprite, float z) {
+  if (sprite.z != z) {
+    sprite.z = z;
+    *SortableSprite::sort_flag = true;
+  }
 }

@@ -28,6 +28,7 @@ int make_ball_sprite(int sprite, const std::string &spritesheet) {
 int init_ball(Ball &ball) {
   int e = acquire_entity();
   ball.entity = e;
+  get_ball_entity(ball).co_friction = 0.001f;
   get_ball_entity(ball).type = EntityType::Ball;
   ball.spritesheet = Globals::GFX_FOLDER + "/ball_new.png";
   get_ball_entity(ball).sprite = acquire_sprite(&get_ball_entity(ball));
@@ -36,12 +37,9 @@ int init_ball(Ball &ball) {
 }
 
 // -----------------------------------------------------------------------------
-// apply_forces
+// update_ball
 // -----------------------------------------------------------------------------
-void apply_forces(Ball &ball) {
-  gamelib3::Vector3 friction;
-  friction = get_ball_entity(ball).velocity.reverse();
-  friction *= 0.1f;
-  friction.y = 0;
-  get_ball_entity(ball).force += friction;
+void update_ball(Ball &ball) {
+  get_sprite(ball).setPosition(get_ball_entity(ball).position.x,
+                               get_ball_entity(ball).position.y);
 }
