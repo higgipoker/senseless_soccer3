@@ -45,28 +45,26 @@ void clamp_camera(Camera &camera, sf::IntRect bounds) {
 
   bool bound = false;
 
-  //  if (act_x < bounds.left) {
-  //    act_x = bounds.left;
-  //    camera.entity->velocity.x = -camera.entity->velocity.x;
-  //    bound = true;
-  //  }
-  // else if (act_y < bounds.top) {
-  //    act_y = bounds.top;
-  //    camera.entity->velocity.y = -camera.entity->velocity.y;
-  //    bound = true;
-  //  }
+  if (act_x < bounds.left) {
+    act_x = bounds.left;
+    camera.entity->velocity.x = -camera.entity->velocity.x;
+    bound = true;
+  } else if (act_y < bounds.top) {
+    act_y = bounds.top;
+    camera.entity->velocity.y = -camera.entity->velocity.y;
+    bound = true;
+  }
 
-  //  else if (act_x + camera.view.getSize().x > bounds.left + bounds.width) {
-  //    act_x = bounds.left + bounds.width - camera.view.getSize().x;
-  //    camera.entity->velocity.x = -camera.entity->velocity.x;
-  //    bound = true;
+  else if (act_x + camera.view.getSize().x > bounds.left + bounds.width) {
+    act_x = bounds.left + bounds.width - camera.view.getSize().x;
+    camera.entity->velocity.x = -camera.entity->velocity.x;
+    bound = true;
 
-  //  } else if (act_y + camera.view.getSize().y > bounds.top + bounds.height)
-  //  {
-  //    act_y = bounds.top + bounds.height - camera.view.getSize().y;
-  //    camera.entity->velocity.y = -camera.entity->velocity.y;
-  //    bound = true;
-  //  }
+  } else if (act_y + camera.view.getSize().y > bounds.top + bounds.height) {
+    act_y = bounds.top + bounds.height - camera.view.getSize().y;
+    camera.entity->velocity.y = -camera.entity->velocity.y;
+    bound = true;
+  }
 
   if (bound) {
     camera.entity->force.reset();
