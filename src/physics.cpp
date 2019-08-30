@@ -4,10 +4,12 @@ void integrate_euler(Entity &entity, const float dt) {
   // moving down
   if (Floats::less_than(entity.velocity.z, 0) &&
       Floats::less_than(entity.position.z, 0)) {
+    // bounce
     entity.position.z = 0;
-    if (Floats::abs_less_than(entity.velocity.z, 0.01f)) {
-      entity.velocity.z = 0;
-    } else {
+    /*   if (Floats::abs_less_than(entity.velocity.z, 0.01f)) {
+         entity.velocity.z = 0;
+       } else */
+    {
       entity.velocity.z = -entity.velocity.z;
       entity.velocity.z *= 0.9f;
     }
@@ -15,9 +17,8 @@ void integrate_euler(Entity &entity, const float dt) {
     if (Floats::greater_than(entity.position.z, 0)) {
       // grabity
       Vector3 gravity;
-      gravity.z = -0.01f * dt;
+      gravity.z = -0.0098f * dt;
       entity.force += gravity * entity.mass * dt;
-      std::cout << entity.position.z << std::endl;
     } else {
       // drag
       friction = entity.velocity.reverse();
