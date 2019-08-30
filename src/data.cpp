@@ -1,6 +1,8 @@
 #include "data.hpp"
+#include <stack>
 
-bool* SortableSprite::sort_flag = &sprite_pool_unsorted;
+enum class SortAlgorithm { Bubble, Selection };
+bool* SortableSprite::sort_flag = &sprite_pool_sorted;
 
 // -----------------------------------------------------------------------------
 // acquire_entity
@@ -54,6 +56,7 @@ int acquire_sprite(Entity* e) {
         sprite_callbacks.insert(std::make_pair(e, i));
       }
       sprite_pool_dirty = true;
+      pack_sprite_pool();
       return i;
     }
   }
@@ -75,6 +78,7 @@ void release_sprite(int id) {
       sprite_callbacks.erase(sprite_callbacks.find(entity));
     }
   }
+  pack_sprite_pool();
 }
 
 // -----------------------------------------------------------------------------
@@ -108,7 +112,7 @@ void swap_sprites(const int idx1, const int idx2) {
   auto entity1 = find_sprite_callback(idx1);
   auto entity2 = find_sprite_callback(idx2);
 
-  // update teh callbacks
+  // update the callbacks
   if (entity1) {
     // update the entity with the new index!
     entity1->sprite = idx2;
@@ -127,50 +131,48 @@ void swap_sprites(const int idx1, const int idx2) {
 // -----------------------------------------------------------------------------
 void pack_sprite_pool() {
   if (used_sprites.empty()) return;
-  bool packed = false;
 
-  while (!packed) {
-    int swaps = 0;
-    for (size_t i = 0; i < MAX_SPRITES - 1; ++i) {
-      // this is not used and the next one is
-      if (used_sprites.find(&sprite_pool[i]) == used_sprites.end()) {
-        if (used_sprites.find(&sprite_pool[i + 1]) != used_sprites.end()) {
-          swap_sprites(i, i + 1);
-          ++swaps;
-          continue;
-        }
+  std::cout << "packing..." << std::endl;
+  int swaps = 0;
+  std::stack<int> free_slots;
+  for (size_t i = 0; i < MAX_SPRITES - 1; ++i) {
+    // this is not used
+    if (used_sprites.find(&sprite_pool[i]) == used_sprites.end()) {
+      free_slots.push(i);
+    } else {
+      if (!free_slots.empty()) {
+        swaps++;
+        swap_sprites(free_slots.top(), i);
+        free_slots.pop();
       }
     }
-    if (swaps == 0) {
-      packed = true;
-    }
   }
-  sprite_pool_dirty = false;
+  std::cout << "mumber swaps: " << swaps << std::endl << std::endl;
 }
 
 // -----------------------------------------------------------------------------
-// sorts the sprite pool based on z order (packed first if needed)
+// sorts the sprite pool based on z order (MUST BE PACKED FIRST!)
 // -----------------------------------------------------------------------------
 void sort_sprite_pool() {
-  if (sprite_pool_dirty) {
-    pack_sprite_pool();
-  }
   if (used_sprites.size() < 2) return;
-  bool sorted = false;
 
-  while (!sorted) {
-    int swaps = 0;
-
-    for (size_t i = 0; i < used_sprites.size() - 1; ++i) {
-      if (sprite_pool[i].z > sprite_pool[i + 1].z) {
-        swap_sprites(i, i + 1);
-        ++swaps;
-        continue;
+  // simple selection sort is fine because array is quite small
+  static const int MAX_Z = 1000;
+  int head = 0;
+  while (head < used_sprite_count) {
+    int min_z = MAX_Z;
+    int min_idx = 0;
+    for (int i = head; i < used_sprite_count; ++i) {
+      if (sprite_pool[i].z < min_z) {
+        min_z = sprite_pool[i].z;
+        min_idx = i;
       }
     }
-    if (swaps == 0) {
-      sorted = true;
+    // swap the min with the head
+    if (min_idx != head) {  // the first iteration these could be equal
+      swap_sprites(head, min_idx);
     }
+    head++;
   }
-  sprite_pool_unsorted = false;
+  sprite_pool_sorted = true;
 }

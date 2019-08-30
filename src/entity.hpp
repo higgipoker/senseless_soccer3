@@ -15,7 +15,8 @@ enum class EntityType {
 struct Entity {
   int id = -1;
   EntityType type = EntityType::Anonymous;
-  gamelib3::Vector3 position, velocity, force, terminal_velocity;
+  gamelib3::Vector3 position, velocity, force;
+  float terminal_velocity = 1;
   float co_friction = 0.01f;
   float mass = 1;
   int sprite = 0;

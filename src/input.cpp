@@ -1,5 +1,6 @@
 #include "input.hpp"
 #include "gamepad.hpp"
+#include "imgui/imgui-SFML.h"
 #include "keyboard.hpp"
 
 #include <iostream>
@@ -14,6 +15,10 @@
 void handle_input(Game &game, Camera &camera) {
   static sf::Event event;
   while (game.window.pollEvent(event)) {
+    if (game.debug) {
+      ImGui::SFML::ProcessEvent(event);
+    }
+
     switch (event.type) {
       case sf::Event::Closed:
         game.game_running = false;

@@ -15,6 +15,10 @@ void integrate_euler(Entity &entity, const float dt) {
   // velocity = velocity + difference in velocity
   entity.velocity += dv;
 
+  if(entity.velocity.magnitude() > entity.terminal_velocity){
+    entity.velocity = entity.velocity.setMagnitude(entity.terminal_velocity);
+  }
+
   // difference in position = velocity * difference time
   dp = entity.velocity * dt;
 

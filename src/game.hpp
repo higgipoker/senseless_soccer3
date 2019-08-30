@@ -14,6 +14,7 @@ static const int WORLD_HEIGHT = WINDOW_HEIGHT * 3;
 struct Game {
   sf::RenderWindow window;
   bool game_running = true;
+  bool debug = false;
   std::string window_title = "Senseless Soccer 3";
   sf::IntRect window_rect = sf::IntRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
   sf::IntRect world_rect = sf::IntRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);

@@ -59,6 +59,8 @@ add_executable(senseless_soccer3
     src/sprite_tools.cpp
     src/gamepad.cpp
     src/keyboard.cpp
+    src/imgui/imgui.cpp
+    src/imgui/imgui-SFML.cpp
 )
 
 # --------------------------------------------------

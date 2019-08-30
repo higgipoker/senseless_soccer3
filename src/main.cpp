@@ -6,6 +6,7 @@
 #include "ball.hpp"
 #include "camera.hpp"
 #include "data.hpp"
+#include "debug.hpp"
 #include "framerate.hpp"
 #include "game.hpp"
 #include "gamepad.hpp"
@@ -17,17 +18,20 @@
 #include "sprite_tools.hpp"
 #include "window.hpp"
 
+inline bool debug = false;
+
 // -----------------------------------------------------------------------------
 // render
 // -----------------------------------------------------------------------------]
 static void render(sf::RenderWindow &window, Camera &camera) {
   window.clear(sf::Color::Blue);
-  if (sprite_pool_unsorted) {
-    sort_sprite_pool();
-  }
+
   window.setView(camera.view);
   for (auto i = 0; i < used_sprite_count; ++i) {
     window.draw(sprite_pool[i]);
+  }
+  if (debug) {
+    render_debug(window);
   }
 
   window.display();
@@ -66,6 +70,7 @@ int main(int argc, char *argv[]) {
   // --------------------------------------------------
   Game game;
   init(game);
+  game.debug = debug;
   Framerate framerate;
   init(framerate, game.target_frame_time);
   Camera camera;
@@ -127,8 +132,19 @@ int main(int argc, char *argv[]) {
   //  controlled_entities.insert(
   //      std::make_pair(&get_player_entity(players[0]), &gamepad));
 
+  controlled_entities.insert(std::make_pair(&get_player_entity(players[0]), &keyboard.device));
+
   // controlled_entities.insert(std::make_pair(camera.entity, &gamepad.device));
-  controlled_entities.insert(std::make_pair(camera.entity, &keyboard.device));
+  //controlled_entities.insert(std::make_pair(camera.entity, &keyboard.device));
+
+  // --------------------------------------------------
+  //
+  // debug
+  //
+  // --------------------------------------------------
+  if (game.debug) {
+    init_debug(game.window);
+  }
 
   // --------------------------------------------------
   //
@@ -143,7 +159,15 @@ int main(int argc, char *argv[]) {
     //    game.camera.setCenter(c);
     handle_input(game, camera);
     update_camera(camera, game.world_rect);
+    if (!sprite_pool_sorted) {
+      sort_sprite_pool();
+    }
+
+    if (game.debug) {
+      update_debug(game.window);
+    }
     render(game.window, camera);
+
     update_ball(ball);
     update_players(players);
     update_grass(grass, camera);
@@ -160,6 +184,9 @@ int main(int argc, char *argv[]) {
   // cleanup
   //
   // --------------------------------------------------
+  if (game.debug) {
+    clean_debug();
+  }
   // only testing, the os will do this and quite the program faster
   release_sprite(get_ball_entity(grass).sprite);
   release_entity(grass.entity);

@@ -33,7 +33,7 @@ inline std::map<SortableSprite*, int> used_sprites;  // tracks used slots
 inline int used_entity_count = 0;  // convenience counter, synced with above
 inline int used_sprite_count = 0;  // convenience counter, synced with above
 inline bool sprite_pool_dirty = false;     // need to pack the pool
-inline bool sprite_pool_unsorted = false;  // need to sort the pool
+inline bool sprite_pool_sorted = true;  // need to sort the pool
 
 /**
  * @brief find_sprite_callback

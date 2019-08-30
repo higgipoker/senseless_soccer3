@@ -46,8 +46,10 @@ void init_players(std::vector<Player> &players) {
     }
 
     entity_pool[e].sprite = s;
+    entity_pool[e].co_friction = 1.0f;
+    entity_pool[e].terminal_velocity = 0.03f;
     make_player_sprite(entity_pool[e].sprite, p.spritesheet);
-    set_sprite_z(sprite_pool[entity_pool[e].sprite], i + 1);
+    set_sprite_z(sprite_pool[entity_pool[e].sprite],(rand()%50)+5);
     players.push_back(p);
   }
 }
