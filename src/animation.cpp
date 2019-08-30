@@ -1,17 +1,19 @@
 #include "animation.hpp"
-
+#include <iostream>
+#include "data.hpp"
 
 // -----------------------------------------------------------------------------
 //
 // --------------------------------------------------------------------------
-void init(Animation &anim, int _frame_time, std::vector<int> &_frames, std::vector<sf::IntRect> &frame_rects) {
+void init(Animation &anim, int _frame_time, std::vector<int> &_frames,
+          std::vector<sf::IntRect> &frame_rects) {
   anim.frame_time = _frame_time;
   anim.number_frames = _frames.size();
   assert(anim.number_frames <= MAX_ANIMATION_FRAMES);
 
   int i = 0;
   for (auto &frame : _frames) {
-    anim.frames[i++] = frame_rects[ frame ];
+    anim.frames[i++] = frame_rects[frame];
   }
   anim.current_frame = 0;
 }
@@ -51,6 +53,6 @@ sf::IntRect frame(Animation &anim) { return anim.frames[anim.current_frame]; }
 void update_animations() {
   for (auto &anim : live_animations) {
     step(anim.second);
-    anim.first->setTextureRect(frame(anim.second));
+    get_sprite(entity_pool[anim.first])->setTextureRect(frame(anim.second));
   }
 }

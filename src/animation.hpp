@@ -1,9 +1,10 @@
 #pragma once
+#include <SFML/Graphics/Sprite.hpp>
 #include <array>
 #include <cassert>
-#include <vector>
 #include <map>
-#include <SFML/Graphics/Sprite.hpp>
+#include <vector>
+#include "entity.hpp"
 
 static const int MAX_ANIMATION_FRAMES = 50;
 /**
@@ -17,8 +18,9 @@ struct Animation {
   bool loop = true;
   bool running = true;
   std::array<sf::IntRect, MAX_ANIMATION_FRAMES> frames{};
+  EntityType type = EntityType::Anonymous;  // debug
 };
-inline std::map<sf::Sprite *, Animation> live_animations;
+inline std::map<int, Animation> live_animations;
 
 /**
  * @brief init
@@ -26,7 +28,8 @@ inline std::map<sf::Sprite *, Animation> live_animations;
  * @param _frame_time
  * @param _frames
  */
-void init(Animation &anim, int _frame_time, std::vector<int> &_frames, std::vector<sf::IntRect> &frame_rects);
+void init(Animation &anim, int _frame_time, std::vector<int> &_frames,
+          std::vector<sf::IntRect> &frame_rects);
 /**
  * @brief next_frame
  * @param anim

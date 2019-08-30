@@ -34,6 +34,7 @@ constexpr unsigned char mask_stick_down{1 << 6};   // 0100 0000
 constexpr unsigned char mask_stick_left{1 << 7};   // 1000 0000
 
 static const int MAX_JOYSTICKS = 8;
+static bool mouse_pressed = false;
 /**
  * @brief The InputState enum
  */

@@ -3,13 +3,12 @@
 #include "animation.hpp"
 
 using Anims = std::vector<int>;
-const int ball_frame_time = 10;
+const int ball_frame_time = 3;
 /**
 
  * @brief The BallAnimation enum
  */
 enum class BallAnimation { RollLeft };
-
 /**
  * @brief roll_left
  * @return

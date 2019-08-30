@@ -8,9 +8,12 @@
 #include <SFML/System/Clock.hpp>
 
 #include <array>
+
+static const int NO_ENTITY = -1;
 inline bool pending_debug_toggle = false;
 inline std::array<sf::IntRect, MAX_SPRITES> bounds;
 inline sf::Clock ui_clock;
+inline int grabbed_entity = NO_ENTITY;
 /**
  * @brief init_debug
  * @param window
@@ -40,3 +43,16 @@ void render_debug(sf::RenderWindow &window);
  * @brief toggle_debug
  */
 void toggle_debug();
+/**
+ * @brief grab_entity
+ * @param id
+ */
+void grab_entity(int id);
+/**
+ * @brief release_entity
+ */
+void release_entity();
+/**
+ * @brief mouse_dragged
+ */
+void mouse_dragged(int x, int y);

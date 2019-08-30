@@ -96,9 +96,13 @@ int main(int argc, char *argv[]) {
     ball.inited = true;
     populate_frames(ball_frames, BALL_SPRITESHEET_COLS, BALL_SPRITE_WIDTH,
                     BALL_SPRITE_HEIGHT, 3, 0, BALL_SPRITE_FRAMES);
-    get_sprite(ball).setTextureRect(ball_frames[0]);
-    get_sprite(ball).move(0, 60);
+    get_sprite(ball).setOrigin(BALL_SPRITE_WIDTH / 2, BALL_SPRITE_HEIGHT / 2);
+
+    get_sprite(ball).setTextureRect(ball_frames[4]);
+    get_sprite(ball).rotate(45);
     start_ball_animation(ball, BallAnimation::RollLeft);
+    get_ball_entity(ball).position.x = BALL_SPRITE_WIDTH / 2;
+    get_ball_entity(ball).position.y = 50;
   }
 
   // --------------------------------------------------
@@ -114,6 +118,7 @@ int main(int argc, char *argv[]) {
   init_players(players);
   populate_frames(player_frames, PLAYER_SPRITESHEET_COLS, PLAYER_SPRITE_WIDTH,
                   PLAYER_SPRITE_HEIGHT, 0, 0, PLAYER_SPRITE_FRAMES);
+
   int x = 0;
   srand(time(nullptr));
   for (auto &player : players) {
@@ -132,13 +137,13 @@ int main(int argc, char *argv[]) {
   Gamepad gamepad;
   init_gamepad(gamepad);
   gamepads.insert(&(gamepad));
-  // controlled_entities.insert(std::make_pair(&get_ball_entity(ball),
-  // &gamepad));
+  controlled_entities.insert(
+      std::make_pair(&get_ball_entity(ball), &keyboard.device));
   //  controlled_entities.insert(
   //      std::make_pair(&get_player_entity(players[0]), &gamepad));
 
-  controlled_entities.insert(
-      std::make_pair(&get_player_entity(players[0]), &keyboard.device));
+  //  controlled_entities.insert(
+  //      std::make_pair(&get_player_entity(players[0]), &keyboard.device));
 
   // controlled_entities.insert(std::make_pair(camera.entity, &gamepad.device));
   // controlled_entities.insert(std::make_pair(camera.entity,

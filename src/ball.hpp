@@ -1,6 +1,6 @@
 #pragma once
-#include "data.hpp"
 #include "ball_animations.hpp"
+#include "data.hpp"
 #include "globals.hpp"
 #include "texture.hpp"
 
@@ -56,4 +56,4 @@ void update_ball(Ball &ball);
  * @param player
  * @param id
  */
-void start_ball_animation(Ball &player, BallAnimation id);
+void start_ball_animation(Ball &ball, BallAnimation id);

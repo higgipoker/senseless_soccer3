@@ -16,8 +16,8 @@
 // THE DATA!
 //
 // -----------------------------------------------------------------------------
-inline const int MAX_SPRITES = 1000;
-inline const int MAX_ENTITIES = 1000;
+inline const int MAX_SPRITES = 50;
+inline const int MAX_ENTITIES = 50;
 inline Entity entity_pool[MAX_ENTITIES];
 inline SortableSprite sprite_pool[MAX_SPRITES];
 
@@ -32,7 +32,7 @@ inline bool used_entities[MAX_ENTITIES];             // tracks used slots
 inline std::map<SortableSprite*, int> used_sprites;  // tracks used slots
 inline int used_entity_count = 0;  // convenience counter, synced with above
 inline int used_sprite_count = 0;  // convenience counter, synced with above
-inline bool sprite_pool_dirty = false;     // need to pack the pool
+inline bool sprite_pool_dirty = false;  // need to pack the pool
 inline bool sprite_pool_sorted = true;  // need to sort the pool
 
 /**
@@ -86,3 +86,9 @@ int entities_available();
  * @return
  */
 int sprites_available();
+/**
+ * @brief get_sprite
+ * @param e
+ * @return
+ */
+inline sf::Sprite* get_sprite(Entity& e) { return &sprite_pool[e.sprite]; }

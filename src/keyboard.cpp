@@ -22,4 +22,8 @@ void update_keyboard() {
     keyboard.device.directionmask |= mask_dpad_down;
     keyboard.device.states[InputState::Down] = 1;
   }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+    keyboard.device.directionmask |= mask_dpad_down;
+    keyboard.device.states[InputState::FireDown] = 1;
+  }
 }

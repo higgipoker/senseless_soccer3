@@ -16,6 +16,8 @@ void update_debug(sf::RenderWindow &window) {
   // ImGui::ShowDemoWindow();
   // global debug window
   ImGui::Begin("Debug");
+  ImGui::Text("Grabbed Entity: %i", grabbed_entity);
+  ;
   ImGui::End();
 }
 // -----------------------------------------------------------------------------
@@ -57,3 +59,20 @@ void render_debug(sf::RenderWindow &window) {
 //
 // -----------------------------------------------------------------------------
 void toggle_debug() { pending_debug_toggle = !pending_debug_toggle; }
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void grab_entity(int id) { grabbed_entity = id; }
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void release_entity() { grabbed_entity = NO_ENTITY; }
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void mouse_dragged(int x, int y) {
+  if (grabbed_entity != NO_ENTITY) {
+    entity_pool[grabbed_entity].position.x = x;
+    entity_pool[grabbed_entity].position.y = y;
+  }
+}

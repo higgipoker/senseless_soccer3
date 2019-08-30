@@ -46,11 +46,13 @@ void init_players(std::vector<Player> &players) {
     }
 
     entity_pool[e].sprite = s;
-    entity_pool[e].co_friction = 1.0f;
+    entity_pool[e].co_friction = 1.0f;  // direct control
     entity_pool[e].terminal_velocity = 0.03f;
-    entity_pool[e].position.x = 40 * i;
+    entity_pool[e].position.x = 40 * i + PLAYER_SPRITE_WIDTH;
+    entity_pool[e].position.y = PLAYER_SPRITE_HEIGHT / 2;
     make_player_sprite(entity_pool[e].sprite, p.spritesheet);
     set_sprite_z(sprite_pool[entity_pool[e].sprite], (rand() % 50) + 5);
+    get_sprite(p).setOrigin(PLAYER_SPRITE_WIDTH / 2, PLAYER_SPRITE_HEIGHT / 2);
     players.push_back(p);
   }
 }
@@ -69,10 +71,7 @@ void release_players(std::vector<Player> &players) {
 // -----------------------------------------------------------------------------
 // think
 // -----------------------------------------------------------------------------
-void think(Player &player) {
-  // std::cout << "player " << player.shirt_number << " thinking..." <<
-  // std::endl;
-}
+void think(Player &player) {}
 
 // -----------------------------------------------------------------------------
 // set_animation
@@ -80,12 +79,10 @@ void think(Player &player) {
 void start_player_animation(Player &player, PlayerAnimation id) {
   Animation anim;
   load_player_animation_frames(anim, id);
-  live_animations.insert(std::make_pair(&get_sprite(player), anim));
+  live_animations.insert(std::make_pair(player.entity, anim));
 }
 
 // -----------------------------------------------------------------------------
 // stop_animation
 // -----------------------------------------------------------------------------
-void stop_animation(Player &player) {
-  live_animations.erase(&get_sprite(player));
-}
+void stop_animation(Player &player) { live_animations.erase(player.entity); }

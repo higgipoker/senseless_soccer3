@@ -1,4 +1,5 @@
 #include "input.hpp"
+#include "data.hpp"
 #include "debug.hpp"
 #include "gamepad.hpp"
 #include "imgui/imgui-SFML.h"
@@ -48,13 +49,47 @@ void handle_input(Game &game, Camera &camera) {
         break;
       case sf::Event::MouseWheelMoved:
         break;
-       case sf::Event::MouseWheelScrolled:
+      case sf::Event::MouseWheelScrolled:
         break;
-      case sf::Event::MouseButtonPressed:
-        break;
+      case sf::Event::MouseButtonPressed: {
+        if (game.debug) {
+          if (event.mouseButton.button == sf::Mouse::Left) {
+            mouse_pressed = true;
+            // get the current mouse position in the window
+            sf::Vector2i pixelPos = sf::Mouse::getPosition(game.window);
+            // convert it to world coordinates
+            sf::Vector2f worldPos = game.window.mapPixelToCoords(pixelPos);
+            for (int i = 0; i < used_entity_count; ++i) {
+              auto sprite = get_sprite(entity_pool[i]);
+              auto bounds = sprite->getGlobalBounds();
+              if (bounds.contains(worldPos.x, worldPos.y)) {
+                if (entity_pool[i].type != EntityType::Camera &&
+                    entity_pool[i].type != EntityType::Background) {
+                  grab_entity(i);
+                }
+              }
+            }
+          }
+        }
+      } break;
       case sf::Event::MouseButtonReleased:
+        if (game.debug) {
+          if (event.mouseButton.button == sf::Mouse::Left) {
+          }
+          mouse_pressed = false;
+          release_entity();
+        }
         break;
       case sf::Event::MouseMoved:
+        if (game.debug) {
+          if (mouse_pressed) {
+            // get the current mouse position in the window
+            sf::Vector2i pixelPos = sf::Mouse::getPosition(game.window);
+            // convert it to world coordinates
+            sf::Vector2f worldPos = game.window.mapPixelToCoords(pixelPos);
+            mouse_dragged(worldPos.x, worldPos.y);
+          }
+        }
         break;
       case sf::Event::MouseEntered:
         break;
@@ -112,6 +147,9 @@ void update_controlled_entities() {
     }
     if (entry.second->states[InputState::Down]) {
       apply_force(*entry.first, gamelib3::Vector3(0, 1));
+    }
+    if (entry.second->states[InputState::FireDown]) {
+      apply_force(*entry.first, gamelib3::Vector3(0.f, 0.f, 0.01f));
     }
   }
 }

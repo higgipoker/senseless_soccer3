@@ -17,3 +17,12 @@ struct SortableSprite : public sf::Sprite {
  * @param z
  */
 void set_sprite_z(SortableSprite& sprite, float z);
+/**
+ * @brief perspectivize
+ * @param sprite
+ * @param z
+ * @param width
+ * @param camera_height
+ */
+void perspectivize(sf::Sprite& sprite, float z, float width,
+                   float camera_height);

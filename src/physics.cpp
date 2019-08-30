@@ -1,32 +1,48 @@
 #include "physics.hpp"
 
 void integrate_euler(Entity &entity, const float dt) {
-  // drag
-  friction = entity.velocity.reverse();
-  friction = friction * entity.co_friction * dt;
-  entity.force = entity.force + friction;
+  // moving down
+  if (Floats::less_than(entity.velocity.z, 0) &&
+      Floats::less_than(entity.position.z, 0)) {
+    entity.position.z = 0;
+    if (Floats::abs_less_than(entity.velocity.z, 0.01f)) {
+      entity.velocity.z = 0;
+    } else {
+      entity.velocity.z = -entity.velocity.z;
+      entity.velocity.z *= 0.9f;
+    }
+  } else {
+    if (Floats::greater_than(entity.position.z, 0)) {
+      // grabity
+      Vector3 gravity;
+      gravity.z = -0.01f * dt;
+      entity.force += gravity * entity.mass * dt;
+      std::cout << entity.position.z << std::endl;
+    } else {
+      // drag
+      friction = entity.velocity.reverse();
+      friction = friction * entity.co_friction * dt;
+      entity.force = entity.force + friction;
+    }
 
-  // acceleration = entity.force / mass
-  acceleration = entity.force / entity.mass;
+    // acceleration = entity.force / mass
+    acceleration = entity.force / entity.mass;
 
-  // difference in velocity = acceleration * difference time
-  dv = acceleration * dt;
+    // difference in velocity = acceleration * difference time
+    dv = acceleration * dt;
 
-  // velocity = velocity + difference in velocity
-  entity.velocity += dv;
+    // velocity = velocity + difference in velocity
+    entity.velocity += dv;
 
-  if(entity.velocity.magnitude() > entity.terminal_velocity){
-    entity.velocity = entity.velocity.setMagnitude(entity.terminal_velocity);
+    // difference in position = velocity * difference time
+    dp = entity.velocity * dt;
+
+    // update position
+    entity.position += dp;
+
+    // reset forces for next step
+    entity.force.reset();
   }
-
-  // difference in position = velocity * difference time
-  dp = entity.velocity * dt;
-
-  // update position
-  entity.position += dp;
-
-  // reset forces for next step
-  entity.force.reset();
 }
 
 // -----------------------------------------------------------------------------
