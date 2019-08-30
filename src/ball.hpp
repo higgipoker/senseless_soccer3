@@ -1,16 +1,16 @@
 #pragma once
 #include "data.hpp"
-
+#include "ball_animations.hpp"
 #include "globals.hpp"
 #include "texture.hpp"
 
 const int BALL_SPRITESHEET_ROWS = 4;
-const int BALL_SPRITESHEET_COLS = 2;
-const int BALL_SPRITE_FRAMES = BALL_SPRITESHEET_ROWS * BALL_SPRITESHEET_COLS;
-const int BALL_SPRITE_WIDTH = 64;
-const int BALL_SPRITE_HEIGHT = 64;
+const int BALL_SPRITESHEET_COLS = 24;
+const int BALL_SPRITE_FRAMES = 7;
+const int BALL_SPRITE_WIDTH = 32;
+const int BALL_SPRITE_HEIGHT = 32;
 
-static std::vector<sf::IntRect> ball_frames;
+inline std::vector<sf::IntRect> ball_frames;
 
 /**
  * @brief The Ball struct
@@ -51,3 +51,9 @@ int init_ball(Ball &ball);
  * @param ball
  */
 void update_ball(Ball &ball);
+/**
+ * @brief start_ball_animation
+ * @param player
+ * @param id
+ */
+void start_ball_animation(Ball &player, BallAnimation id);

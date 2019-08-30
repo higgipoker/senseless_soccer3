@@ -33,4 +33,4 @@ void release_texture(const std::string &filename);
 /**
  * @brief cleanup
  */
-void cleanup();
+void delete_textures();

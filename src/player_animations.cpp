@@ -1,38 +1,39 @@
 #include "player_animations.hpp"
+#include "player.hpp"
 
 
 // -----------------------------------------------------------------------------
 // load_animation_frames
 // -----------------------------------------------------------------------------
-void load_animation_frames(Animation &anim, AnimationID id) {
+void load_player_animation_frames(Animation &anim, PlayerAnimation id) {
   std::vector<int> frames;
   switch (id) {
-    case AnimationID::RunEast:
+    case PlayerAnimation::RunEast:
       frames = run_east();
       break;
-    case AnimationID::RunSouthEast:
+    case PlayerAnimation::RunSouthEast:
       frames = run_southeast();
       break;
-    case AnimationID::RunSouth:
+    case PlayerAnimation::RunSouth:
       frames = run_south();
       break;
-    case AnimationID::RunSouthWest:
+    case PlayerAnimation::RunSouthWest:
       frames = run_southwest();
       break;
-    case AnimationID::RunWest:
+    case PlayerAnimation::RunWest:
       frames = run_west();
       break;
-    case AnimationID::RunNorthWest:
+    case PlayerAnimation::RunNorthWest:
       frames = run_northwest();
       break;
-    case AnimationID::RunNorth:
+    case PlayerAnimation::RunNorth:
       frames = run_north();
       break;
-    case AnimationID::RunNorthEast:
+    case PlayerAnimation::RunNorthEast:
       frames = run_northeast();
       break;
   }
 
   // inits the anim with frame time and list of frames
-  init(anim, frame_time, frames);
+  init(anim, player_frame_time, frames, player_frames);
 }

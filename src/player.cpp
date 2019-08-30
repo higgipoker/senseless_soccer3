@@ -48,8 +48,9 @@ void init_players(std::vector<Player> &players) {
     entity_pool[e].sprite = s;
     entity_pool[e].co_friction = 1.0f;
     entity_pool[e].terminal_velocity = 0.03f;
+    entity_pool[e].position.x = 40 * i;
     make_player_sprite(entity_pool[e].sprite, p.spritesheet);
-    set_sprite_z(sprite_pool[entity_pool[e].sprite],(rand()%50)+5);
+    set_sprite_z(sprite_pool[entity_pool[e].sprite], (rand() % 50) + 5);
     players.push_back(p);
   }
 }
@@ -76,23 +77,15 @@ void think(Player &player) {
 // -----------------------------------------------------------------------------
 // set_animation
 // -----------------------------------------------------------------------------
-void start_animation(Player &player, AnimationID id) {
+void start_player_animation(Player &player, PlayerAnimation id) {
   Animation anim;
-  load_animation_frames(anim, id);
-  live_animations.insert(std::make_pair(&player, anim));
+  load_player_animation_frames(anim, id);
+  live_animations.insert(std::make_pair(&get_sprite(player), anim));
 }
 
 // -----------------------------------------------------------------------------
 // stop_animation
 // -----------------------------------------------------------------------------
-void stop_animation(Player &player) { live_animations.erase(&player); }
-
-// -----------------------------------------------------------------------------
-// update_animations
-// -----------------------------------------------------------------------------
-void update_animations() {
-  for (auto &anim : live_animations) {
-    step(anim.second);
-    get_sprite(*anim.first).setTextureRect(player_frames[frame(anim.second)]);
-  }
+void stop_animation(Player &player) {
+  live_animations.erase(&get_sprite(player));
 }

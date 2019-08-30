@@ -13,10 +13,9 @@
 #include <string>
 #include <vector>
 
-inline const int PLAYER_SPRITESHEET_ROWS = 3;
+inline const int PLAYER_SPRITESHEET_ROWS = 4;
 inline const int PLAYER_SPRITESHEET_COLS = 24;
-inline const int PLAYER_SPRITE_FRAMES =
-    PLAYER_SPRITESHEET_ROWS * PLAYER_SPRITESHEET_COLS;
+inline const int PLAYER_SPRITE_FRAMES = 72;
 inline const int PLAYER_SPRITE_WIDTH = 32;
 inline const int PLAYER_SPRITE_HEIGHT = 32;
 
@@ -29,7 +28,6 @@ struct Player {
   std::string spritesheet;
   int shirt_number = 0;
 };
-inline std::map<Player *, Animation> live_animations;
 /**
  * @brief get_entity
  * @param ball
@@ -69,13 +67,9 @@ void think(Player &player);
  * @param player
  * @param id
  */
-void start_animation(Player &player, AnimationID id);
+void start_player_animation(Player &player, PlayerAnimation id);
 /**
  * @brief stop_animation
  * @param player
  */
 void stop_animation(Player &player);
-/**
- * @brief update_animations
- */
-void update_animations();

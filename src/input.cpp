@@ -1,4 +1,5 @@
 #include "input.hpp"
+#include "debug.hpp"
 #include "gamepad.hpp"
 #include "imgui/imgui-SFML.h"
 #include "keyboard.hpp"
@@ -36,6 +37,10 @@ void handle_input(Game &game, Camera &camera) {
         if (game.window.hasFocus()) {
           if (event.key.code == sf::Keyboard::Escape) {
             game.game_running = false;
+          } else if (event.key.code == sf::Keyboard::Tab) {
+#ifndef NDEBUG
+            toggle_debug();
+#endif
           }
         }
         break;
@@ -43,7 +48,7 @@ void handle_input(Game &game, Camera &camera) {
         break;
       case sf::Event::MouseWheelMoved:
         break;
-      case sf::Event::MouseWheelScrolled:
+       case sf::Event::MouseWheelScrolled:
         break;
       case sf::Event::MouseButtonPressed:
         break;

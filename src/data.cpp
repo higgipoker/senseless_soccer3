@@ -132,7 +132,6 @@ void swap_sprites(const int idx1, const int idx2) {
 void pack_sprite_pool() {
   if (used_sprites.empty()) return;
 
-  std::cout << "packing..." << std::endl;
   int swaps = 0;
   std::stack<int> free_slots;
   for (size_t i = 0; i < MAX_SPRITES - 1; ++i) {
@@ -147,7 +146,6 @@ void pack_sprite_pool() {
       }
     }
   }
-  std::cout << "mumber swaps: " << swaps << std::endl << std::endl;
 }
 
 // -----------------------------------------------------------------------------

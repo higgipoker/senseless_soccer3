@@ -28,7 +28,6 @@ void make_grass_sprite(int sprite, const std::string &spritesheet) {
 void init_grass(Grass &grass, Camera &camera) {
   int e = acquire_entity();
   entity_pool[e].type = EntityType::Background;
-
   grass.entity = e;
   grass.spritesheet = grass_tile;
   entity_pool[e].sprite = acquire_sprite(&entity_pool[e]);
@@ -36,7 +35,7 @@ void init_grass(Grass &grass, Camera &camera) {
   update_grass(grass, camera);
 }
 // -----------------------------------------------------------------------------
-//
+// update_grass
 // -----------------------------------------------------------------------------
 void update_grass(Grass &grass, Camera &camera) {
   static const int SAFETY_OFFSET = 20;

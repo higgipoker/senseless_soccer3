@@ -12,4 +12,4 @@
  * @param frame_count
  */
 void populate_frames(std::vector<sf::IntRect> &frames, int cols, int width,
-                     int height, int frame_count);
+                     int height, int start_row, int start_col, int frame_count);

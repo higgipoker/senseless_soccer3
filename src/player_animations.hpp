@@ -10,12 +10,12 @@
 using Anims = std::vector<int>;
 
 // anim speed for all player anims
-static const int frame_time = 10;
+static const int player_frame_time = 10;
 
 /**
  * @brief The AnimationID enum
  */
-enum class AnimationID {
+enum class PlayerAnimation {
 
   // standing
   StandEast,
@@ -86,4 +86,4 @@ inline Anims slide_northeast() { return Anims{45, 46, 47, 47}; }
  * @param anim
  * @param id
  */
-void load_animation_frames(Animation &anim, AnimationID id);
+void load_player_animation_frames(Animation &anim, PlayerAnimation id);

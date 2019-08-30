@@ -20,6 +20,7 @@ sf::Texture *acquire_texture(const std::string &filename) {
     texture = (*tex).second.texture;
     ++(*tex).second.count;
   } else {
+    std::cout << "new texture" << std::endl;
     texture = new sf::Texture();
     texture->loadFromFile(filename);
     textures.insert(std::make_pair(filename, make_counted_texture(texture)));
@@ -35,6 +36,7 @@ void release_texture(const std::string &filename) {
   auto it = textures.find(filename);
   if (it != textures.end()) {
     if (--(*it).second.count == 0) {
+      std::cout << "delete texture" << std::endl;
       delete (*it).second.texture;
       textures.erase(it);
     }
@@ -44,7 +46,7 @@ void release_texture(const std::string &filename) {
 // -----------------------------------------------------------------------------
 // cleanup
 // -----------------------------------------------------------------------------
-void cleanup() {
+void delete_textures() {
   for (auto &texture : textures) {
     delete texture.second.texture;
   }

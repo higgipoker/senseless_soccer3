@@ -55,10 +55,12 @@ add_executable(senseless_soccer3
     src/grass.cpp
     src/physics.cpp
     src/player_animations.cpp
+    src/ball_animations.cpp
     src/sprite.cpp
     src/sprite_tools.cpp
     src/gamepad.cpp
     src/keyboard.cpp
+    src/debug.cpp
     src/imgui/imgui.cpp
     src/imgui/imgui-SFML.cpp
 )

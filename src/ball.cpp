@@ -30,7 +30,7 @@ int init_ball(Ball &ball) {
   ball.entity = e;
   get_ball_entity(ball).co_friction = 0.001f;
   get_ball_entity(ball).type = EntityType::Ball;
-  ball.spritesheet = Globals::GFX_FOLDER + "/ball_new.png";
+  ball.spritesheet = Globals::GFX_FOLDER + "playerandball.png";
   get_ball_entity(ball).sprite = acquire_sprite(&get_ball_entity(ball));
   make_ball_sprite(get_ball_entity(ball).sprite, ball.spritesheet);
   return 0;
@@ -42,4 +42,13 @@ int init_ball(Ball &ball) {
 void update_ball(Ball &ball) {
   get_sprite(ball).setPosition(get_ball_entity(ball).position.x,
                                get_ball_entity(ball).position.y);
+}
+
+// -----------------------------------------------------------------------------
+// set_animation
+// -----------------------------------------------------------------------------
+void start_ball_animation(Ball &player, BallAnimation id) {
+  Animation anim;
+  load_ball_animation_frames(anim, id);
+  live_animations.insert(std::make_pair(&get_sprite(player), anim));
 }

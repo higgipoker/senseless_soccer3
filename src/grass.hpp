@@ -17,7 +17,6 @@ struct Grass {
   std::string spritesheet;
   int current_frame = 0;
 };
-
 /**
  * @brief get_sprite
  * @param grass
