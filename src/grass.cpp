@@ -19,7 +19,7 @@ void make_grass_sprite(int sprite, const std::string &spritesheet) {
   sf::Texture *tex = acquire_texture(spritesheet);
   tex->setRepeated(true);
   sprite_pool[sprite].setTexture(*tex);
-  set_sprite_z(sprite_pool[sprite], 0);
+  set_sprite_z(sprite_pool[sprite], -1);
 }
 
 // -----------------------------------------------------------------------------

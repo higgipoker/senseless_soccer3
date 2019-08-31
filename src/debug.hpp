@@ -14,6 +14,7 @@ inline bool pending_debug_toggle = false;
 inline std::array<sf::IntRect, MAX_SPRITES> bounds;
 inline sf::Clock ui_clock;
 inline int grabbed_entity = NO_ENTITY;
+inline sf::Vector2f mousegrab_offset;
 /**
  * @brief init_debug
  * @param window
@@ -47,7 +48,7 @@ void toggle_debug();
  * @brief grab_entity
  * @param id
  */
-void grab_entity(int id);
+void grab_entity(int id, int mouse_x, int mouse_y);
 /**
  * @brief release_entity
  */

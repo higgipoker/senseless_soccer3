@@ -40,8 +40,8 @@ static void render(sf::RenderWindow &window, Camera &camera, bool debug) {
 // -----------------------------------------------------------------------------
 static void step_sim(float timestep) {
   for (auto i = 0; i < used_entity_count; ++i) {
-    // integrate_improved_euler(entity_pool[i], timestep);
-    integrate_euler(entity_pool[i], timestep);
+    integrate_improved_euler(entity_pool[i], timestep);
+    // integrate_euler(entity_pool[i], timestep);
   }
 }
 
@@ -95,14 +95,23 @@ int main(int argc, char *argv[]) {
   if (init_ball(ball) == 0) {
     ball.inited = true;
     populate_frames(ball_frames, BALL_SPRITESHEET_COLS, BALL_SPRITE_WIDTH,
-                    BALL_SPRITE_HEIGHT, 3, 0, BALL_SPRITE_FRAMES);
+                    BALL_SPRITE_HEIGHT, 6, 0, BALL_SPRITE_FRAMES);
     get_sprite(ball).setOrigin(BALL_SPRITE_WIDTH / 2, BALL_SPRITE_HEIGHT / 2);
+    get_ball_shadow_sprite(ball).setOrigin(BALL_SPRITE_WIDTH / 2,
+                                           BALL_SPRITE_HEIGHT / 2);
 
     get_sprite(ball).setTextureRect(ball_frames[4]);
+    get_sprite(get_ball_shadow_entity(ball))->setTextureRect(ball_frames[7]);
     get_sprite(ball).rotate(45);
     start_ball_animation(ball, BallAnimation::RollLeft);
     get_ball_entity(ball).position.x = BALL_SPRITE_WIDTH / 2;
     get_ball_entity(ball).position.y = 50;
+
+    // set up initial perspective for shadow (doesnt change)
+    get_sprite(get_ball_entity(ball))->setTextureRect(ball_frames[0]);
+    perspectivize(get_sprite(ball), get_ball_entity(ball).position.z, 3, 20);
+    get_ball_shadow_sprite(ball).setScale(get_sprite(ball).getScale().x,
+                                          get_sprite(ball).getScale().y);
   }
 
   // --------------------------------------------------
@@ -136,18 +145,18 @@ int main(int argc, char *argv[]) {
   // gamepad
   Gamepad gamepad;
   init_gamepad(gamepad);
-  gamepads.insert(&(gamepad));
-  controlled_entities.insert(
-      std::make_pair(&get_ball_entity(ball), &keyboard.device));
+  //  gamepads.insert(&(gamepad));
+  //  controlled_entities.insert(
+  //      std::make_pair(&get_ball_entity(ball), &keyboard.device));
   //  controlled_entities.insert(
   //      std::make_pair(&get_player_entity(players[0]), &gamepad));
 
-  //  controlled_entities.insert(
-  //      std::make_pair(&get_player_entity(players[0]), &keyboard.device));
+  controlled_entities.insert(
+      std::make_pair(&get_player_entity(players[0]), &keyboard.device));
 
   // controlled_entities.insert(std::make_pair(camera.entity, &gamepad.device));
-  // controlled_entities.insert(std::make_pair(camera.entity,
-  // &keyboard.device));
+  //  controlled_entities.insert(std::make_pair(camera.entity,
+  //  &keyboard.device));
 
 #ifndef NDEBUG
   // --------------------------------------------------
@@ -197,6 +206,9 @@ int main(int argc, char *argv[]) {
   release_entity(camera.entity->id);
 
   if (ball.inited) {
+    release_sprite(get_ball_shadow_entity(ball).sprite);
+    release_entity(ball.shadow_entity);
+
     release_sprite(get_ball_entity(ball).sprite);
     release_entity(ball.entity);
   }

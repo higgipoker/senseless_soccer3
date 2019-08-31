@@ -62,7 +62,12 @@ void toggle_debug() { pending_debug_toggle = !pending_debug_toggle; }
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
-void grab_entity(int id) { grabbed_entity = id; }
+void grab_entity(int id, int mouse_x, int mouse_y) {
+  grabbed_entity = id;
+  sf::Vector2f center{entity_pool[id].position.x, entity_pool[id].position.y};
+  sf::Vector2f mouse{static_cast<float>(mouse_x), static_cast<float>(mouse_y)};
+  mousegrab_offset = center - mouse;
+}
 // -----------------------------------------------------------------------------
 //
 // -----------------------------------------------------------------------------
@@ -72,7 +77,7 @@ void release_entity() { grabbed_entity = NO_ENTITY; }
 // -----------------------------------------------------------------------------
 void mouse_dragged(int x, int y) {
   if (grabbed_entity != NO_ENTITY) {
-    entity_pool[grabbed_entity].position.x = x;
-    entity_pool[grabbed_entity].position.y = y;
+    entity_pool[grabbed_entity].position.x = x + mousegrab_offset.x;
+    entity_pool[grabbed_entity].position.y = y + mousegrab_offset.y;
   }
 }

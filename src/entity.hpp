@@ -7,7 +7,8 @@ enum class EntityType {
   Player,
   Ball,
   Background,
-  Goal
+  Goal,
+  Shadow
 };
 /**
  * @brief The Entity struct

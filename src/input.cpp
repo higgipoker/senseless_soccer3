@@ -65,7 +65,7 @@ void handle_input(Game &game, Camera &camera) {
               if (bounds.contains(worldPos.x, worldPos.y)) {
                 if (entity_pool[i].type != EntityType::Camera &&
                     entity_pool[i].type != EntityType::Background) {
-                  grab_entity(i);
+                  grab_entity(i, worldPos.x, worldPos.y);
                 }
               }
             }
@@ -149,7 +149,7 @@ void update_controlled_entities() {
       apply_force(*entry.first, gamelib3::Vector3(0, 1));
     }
     if (entry.second->states[InputState::FireDown]) {
-      apply_force(*entry.first, gamelib3::Vector3(0.f, 0.f, 0.01f));
+      apply_force(*entry.first, gamelib3::Vector3(0.f, 0.f, 0.1f));
     }
   }
 }

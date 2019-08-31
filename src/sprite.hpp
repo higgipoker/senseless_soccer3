@@ -24,5 +24,5 @@ void set_sprite_z(SortableSprite& sprite, float z);
  * @param width
  * @param camera_height
  */
-void perspectivize(sf::Sprite& sprite, float z, float width,
+bool perspectivize(sf::Sprite& sprite, float z, float width,
                    float camera_height);

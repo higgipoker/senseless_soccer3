@@ -7,11 +7,23 @@
 sf::Sprite &get_sprite(Ball &ball) {
   return sprite_pool[get_ball_entity(ball).sprite];
 }
+// -----------------------------------------------------------------------------
+// get_ball_shadow_sprite
+// -----------------------------------------------------------------------------
+sf::Sprite &get_ball_shadow_sprite(Ball &ball) {
+  return sprite_pool[get_ball_shadow_entity(ball).sprite];
+}
 
 // -----------------------------------------------------------------------------
 // get_entity
 // -----------------------------------------------------------------------------
 Entity &get_ball_entity(Ball &ball) { return entity_pool[ball.entity]; }
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+Entity &get_ball_shadow_entity(Ball &ball) {
+  return entity_pool[ball.shadow_entity];
+}
 
 // -----------------------------------------------------------------------------
 // make_ball_sprite
@@ -27,14 +39,24 @@ int make_ball_sprite(int sprite, const std::string &spritesheet) {
 // init_ball
 // -----------------------------------------------------------------------------
 int init_ball(Ball &ball) {
+  // ball
   int e = acquire_entity();
   ball.entity = e;
-  get_ball_entity(ball).co_friction = 0.01f;
+  get_ball_entity(ball).co_friction = 0.1f;
   get_ball_entity(ball).type = EntityType::Ball;
   ball.spritesheet = Globals::GFX_FOLDER + "playerandball.png";
   get_ball_entity(ball).sprite = acquire_sprite(&get_ball_entity(ball));
   make_ball_sprite(get_ball_entity(ball).sprite, ball.spritesheet);
   entity_pool[e].terminal_velocity = 0.1f;
+
+  // shadow
+  e = acquire_entity();
+  ball.shadow_entity = e;
+  get_ball_shadow_entity(ball).sprite =
+      acquire_sprite(&get_ball_shadow_entity(ball));
+  make_ball_sprite(get_ball_shadow_entity(ball).sprite, ball.spritesheet);
+  set_sprite_z(sprite_pool[get_ball_shadow_entity(ball).sprite], 0);
+
   return 0;
 }
 
@@ -44,7 +66,24 @@ int init_ball(Ball &ball) {
 void update_ball(Ball &ball) {
   get_sprite(ball).setPosition(get_ball_entity(ball).position.x,
                                get_ball_entity(ball).position.y);
-  perspectivize(get_sprite(ball), get_ball_entity(ball).position.z, 3, 20);
+  get_sprite(get_ball_shadow_entity(ball))
+      ->setPosition(get_ball_entity(ball).position.x + 2,
+                    get_ball_entity(ball).position.y + 2);
+
+  if (!perspectivize(get_sprite(ball), get_ball_entity(ball).position.z,
+                     ball.collidable.getRadius() * 2, 50)) {
+    get_sprite(ball).setPosition(-get_sprite(ball).getGlobalBounds().left,
+                                 -get_sprite(ball).getGlobalBounds().top);
+
+    float offset = get_ball_entity(ball).velocity.z > 0 ? 0.2f : -0.2f;
+
+    get_ball_shadow_sprite(ball).setScale(
+        get_ball_shadow_sprite(ball).getScale().x + offset,
+        get_ball_shadow_sprite(ball).getScale().y + offset);
+  } else {
+    get_ball_shadow_sprite(ball).setScale(get_sprite(ball).getScale().x,
+                                          get_sprite(ball).getScale().y);
+  }
 }
 
 // -----------------------------------------------------------------------------

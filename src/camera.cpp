@@ -7,7 +7,7 @@
 #include <iostream>
 
 // -----------------------------------------------------------------------------
-//
+// init_camera
 // -----------------------------------------------------------------------------
 void init_camera(Camera &camera, Game &game) {
   int e = acquire_entity();
@@ -22,9 +22,8 @@ void init_camera(Camera &camera, Game &game) {
   camera.entity->co_friction = 0.01f;
   camera.entity->type = EntityType::Camera;
 }
-
 // -----------------------------------------------------------------------------
-//
+// update_camera
 // -----------------------------------------------------------------------------
 void update_camera(Camera &camera, sf::IntRect world_rect) {
   // integrate_euler(*camera.entity, 0.01f);
@@ -35,9 +34,8 @@ void update_camera(Camera &camera, sf::IntRect world_rect) {
   //    camera.entity->velocity = camera.entity->velocity.setMagnitude(0.25f);
   //  }
 }
-
 // -----------------------------------------------------------------------------
-//
+// clamp_camera
 // -----------------------------------------------------------------------------
 void clamp_camera(Camera &camera, sf::IntRect bounds) {
   int act_x = camera.entity->position.x - camera.view.getSize().x / 2;
@@ -47,22 +45,22 @@ void clamp_camera(Camera &camera, sf::IntRect bounds) {
 
   if (act_x < bounds.left) {
     act_x = bounds.left;
-    camera.entity->velocity.x = -camera.entity->velocity.x;
+    camera.entity->velocity.x = -camera.entity->velocity.x * 0.8f;
     bound = true;
   } else if (act_y < bounds.top) {
     act_y = bounds.top;
-    camera.entity->velocity.y = -camera.entity->velocity.y;
+    camera.entity->velocity.y = -camera.entity->velocity.y * 0.8f;
     bound = true;
   }
 
   else if (act_x + camera.view.getSize().x > bounds.left + bounds.width) {
     act_x = bounds.left + bounds.width - camera.view.getSize().x;
-    camera.entity->velocity.x = -camera.entity->velocity.x;
+    camera.entity->velocity.x = -camera.entity->velocity.x * 0.8f;
     bound = true;
 
   } else if (act_y + camera.view.getSize().y > bounds.top + bounds.height) {
     act_y = bounds.top + bounds.height - camera.view.getSize().y;
-    camera.entity->velocity.y = -camera.entity->velocity.y;
+    camera.entity->velocity.y = -camera.entity->velocity.y * 0.8f;
     bound = true;
   }
 
