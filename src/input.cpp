@@ -59,8 +59,8 @@ void handle_input(Game &game, Camera &camera) {
             sf::Vector2i pixelPos = sf::Mouse::getPosition(game.window);
             // convert it to world coordinates
             sf::Vector2f worldPos = game.window.mapPixelToCoords(pixelPos);
-            for (int i = 0; i < used_entity_count; ++i) {
-              auto sprite = get_sprite(entity_pool[i]);
+            for (int i = used_entity_count - 1; i >= 0; --i) {
+              auto sprite = get_player_sprite(entity_pool[i]);
               auto bounds = sprite->getGlobalBounds();
               if (bounds.contains(worldPos.x, worldPos.y)) {
                 if (entity_pool[i].type != EntityType::Camera &&
@@ -137,19 +137,19 @@ void init_event(ControllerEvent &controller, ControllerEventID id,
 void update_controlled_entities() {
   for (auto &entry : controlled_entities) {
     if (entry.second->states[InputState::Left]) {
-      apply_force(*entry.first, gamelib3::Vector3(-1, 0));
+      apply_force(*entry.first, gamelib3::Vector3(-10, 0));
     }
     if (entry.second->states[InputState::Right]) {
-      apply_force(*entry.first, gamelib3::Vector3(1, 0));
+      apply_force(*entry.first, gamelib3::Vector3(10, 0));
     }
     if (entry.second->states[InputState::Up]) {
-      apply_force(*entry.first, gamelib3::Vector3(0, -1));
+      apply_force(*entry.first, gamelib3::Vector3(0, -10));
     }
     if (entry.second->states[InputState::Down]) {
-      apply_force(*entry.first, gamelib3::Vector3(0, 1));
+      apply_force(*entry.first, gamelib3::Vector3(0, 10));
     }
     if (entry.second->states[InputState::FireDown]) {
-      apply_force(*entry.first, gamelib3::Vector3(0.f, 0.f, 0.1f));
+      apply_force(*entry.first, gamelib3::Vector3(0.f, 0.f, 5.f));
     }
   }
 }

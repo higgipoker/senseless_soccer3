@@ -53,6 +53,6 @@ sf::IntRect frame(Animation &anim) { return anim.frames[anim.current_frame]; }
 void update_animations() {
   for (auto &anim : live_animations) {
     step(anim.second);
-    get_sprite(entity_pool[anim.first])->setTextureRect(frame(anim.second));
+    get_player_sprite(entity_pool[anim.first])->setTextureRect(frame(anim.second));
   }
 }

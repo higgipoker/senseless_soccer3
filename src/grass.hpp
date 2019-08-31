@@ -22,7 +22,7 @@ struct Grass {
  * @param grass
  * @return
  */
-sf::Sprite &get_sprite(Grass &grass);
+sf::Sprite &get_player_sprite(Grass &grass);
 /**
  * @brief get_ball_entity
  * @param grass

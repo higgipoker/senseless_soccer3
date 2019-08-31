@@ -45,18 +45,6 @@ static void step_sim(float timestep) {
   }
 }
 
-// -----------------------------------------------------------------------------
-// update_players
-// -----------------------------------------------------------------------------
-static void update_players(std::vector<Player> &players) {
-  for (auto &player : players) {
-    think(player);
-    get_sprite(player).setPosition(get_player_entity(player).position.x,
-                                   get_player_entity(player).position.y);
-  }
-  update_animations();
-}
-
 inline void check_for_debug(Game &game) {
   if (pending_debug_toggle) {
     game.debug = !game.debug;
@@ -70,7 +58,7 @@ inline void check_for_debug(Game &game) {
 inline void update_entities(Ball &ball, std::vector<Player> &players,
                             Grass &grass, Camera &camera) {
   update_ball(ball);
-  update_players(players);
+  update_players(players, ball);
   update_grass(grass, camera);
 }
 
@@ -96,22 +84,25 @@ int main(int argc, char *argv[]) {
     ball.inited = true;
     populate_frames(ball_frames, BALL_SPRITESHEET_COLS, BALL_SPRITE_WIDTH,
                     BALL_SPRITE_HEIGHT, 6, 0, BALL_SPRITE_FRAMES);
-    get_sprite(ball).setOrigin(BALL_SPRITE_WIDTH / 2, BALL_SPRITE_HEIGHT / 2);
+    get_ball_sprite(ball).setOrigin(BALL_SPRITE_WIDTH / 2,
+                                    BALL_SPRITE_HEIGHT / 2);
     get_ball_shadow_sprite(ball).setOrigin(BALL_SPRITE_WIDTH / 2,
                                            BALL_SPRITE_HEIGHT / 2);
 
-    get_sprite(ball).setTextureRect(ball_frames[4]);
-    get_sprite(get_ball_shadow_entity(ball))->setTextureRect(ball_frames[7]);
-    get_sprite(ball).rotate(45);
+    get_ball_sprite(ball).setTextureRect(ball_frames[4]);
+    get_ball_sprite(ball).rotate(45);
     start_ball_animation(ball, BallAnimation::RollLeft);
     get_ball_entity(ball).position.x = BALL_SPRITE_WIDTH / 2;
     get_ball_entity(ball).position.y = 50;
 
     // set up initial perspective for shadow (doesnt change)
-    get_sprite(get_ball_entity(ball))->setTextureRect(ball_frames[0]);
-    perspectivize(get_sprite(ball), get_ball_entity(ball).position.z, 3, 20);
-    get_ball_shadow_sprite(ball).setScale(get_sprite(ball).getScale().x,
-                                          get_sprite(ball).getScale().y);
+    get_ball_shadow_sprite(ball).setTextureRect(ball_frames[7]);
+    perspectivize(get_ball_sprite(ball), get_ball_entity(ball).position.z,
+                  ball.collidable.getRadius() * 2, 20);
+    get_ball_shadow_sprite(ball).setScale(get_ball_sprite(ball).getScale().x,
+                                          get_ball_sprite(ball).getScale().y);
+
+    ball.collidable.setOrigin(BALL_SPRITE_WIDTH / 2, BALL_SPRITE_HEIGHT / 2);
   }
 
   // --------------------------------------------------
@@ -127,17 +118,33 @@ int main(int argc, char *argv[]) {
   init_players(players);
   populate_frames(player_frames, PLAYER_SPRITESHEET_COLS, PLAYER_SPRITE_WIDTH,
                   PLAYER_SPRITE_HEIGHT, 0, 0, PLAYER_SPRITE_FRAMES);
+  populate_frames(player_shadow_frames, PLAYER_SPRITESHEET_COLS,
+                  PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 3, 0,
+                  PLAYER_SPRITE_FRAMES);
 
   int x = 0;
   srand(time(nullptr));
   for (auto &player : players) {
-    get_sprite(player).move(x, 0);
+    // player
+    get_player_sprite(player).move(x, 0);
     int f = rand() % PLAYER_SPRITE_FRAMES;
-    get_sprite(player).setTextureRect(player_frames[f]);
+    get_player_sprite(player).setTextureRect(player_frames[f]);
     x += 32;
-
     int a = (rand() % 8) + 8;
     start_player_animation(player, static_cast<PlayerAnimation>(a));
+    get_player_sprite(player).setOrigin(PLAYER_SPRITE_WIDTH / 2,
+                                        PLAYER_SPRITE_HEIGHT);
+
+    // shaodw
+    get_player_shadow_sprite(player).setOrigin(PLAYER_SPRITE_WIDTH / 2,
+                                               PLAYER_SPRITE_HEIGHT);
+    get_player_shadow_sprite(player).setTextureRect(player_shadow_frames[0]);
+    perspectivize(get_player_sprite(player),
+                  get_player_entity(player).position.z,
+                  get_player_sprite(player).getLocalBounds().width, 50);
+    get_player_shadow_sprite(player).setScale(
+        get_player_sprite(player).getScale().x,
+        get_player_sprite(player).getScale().y);
   }
 
   // --------------------------------------------------
@@ -148,8 +155,6 @@ int main(int argc, char *argv[]) {
   //  gamepads.insert(&(gamepad));
   //  controlled_entities.insert(
   //      std::make_pair(&get_ball_entity(ball), &keyboard.device));
-  //  controlled_entities.insert(
-  //      std::make_pair(&get_player_entity(players[0]), &gamepad));
 
   controlled_entities.insert(
       std::make_pair(&get_player_entity(players[0]), &keyboard.device));

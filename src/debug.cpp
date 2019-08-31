@@ -17,7 +17,6 @@ void update_debug(sf::RenderWindow &window) {
   // global debug window
   ImGui::Begin("Debug");
   ImGui::Text("Grabbed Entity: %i", grabbed_entity);
-  ;
   ImGui::End();
 }
 // -----------------------------------------------------------------------------
@@ -53,6 +52,10 @@ void render_debug(sf::RenderWindow &window) {
   for (int i = 0; i < used_sprite_count; ++i) {
     draw_bounds(window, sprite_pool[i].getGlobalBounds());
   }
+  for (auto &shape : debug_shapes) {
+    window.draw(*shape);
+  }
+  debug_shapes.clear();
   ImGui::SFML::Render(window);
 }
 // -----------------------------------------------------------------------------

@@ -11,16 +11,21 @@ enum class EntityType {
   Shadow
 };
 /**
+ * @brief The PhysicalEnvironemnt struct
+ */
+struct PhysicalEnvironemnt {};
+/**
  * @brief The Entity struct
  */
 struct Entity {
   int id = -1;
+  int sprite = -1;
   EntityType type = EntityType::Anonymous;
   gamelib3::Vector3 position, velocity, force;
   float terminal_velocity = 1;
   float co_friction = 0.01f;
-  float mass = 1;
-  int sprite = 0;
+  float co_bounciness = 0.0f;
+  float mass = 10;
 };
 /**
  * @brief apply_force

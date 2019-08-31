@@ -1,7 +1,6 @@
 #pragma once
 #include "ball_animations.hpp"
 #include "data.hpp"
-#include "globals.hpp"
 #include "texture.hpp"
 
 #include <SFML/Graphics/CircleShape.hpp>
@@ -42,7 +41,7 @@ Entity &get_ball_shadow_entity(Ball &ball);
  * @param ball
  * @return
  */
-sf::Sprite &get_sprite(Ball &ball);
+sf::Sprite &get_ball_sprite(Ball &ball);
 /**
  * @brief get_ball_shadow_sprite
  * @param ball
@@ -62,6 +61,11 @@ int make_ball_sprite(int sprite, const std::string &spritesheet);
  * @return
  */
 int init_ball(Ball &ball);
+/**
+ * @brief init_ball_shadow
+ * @param ball
+ */
+void init_ball_shadow(Ball &ball);
 /**
  * @brief update_ball
  * @param ball

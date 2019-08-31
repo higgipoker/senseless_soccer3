@@ -1,10 +1,12 @@
 #include "ball.hpp"
+#include "debug.hpp"
+#include "globals.hpp"
 #include "sprite.hpp"
 
 // -----------------------------------------------------------------------------
-// get_sprite
+// get_ball_sprite
 // -----------------------------------------------------------------------------
-sf::Sprite &get_sprite(Ball &ball) {
+sf::Sprite &get_ball_sprite(Ball &ball) {
   return sprite_pool[get_ball_entity(ball).sprite];
 }
 // -----------------------------------------------------------------------------
@@ -43,6 +45,7 @@ int init_ball(Ball &ball) {
   int e = acquire_entity();
   ball.entity = e;
   get_ball_entity(ball).co_friction = 0.1f;
+  get_ball_entity(ball).co_bounciness = 0.7f;
   get_ball_entity(ball).type = EntityType::Ball;
   ball.spritesheet = Globals::GFX_FOLDER + "playerandball.png";
   get_ball_entity(ball).sprite = acquire_sprite(&get_ball_entity(ball));
@@ -50,30 +53,36 @@ int init_ball(Ball &ball) {
   entity_pool[e].terminal_velocity = 0.1f;
 
   // shadow
-  e = acquire_entity();
+  init_ball_shadow(ball);
+  return 0;
+}
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+void init_ball_shadow(Ball &ball) {
+  int e = acquire_entity();
   ball.shadow_entity = e;
   get_ball_shadow_entity(ball).sprite =
       acquire_sprite(&get_ball_shadow_entity(ball));
   make_ball_sprite(get_ball_shadow_entity(ball).sprite, ball.spritesheet);
   set_sprite_z(sprite_pool[get_ball_shadow_entity(ball).sprite], 0);
-
-  return 0;
 }
 
 // -----------------------------------------------------------------------------
 // update_ball
 // -----------------------------------------------------------------------------
 void update_ball(Ball &ball) {
-  get_sprite(ball).setPosition(get_ball_entity(ball).position.x,
-                               get_ball_entity(ball).position.y);
-  get_sprite(get_ball_shadow_entity(ball))
-      ->setPosition(get_ball_entity(ball).position.x + 2,
-                    get_ball_entity(ball).position.y + 2);
+  get_ball_sprite(ball).setPosition(get_ball_entity(ball).position.x,
+                                    get_ball_entity(ball).position.y);
+  get_ball_shadow_sprite(ball).setPosition(
+      get_ball_entity(ball).position.x + 2,
+      get_ball_entity(ball).position.y + 2);
 
-  if (!perspectivize(get_sprite(ball), get_ball_entity(ball).position.z,
+  if (!perspectivize(get_ball_sprite(ball), get_ball_entity(ball).position.z,
                      ball.collidable.getRadius() * 2, 50)) {
-    get_sprite(ball).setPosition(-get_sprite(ball).getGlobalBounds().left,
-                                 -get_sprite(ball).getGlobalBounds().top);
+    get_ball_sprite(ball).setPosition(
+        -get_ball_sprite(ball).getGlobalBounds().left,
+        -get_ball_sprite(ball).getGlobalBounds().top);
 
     float offset = get_ball_entity(ball).velocity.z > 0 ? 0.2f : -0.2f;
 
@@ -81,9 +90,10 @@ void update_ball(Ball &ball) {
         get_ball_shadow_sprite(ball).getScale().x + offset,
         get_ball_shadow_sprite(ball).getScale().y + offset);
   } else {
-    get_ball_shadow_sprite(ball).setScale(get_sprite(ball).getScale().x,
-                                          get_sprite(ball).getScale().y);
+    get_ball_shadow_sprite(ball).setScale(get_ball_sprite(ball).getScale().x,
+                                          get_ball_sprite(ball).getScale().y);
   }
+  debug_shapes.emplace_back(&ball.collidable);
 }
 
 // -----------------------------------------------------------------------------

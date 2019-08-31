@@ -4,10 +4,12 @@
 #include "imgui/imgui-SFML.h"
 #include "imgui/imgui.h"
 
+#include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/System/Clock.hpp>
 
 #include <array>
+#include <vector>
 
 static const int NO_ENTITY = -1;
 inline bool pending_debug_toggle = false;
@@ -15,6 +17,7 @@ inline std::array<sf::IntRect, MAX_SPRITES> bounds;
 inline sf::Clock ui_clock;
 inline int grabbed_entity = NO_ENTITY;
 inline sf::Vector2f mousegrab_offset;
+inline std::vector<sf::Drawable *> debug_shapes;
 /**
  * @brief init_debug
  * @param window
