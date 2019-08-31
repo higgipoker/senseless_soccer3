@@ -7,7 +7,7 @@ const std::array<std::string, 6> grasses{
     "grass_checked",    "grass_dry",   "grass_hard",
     "grass_horizontal", "grass_plain", "grass_plain_horizontal"};
 
-const std::string grass_tile{Globals::GFX_FOLDER + grasses.at(0) + ".png"};
+const std::string grass_tile{Globals::GFX_FOLDER + grasses.at(4) + ".png"};
 
 /**
  * @brief The Grass struct

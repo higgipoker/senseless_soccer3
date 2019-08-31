@@ -102,7 +102,8 @@ int main(int argc, char *argv[]) {
     get_ball_shadow_sprite(ball).setScale(get_ball_sprite(ball).getScale().x,
                                           get_ball_sprite(ball).getScale().y);
 
-    ball.collidable.setOrigin(BALL_SPRITE_WIDTH / 2, BALL_SPRITE_HEIGHT / 2);
+    ball.collidable.setOrigin(ball.collidable.getRadius() / 2,
+                              ball.collidable.getRadius() / 2);
   }
 
   // --------------------------------------------------
@@ -152,7 +153,7 @@ int main(int argc, char *argv[]) {
   // gamepad
   Gamepad gamepad;
   init_gamepad(gamepad);
-  //  gamepads.insert(&(gamepad));
+  gamepads.insert(&(gamepad));
   //  controlled_entities.insert(
   //      std::make_pair(&get_ball_entity(ball), &keyboard.device));
 
@@ -182,6 +183,7 @@ int main(int argc, char *argv[]) {
     handle_input(game, camera);
     update_camera(camera, game.world_rect);
     update_entities(ball, players, grass, camera);
+    update_animations();
     if (!sprite_pool_sorted) {
       sort_sprite_pool();
     }

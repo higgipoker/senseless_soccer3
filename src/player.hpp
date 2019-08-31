@@ -5,6 +5,8 @@
 #include "player_animations.hpp"
 #include "texture.hpp"
 
+#include <gamelib3/compass/compass.hpp>
+
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -39,6 +41,7 @@ struct Player {
   std::string spritesheet;
   int shirt_number = 0;
   sf::CircleShape feet{6};
+  gamelib3::Compass facing;
 };
 /**
  * @brief get_entity

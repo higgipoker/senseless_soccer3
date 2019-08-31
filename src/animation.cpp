@@ -47,12 +47,13 @@ void step(Animation &anim) {
 //
 // -----------------------------------------------------------------------------
 sf::IntRect frame(Animation &anim) { return anim.frames[anim.current_frame]; }
+
 // -----------------------------------------------------------------------------
 // update_animations
 // -----------------------------------------------------------------------------
 void update_animations() {
   for (auto &anim : live_animations) {
     step(anim.second);
-    get_player_sprite(entity_pool[anim.first])->setTextureRect(frame(anim.second));
+    get_sprite(anim.first).setTextureRect(frame(anim.second));
   }
 }

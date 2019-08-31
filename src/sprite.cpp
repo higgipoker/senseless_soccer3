@@ -1,6 +1,7 @@
 #include "sprite.hpp"
 #include <gamelib3/math/vector.hpp>
 #include <gamelib3/physics/metrics.hpp>
+#include "data.hpp"
 
 using namespace gamelib3;
 // -----------------------------------------------------------------------------
@@ -41,4 +42,11 @@ bool perspectivize(sf::Sprite& sprite, float z, float width,
   }
 
   return true;
+}
+
+// -----------------------------------------------------------------------------
+//
+// -----------------------------------------------------------------------------
+sf::Sprite& get_sprite(int entity) {
+  return sprite_pool[entity_pool[entity].sprite];
 }

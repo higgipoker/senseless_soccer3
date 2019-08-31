@@ -60,10 +60,11 @@ void init_players(std::vector<Player> &players) {
     }
 
     entity_pool[e].sprite = s;
-    entity_pool[e].co_friction = 5.f;  // direct control
+    entity_pool[e].co_friction = 25.f;  // direct control
     entity_pool[e].terminal_velocity = 0.03f;
     entity_pool[e].position.x = 40 * i + PLAYER_SPRITE_WIDTH;
     entity_pool[e].position.y = PLAYER_SPRITE_HEIGHT;
+    entity_pool[e].speed = 100;
     make_player_sprite(entity_pool[e].sprite, p.spritesheet);
     set_sprite_z(sprite_pool[entity_pool[e].sprite], (rand() % 50) + 5);
     get_player_sprite(p).setOrigin(PLAYER_SPRITE_WIDTH / 2,
@@ -113,7 +114,7 @@ void think(Player &player) {}
 void start_player_animation(Player &player, PlayerAnimation id) {
   Animation anim;
   load_player_animation_frames(anim, id);
-  live_animations.insert(std::make_pair(player.entity, anim));
+  live_animations[player.entity] = anim;
 }
 
 // -----------------------------------------------------------------------------
@@ -153,14 +154,46 @@ void update_players(std::vector<Player> &players, Ball &ball) {
         get_player_entity(player).position.x - player.feet.getRadius(),
         get_player_entity(player).position.y - player.feet.getRadius() * 2);
 
-    debug_shapes.emplace_back(&player.feet);
+    gamelib3::Compass old_direction = player.facing;
 
-    // tmp check collision with
-    if (collides(player.feet, ball.collidable)) {
-      Entity ball_entity = get_ball_entity(ball);
-      auto force = get_player_entity(player).velocity.normalise() * 100;
-      apply_force(ball_entity, force);
+    player.facing.fromVector(get_player_entity(player).velocity.normalise());
+    debug_shapes.emplace_back(&player.feet);
+    if (player.shirt_number == 1) {
+      if (get_player_entity(player).velocity.magnitude()) {
+        std::cout << player.facing.print() << std::endl;
+      }
+    }
+
+    if (old_direction != player.facing) {
+      switch (player.facing.direction) {
+        case Direction::NORTH:
+          start_player_animation(player, PlayerAnimation::RunNorth);
+          break;
+        case Direction::NORTH_EAST:
+          start_player_animation(player, PlayerAnimation::RunNorthEast);
+          break;
+        case Direction::EAST:
+          start_player_animation(player, PlayerAnimation::RunEast);
+          break;
+        case Direction::SOUTH_EAST:
+          start_player_animation(player, PlayerAnimation::RunSouthEast);
+          break;
+        case Direction::SOUTH:
+          start_player_animation(player, PlayerAnimation::RunSouth);
+          break;
+        case Direction::SOUTH_WEST:
+          start_player_animation(player, PlayerAnimation::RunSouthWest);
+          break;
+        case Direction::WEST:
+          start_player_animation(player, PlayerAnimation::RunWest);
+          break;
+        case Direction::NORTH_WEST:
+          start_player_animation(player, PlayerAnimation::RunNorthWest);
+          break;
+        case Direction::NONE:
+          // start_player_animation(player, PlayerAnimation::RunNorthEast);
+          break;
+      }
     }
   }
-  update_animations();
 }

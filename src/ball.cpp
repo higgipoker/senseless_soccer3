@@ -45,7 +45,7 @@ int init_ball(Ball &ball) {
   int e = acquire_entity();
   ball.entity = e;
   get_ball_entity(ball).co_friction = 0.1f;
-  get_ball_entity(ball).co_bounciness = 0.7f;
+  get_ball_entity(ball).co_bounciness = 0.9f;
   get_ball_entity(ball).type = EntityType::Ball;
   ball.spritesheet = Globals::GFX_FOLDER + "playerandball.png";
   get_ball_entity(ball).sprite = acquire_sprite(&get_ball_entity(ball));
@@ -93,6 +93,9 @@ void update_ball(Ball &ball) {
     get_ball_shadow_sprite(ball).setScale(get_ball_sprite(ball).getScale().x,
                                           get_ball_sprite(ball).getScale().y);
   }
+  ball.collidable.setPosition(
+      get_ball_entity(ball).position.x - ball.collidable.getRadius() / 2,
+      get_ball_entity(ball).position.y - ball.collidable.getRadius() / 2);
   debug_shapes.emplace_back(&ball.collidable);
 }
 

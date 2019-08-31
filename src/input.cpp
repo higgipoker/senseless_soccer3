@@ -135,18 +135,19 @@ void init_event(ControllerEvent &controller, ControllerEventID id,
 //
 // -----------------------------------------------------------------------------
 void update_controlled_entities() {
+  static const int f = 50;
   for (auto &entry : controlled_entities) {
     if (entry.second->states[InputState::Left]) {
-      apply_force(*entry.first, gamelib3::Vector3(-10, 0));
+      apply_force(*entry.first, gamelib3::Vector3(-f, 0));
     }
     if (entry.second->states[InputState::Right]) {
-      apply_force(*entry.first, gamelib3::Vector3(10, 0));
+      apply_force(*entry.first, gamelib3::Vector3(f, 0));
     }
     if (entry.second->states[InputState::Up]) {
-      apply_force(*entry.first, gamelib3::Vector3(0, -10));
+      apply_force(*entry.first, gamelib3::Vector3(0, -f));
     }
     if (entry.second->states[InputState::Down]) {
-      apply_force(*entry.first, gamelib3::Vector3(0, 10));
+      apply_force(*entry.first, gamelib3::Vector3(0, f));
     }
     if (entry.second->states[InputState::FireDown]) {
       apply_force(*entry.first, gamelib3::Vector3(0.f, 0.f, 5.f));

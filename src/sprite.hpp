@@ -26,3 +26,9 @@ void set_sprite_z(SortableSprite& sprite, float z);
  */
 bool perspectivize(sf::Sprite& sprite, float z, float width,
                    float camera_height);
+/**
+ * @brief get_sprite
+ * @param entity
+ * @return
+ */
+sf::Sprite& get_sprite(int entity);

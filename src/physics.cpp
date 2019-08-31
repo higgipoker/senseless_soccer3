@@ -97,6 +97,13 @@ void integrate_improved_euler(Entity &entity, const float dt) {
       Floats::less_than(entity.position.z, 0)) {
     bounce(entity, dt);
   } else {
+    // normalizes for diagonals
+    if (Floats::greater_than(entity.force.magnitude(), 0)) {
+      auto mag = entity.force.magnitude2d();
+      entity.force = entity.force.normalise2d();
+      entity.force.x *= mag * entity.speed * dt;
+      entity.force.y *= mag * entity.speed * dt;
+    }
     // step 1
     auto k1 = integrate(entity, dt);
 

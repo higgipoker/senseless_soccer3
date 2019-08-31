@@ -20,6 +20,7 @@ struct PhysicalEnvironemnt {};
 struct Entity {
   int id = -1;
   int sprite = -1;
+  float speed = 1.0f;
   EntityType type = EntityType::Anonymous;
   gamelib3::Vector3 position, velocity, force;
   float terminal_velocity = 1;
