@@ -1,5 +1,6 @@
 #pragma once
-#include "gamelib3/math/vector.hpp"
+#include "compass.hpp"
+#include "vector.hpp"
 enum class EntityType {
   Anonymous,
   Camera,
@@ -22,15 +23,29 @@ struct Entity {
   int sprite = -1;
   float speed = 1.0f;
   EntityType type = EntityType::Anonymous;
-  gamelib3::Vector3 position, velocity, force;
+  Vector3 position, velocity, force;
   float terminal_velocity = 1;
   float co_friction = 0.01f;
   float co_bounciness = 0.0f;
+  float co_air_resistance = 0.0f;
   float mass = 10;
 };
+/**
+ * @brief get_entity
+ * @param id
+ * @return
+ */
+Entity &get_entity(int id);
 /**
  * @brief apply_force
  * @param entity
  * @param force
  */
-void apply_force(Entity& entity, gamelib3::Vector3 force);
+void apply_force(Entity &entity, Vector3 force);
+/**
+ * @brief direction_to
+ * @param from
+ * @param to
+ * @return
+ */
+Direction direction_to(Entity &from, Entity &to);

@@ -1,6 +1,7 @@
 #pragma once
-#include <vector>
 #include "animation.hpp"
+
+#include <vector>
 
 using Anims = std::vector<int>;
 const int ball_frame_time = 3;

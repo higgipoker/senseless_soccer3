@@ -1,11 +1,8 @@
 #pragma once
 #include "data.hpp"
-
-#include "gamelib3/math/vector.hpp"
+#include "vector.hpp"
 
 #include <SFML/Graphics/CircleShape.hpp>
-
-using namespace gamelib3;
 
 // these are used repeatedely in physics calculations
 inline Vector3 friction;
@@ -34,3 +31,11 @@ void integrate_improved_euler(Entity &entity, const float dt);
  * @return
  */
 bool collides(const sf::CircleShape &c1, const sf::CircleShape &c2);
+/**
+ * @brief contains
+ * @param c1
+ * @param c2
+ * @return
+ */
+bool contains(const sf::CircleShape &big_circle,
+              const sf::CircleShape &small_circle);

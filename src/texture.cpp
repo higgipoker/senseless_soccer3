@@ -1,17 +1,15 @@
 #include "texture.hpp"
-
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+//
+//
 CountedTexture make_counted_texture(sf::Texture *tex) {
   CountedTexture ct;
   ct.texture = tex;
   return ct;
 }
-
-// -----------------------------------------------------------------------------
-// acquire_texture
-// -----------------------------------------------------------------------------
+//
+//
+//
 sf::Texture *acquire_texture(const std::string &filename) {
   sf::Texture *texture = nullptr;
   // only create new texture if doesnt exist already
@@ -28,10 +26,9 @@ sf::Texture *acquire_texture(const std::string &filename) {
   assert(texture);
   return texture;
 }
-
-// -----------------------------------------------------------------------------
-// release_texture
-// -----------------------------------------------------------------------------
+//
+//
+//
 void release_texture(const std::string &filename) {
   auto it = textures.find(filename);
   if (it != textures.end()) {
@@ -42,10 +39,9 @@ void release_texture(const std::string &filename) {
     }
   }
 }
-
-// -----------------------------------------------------------------------------
-// cleanup
-// -----------------------------------------------------------------------------
+//
+//
+//
 void delete_textures() {
   for (auto &texture : textures) {
     delete texture.second.texture;

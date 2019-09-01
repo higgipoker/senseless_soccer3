@@ -8,12 +8,9 @@
 #include <iostream>
 
 #include <SFML/Window/Event.hpp>
-
-// todo separate out into input / gamepad / keyboard
-
-// -----------------------------------------------------------------------------
+//
 // handle_input
-// -----------------------------------------------------------------------------
+//
 void handle_input(Game &game, Camera &camera) {
   static sf::Event event;
   while (game.window.pollEvent(event)) {
@@ -121,42 +118,41 @@ void handle_input(Game &game, Camera &camera) {
   // poll_controllers();
   update_controlled_entities();
 }
-
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+//
+//
 void init_event(ControllerEvent &controller, ControllerEventID id,
                 ControllerEventStatus status, int param) {
   controller.id = id;
   controller.status = status;
   controller.param = param;
 }
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+//
+//
 void update_controlled_entities() {
   static const int f = 50;
   for (auto &entry : controlled_entities) {
     if (entry.second->states[InputState::Left]) {
-      apply_force(*entry.first, gamelib3::Vector3(-f, 0));
+      apply_force(*entry.first, Vector3(-f, 0));
     }
     if (entry.second->states[InputState::Right]) {
-      apply_force(*entry.first, gamelib3::Vector3(f, 0));
+      apply_force(*entry.first, Vector3(f, 0));
     }
     if (entry.second->states[InputState::Up]) {
-      apply_force(*entry.first, gamelib3::Vector3(0, -f));
+      apply_force(*entry.first, Vector3(0, -f));
     }
     if (entry.second->states[InputState::Down]) {
-      apply_force(*entry.first, gamelib3::Vector3(0, f));
+      apply_force(*entry.first, Vector3(0, f));
     }
     if (entry.second->states[InputState::FireDown]) {
-      apply_force(*entry.first, gamelib3::Vector3(0.f, 0.f, 5.f));
+      apply_force(*entry.first, Vector3(0.f, 0.f, 20.f));
     }
   }
 }
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+//
+//
 std::array<int, MAX_JOYSTICKS> get_joystick_ids() {
   std::array<int, MAX_JOYSTICKS> ids;
   for (int i = 0; i < MAX_JOYSTICKS; ++i) {
@@ -168,9 +164,9 @@ std::array<int, MAX_JOYSTICKS> get_joystick_ids() {
   }
   return ids;
 }
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+//
+//
 void poll_controllers() {
   for (auto &gamepad : gamepads) {
     update_gamepad(*gamepad);

@@ -1,8 +1,7 @@
 #include "window.hpp"
-
-// -----------------------------------------------------------------------------
-// valid_videomode
-// -----------------------------------------------------------------------------
+//
+//
+//
 bool valid_videomode(int width, int height) {
   // get list of supported video modes
   std::vector<sf::VideoMode> modes = sf::VideoMode::getFullscreenModes();
@@ -15,10 +14,9 @@ bool valid_videomode(int width, int height) {
   }
   return false;
 }
-
-// -----------------------------------------------------------------------------
-// init_window
-// -----------------------------------------------------------------------------
+//
+//
+//
 void init_window(sf::RenderWindow &window, const std::string &title,
                  const int width, const int height, int flags,
                  bool fullscreen) {
@@ -34,5 +32,5 @@ void init_window(sf::RenderWindow &window, const std::string &title,
     window.create(vm, title, flags);
   }
   window.setVerticalSyncEnabled(true);
-  //window.setFramerateLimit(60);
+  // window.setFramerateLimit(60);
 }

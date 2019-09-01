@@ -1,21 +1,19 @@
 #include "sprite.hpp"
-#include <gamelib3/math/vector.hpp>
-#include <gamelib3/physics/metrics.hpp>
 #include "data.hpp"
-
-using namespace gamelib3;
-// -----------------------------------------------------------------------------
+#include "metrics.hpp"
+#include "vector.hpp"
 //
-// -----------------------------------------------------------------------------
+//
+//
 void set_sprite_z(SortableSprite& sprite, float z) {
   if (sprite.z != z) {
     sprite.z = z;
     *SortableSprite::sort_flag = false;
   }
 }
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+//
+//
 bool perspectivize(sf::Sprite& sprite, float z, float width,
                    float camera_height) {
   // size depending on distance from camera
@@ -43,10 +41,9 @@ bool perspectivize(sf::Sprite& sprite, float z, float width,
 
   return true;
 }
-
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+//
+//
 sf::Sprite& get_sprite(int entity) {
   return sprite_pool[entity_pool[entity].sprite];
 }

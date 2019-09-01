@@ -1,25 +1,22 @@
 #include "framerate.hpp"
-
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+//
+//
 void init(Framerate &framerate, float _target) {
   framerate.second_timer.restart();
   framerate.target_frame_time = _target;
 }
-
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+//
+//
 void on_frame_started(Framerate &framerate) {
   framerate.gamestep_timer.restart();
   framerate.frame_start_time = static_cast<float>(
       framerate.gamestep_timer.getElapsedTime().asMilliseconds());
 }
-
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+//
+//
 void on_frame_ended(Framerate &framerate) {
   float elapsed = framerate.second_timer.getElapsedTime().asMilliseconds();
   framerate.framecount++;
@@ -29,10 +26,9 @@ void on_frame_ended(Framerate &framerate) {
     framerate.second_timer.restart();
   }
 }
-
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+//
+//
 float time_left(Framerate &framerate) {
   float newnewtime = static_cast<float>(
       framerate.gamestep_timer.getElapsedTime().asMilliseconds());

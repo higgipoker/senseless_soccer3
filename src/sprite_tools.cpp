@@ -1,12 +1,12 @@
 #include "sprite_tools.hpp"
-
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
-void populate_frames(std::vector<sf::IntRect> &frames, int cols,
-                            int width, int height, int start_row, int start_col, int frame_count) {
-  int x = width*start_col;
-  int y = height*start_row;
+//
+//
+void populate_frames(std::vector<sf::IntRect> &frames, int cols, int width,
+                     int height, int start_row, int start_col,
+                     int frame_count) {
+  int x = width * start_col;
+  int y = height * start_row;
   int col = start_col;
   while (--frame_count >= 0) {
     sf::IntRect rect;

@@ -1,10 +1,10 @@
 #include "animation.hpp"
-#include <iostream>
 #include "data.hpp"
 
-// -----------------------------------------------------------------------------
+#include <iostream>
 //
-// --------------------------------------------------------------------------
+// init
+//
 void init(Animation &anim, int _frame_time, std::vector<int> &_frames,
           std::vector<sf::IntRect> &frame_rects) {
   anim.frame_time = _frame_time;
@@ -17,10 +17,9 @@ void init(Animation &anim, int _frame_time, std::vector<int> &_frames,
   }
   anim.current_frame = 0;
 }
-
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+// next_frame
+//
 void next_frame(Animation &anim) {
   if (++anim.current_frame == anim.number_frames) {
     if (anim.loop) {
@@ -31,10 +30,9 @@ void next_frame(Animation &anim) {
     }
   }
 }
-
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+// step
+//
 void step(Animation &anim) {
   if (!anim.running) return;
   if (++anim.timer == anim.frame_time) {
@@ -42,15 +40,13 @@ void step(Animation &anim) {
     next_frame(anim);
   }
 }
-
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+// frame
+//
 sf::IntRect frame(Animation &anim) { return anim.frames[anim.current_frame]; }
-
-// -----------------------------------------------------------------------------
+//
 // update_animations
-// -----------------------------------------------------------------------------
+//
 void update_animations() {
   for (auto &anim : live_animations) {
     step(anim.second);

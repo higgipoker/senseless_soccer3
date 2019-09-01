@@ -17,10 +17,29 @@
 #include "player.hpp"
 #include "sprite_tools.hpp"
 #include "window.hpp"
-
-// -----------------------------------------------------------------------------
-// render
-// -----------------------------------------------------------------------------]
+//
+//
+//
+inline void control_ball(Ball &ball) {
+  controlled_entities.insert(
+      std::make_pair(&get_ball_entity(ball), &keyboard.device));
+}
+//
+//
+//
+inline void control_player(Player &player) {
+  controlled_entities.insert(
+      std::make_pair(&get_player_entity(player), &keyboard.device));
+}
+//
+//
+//
+inline void control_camera(Camera &camera) {
+  controlled_entities.insert(std::make_pair(camera.entity, &keyboard.device));
+}
+//
+//
+//
 static void render(sf::RenderWindow &window, Camera &camera, bool debug) {
   window.clear(sf::Color::Blue);
 
@@ -34,17 +53,18 @@ static void render(sf::RenderWindow &window, Camera &camera, bool debug) {
 
   window.display();
 }
-
-// -----------------------------------------------------------------------------
-// step_sim
-// -----------------------------------------------------------------------------
+//
+//
+//
 static void step_sim(float timestep) {
   for (auto i = 0; i < used_entity_count; ++i) {
     integrate_improved_euler(entity_pool[i], timestep);
     // integrate_euler(entity_pool[i], timestep);
   }
 }
-
+//
+//
+//
 inline void check_for_debug(Game &game) {
   if (pending_debug_toggle) {
     game.debug = !game.debug;
@@ -54,17 +74,18 @@ inline void check_for_debug(Game &game) {
     update_debug(game.window);
   }
 }
-
+//
+//
+//
 inline void update_entities(Ball &ball, std::vector<Player> &players,
                             Grass &grass, Camera &camera) {
   update_ball(ball);
   update_players(players, ball);
   update_grass(grass, camera);
 }
-
-// -----------------------------------------------------------------------------
-// main
-// -----------------------------------------------------------------------------
+//
+//
+//
 int main(int argc, char *argv[]) {
   // --------------------------------------------------
   //
@@ -131,8 +152,7 @@ int main(int argc, char *argv[]) {
     int f = rand() % PLAYER_SPRITE_FRAMES;
     get_player_sprite(player).setTextureRect(player_frames[f]);
     x += 32;
-    int a = (rand() % 8) + 8;
-    start_player_animation(player, static_cast<PlayerAnimation>(a));
+    start_player_animation(player, PlayerAnimation::StandSouth);
     get_player_sprite(player).setOrigin(PLAYER_SPRITE_WIDTH / 2,
                                         PLAYER_SPRITE_HEIGHT);
 
@@ -154,15 +174,9 @@ int main(int argc, char *argv[]) {
   Gamepad gamepad;
   init_gamepad(gamepad);
   gamepads.insert(&(gamepad));
-  //  controlled_entities.insert(
-  //      std::make_pair(&get_ball_entity(ball), &keyboard.device));
-
-  controlled_entities.insert(
-      std::make_pair(&get_player_entity(players[0]), &keyboard.device));
-
-  // controlled_entities.insert(std::make_pair(camera.entity, &gamepad.device));
-  //  controlled_entities.insert(std::make_pair(camera.entity,
-  //  &keyboard.device));
+  //  control_ball(ball);
+  control_player(players[0]);
+  // control_camera(camera);
 
 #ifndef NDEBUG
   // --------------------------------------------------

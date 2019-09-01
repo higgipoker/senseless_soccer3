@@ -1,8 +1,7 @@
 #pragma once
 #include "camera.hpp"
 #include "game.hpp"
-
-#include <gamelib3/math/vector.hpp>
+#include "vector.hpp"
 
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Joystick.hpp>

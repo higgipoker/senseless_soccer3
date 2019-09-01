@@ -2,11 +2,9 @@
 #include "ball.hpp"
 
 Anims roll_left() { return Anims{0, 1, 2, 3, 4, 5, 6}; }
-/**
- * @brief load_animation_frames
- * @param anim
- * @param id
- */
+//
+//
+//
 void load_ball_animation_frames(Animation &anim, BallAnimation id) {
   std::vector<int> frames;
   switch (id) {

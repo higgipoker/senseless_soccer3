@@ -3,29 +3,28 @@
 #include "entity.hpp"
 #include "input.hpp"
 #include "sprite.hpp"
-
-#include <gamelib3/math/vector.hpp>
+#include "vector.hpp"
 
 #include <array>
 #include <cassert>
 #include <iostream>
 #include <map>
 
-// -----------------------------------------------------------------------------
+//
 //
 // THE DATA!
 //
-// -----------------------------------------------------------------------------
+//
 inline const int MAX_SPRITES = 50;
 inline const int MAX_ENTITIES = 50;
 inline Entity entity_pool[MAX_ENTITIES];
 inline SortableSprite sprite_pool[MAX_SPRITES];
 
-// -----------------------------------------------------------------------------
+//
 //
 // data management and tracking
 //
-// -----------------------------------------------------------------------------
+//
 inline std::map<Entity*, int> entity_callbacks;      // track changes
 inline std::map<Entity*, int> sprite_callbacks;      // track changes
 inline bool used_entities[MAX_ENTITIES];             // tracks used slots
@@ -91,4 +90,6 @@ int sprites_available();
  * @param e
  * @return
  */
-inline sf::Sprite* get_player_sprite(Entity& e) { return &sprite_pool[e.sprite]; }
+inline sf::Sprite* get_player_sprite(Entity& e) {
+  return &sprite_pool[e.sprite];
+}

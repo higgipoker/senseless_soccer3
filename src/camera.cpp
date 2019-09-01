@@ -1,14 +1,12 @@
 #include "camera.hpp"
-#include "physics.hpp"
-
 #include "data.hpp"
 #include "entity.hpp"
+#include "physics.hpp"
 
 #include <iostream>
-
-// -----------------------------------------------------------------------------
+//
 // init_camera
-// -----------------------------------------------------------------------------
+//
 void init_camera(Camera &camera, Game &game) {
   int e = acquire_entity();
   camera.entity = &entity_pool[e];
@@ -19,12 +17,12 @@ void init_camera(Camera &camera, Game &game) {
   game.window.setView(camera.view);
   camera.entity->position.x = static_cast<float>(game.window_rect.width) / 2;
   camera.entity->position.y = static_cast<float>(game.window_rect.height) / 2;
-  camera.entity->co_friction = 0.01f;
+  camera.entity->co_friction = 0.1f;
   camera.entity->type = EntityType::Camera;
 }
-// -----------------------------------------------------------------------------
+//
 // update_camera
-// -----------------------------------------------------------------------------
+//
 void update_camera(Camera &camera, sf::IntRect world_rect) {
   // integrate_euler(*camera.entity, 0.01f);
   clamp_camera(camera, world_rect);
@@ -34,9 +32,9 @@ void update_camera(Camera &camera, sf::IntRect world_rect) {
   //    camera.entity->velocity = camera.entity->velocity.setMagnitude(0.25f);
   //  }
 }
-// -----------------------------------------------------------------------------
+//
 // clamp_camera
-// -----------------------------------------------------------------------------
+//
 void clamp_camera(Camera &camera, sf::IntRect bounds) {
   int act_x = camera.entity->position.x - camera.view.getSize().x / 2;
   int act_y = camera.entity->position.y - camera.view.getSize().y / 2;

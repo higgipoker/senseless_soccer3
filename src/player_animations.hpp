@@ -48,9 +48,9 @@ enum class PlayerAnimation {
   SlideNorthEast
 };
 
-// -----------------------------------------------------------------------------
+//
 // standing animations
-// -----------------------------------------------------------------------------
+//
 inline Anims stand_east() { return Anims{1}; }
 inline Anims stand_southeast() { return Anims{4}; }
 inline Anims stand_south() { return Anims{7}; }
@@ -59,9 +59,9 @@ inline Anims stand_west() { return Anims{13}; }
 inline Anims stand_northwest() { return Anims{16}; }
 inline Anims stand_north() { return Anims{19}; }
 inline Anims stand_northeast() { return Anims{22}; }
-// -----------------------------------------------------------------------------
+//
 // running animations
-// -----------------------------------------------------------------------------
+//
 inline Anims run_east() { return Anims{0, 1}; }
 inline Anims run_southeast() { return Anims{3, 5}; }
 inline Anims run_south() { return Anims{6, 8}; }
@@ -70,9 +70,9 @@ inline Anims run_west() { return Anims{12, 13}; }
 inline Anims run_northwest() { return Anims{15, 17}; }
 inline Anims run_north() { return Anims{18, 20}; }
 inline Anims run_northeast() { return Anims{21, 23}; }
-// -----------------------------------------------------------------------------
+//
 // sliding animations
-// -----------------------------------------------------------------------------
+//
 inline Anims slide_east() { return Anims{24, 25, 26, 26}; }
 inline Anims slide_southeast() { return Anims{27, 28, 29, 29}; }
 inline Anims slide_south() { return Anims{30, 31, 32, 32}; }

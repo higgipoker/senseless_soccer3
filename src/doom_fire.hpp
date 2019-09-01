@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Texture.hpp>
+
 #include <array>
 const int COLORS = 37;
 const int COLOR_COMPONENTS = COLORS * 3;
@@ -41,19 +42,14 @@ inline void init(int w, int h) {
   }
 }
 
-inline void start() {
-}
+inline void start() {}
 
-
-inline void spreadFire(int x, int y) {
-
-}
+inline void spreadFire(int x, int y) {}
 
 inline void doFire() {
   for (int x = 0; x < width; x++) {
     for (int y = 1; y < height; y++) {
-      spreadFire(x,y);
+      spreadFire(x, y);
     }
   }
 }
-

@@ -1,12 +1,20 @@
 #include "physics.hpp"
+
 #include <gamelib2/math/vector.hpp>
 
-static const float CLAMP_TO_GROUND = 0.000001f;
+static const float CLAMP_TO_GROUND = 0.0000001f;
 static const float GRAVITATIONAL_CONSTANT = -0.3f;
-
-// -----------------------------------------------------------------------------
-// bounce
-// -----------------------------------------------------------------------------
+//
+//
+//
+inline void damp_velocity(Entity &entity) {
+  if (entity.velocity.magnitude2d() < TOL) {
+    entity.velocity.reset();
+  }
+}
+//
+//
+//
 inline void bounce(Entity &entity, const float dt) {
   // bounce
   entity.velocity.z = -entity.velocity.z;
@@ -15,16 +23,31 @@ inline void bounce(Entity &entity, const float dt) {
   friction = friction * entity.co_friction * dt;
   entity.force = entity.force + friction;
 }
-// -----------------------------------------------------------------------------
-// integrate
-// -----------------------------------------------------------------------------
+//
+//
+//
+inline void damp_bounce(Entity &entity) {
+  if (gamelib2::Floats::greater_than(fabsf(entity.velocity.z), 0)) {
+    if (Floats::less_than(fabsf(entity.position.z), CLAMP_TO_GROUND)) {
+      entity.position.z = 0;
+      entity.velocity.z = 0;
+    }
+  }
+}
+//
+//
+//
 inline Vector3 integrate(Entity &entity, const float dt) {
-  // step 1
   if (Floats::greater_than(entity.position.z, 0)) {
-    // grabity
+    // gravity
     Vector3 gravity;
     gravity.z = GRAVITATIONAL_CONSTANT * dt;
     entity.force += gravity * entity.mass * dt;
+    // air resistance
+    Vector3 air_resistance = entity.velocity.reverse().normalise();
+    air_resistance *= entity.co_air_resistance;
+    entity.force += air_resistance * dt;
+
   } else {
     // drag
     friction = entity.velocity.reverse();
@@ -34,21 +57,9 @@ inline Vector3 integrate(Entity &entity, const float dt) {
   acceleration = entity.force / entity.mass;
   return acceleration * dt;
 }
-// -----------------------------------------------------------------------------
-// damp_bounce
-// -----------------------------------------------------------------------------
-inline void damp_bounce(Entity &entity) {
-  if (gamelib2::Floats::greater_than(fabsf(entity.velocity.z), 0)) {
-    if (gamelib3::Floats::less_than(fabsf(entity.position.z),
-                                    CLAMP_TO_GROUND)) {
-      entity.position.z = 0;
-      entity.velocity.z = 0;
-    }
-  }
-}
-// -----------------------------------------------------------------------------
-// integrate_euler
-// -----------------------------------------------------------------------------
+//
+//
+//
 void integrate_euler(Entity &entity, const float dt) {
   // moving down
   if (Floats::less_than(entity.velocity.z, 0) &&
@@ -88,9 +99,9 @@ void integrate_euler(Entity &entity, const float dt) {
   // reset forces for next step
   entity.force.reset();
 }
-// -----------------------------------------------------------------------------
-//  integrate
-// -----------------------------------------------------------------------------
+//
+//
+//
 void integrate_improved_euler(Entity &entity, const float dt) {
   // moving down
   if (Floats::less_than(entity.velocity.z, 0) &&
@@ -105,30 +116,29 @@ void integrate_improved_euler(Entity &entity, const float dt) {
       entity.force.y *= mag * entity.speed * dt;
     }
     // step 1
-    auto k1 = integrate(entity, dt);
-
+    k1 = integrate(entity, dt);
     // step 2
-    auto k2 = integrate(entity, dt);
-
+    k2 = integrate(entity, dt);
     // update velocity
     entity.velocity = entity.velocity + (k1 + k2) / 2;
-
     // change in position (converted to pixels)
     dp = (entity.velocity * dt);
-
     // apply new position
     entity.position = entity.position + dp;
   }
   // dampens infinite bounce
   damp_bounce(entity);
+  // for very small velocities
+  damp_velocity(entity);
   // reset forces for next step
   entity.force.reset();
 }
 
-// -----------------------------------------------------------------------------
-// circle with circle
-// -----------------------------------------------------------------------------
+//
+//
+//
 bool collides(const sf::CircleShape &c1, const sf::CircleShape &c2) {
+  // One of the circles has no size
   if (Floats::equal(c1.getRadius(), 0) || Floats::equal(c2.getRadius(), 0)) {
     return false;
   }
@@ -142,5 +152,38 @@ bool collides(const sf::CircleShape &c1, const sf::CircleShape &c2) {
     return true;
   }
 
+  return false;
+}
+//
+//
+//
+bool contains(const sf::CircleShape &big_circle,
+              const sf::CircleShape &small_circle) {
+  // get the center points of circles
+  sf::Vector2 center_big_circle(
+      big_circle.getPosition().x + big_circle.getRadius(),
+      big_circle.getPosition().y + big_circle.getRadius());
+
+  sf::Vector2 center_small_circle(
+      small_circle.getPosition().x + small_circle.getRadius(),
+      small_circle.getPosition().y + small_circle.getRadius());
+
+  int dist_sq = sqrt(((center_small_circle.x - center_big_circle.x) *
+                      (center_small_circle.x - center_big_circle.x)) +
+                     ((center_small_circle.y - center_big_circle.y) *
+                      (center_small_circle.y - center_big_circle.y)));
+
+  if (big_circle.getRadius() > (dist_sq + small_circle.getRadius())) {
+    /*  The smaller circle lies completely
+        inside the bigger circle without
+        touching each other
+        at a point of circumference.
+    */
+    std::cout << "contains" << std::endl;
+    return true;
+  }
+  /* The smaller does not lies inside
+     the bigger circle completely.
+  */
   return false;
 }

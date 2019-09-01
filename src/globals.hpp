@@ -1,11 +1,10 @@
 #pragma once
 
 #include "ball.hpp"
+#include "files.hpp"
 
-#include <gamelib3/utils/files.hpp>
 #include <string>
 
 namespace Globals {
-inline const std::string GFX_FOLDER =
-    gamelib3::Files::getWorkingDirectory() + "/gfx/";
+inline const std::string GFX_FOLDER = Files::getWorkingDirectory() + "/gfx/";
 }  // namespace Globals

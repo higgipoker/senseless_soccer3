@@ -61,8 +61,15 @@ add_executable(senseless_soccer3
     src/gamepad.cpp
     src/keyboard.cpp
     src/debug.cpp
+    src/files.cpp
+    src/vector.cpp
+    src/compass.cpp
     src/imgui/imgui.cpp
+    src/imgui/imgui_draw.cpp
+    src/imgui/imgui_widgets.cpp
+    src/imgui/imgui_demo.cpp
     src/imgui/imgui-SFML.cpp
+
 )
 
 # --------------------------------------------------
@@ -70,7 +77,6 @@ add_executable(senseless_soccer3
 # --------------------------------------------------
 find_package(OpenGL)
 target_link_libraries (senseless_soccer3 ${OPENGL_gl_LIBRARY})
-target_link_libraries (senseless_soccer3 gamelib3)
 target_link_libraries (senseless_soccer3 sfml-graphics-d)
 target_link_libraries (senseless_soccer3 sfml-window-d)
 target_link_libraries (senseless_soccer3 sfml-system-d)

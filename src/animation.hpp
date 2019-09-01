@@ -1,10 +1,12 @@
 #pragma once
+#include "entity.hpp"
+
 #include <SFML/Graphics/Sprite.hpp>
+
 #include <array>
 #include <cassert>
 #include <map>
 #include <vector>
-#include "entity.hpp"
 
 static const int MAX_ANIMATION_FRAMES = 50;
 /**

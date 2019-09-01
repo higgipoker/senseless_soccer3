@@ -1,30 +1,26 @@
 #include "grass.hpp"
-
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+//
+//
 sf::Sprite &get_player_sprite(Grass &grass) {
   return sprite_pool[entity_pool[grass.entity].sprite];
 }
-
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+//
+//
 Entity &get_ball_entity(Grass &grass) { return entity_pool[grass.entity]; }
-
-// -----------------------------------------------------------------------------
-// make_grass_sprite
-// -----------------------------------------------------------------------------
+//
+//
+//
 void make_grass_sprite(int sprite, const std::string &spritesheet) {
   sf::Texture *tex = acquire_texture(spritesheet);
   tex->setRepeated(true);
   sprite_pool[sprite].setTexture(*tex);
   set_sprite_z(sprite_pool[sprite], -1);
 }
-
-// -----------------------------------------------------------------------------
-// init_grass
-// -----------------------------------------------------------------------------
+//
+//
+//
 void init_grass(Grass &grass, Camera &camera) {
   int e = acquire_entity();
   entity_pool[e].type = EntityType::Background;
@@ -34,9 +30,9 @@ void init_grass(Grass &grass, Camera &camera) {
   make_grass_sprite(entity_pool[e].sprite, grass.spritesheet);
   update_grass(grass, camera);
 }
-// -----------------------------------------------------------------------------
-// update_grass
-// -----------------------------------------------------------------------------
+//
+//
+//
 void update_grass(Grass &grass, Camera &camera) {
   static const int SAFETY_OFFSET = 20;
   sf::IntRect rect;

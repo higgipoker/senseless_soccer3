@@ -1,11 +1,10 @@
 #pragma once
 #include "animation.hpp"
+#include "compass.hpp"
 #include "data.hpp"
 #include "globals.hpp"
 #include "player_animations.hpp"
 #include "texture.hpp"
-
-#include <gamelib3/compass/compass.hpp>
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Rect.hpp>
@@ -32,6 +31,12 @@ inline const int PLAYER_PERSPECTIVE_WIDTH = 32;
 
 inline std::vector<sf::IntRect> player_frames;
 inline std::vector<sf::IntRect> player_shadow_frames;
+
+/**
+ * @brief The PlayerState enum
+ */
+enum class PlayerState { Stand, Run };
+
 /**
  * @brief The Player struct
  */
@@ -40,8 +45,12 @@ struct Player {
   int shadow_entity = -1;
   std::string spritesheet;
   int shirt_number = 0;
-  sf::CircleShape feet{6};
-  gamelib3::Compass facing;
+  sf::CircleShape feet{3.5f};
+  sf::CircleShape control{20.0f};
+  Compass facing;
+  Compass old_direction;
+  bool changed_direction = true;
+  PlayerState state = PlayerState::Stand;
 };
 /**
  * @brief get_entity
@@ -106,7 +115,27 @@ void start_player_animation(Player &player, PlayerAnimation id);
  */
 void stop_animation(Player &player);
 /**
+ * @brief update_player
+ * @param player
+ */
+void update_player(Player &player);
+/**
  * @brief update_players
  * @param players
  */
 void update_players(std::vector<Player> &players, Ball &ball);
+/**
+ * @brief do_stand_state
+ * @param player
+ */
+void do_stand_state(Player &player, Ball &ball);
+/**
+ * @brief do_run_state
+ * @param player
+ */
+void do_run_state(Player &player, Ball &ball);
+/**
+ * @brief change_player_state
+ * @param player
+ */
+void change_player_state(Player &player, PlayerState new_state);

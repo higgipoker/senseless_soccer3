@@ -1,24 +1,22 @@
 #include "gamepad.hpp"
-
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+//
+//
 void init_gamepad(Gamepad &gamepad) {
   memset(gamepad.device.states, 0, sizeof(gamepad.device.states));
 }
-
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+//
+//
 bool isConnected(Gamepad &gamepad) {
   if (gamepad.sf_joystick_index <= sf::Joystick::Count)
     return sf::Joystick::isConnected(gamepad.sf_joystick_index);
 
   return false;
 }
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+//
+//
 void set_button_mask(Gamepad &gamepad) {
   if (sf::Joystick::isButtonPressed(gamepad.sf_joystick_index, 0)) {
     gamepad.device.buttonmask |= mask_a;
@@ -52,9 +50,9 @@ void set_button_mask(Gamepad &gamepad) {
     gamepad.device.buttonmask |= mask_start;
   }
 }
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+//
+//
 void set_dpad_mask(Gamepad &gamepad) {
   if (sf::Joystick::getAxisPosition(gamepad.sf_joystick_index,
                                     sf::Joystick::Axis::PovX) < 0) {
@@ -73,9 +71,9 @@ void set_dpad_mask(Gamepad &gamepad) {
     gamepad.device.directionmask |= mask_dpad_down;
   }
 }
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+//
+//
 void set_stick_mask(Gamepad &gamepad) {
   if (sf::Joystick::getAxisPosition(gamepad.sf_joystick_index,
                                     sf::Joystick::Y) <
@@ -102,9 +100,9 @@ void set_stick_mask(Gamepad &gamepad) {
   }
 }
 
-// -----------------------------------------------------------------------------
 //
-// -----------------------------------------------------------------------------
+//
+//
 void update_gamepad(Gamepad &gamepad) {
   memset(gamepad.device.states, 0, sizeof(gamepad.device.states));
   gamepad.device.buttonmask = mask_zero;

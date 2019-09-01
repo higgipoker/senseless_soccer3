@@ -1,12 +1,15 @@
 #include "data.hpp"
+
 #include <stack>
 
+//
+//
+//
 enum class SortAlgorithm { Bubble, Selection };
 bool* SortableSprite::sort_flag = &sprite_pool_sorted;
-
-// -----------------------------------------------------------------------------
-// acquire_entity
-// -----------------------------------------------------------------------------
+//
+//
+//
 int acquire_entity() {
   if (used_entity_count == MAX_ENTITIES) {
     std::cout << "ran out of entities. Max: " << MAX_ENTITIES << std::endl;
@@ -24,10 +27,9 @@ int acquire_entity() {
   assert(false);
   return -1;
 }
-
-// -----------------------------------------------------------------------------
-// release_entity
-// -----------------------------------------------------------------------------
+//
+//
+//
 void release_entity(int id) {
   assert(id >= 0);
   assert(id < MAX_ENTITIES);
@@ -36,10 +38,9 @@ void release_entity(int id) {
   --used_entity_count;
   used_entities[id] = false;
 }
-
-// -----------------------------------------------------------------------------
-// acquire_sprite
-// -----------------------------------------------------------------------------
+//
+//
+//
 int acquire_sprite(Entity* e) {
   if (used_sprite_count == MAX_SPRITES) {
     std::cout << "ran out of sprites. Max: " << MAX_SPRITES << std::endl;
@@ -64,10 +65,9 @@ int acquire_sprite(Entity* e) {
   assert(false);
   return -1;
 }
-
-// -----------------------------------------------------------------------------
-// release_sprite
-// -----------------------------------------------------------------------------
+//
+//
+//
 void release_sprite(int id) {
   auto sprite = &sprite_pool[id];
   if (used_sprites.find(sprite) != used_sprites.end()) {
@@ -80,10 +80,9 @@ void release_sprite(int id) {
   }
   pack_sprite_pool();
 }
-
-// -----------------------------------------------------------------------------
-// find_sprite_callback
-// -----------------------------------------------------------------------------
+//
+//
+//
 Entity* find_sprite_callback(int i) {
   Entity* ret = nullptr;
   for (auto& callback : sprite_callbacks) {
@@ -93,10 +92,9 @@ Entity* find_sprite_callback(int i) {
   }
   return ret;
 }
-
-// -----------------------------------------------------------------------------
-// swap_sprites
-// -----------------------------------------------------------------------------
+//
+//
+//
 void swap_sprites(const int idx1, const int idx2) {
   if (idx1 == idx2) return;
   SortableSprite tmp = sprite_pool[idx1];
@@ -126,9 +124,9 @@ void swap_sprites(const int idx1, const int idx2) {
     sprite_callbacks.insert(std::make_pair(entity2, idx1));
   }
 }
-// -----------------------------------------------------------------------------
-// places all used sprites at the top of the list
-// -----------------------------------------------------------------------------
+//
+//
+//
 void pack_sprite_pool() {
   if (used_sprites.empty()) return;
 
@@ -147,10 +145,9 @@ void pack_sprite_pool() {
     }
   }
 }
-
-// -----------------------------------------------------------------------------
-// sorts the sprite pool based on z order (MUST BE PACKED FIRST!)
-// -----------------------------------------------------------------------------
+//
+//
+//
 void sort_sprite_pool() {
   if (used_sprites.size() < 2) return;
 
