@@ -24,7 +24,6 @@ inline std::vector<sf::IntRect> ball_frames;
 struct Ball {
   int entity = -1;
   int shadow_entity = -1;
-  std::string spritesheet;
   int current_frame = 0;
   bool inited = false;
   sf::CircleShape collidable{3.f, 10};

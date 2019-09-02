@@ -21,15 +21,16 @@ void init_window(sf::RenderWindow &window, const std::string &title,
                  const int width, const int height, int flags,
                  bool fullscreen) {
   sf::VideoMode video_mode;
+  sf::ContextSettings settings;
   video_mode.width = width;
   video_mode.height = height;
   if (fullscreen && valid_videomode(video_mode.width, video_mode.height)) {
-    window.create(video_mode, title, sf::Style::Fullscreen);
+    window.create(video_mode, title, sf::Style::Fullscreen, settings);
   } else {
     sf::VideoMode vm = sf::VideoMode::getDesktopMode();
     vm.width = width;
     vm.height = height;
-    window.create(vm, title, flags);
+    window.create(vm, title, flags, settings);
   }
   window.setVerticalSyncEnabled(true);
   // window.setFramerateLimit(60);

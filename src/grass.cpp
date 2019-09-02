@@ -11,13 +11,13 @@ void make_grass_sprite(int sprite, const std::string &spritesheet) {
 //
 //
 //
-void init_grass(Grass &grass, Camera &camera) {
+void init_grass(Grass &grass, const std::string &spritesheet, Camera &camera) {
   int e = acquire_entity();
   entity_pool[e].type = EntityType::Background;
   grass.entity = e;
-  grass.spritesheet = grass_tile;
   entity_pool[e].sprite = acquire_sprite(&entity_pool[e]);
-  make_grass_sprite(entity_pool[e].sprite, grass.spritesheet);
+  GrassSprite.spritesheet = spritesheet;
+  make_grass_sprite(entity_pool[e].sprite, GrassSprite.spritesheet);
   update_grass(grass, camera);
 }
 //

@@ -12,7 +12,7 @@ struct CountedTexture {
   sf::Texture *texture;
   int count = 1;
 };
-static std::map<std::string, CountedTexture> textures;
+inline static std::map<std::string, CountedTexture> textures;
 /**
  * @brief make_counted_texture
  * @param tex

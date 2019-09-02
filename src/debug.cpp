@@ -1,3 +1,4 @@
+#ifndef NDEBUG
 #include "debug.hpp"
 //
 //
@@ -6,7 +7,7 @@ void init_debug(sf::RenderWindow &window) { ImGui::SFML::Init(window); }
 //
 //
 //
-void clean_debug() { ImGui::SFML::Shutdown(); }
+void shutdown_debug() { ImGui::SFML::Shutdown(); }
 //
 //
 //
@@ -15,7 +16,14 @@ void update_debug(sf::RenderWindow &window) {
   // ImGui::ShowDemoWindow();
   // global debug window
   ImGui::Begin("Debug");
-  ImGui::Text("Grabbed Entity: %i", grabbed_entity);
+  {  // draw bounds
+    ImGui::Checkbox("Draw Bounds", &bounds_flag);
+  }
+  if (grabbed_entity == NO_ENTITY) {
+    ImGui::Text("Grabbed Entity: ");
+  } else {
+    ImGui::Text("Grabbed Entity: %i", grabbed_entity);
+  }
   ImGui::End();
 }
 //
@@ -48,8 +56,10 @@ void draw_bounds(sf::RenderWindow &window, sf::FloatRect bounds) {
 //
 //
 void render_debug(sf::RenderWindow &window) {
-  for (int i = 0; i < used_sprite_count; ++i) {
-    draw_bounds(window, sprite_pool[i].getGlobalBounds());
+  if (bounds_flag) {
+    for (int i = 0; i < used_sprite_count; ++i) {
+      draw_bounds(window, sprite_pool[i].getGlobalBounds());
+    }
   }
   for (auto &shape : debug_shapes) {
     window.draw(*shape);
@@ -83,3 +93,4 @@ void mouse_dragged(int x, int y) {
     entity_pool[grabbed_entity].position.y = y + mousegrab_offset.y;
   }
 }
+#endif

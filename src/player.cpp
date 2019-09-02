@@ -21,9 +21,7 @@ void init_player(Player &player) {
   }
 
   entity_pool[e].type = EntityType::Player;
-  player.shirt_number = 1;
   player.entity = e;
-  player.spritesheet = Globals::GFX_FOLDER + "playerandball.png";
 
   int s = acquire_sprite(&entity_pool[e]);
   if (s == -1) {
@@ -38,10 +36,14 @@ void init_player(Player &player) {
   entity_pool[e].terminal_velocity = 0.03f;
   entity_pool[e].position.y = PLAYER_SPRITE_HEIGHT;
   entity_pool[e].speed = 100;
-  make_player_sprite(entity_pool[e].sprite, player.spritesheet);
+  PlayerSprite.spritesheet = Globals::GFX_FOLDER + "playerandball.png";
+  make_player_sprite(entity_pool[e].sprite, PlayerSprite.spritesheet);
   set_sprite_z(sprite_pool[entity_pool[e].sprite], (rand() % 50) + 5);
   PlayerSprite.setOrigin(PLAYER_SPRITE_WIDTH / 2, PLAYER_SPRITE_HEIGHT);
   init_player_shadow(player);
+  player.control.setOutlineThickness(2);
+  player.control.setFillColor(sf::Color(0, 0, 0, 0));
+  player.control.setOutlineColor(sf::Color::Red);
 }
 //
 //
@@ -50,7 +52,7 @@ void init_player_shadow(Player &player) {
   int e = acquire_entity();
   player.shadow_entity = e;
   PlayerShadowEntity.sprite = acquire_sprite(&PlayerShadowEntity);
-  make_player_sprite(PlayerShadowEntity.sprite, player.spritesheet);
+  make_player_sprite(PlayerShadowEntity.sprite, PlayerSprite.spritesheet);
   set_sprite_z(sprite_pool[PlayerShadowEntity.sprite], 1);
 }
 //
@@ -58,7 +60,6 @@ void init_player_shadow(Player &player) {
 //
 void release_players(std::vector<Player> &players) {
   for (auto &player : players) {
-    release_texture(player.spritesheet);
     release_sprite(entity_pool[player.entity].sprite);
     release_entity(player.entity);
 
@@ -93,12 +94,13 @@ void stop_animation(Player &player) { live_animations.erase(player.entity); }
 //
 //
 void change_player_state(Player &player, PlayerState new_state) {
-  player.facing = Direction::NONE;
   player.state = new_state;
   switch (new_state) {
     case PlayerState::Stand:
       break;
     case PlayerState::Run:
+      // to force change animation even if no change direction
+      player.facing = Direction::NONE;
       break;
   }
 }
@@ -106,14 +108,25 @@ void change_player_state(Player &player, PlayerState new_state) {
 //
 //
 void do_stand_state(Player &player, Ball &ball) {
-  // update direction
+  // set facing to direction to ball
   Compass to_ball;
   to_ball.direction = direction_to(PlayerEntity, BallEntity);
   player.facing = to_ball.direction;
 
+  // start animation depending on facing direction (look at ball)
+  if (player.facing.direction == Direction::WEST) {
+    int b = 1;
+  }
+  if (player.shirt_number == 1) {
+    std::cout << player.facing.print() << std::endl;
+  }
   start_player_animation(player, PlayerAnimationType::Stand,
                          player.facing.direction);
 
+  if (contains(player.control, ball.collidable)) {
+    player.control.setOutlineColor(sf::Color::Green);
+  }
+  // change state?
   if (Floats::greater_than(PlayerEntity.velocity.magnitude2d(), 0)) {
     change_player_state(player, PlayerState::Run);
   }
@@ -122,12 +135,29 @@ void do_stand_state(Player &player, Ball &ball) {
 //
 //
 void do_run_state(Player &player, Ball &ball) {
-  // update direction
+  // set facing to direction of movement
   player.facing.fromVector(PlayerEntity.velocity.normalise());
+
+  // set animation depending on facing direction
   if (player.old_direction != player.facing) {
     start_player_animation(player, PlayerAnimationType::Run,
                            player.facing.direction);
   }
+  // check for ball collision (dribble)
+  if (collides(player.feet, ball.collidable)) {
+    do_dribble(player, ball);
+  }
+
+  // check for close control (turned with ball)
+  if (contains(player.control, ball.collidable)) {
+    player.control.setOutlineColor(sf::Color::Green);
+    if (player.changed_direction && player.ball_under_control) {
+      do_close_control(player, ball);
+    }
+  } else {
+    player.ball_under_control = false;
+  }
+  // change state?
   if (Floats::equal(PlayerEntity.velocity.magnitude2d(), 0)) {
     change_player_state(player, PlayerState::Stand);
   }
@@ -136,6 +166,7 @@ void do_run_state(Player &player, Ball &ball) {
 //
 //
 void update_player(Player &player, Ball &ball) {
+  player.control.setOutlineColor(sf::Color::Red);
   // player's can't exert a force whilst in the air!
   if (Floats::greater_than(PlayerEntity.position.z, 0)) {
     PlayerEntity.force.reset();
@@ -169,6 +200,12 @@ void update_player(Player &player, Ball &ball) {
   debug_shapes.emplace_back(&player.feet);
   debug_shapes.emplace_back(&player.control);
 
+  player.changed_direction = false;
+  if (player.old_direction != player.facing) {
+    player.changed_direction = true;
+  }
+  player.old_direction = player.facing;
+
   // state machine
   switch (player.state) {
     case PlayerState::Stand:
@@ -178,32 +215,6 @@ void update_player(Player &player, Ball &ball) {
       do_run_state(player, ball);
       break;
   }
-  player.changed_direction = false;
-  if (player.old_direction != player.facing) {
-    player.changed_direction = true;
-    std::cout << "changed direction" << std::endl;
-    // check for close control
-
-    if (contains(player.control, ball.collidable)) {
-      std::cout << "close control" << std::endl;
-      Vector3 f(player.feet.getPosition().x, player.feet.getPosition().y);
-      Vector3 ball_pos = f + (player.facing.toVector() * 7);
-
-      BallEntity.velocity.reset();
-
-      // set new position
-      BallEntity.position = ball_pos;
-    }
-  }
-  player.old_direction = player.facing;
-
-  // check for ball collision
-  if (collides(player.feet, ball.collidable)) {
-    Vector3 force = player.facing.toVector();
-    force *= 7000;
-    BallEntity.velocity.reset();
-    apply_force(BallEntity, force);
-  }
 }
 //
 //
@@ -212,4 +223,24 @@ void update_players(std::vector<Player> &players, Ball &ball) {
   for (auto &player : players) {
     update_player(player, ball);
   }
+}
+//
+//
+//
+void do_close_control(Player &player, Ball &ball) {
+  Vector3 f(player.feet.getPosition().x, player.feet.getPosition().y);
+  Vector3 ball_pos = f + (player.facing.toVector() * 6);
+  BallEntity.force.reset();
+  BallEntity.velocity.reset();
+  BallEntity.position = ball_pos;
+}
+//
+//
+//
+void do_dribble(Player &player, Ball &ball) {
+  player.ball_under_control = true;
+  Vector3 force = player.facing.toVector();
+  force *= 6000;
+  BallEntity.velocity.reset();
+  apply_force(BallEntity, force);
 }

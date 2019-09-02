@@ -64,6 +64,7 @@ add_executable(senseless_soccer3
     src/files.cpp
     src/vector.cpp
     src/compass.cpp
+    src/pitch.cpp
     src/imgui/imgui.cpp
     src/imgui/imgui_draw.cpp
     src/imgui/imgui_widgets.cpp

@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics/Sprite.hpp>
 
+#include <string>
 #include <vector>
 
 /**
@@ -10,6 +11,7 @@
 struct SortableSprite : public sf::Sprite {
   static bool* sort_flag;
   float z = 0;
+  std::string spritesheet;
 };
 /**
  * @brief set_sprite_z

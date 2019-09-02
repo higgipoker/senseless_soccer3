@@ -11,9 +11,9 @@
 #include "game.hpp"
 #include "gamepad.hpp"
 #include "globals.hpp"
-#include "grass.hpp"
 #include "input.hpp"
 #include "physics.hpp"
+#include "pitch.hpp"
 #include "player.hpp"
 #include "sprite_tools.hpp"
 #include "window.hpp"
@@ -26,8 +26,9 @@ inline void control_ball(Ball &ball) {
 //
 //
 //
-inline void control_player(Player &player) {
+inline void control_player(Player &player, Gamepad &gamepad) {
   controlled_entities.insert(std::make_pair(&PlayerEntity, &keyboard.device));
+  controlled_entities.insert(std::make_pair(&PlayerEntity, &gamepad.device));
 }
 //
 //
@@ -76,10 +77,10 @@ inline void update_debug(Game &game) {
 //
 //
 inline void update_entities(Ball &ball, std::vector<Player> &players,
-                            Grass &grass, Camera &camera) {
-  update_ball(ball);
+                            Pitch &pitch, Camera &camera) {
   update_players(players, ball);
-  update_grass(grass, camera);
+  update_pitch(pitch, camera);
+  update_ball(ball);
 }
 //
 //
@@ -127,9 +128,9 @@ int main(int argc, char *argv[]) {
 
   // --------------------------------------------------
   //
-  // grass
-  Grass grass;
-  init_grass(grass, camera);
+  // pitch
+  Pitch pitch;
+  init_pitch(pitch, grass_tile, camera);
 
   // --------------------------------------------------
   //
@@ -140,6 +141,7 @@ int main(int argc, char *argv[]) {
     init_player(player);
     players.emplace_back(player);
   }
+  players[0].shirt_number = 1;
   populate_frames(player_frames, PLAYER_SPRITESHEET_COLS, PLAYER_SPRITE_WIDTH,
                   PLAYER_SPRITE_HEIGHT, 0, 0, PLAYER_SPRITE_FRAMES);
   populate_frames(player_shadow_frames, PLAYER_SPRITESHEET_COLS,
@@ -160,13 +162,12 @@ int main(int argc, char *argv[]) {
     PlayerSprite.setOrigin(PLAYER_SPRITE_WIDTH / 2, PLAYER_SPRITE_HEIGHT);
 
     // shaodw
-    PlayerShadowSprite.setOrigin(PLAYER_SPRITE_WIDTH / 2,
-                                           PLAYER_SPRITE_HEIGHT);
+    PlayerShadowSprite.setOrigin(PLAYER_SPRITE_WIDTH / 2, PLAYER_SPRITE_HEIGHT);
     PlayerShadowSprite.setTextureRect(player_shadow_frames[0]);
     perspectivize(PlayerSprite, PlayerEntity.position.z,
                   PlayerSprite.getLocalBounds().width, 50);
     PlayerShadowSprite.setScale(PlayerSprite.getScale().x,
-                                          PlayerSprite.getScale().y);
+                                PlayerSprite.getScale().y);
   }
 
   // --------------------------------------------------
@@ -176,7 +177,7 @@ int main(int argc, char *argv[]) {
   init_gamepad(gamepad);
   gamepads.insert(&(gamepad));
   //  control_ball(ball);
-  control_player(players[0]);
+  control_player(players[0], gamepad);
   // control_camera(camera);
 
 #ifndef NDEBUG
@@ -197,7 +198,7 @@ int main(int argc, char *argv[]) {
 
     handle_input(game, camera);
     update_camera(camera, game.world_rect);
-    update_entities(ball, players, grass, camera);
+    update_entities(ball, players, pitch, camera);
     update_animations();
     if (!sprite_pool_sorted) {
       sort_sprite_pool();
@@ -216,15 +217,12 @@ int main(int argc, char *argv[]) {
   //
   // cleanup
 #ifndef NDEBUG
-  clean_debug();
+  shutdown_debug();
 #endif
-
-  release_texture(grass.spritesheet);
-  release_texture(ball.spritesheet);
 
   // only testing, the os will do this and quite the program faster
   release_sprite(BallEntity.sprite);
-  release_entity(grass.entity);
+  release_entity(pitch.grass.entity);
   release_entity(camera.entity->id);
 
   if (ball.inited) {
@@ -235,7 +233,7 @@ int main(int argc, char *argv[]) {
     release_entity(ball.entity);
   }
   release_players(players);
-  delete_textures();
+  // delete_textures();
 
   std::cout << std::endl;
   std::cout << "entities still in use:\t" << used_entity_count << std::endl;

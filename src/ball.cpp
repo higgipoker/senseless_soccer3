@@ -22,9 +22,9 @@ int init_ball(Ball &ball) {
   BallEntity.co_friction = 0.5f;
   BallEntity.co_bounciness = 0.9f;
   BallEntity.type = EntityType::Ball;
-  ball.spritesheet = Globals::GFX_FOLDER + "playerandball.png";
   BallEntity.sprite = acquire_sprite(&BallEntity);
-  make_ball_sprite(BallEntity.sprite, ball.spritesheet);
+  BallSprite.spritesheet = Globals::GFX_FOLDER + "playerandball.png";
+  make_ball_sprite(BallEntity.sprite, BallSprite.spritesheet);
   entity_pool[e].terminal_velocity = 0.1f;
 
   // shadow
@@ -38,7 +38,7 @@ void init_ball_shadow(Ball &ball) {
   int e = acquire_entity();
   ball.shadow_entity = e;
   BallShadowEntity.sprite = acquire_sprite(&BallShadowEntity);
-  make_ball_sprite(BallShadowEntity.sprite, ball.spritesheet);
+  make_ball_sprite(BallShadowEntity.sprite, BallSprite.spritesheet);
   set_sprite_z(sprite_pool[BallShadowEntity.sprite], 0);
 }
 //

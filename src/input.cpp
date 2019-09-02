@@ -57,12 +57,14 @@ void handle_input(Game &game, Camera &camera) {
             // convert it to world coordinates
             sf::Vector2f worldPos = game.window.mapPixelToCoords(pixelPos);
             for (int i = used_entity_count - 1; i >= 0; --i) {
-              auto sprite = sprite_pool[entity_pool[i].sprite];
-              auto bounds = sprite.getGlobalBounds();
-              if (bounds.contains(worldPos.x, worldPos.y)) {
-                if (entity_pool[i].type != EntityType::Camera &&
-                    entity_pool[i].type != EntityType::Background) {
-                  grab_entity(i, worldPos.x, worldPos.y);
+              if (entity_pool[i].sprite != -1) {
+                auto sprite = sprite_pool[entity_pool[i].sprite];
+                auto bounds = sprite.getGlobalBounds();
+                if (bounds.contains(worldPos.x, worldPos.y)) {
+                  if (entity_pool[i].type != EntityType::Camera &&
+                      entity_pool[i].type != EntityType::Background) {
+                    grab_entity(i, worldPos.x, worldPos.y);
+                  }
                 }
               }
             }
@@ -115,7 +117,7 @@ void handle_input(Game &game, Camera &camera) {
     }
   }
   update_keyboard();
-  // poll_controllers();
+  poll_controllers();
   update_controlled_entities();
 }
 //

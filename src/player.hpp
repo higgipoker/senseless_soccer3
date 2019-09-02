@@ -48,14 +48,14 @@ enum class PlayerState { Stand, Run };
 struct Player {
   int entity = -1;
   int shadow_entity = -1;
-  std::string spritesheet;
   int shirt_number = 0;
   sf::CircleShape feet{3.5f};
-  sf::CircleShape control{20.0f};
+  sf::CircleShape control{25.0f};
   Compass facing;
   Compass old_direction;
   bool changed_direction = true;
   PlayerState state = PlayerState::Stand;
+  bool ball_under_control = false;
 };
 /**
  * @brief make_player_sprite
@@ -89,7 +89,8 @@ void think(Player &player);
  * @param player
  * @param id
  */
-void start_player_animation(Player &player, PlayerAnimationType type, Direction dir);
+void start_player_animation(Player &player, PlayerAnimationType type,
+                            Direction dir);
 /**
  * @brief stop_animation
  * @param player
@@ -120,3 +121,15 @@ void do_run_state(Player &player, Ball &ball);
  * @param player
  */
 void change_player_state(Player &player, PlayerState new_state);
+/**
+ * @brief do_close_control
+ * @param player
+ * @param ball
+ */
+void do_close_control(Player &player, Ball &ball);
+/**
+ * @brief do_dribble
+ * @param player
+ * @param ball
+ */
+void do_dribble(Player &player, Ball &ball);

@@ -19,7 +19,6 @@ inline std::string grass_tile{Globals::GFX_FOLDER + grasses.at(0) + ".png"};
  */
 struct Grass {
   int entity = 0;
-  std::string spritesheet;
   int current_frame = 0;
 };
 /**
@@ -33,7 +32,7 @@ void make_grass_sprite(int sprite, const std::string &spritesheet);
  * @param grass
  * @param world_rect
  */
-void init_grass(Grass &grass, Camera &camera);
+void init_grass(Grass &grass, const std::string &spritesheet, Camera &camera);
 /**
  * @brief update_grass
  * @param grass

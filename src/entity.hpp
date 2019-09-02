@@ -44,4 +44,11 @@ void apply_force(Entity &entity, Vector3 force);
  * @param to
  * @return
  */
-Direction direction_to(Entity &from, Entity &to);
+Direction direction_to(const Entity &from, const Entity &to);
+/**
+ * @brief direction_to
+ * @param from
+ * @param to
+ * @return
+ */
+Direction direction_to(const Vector3 &from, const Vector3 &to);
