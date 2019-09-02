@@ -3,6 +3,9 @@
 #include "globals.hpp"
 #include "texture.hpp"
 
+#define GRASS_SPRITE(G) sprite_pool[entity_pool[grass.entity].sprite]
+#define get_grass_entity(G) entity_pool[G.entity];
+
 // types of grass
 const std::array<std::string, 6> grasses{
     "grass_checked",    "grass_dry",   "grass_hard",
@@ -19,18 +22,6 @@ struct Grass {
   std::string spritesheet;
   int current_frame = 0;
 };
-/**
- * @brief get_sprite
- * @param grass
- * @return
- */
-sf::Sprite &get_player_sprite(Grass &grass);
-/**
- * @brief get_ball_entity
- * @param grass
- * @return
- */
-Entity &get_ball_entity(Grass &grass);
 /**
  * @brief make_grass_sprite
  * @param sprite

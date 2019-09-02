@@ -33,7 +33,6 @@ bool perspectivize(sf::Sprite& sprite, float z, float width,
 
   // y offset due to height
   float z_cm = z * CM_PER_PIXEL;
-
   if (Floats::greater_than(z_cm, 0)) {
     float y_offset = Y_OFFSET_DUE_TO_HEIGHT * z_cm;
     sprite.move(0, -y_offset);
@@ -46,4 +45,30 @@ bool perspectivize(sf::Sprite& sprite, float z, float width,
 //
 sf::Sprite& get_sprite(int entity) {
   return sprite_pool[entity_pool[entity].sprite];
+}
+//
+//
+//
+void populate_frames(std::vector<sf::IntRect> &frames, int cols, int width,
+                     int height, int start_row, int start_col,
+                     int frame_count) {
+  int x = width * start_col;
+  int y = height * start_row;
+  int col = start_col;
+  while (--frame_count >= 0) {
+    sf::IntRect rect;
+    rect.left = x;
+    rect.top = y;
+    rect.width = width;
+    rect.height = height;
+    frames.push_back(rect);
+
+    x += width;
+
+    if (++col == cols) {
+      x = 0;
+      y += height;
+      col = 0;
+    }
+  }
 }

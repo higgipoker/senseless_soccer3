@@ -2,16 +2,6 @@
 //
 //
 //
-sf::Sprite &get_player_sprite(Grass &grass) {
-  return sprite_pool[entity_pool[grass.entity].sprite];
-}
-//
-//
-//
-Entity &get_ball_entity(Grass &grass) { return entity_pool[grass.entity]; }
-//
-//
-//
 void make_grass_sprite(int sprite, const std::string &spritesheet) {
   sf::Texture *tex = acquire_texture(spritesheet);
   tex->setRepeated(true);
@@ -40,6 +30,6 @@ void update_grass(Grass &grass, Camera &camera) {
   rect.height = camera.view.getSize().y + SAFETY_OFFSET * 4;
   rect.left = camera.view.getCenter().x - rect.width / 2 - SAFETY_OFFSET;
   rect.top = camera.view.getCenter().y - rect.height / 2 - SAFETY_OFFSET;
-  get_player_sprite(grass).setPosition(rect.left, rect.top);
-  get_player_sprite(grass).setTextureRect(rect);
+  GRASS_SPRITE(grass).setPosition(rect.left, rect.top);
+  GRASS_SPRITE(grass).setTextureRect(rect);
 }

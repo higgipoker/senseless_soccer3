@@ -37,5 +37,4 @@ bool collides(const sf::CircleShape &c1, const sf::CircleShape &c2);
  * @param c2
  * @return
  */
-bool contains(const sf::CircleShape &big_circle,
-              const sf::CircleShape &small_circle);
+bool contains(const sf::CircleShape &big, const sf::CircleShape &small);

@@ -22,14 +22,14 @@
 //
 inline void control_ball(Ball &ball) {
   controlled_entities.insert(
-      std::make_pair(&get_ball_entity(ball), &keyboard.device));
+      std::make_pair(&BALL_ENTITY(ball), &keyboard.device));
 }
 //
 //
 //
 inline void control_player(Player &player) {
   controlled_entities.insert(
-      std::make_pair(&get_player_entity(player), &keyboard.device));
+      std::make_pair(&PLAYER_ENTITY(player), &keyboard.device));
 }
 //
 //
@@ -105,23 +105,23 @@ int main(int argc, char *argv[]) {
     ball.inited = true;
     populate_frames(ball_frames, BALL_SPRITESHEET_COLS, BALL_SPRITE_WIDTH,
                     BALL_SPRITE_HEIGHT, 6, 0, BALL_SPRITE_FRAMES);
-    get_ball_sprite(ball).setOrigin(BALL_SPRITE_WIDTH / 2,
-                                    BALL_SPRITE_HEIGHT / 2);
-    get_ball_shadow_sprite(ball).setOrigin(BALL_SPRITE_WIDTH / 2,
-                                           BALL_SPRITE_HEIGHT / 2);
+    BALL_SPRITE(ball).setOrigin(BALL_SPRITE_WIDTH / 2, BALL_SPRITE_HEIGHT / 2);
+    BALL_SHADOW_SPRITE(ball).setOrigin(BALL_SPRITE_WIDTH / 2,
+                                       BALL_SPRITE_HEIGHT / 2);
+    init_ball_animations();
 
-    get_ball_sprite(ball).setTextureRect(ball_frames[4]);
-    get_ball_sprite(ball).rotate(45);
+    BALL_SPRITE(ball).setTextureRect(ball_frames[4]);
+    BALL_SPRITE(ball).rotate(45);
     start_ball_animation(ball, BallAnimation::RollLeft);
-    get_ball_entity(ball).position.x = BALL_SPRITE_WIDTH / 2;
-    get_ball_entity(ball).position.y = 50;
+    BALL_ENTITY(ball).position.x = BALL_SPRITE_WIDTH / 2;
+    BALL_ENTITY(ball).position.y = 50;
 
     // set up initial perspective for shadow (doesnt change)
-    get_ball_shadow_sprite(ball).setTextureRect(ball_frames[7]);
-    perspectivize(get_ball_sprite(ball), get_ball_entity(ball).position.z,
+    BALL_SHADOW_SPRITE(ball).setTextureRect(ball_frames[7]);
+    perspectivize(BALL_SPRITE(ball), BALL_ENTITY(ball).position.z,
                   ball.collidable.getRadius() * 2, 20);
-    get_ball_shadow_sprite(ball).setScale(get_ball_sprite(ball).getScale().x,
-                                          get_ball_sprite(ball).getScale().y);
+    BALL_SHADOW_SPRITE(ball).setScale(BALL_SPRITE(ball).getScale().x,
+                                      BALL_SPRITE(ball).getScale().y);
 
     ball.collidable.setOrigin(ball.collidable.getRadius() / 2,
                               ball.collidable.getRadius() / 2);
@@ -137,35 +137,38 @@ int main(int argc, char *argv[]) {
   //
   // players
   std::vector<Player> players;
-  init_players(players);
+  for (int i = 0; i < 11; ++i) {
+    Player player;
+    init_player(player);
+    players.emplace_back(player);
+  }
   populate_frames(player_frames, PLAYER_SPRITESHEET_COLS, PLAYER_SPRITE_WIDTH,
                   PLAYER_SPRITE_HEIGHT, 0, 0, PLAYER_SPRITE_FRAMES);
   populate_frames(player_shadow_frames, PLAYER_SPRITESHEET_COLS,
                   PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, 3, 0,
                   PLAYER_SPRITE_FRAMES);
+  init_player_animations();
 
   int x = 0;
   srand(time(nullptr));
   for (auto &player : players) {
     // player
-    get_player_sprite(player).move(x, 0);
+    PLAYER_SPRITE(player).move(x, 0);
     int f = rand() % PLAYER_SPRITE_FRAMES;
-    get_player_sprite(player).setTextureRect(player_frames[f]);
+    PLAYER_SPRITE(player).setTextureRect(player_frames[f]);
     x += 32;
-    start_player_animation(player, PlayerAnimation::StandSouth);
-    get_player_sprite(player).setOrigin(PLAYER_SPRITE_WIDTH / 2,
-                                        PLAYER_SPRITE_HEIGHT);
+    start_player_animation(player, PlayerAnimationType::Stand, Direction::SOUTH);
+    PLAYER_SPRITE(player).setOrigin(PLAYER_SPRITE_WIDTH / 2,
+                                    PLAYER_SPRITE_HEIGHT);
 
     // shaodw
-    get_player_shadow_sprite(player).setOrigin(PLAYER_SPRITE_WIDTH / 2,
-                                               PLAYER_SPRITE_HEIGHT);
-    get_player_shadow_sprite(player).setTextureRect(player_shadow_frames[0]);
-    perspectivize(get_player_sprite(player),
-                  get_player_entity(player).position.z,
-                  get_player_sprite(player).getLocalBounds().width, 50);
-    get_player_shadow_sprite(player).setScale(
-        get_player_sprite(player).getScale().x,
-        get_player_sprite(player).getScale().y);
+    PLAYER_SHADOW_SPRITE(player).setOrigin(PLAYER_SPRITE_WIDTH / 2,
+                                           PLAYER_SPRITE_HEIGHT);
+    PLAYER_SHADOW_SPRITE(player).setTextureRect(player_shadow_frames[0]);
+    perspectivize(PLAYER_SPRITE(player), PLAYER_ENTITY(player).position.z,
+                  PLAYER_SPRITE(player).getLocalBounds().width, 50);
+    PLAYER_SHADOW_SPRITE(player).setScale(PLAYER_SPRITE(player).getScale().x,
+                                          PLAYER_SPRITE(player).getScale().y);
   }
 
   // --------------------------------------------------
@@ -222,15 +225,15 @@ int main(int argc, char *argv[]) {
   release_texture(ball.spritesheet);
 
   // only testing, the os will do this and quite the program faster
-  release_sprite(get_ball_entity(grass).sprite);
+  release_sprite(BALL_ENTITY(grass).sprite);
   release_entity(grass.entity);
   release_entity(camera.entity->id);
 
   if (ball.inited) {
-    release_sprite(get_ball_shadow_entity(ball).sprite);
+    release_sprite(BALL_SHADOW_ENTITY(ball).sprite);
     release_entity(ball.shadow_entity);
 
-    release_sprite(get_ball_entity(ball).sprite);
+    release_sprite(BALL_ENTITY(ball).sprite);
     release_entity(ball.entity);
   }
   release_players(players);

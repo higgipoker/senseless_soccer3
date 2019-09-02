@@ -8,82 +8,50 @@
 #include <vector>
 
 using Anims = std::vector<int>;
+inline std::map<Direction, Animation> player_stand_animations;
+inline std::map<Direction, Animation> player_run_animations;
 
 // anim speed for all player anims
 static const int player_frame_time = 10;
 
-/**
- * @brief The AnimationID enum
- */
-enum class PlayerAnimation {
-
-  // standing
-  StandEast,
-  StandSouthEast,
-  StandSouth,
-  StandSouthWest,
-  StandWest,
-  StandNorthWest,
-  StandNorth,
-  StandNorthEast,
-
-  // running
-  RunEast,
-  RunSouthEast,
-  RunSouth,
-  RunSouthWest,
-  RunWest,
-  RunNorthWest,
-  RunNorth,
-  RunNorthEast,
-
-  // sliding
-  SlideEast,
-  SlideSouthEast,
-  SlideSouth,
-  SlideSouthWest,
-  SlideWest,
-  SlideNorthWest,
-  SlideNorth,
-  SlideNorthEast
+enum class PlayerAnimationType{
+  Stand, Run
 };
 
 //
 // standing animations
 //
-inline Anims stand_east() { return Anims{1}; }
-inline Anims stand_southeast() { return Anims{4}; }
-inline Anims stand_south() { return Anims{7}; }
-inline Anims stand_southwest() { return Anims{10}; }
-inline Anims stand_west() { return Anims{13}; }
-inline Anims stand_northwest() { return Anims{16}; }
-inline Anims stand_north() { return Anims{19}; }
-inline Anims stand_northeast() { return Anims{22}; }
+inline Anims stand_east{1};
+inline Anims stand_southeast{4};
+inline Anims stand_south{7};
+inline Anims stand_southwest{10};
+inline Anims stand_west{13};
+inline Anims stand_northwest{16};
+inline Anims stand_north{19};
+inline Anims stand_northeast{22};
 //
 // running animations
 //
-inline Anims run_east() { return Anims{0, 1}; }
-inline Anims run_southeast() { return Anims{3, 5}; }
-inline Anims run_south() { return Anims{6, 8}; }
-inline Anims run_southwest() { return Anims{9, 11}; }
-inline Anims run_west() { return Anims{12, 13}; }
-inline Anims run_northwest() { return Anims{15, 17}; }
-inline Anims run_north() { return Anims{18, 20}; }
-inline Anims run_northeast() { return Anims{21, 23}; }
+inline Anims run_east{0, 1};
+inline Anims run_southeast{3, 5};
+inline Anims run_south{6, 8};
+inline Anims run_southwest{9, 11};
+inline Anims run_west{12, 13};
+inline Anims run_northwest{15, 17};
+inline Anims run_north{18, 20};
+inline Anims run_northeast{21, 23};
 //
 // sliding animations
 //
-inline Anims slide_east() { return Anims{24, 25, 26, 26}; }
-inline Anims slide_southeast() { return Anims{27, 28, 29, 29}; }
-inline Anims slide_south() { return Anims{30, 31, 32, 32}; }
-inline Anims slide_southwest() { return Anims{33, 34, 35, 35}; }
-inline Anims slide_west() { return Anims{36, 37, 38, 38}; }
-inline Anims slide_northwest() { return Anims{39, 40, 41, 41}; }
-inline Anims slide_north() { return Anims{42, 43, 44, 44}; }
-inline Anims slide_northeast() { return Anims{45, 46, 47, 47}; }
+inline Anims slide_east{24, 25, 26, 26};
+inline Anims slide_southeast{27, 28, 29, 29};
+inline Anims slide_south{30, 31, 32, 32};
+inline Anims slide_southwest{33, 34, 35, 35};
+inline Anims slide_west{36, 37, 38, 38};
+inline Anims slide_northwest{39, 40, 41, 41};
+inline Anims slide_north{42, 43, 44, 44};
+inline Anims slide_northeast{45, 46, 47, 47};
 /**
- * @brief load_animation_frames
- * @param anim
- * @param id
+ * @brief init_player_animations
  */
-void load_player_animation_frames(Animation &anim, PlayerAnimation id);
+void init_player_animations();

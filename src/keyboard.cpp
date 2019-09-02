@@ -5,6 +5,7 @@
 void update_keyboard() {
   std::fill(std::begin(keyboard.device.states),
             std::end(keyboard.device.states), 0);
+
   if (sf::Keyboard::isKeyPressed(keymap[InputState::Left])) {
     keyboard.device.directionmask |= mask_dpad_left;
     keyboard.device.states[InputState::Left] = 1;

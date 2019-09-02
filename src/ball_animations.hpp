@@ -5,19 +5,15 @@
 
 using Anims = std::vector<int>;
 const int ball_frame_time = 3;
+static inline Anims roll_left { 0, 1, 2, 3, 4, 5, 6};
+inline std::map<Direction, Animation> ball_roll_animations;
 /**
 
  * @brief The BallAnimation enum
  */
 enum class BallAnimation { RollLeft };
+
 /**
- * @brief roll_left
- * @return
+ * @brief init_player_animations
  */
-Anims roll_left();
-/**
- * @brief load_animation_frames
- * @param anim
- * @param id
- */
-void load_ball_animation_frames(Animation &anim, BallAnimation id);
+void init_ball_animations();

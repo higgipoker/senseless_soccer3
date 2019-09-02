@@ -5,7 +5,7 @@
 //
 // init
 //
-void init(Animation &anim, int _frame_time, std::vector<int> &_frames,
+void init_animation(Animation &anim, int _frame_time, std::vector<int> &_frames,
           std::vector<sf::IntRect> &frame_rects) {
   anim.frame_time = _frame_time;
   anim.number_frames = _frames.size();

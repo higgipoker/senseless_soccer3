@@ -12,10 +12,6 @@ enum class EntityType {
   Shadow
 };
 /**
- * @brief The PhysicalEnvironemnt struct
- */
-struct PhysicalEnvironemnt {};
-/**
  * @brief The Entity struct
  */
 struct Entity {

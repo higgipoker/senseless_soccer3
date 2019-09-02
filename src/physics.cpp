@@ -1,6 +1,6 @@
 #include "physics.hpp"
 
-#include <gamelib2/math/vector.hpp>
+#include "vector.hpp"
 
 static const float CLAMP_TO_GROUND = 0.0000001f;
 static const float GRAVITATIONAL_CONSTANT = -0.3f;
@@ -27,7 +27,7 @@ inline void bounce(Entity &entity, const float dt) {
 //
 //
 inline void damp_bounce(Entity &entity) {
-  if (gamelib2::Floats::greater_than(fabsf(entity.velocity.z), 0)) {
+  if (Floats::greater_than(fabsf(entity.velocity.z), 0)) {
     if (Floats::less_than(fabsf(entity.position.z), CLAMP_TO_GROUND)) {
       entity.position.z = 0;
       entity.velocity.z = 0;
@@ -133,7 +133,6 @@ void integrate_improved_euler(Entity &entity, const float dt) {
   // reset forces for next step
   entity.force.reset();
 }
-
 //
 //
 //
@@ -151,39 +150,27 @@ bool collides(const sf::CircleShape &c1, const sf::CircleShape &c2) {
   if ((dx * dx) + (dy * dy) < radii * radii) {
     return true;
   }
-
   return false;
 }
 //
 //
 //
-bool contains(const sf::CircleShape &big_circle,
-              const sf::CircleShape &small_circle) {
+bool contains(const sf::CircleShape &big, const sf::CircleShape &small) {
   // get the center points of circles
-  sf::Vector2 center_big_circle(
-      big_circle.getPosition().x + big_circle.getRadius(),
-      big_circle.getPosition().y + big_circle.getRadius());
+  sf::Vector2 center_big_circle(big.getPosition().x + big.getRadius(),
+                                big.getPosition().y + big.getRadius());
+  sf::Vector2 center_small_circle(small.getPosition().x + small.getRadius(),
+                                  small.getPosition().y + small.getRadius());
 
-  sf::Vector2 center_small_circle(
-      small_circle.getPosition().x + small_circle.getRadius(),
-      small_circle.getPosition().y + small_circle.getRadius());
-
+  // distance
   int dist_sq = sqrt(((center_small_circle.x - center_big_circle.x) *
                       (center_small_circle.x - center_big_circle.x)) +
                      ((center_small_circle.y - center_big_circle.y) *
                       (center_small_circle.y - center_big_circle.y)));
 
-  if (big_circle.getRadius() > (dist_sq + small_circle.getRadius())) {
-    /*  The smaller circle lies completely
-        inside the bigger circle without
-        touching each other
-        at a point of circumference.
-    */
-    std::cout << "contains" << std::endl;
+  if (big.getRadius() > (dist_sq + small.getRadius())) {
     return true;
   }
-  /* The smaller does not lies inside
-     the bigger circle completely.
-  */
+
   return false;
 }

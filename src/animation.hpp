@@ -30,7 +30,7 @@ inline std::map<int, Animation> live_animations;
  * @param _frame_time
  * @param _frames
  */
-void init(Animation &anim, int _frame_time, std::vector<int> &_frames,
+void init_animation(Animation &anim, int _frame_time, std::vector<int> &_frames,
           std::vector<sf::IntRect> &frame_rects);
 /**
  * @brief next_frame

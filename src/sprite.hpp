@@ -1,16 +1,16 @@
 #pragma once
 #include <SFML/Graphics/Sprite.hpp>
 
+#include <vector>
+
 /**
  * @brief thin wrapper for sf::Sprite to make it sortable by z index,
  * and force informing the data pool when a z has changed (for sorting)
  */
 struct SortableSprite : public sf::Sprite {
-  /// for sorting
   static bool* sort_flag;
   float z = 0;
 };
-
 /**
  * @brief set_sprite_z
  * @param sprite
@@ -32,3 +32,13 @@ bool perspectivize(sf::Sprite& sprite, float z, float width,
  * @return
  */
 sf::Sprite& get_sprite(int entity);
+/**
+ * @brief populate_frames
+ * @param frames
+ * @param cols
+ * @param width
+ * @param height
+ * @param frame_count
+ */
+void populate_frames(std::vector<sf::IntRect>& frames, int cols, int width,
+                     int height, int start_row, int start_col, int frame_count);

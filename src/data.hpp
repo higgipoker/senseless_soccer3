@@ -90,6 +90,6 @@ int sprites_available();
  * @param e
  * @return
  */
-inline sf::Sprite* get_player_sprite(Entity& e) {
+inline sf::Sprite* PLAYER_SPRITE(Entity& e) {
   return &sprite_pool[e.sprite];
 }

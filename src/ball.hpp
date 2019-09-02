@@ -13,6 +13,11 @@ const int BALL_SPRITE_HEIGHT = 32;
 
 inline std::vector<sf::IntRect> ball_frames;
 
+#define BALL_ENTITY(B) entity_pool[B.entity]
+#define BALL_SHADOW_ENTITY(B) entity_pool[B.shadow_entity]
+#define BALL_SPRITE(B) sprite_pool[BALL_ENTITY(B).sprite]
+#define BALL_SHADOW_SPRITE(B) sprite_pool[BALL_SHADOW_ENTITY(B).sprite]
+
 /**
  * @brief The Ball struct
  */
@@ -24,30 +29,6 @@ struct Ball {
   bool inited = false;
   sf::CircleShape collidable{3.f, 10};
 };
-/**
- * @brief get_entity
- * @param ball
- * @return
- */
-Entity &get_ball_entity(Ball &ball);
-/**
- * @brief get_ball_shadow_entity
- * @param ball
- * @return
- */
-Entity &get_ball_shadow_entity(Ball &ball);
-/**
- * @brief get_sprite
- * @param ball
- * @return
- */
-sf::Sprite &get_ball_sprite(Ball &ball);
-/**
- * @brief get_ball_shadow_sprite
- * @param ball
- * @return
- */
-sf::Sprite &get_ball_shadow_sprite(Ball &ball);
 /**
  * @brief make_ball_sprite
  * @param sprite

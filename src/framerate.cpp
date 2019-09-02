@@ -1,4 +1,5 @@
 #include "framerate.hpp"
+inline static const int ONE_SECOND = 1000;
 //
 //
 //
@@ -20,7 +21,7 @@ void on_frame_started(Framerate &framerate) {
 void on_frame_ended(Framerate &framerate) {
   float elapsed = framerate.second_timer.getElapsedTime().asMilliseconds();
   framerate.framecount++;
-  if (elapsed >= 1000) {
+  if (elapsed >= ONE_SECOND) {
     framerate.fps = framerate.framecount;
     framerate.framecount = 0;
     framerate.second_timer.restart();

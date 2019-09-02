@@ -20,17 +20,22 @@ inline const int PLAYER_SPRITESHEET_COLS = 24;
 inline const int PLAYER_SPRITE_FRAMES = 72;
 inline const int PLAYER_SPRITE_WIDTH = 32;
 inline const int PLAYER_SPRITE_HEIGHT = 32;
-
 inline const int PLAYER_SHADOW_SPRITESHEET_ROWS = 4;
 inline const int PLAYER_SHADOW_SPRITESHEET_COLS = 24;
 inline const int PLAYER_SHADOW_SPRITE_FRAMES = 72;
 inline const int PLAYER_SHADOW_SPRITE_WIDTH = 32;
 inline const int PLAYER_SHADOW_SPRITE_HEIGHT = 32;
-
 inline const int PLAYER_PERSPECTIVE_WIDTH = 32;
+inline const int PLAYER_ANIMS = 24;
 
 inline std::vector<sf::IntRect> player_frames;
 inline std::vector<sf::IntRect> player_shadow_frames;
+
+// shorthand getters
+#define PLAYER_ENTITY(P) entity_pool[P.entity]
+#define PLAYER_SPRITE(P) sprite_pool[entity_pool[P.entity].sprite]
+#define PLAYER_SHADOW_ENTITY(P) entity_pool[P.shadow_entity]
+#define PLAYER_SHADOW_SPRITE(P) sprite_pool[PLAYER_SHADOW_ENTITY(P).sprite]
 
 /**
  * @brief The PlayerState enum
@@ -53,30 +58,6 @@ struct Player {
   PlayerState state = PlayerState::Stand;
 };
 /**
- * @brief get_entity
- * @param ball
- * @return
- */
-Entity &get_player_entity(Player &player);
-/**
- * @brief get_player_shadow_entity
- * @param player
- * @return
- */
-Entity &get_player_shadow_entity(Player &player);
-/**
- * @brief get_sprite
- * @param player
- * @return
- */
-sf::Sprite &get_player_sprite(Player &player);
-/**
- * @brief get_player_shadow_sprite
- * @param player
- * @return
- */
-sf::Sprite &get_player_shadow_sprite(Player &player);
-/**
  * @brief make_player_sprite
  * @param sprite
  * @param spritesheet
@@ -87,7 +68,7 @@ void make_player_sprite(int sprite, const std::string &spritesheet);
  * @brief init_players
  * @param players
  */
-void init_players(std::vector<Player> &players);
+void init_player(Player &p);
 /**
  * @brief init_player_shadow
  * @param player
@@ -104,11 +85,11 @@ void release_players(std::vector<Player> &players);
  */
 void think(Player &player);
 /**
- * @brief start_animation
+ * @brief start_player_animation
  * @param player
  * @param id
  */
-void start_player_animation(Player &player, PlayerAnimation id);
+void start_player_animation(Player &player, PlayerAnimationType type, Direction dir);
 /**
  * @brief stop_animation
  * @param player
