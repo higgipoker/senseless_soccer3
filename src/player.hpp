@@ -32,10 +32,10 @@ inline std::vector<sf::IntRect> player_frames;
 inline std::vector<sf::IntRect> player_shadow_frames;
 
 // shorthand getters
-#define PLAYER_ENTITY(P) entity_pool[P.entity]
-#define PLAYER_SPRITE(P) sprite_pool[entity_pool[P.entity].sprite]
-#define PLAYER_SHADOW_ENTITY(P) entity_pool[P.shadow_entity]
-#define PLAYER_SHADOW_SPRITE(P) sprite_pool[PLAYER_SHADOW_ENTITY(P).sprite]
+#define PlayerEntity entity_pool[player.entity]
+#define PlayerSprite sprite_pool[entity_pool[player.entity].sprite]
+#define PlayerShadowEntity entity_pool[player.shadow_entity]
+#define PlayerShadowSprite sprite_pool[PlayerShadowEntity.sprite]
 
 /**
  * @brief The PlayerState enum
@@ -68,7 +68,7 @@ void make_player_sprite(int sprite, const std::string &spritesheet);
  * @brief init_players
  * @param players
  */
-void init_player(Player &p);
+void init_player(Player &player);
 /**
  * @brief init_player_shadow
  * @param player

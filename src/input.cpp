@@ -57,8 +57,8 @@ void handle_input(Game &game, Camera &camera) {
             // convert it to world coordinates
             sf::Vector2f worldPos = game.window.mapPixelToCoords(pixelPos);
             for (int i = used_entity_count - 1; i >= 0; --i) {
-              auto sprite = PLAYER_SPRITE(entity_pool[i]);
-              auto bounds = sprite->getGlobalBounds();
+              auto sprite = sprite_pool[entity_pool[i].sprite];
+              auto bounds = sprite.getGlobalBounds();
               if (bounds.contains(worldPos.x, worldPos.y)) {
                 if (entity_pool[i].type != EntityType::Camera &&
                     entity_pool[i].type != EntityType::Background) {

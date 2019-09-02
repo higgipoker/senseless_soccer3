@@ -21,15 +21,13 @@
 //
 //
 inline void control_ball(Ball &ball) {
-  controlled_entities.insert(
-      std::make_pair(&BallEntity, &keyboard.device));
+  controlled_entities.insert(std::make_pair(&BallEntity, &keyboard.device));
 }
 //
 //
 //
 inline void control_player(Player &player) {
-  controlled_entities.insert(
-      std::make_pair(&PLAYER_ENTITY(player), &keyboard.device));
+  controlled_entities.insert(std::make_pair(&PlayerEntity, &keyboard.device));
 }
 //
 //
@@ -150,25 +148,24 @@ int main(int argc, char *argv[]) {
   init_player_animations();
 
   int x = 0;
-  srand(time(nullptr));
   for (auto &player : players) {
     // player
-    PLAYER_SPRITE(player).move(x, 0);
+    PlayerSprite.move(x, 0);
     int f = rand() % PLAYER_SPRITE_FRAMES;
-    PLAYER_SPRITE(player).setTextureRect(player_frames[f]);
+    PlayerSprite.setTextureRect(player_frames[f]);
     x += 32;
-    start_player_animation(player, PlayerAnimationType::Stand, Direction::SOUTH);
-    PLAYER_SPRITE(player).setOrigin(PLAYER_SPRITE_WIDTH / 2,
-                                    PLAYER_SPRITE_HEIGHT);
+    start_player_animation(player, PlayerAnimationType::Stand,
+                           Direction::SOUTH);
+    PlayerSprite.setOrigin(PLAYER_SPRITE_WIDTH / 2, PLAYER_SPRITE_HEIGHT);
 
     // shaodw
-    PLAYER_SHADOW_SPRITE(player).setOrigin(PLAYER_SPRITE_WIDTH / 2,
+    PlayerShadowSprite.setOrigin(PLAYER_SPRITE_WIDTH / 2,
                                            PLAYER_SPRITE_HEIGHT);
-    PLAYER_SHADOW_SPRITE(player).setTextureRect(player_shadow_frames[0]);
-    perspectivize(PLAYER_SPRITE(player), PLAYER_ENTITY(player).position.z,
-                  PLAYER_SPRITE(player).getLocalBounds().width, 50);
-    PLAYER_SHADOW_SPRITE(player).setScale(PLAYER_SPRITE(player).getScale().x,
-                                          PLAYER_SPRITE(player).getScale().y);
+    PlayerShadowSprite.setTextureRect(player_shadow_frames[0]);
+    perspectivize(PlayerSprite, PlayerEntity.position.z,
+                  PlayerSprite.getLocalBounds().width, 50);
+    PlayerShadowSprite.setScale(PlayerSprite.getScale().x,
+                                          PlayerSprite.getScale().y);
   }
 
   // --------------------------------------------------
