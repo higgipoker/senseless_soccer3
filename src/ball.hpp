@@ -13,10 +13,10 @@ const int BALL_SPRITE_HEIGHT = 32;
 
 inline std::vector<sf::IntRect> ball_frames;
 
-#define BALL_ENTITY(B) entity_pool[B.entity]
-#define BALL_SHADOW_ENTITY(B) entity_pool[B.shadow_entity]
-#define BALL_SPRITE(B) sprite_pool[BALL_ENTITY(B).sprite]
-#define BALL_SHADOW_SPRITE(B) sprite_pool[BALL_SHADOW_ENTITY(B).sprite]
+#define BallEntity entity_pool[ball.entity]
+#define BallShadowEntity entity_pool[ball.shadow_entity]
+#define BallSprite sprite_pool[BallEntity.sprite]
+#define BALL_SHADOW_SPRITE(B) sprite_pool[BallShadowEntity.sprite]
 
 /**
  * @brief The Ball struct

@@ -30,6 +30,6 @@ void update_grass(Grass &grass, Camera &camera) {
   rect.height = camera.view.getSize().y + SAFETY_OFFSET * 4;
   rect.left = camera.view.getCenter().x - rect.width / 2 - SAFETY_OFFSET;
   rect.top = camera.view.getCenter().y - rect.height / 2 - SAFETY_OFFSET;
-  GRASS_SPRITE(grass).setPosition(rect.left, rect.top);
-  GRASS_SPRITE(grass).setTextureRect(rect);
+  GrassSprite.setPosition(rect.left, rect.top);
+  GrassSprite.setTextureRect(rect);
 }

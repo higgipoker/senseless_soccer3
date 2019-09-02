@@ -3,8 +3,8 @@
 #include "globals.hpp"
 #include "texture.hpp"
 
-#define GRASS_SPRITE(G) sprite_pool[entity_pool[grass.entity].sprite]
-#define get_grass_entity(G) entity_pool[G.entity];
+#define GrassSprite sprite_pool[entity_pool[grass.entity].sprite]
+#define GrassEntity entity_pool[grass.entity];
 
 // types of grass
 const std::array<std::string, 6> grasses{

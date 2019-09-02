@@ -109,7 +109,7 @@ void change_player_state(Player &player, PlayerState new_state) {
 void do_stand_state(Player &player, Ball &ball) {
   // update direction
   Compass to_ball;
-  to_ball.direction = direction_to(PLAYER_ENTITY(player), BALL_ENTITY(ball));
+  to_ball.direction = direction_to(PLAYER_ENTITY(player), BallEntity);
   player.facing = to_ball.direction;
 
   start_player_animation(player, PlayerAnimationType::Stand,
@@ -195,10 +195,10 @@ void update_player(Player &player, Ball &ball) {
       Vector3 f(player.feet.getPosition().x, player.feet.getPosition().y);
       Vector3 ball_pos = f + (player.facing.toVector() * 7);
 
-      BALL_ENTITY(ball).velocity.reset();
+      BallEntity.velocity.reset();
 
       // set new position
-      BALL_ENTITY(ball).position = ball_pos;
+      BallEntity.position = ball_pos;
     }
   }
   player.old_direction = player.facing;
@@ -207,8 +207,8 @@ void update_player(Player &player, Ball &ball) {
   if (collides(player.feet, ball.collidable)) {
     Vector3 force = player.facing.toVector();
     force *= 7000;
-    BALL_ENTITY(ball).velocity.reset();
-    apply_force(BALL_ENTITY(ball), force);
+    BallEntity.velocity.reset();
+    apply_force(BallEntity, force);
   }
 }
 //

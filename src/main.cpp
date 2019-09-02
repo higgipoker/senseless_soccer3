@@ -22,7 +22,7 @@
 //
 inline void control_ball(Ball &ball) {
   controlled_entities.insert(
-      std::make_pair(&BALL_ENTITY(ball), &keyboard.device));
+      std::make_pair(&BallEntity, &keyboard.device));
 }
 //
 //
@@ -105,23 +105,23 @@ int main(int argc, char *argv[]) {
     ball.inited = true;
     populate_frames(ball_frames, BALL_SPRITESHEET_COLS, BALL_SPRITE_WIDTH,
                     BALL_SPRITE_HEIGHT, 6, 0, BALL_SPRITE_FRAMES);
-    BALL_SPRITE(ball).setOrigin(BALL_SPRITE_WIDTH / 2, BALL_SPRITE_HEIGHT / 2);
+    BallSprite.setOrigin(BALL_SPRITE_WIDTH / 2, BALL_SPRITE_HEIGHT / 2);
     BALL_SHADOW_SPRITE(ball).setOrigin(BALL_SPRITE_WIDTH / 2,
                                        BALL_SPRITE_HEIGHT / 2);
     init_ball_animations();
 
-    BALL_SPRITE(ball).setTextureRect(ball_frames[4]);
-    BALL_SPRITE(ball).rotate(45);
+    BallSprite.setTextureRect(ball_frames[4]);
+    BallSprite.rotate(45);
     start_ball_animation(ball, BallAnimation::RollLeft);
-    BALL_ENTITY(ball).position.x = BALL_SPRITE_WIDTH / 2;
-    BALL_ENTITY(ball).position.y = 50;
+    BallEntity.position.x = BALL_SPRITE_WIDTH / 2;
+    BallEntity.position.y = 50;
 
     // set up initial perspective for shadow (doesnt change)
     BALL_SHADOW_SPRITE(ball).setTextureRect(ball_frames[7]);
-    perspectivize(BALL_SPRITE(ball), BALL_ENTITY(ball).position.z,
+    perspectivize(BallSprite, BallEntity.position.z,
                   ball.collidable.getRadius() * 2, 20);
-    BALL_SHADOW_SPRITE(ball).setScale(BALL_SPRITE(ball).getScale().x,
-                                      BALL_SPRITE(ball).getScale().y);
+    BALL_SHADOW_SPRITE(ball).setScale(BallSprite.getScale().x,
+                                      BallSprite.getScale().y);
 
     ball.collidable.setOrigin(ball.collidable.getRadius() / 2,
                               ball.collidable.getRadius() / 2);
@@ -225,15 +225,15 @@ int main(int argc, char *argv[]) {
   release_texture(ball.spritesheet);
 
   // only testing, the os will do this and quite the program faster
-  release_sprite(BALL_ENTITY(grass).sprite);
+  release_sprite(BallEntity.sprite);
   release_entity(grass.entity);
   release_entity(camera.entity->id);
 
   if (ball.inited) {
-    release_sprite(BALL_SHADOW_ENTITY(ball).sprite);
+    release_sprite(BallShadowEntity.sprite);
     release_entity(ball.shadow_entity);
 
-    release_sprite(BALL_ENTITY(ball).sprite);
+    release_sprite(BallEntity.sprite);
     release_entity(ball.entity);
   }
   release_players(players);
