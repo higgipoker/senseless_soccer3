@@ -194,7 +194,6 @@ int main(int argc, char *argv[]) {
     on_frame_started(framerate);
 
     update_debug(game);
-
     handle_input(game, camera);
     update_camera(camera, game.world_rect);
     update_entities(ball, players, grass, camera);
