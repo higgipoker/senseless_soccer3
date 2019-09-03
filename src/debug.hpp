@@ -35,6 +35,9 @@ inline std::vector<sf::Drawable *> debug_shapes;
 
 // draw sprite bounds?
 inline static bool bounds_flag = false;
+
+// active entity
+inline static int active_entity_index=0;
 /**
  * @brief init_debug
  * @param window

@@ -16,14 +16,23 @@ void update_debug(sf::RenderWindow &window) {
   // ImGui::ShowDemoWindow();
   // global debug window
   ImGui::Begin("Debug");
-  {  // draw bounds
-    ImGui::Checkbox("Draw Bounds", &bounds_flag);
+
+  //
+  // draw bounds
+  //
+  { ImGui::Checkbox("Draw Bounds", &bounds_flag); }
+
+  //
+  // grabbed entity
+  //
+  {
+    if (grabbed_entity == NO_ENTITY) {
+      ImGui::Text("Grabbed Entity: ");
+    } else {
+      ImGui::Text("Grabbed Entity: %i", grabbed_entity);
+    }
   }
-  if (grabbed_entity == NO_ENTITY) {
-    ImGui::Text("Grabbed Entity: ");
-  } else {
-    ImGui::Text("Grabbed Entity: %i", grabbed_entity);
-  }
+
   ImGui::End();
 }
 //
