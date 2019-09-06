@@ -31,11 +31,12 @@ void init_player(Player &player) {
   }
   player.facing.direction = Direction::SOUTH;
   entity_pool[e].sprite = s;
-  entity_pool[e].co_friction = 25.f;  // direct control
+  entity_pool[e].co_friction = 0.0f;  // direct control
   entity_pool[e].co_air_resistance = 0;
   entity_pool[e].terminal_velocity = 0.03f;
   entity_pool[e].position.y = PLAYER_SPRITE_HEIGHT;
   entity_pool[e].speed = 100;
+  entity_pool[e].mass = 3;
   PlayerSprite.spritesheet = Globals::GFX_FOLDER + "playerandball.png";
   make_player_sprite(entity_pool[e].sprite, PlayerSprite.spritesheet);
   set_sprite_z(sprite_pool[entity_pool[e].sprite], (rand() % 50) + 5);
@@ -167,6 +168,28 @@ void do_run_state(Player &player, Ball &ball) {
 //
 void update_player(Player &player, Ball &ball) {
   player.control.setOutlineColor(sf::Color::Red);
+
+  PlayerEntity.velocity.x = PlayerEntity.velocity.y = 0;
+  if (Floats::greater_than(PlayerEntity.force.x, 0)) {
+    PlayerEntity.velocity.x =  1;
+  }
+  if (Floats::less_than(PlayerEntity.force.x, 0)) {
+    PlayerEntity.velocity.x = -1;
+  }
+  if (Floats::greater_than(PlayerEntity.force.y, 0)) {
+    PlayerEntity.velocity.y =  1;
+  }
+  if (Floats::less_than(PlayerEntity.force.y, 0)) {
+    PlayerEntity.velocity.y =  -1;
+  }
+
+  if (Floats::greater_than(PlayerEntity.velocity.magnitude(), 0)) {
+    auto mag = PlayerEntity.velocity.magnitude2d();
+    PlayerEntity.velocity = PlayerEntity.velocity.normalise2d();
+    PlayerEntity.velocity.x *= mag * PlayerEntity.speed; 
+    PlayerEntity.velocity.y *= mag * PlayerEntity.speed;
+    }
+
   // player's can't exert a force whilst in the air!
   if (Floats::greater_than(PlayerEntity.position.z, 0)) {
     PlayerEntity.force.reset();

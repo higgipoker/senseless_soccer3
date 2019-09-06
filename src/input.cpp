@@ -133,7 +133,7 @@ void init_event(ControllerEvent &controller, ControllerEventID id,
 //
 //
 void update_controlled_entities() {
-  static const int f = 50;
+  static const int f = 1000;
   for (auto &entry : controlled_entities) {
     if (entry.second->states[InputState::Left]) {
       apply_force(*entry.first, Vector3(-f, 0));
@@ -148,7 +148,7 @@ void update_controlled_entities() {
       apply_force(*entry.first, Vector3(0, f));
     }
     if (entry.second->states[InputState::FireDown]) {
-      apply_force(*entry.first, Vector3(0.f, 0.f, 20.f));
+      apply_force(*entry.first, Vector3(0.f, 0.f, 1000.f));
     }
   }
 }

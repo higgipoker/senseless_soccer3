@@ -203,10 +203,11 @@ int main(int argc, char *argv[]) {
     if (!sprite_pool_sorted) {
       sort_sprite_pool();
     }
-    render(game.window, camera, game.debug);
-    while (time_left(framerate) >= 0) {
+  
+    // (time_left(framerate) >= 0) {
       step_sim(game.timestep);
-    }
+    //}
+    render(game.window, camera, game.debug);
 
     on_frame_ended(framerate);
   }
@@ -220,7 +221,7 @@ int main(int argc, char *argv[]) {
   shutdown_debug();
 #endif
 
-  // only testing, the os will do this and quite the program faster
+  // only testing, the os will do this and quit the program faster
   release_sprite(BallEntity.sprite);
   release_entity(pitch.grass.entity);
   release_entity(camera.entity->id);

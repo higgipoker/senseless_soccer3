@@ -3,7 +3,7 @@
 #include "vector.hpp"
 
 static const float CLAMP_TO_GROUND = 0.0000001f;
-static const float GRAVITATIONAL_CONSTANT = -0.3f;
+static const float GRAVITATIONAL_CONSTANT = -55000.f;
 //
 //
 //
