@@ -96,10 +96,11 @@ struct InputDevice {
 };
 struct Player;
 // gamepad callback
+static const int MAX_EVENTS = 10;
 struct GamepadCallback {
   Player *player = nullptr;
-  ControllerEventID event = ControllerEventID::NoEvent;
-  int param = 0;
+  std::vector<ControllerEventID> events;
+  std::vector<int> params;
 };
 
 /**

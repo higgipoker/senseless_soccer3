@@ -268,7 +268,7 @@ void kick(Player &player, float power) {
   force = force.normalise2d();
   force.x *= mag * power;
   force.y *= mag * power;
-  force.z = 1;
+  force.z = 0;
   entity_pool[Globals::ball->entity].velocity.reset();
   apply_force(entity_pool[Globals::ball->entity], force);
 }
