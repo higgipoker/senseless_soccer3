@@ -133,3 +133,7 @@ void do_close_control(Player &player, Ball &ball);
  * @param ball
  */
 void do_dribble(Player &player, Ball &ball);
+/**
+ * @brief kick
+ */
+void kick(Player &player, float power = 20);

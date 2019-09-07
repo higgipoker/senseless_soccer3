@@ -32,6 +32,6 @@ void init_window(sf::RenderWindow &window, const std::string &title,
     vm.height = height;
     window.create(vm, title, flags, settings);
   }
-  window.setVerticalSyncEnabled(true);
-  // window.setFramerateLimit(60);
+  // winndow.setVerticalSyncEnabled(true);
+  window.setFramerateLimit(60);
 }

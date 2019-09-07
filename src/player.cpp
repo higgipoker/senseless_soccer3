@@ -13,35 +13,44 @@ void make_player_sprite(int sprite, const std::string &spritesheet) {
 //
 //
 void init_player(Player &player) {
-  int e = acquire_entity();
+  player.entity = acquire_entity();
 
-  if (e == -1) {
+  if (player.entity == -1) {
     std::cout << "no entity" << std::endl;
-    return;
+    exit(EXIT_FAILURE);
   }
 
-  entity_pool[e].type = EntityType::Player;
-  player.entity = e;
+  // all the entity parameters
+  PlayerEntity.type = EntityType::Player;
+  PlayerEntity.speed = 5.0f;
+  PlayerEntity.terminal_velocity = 1;
+  PlayerEntity.co_friction = 1.0f;
+  PlayerEntity.co_bounciness = 0.0f;
+  PlayerEntity.co_air_resistance = 0.0f;
+  PlayerEntity.mass = 20;
+  PlayerEntity.position.y = PLAYER_SPRITE_HEIGHT;
 
-  int s = acquire_sprite(&entity_pool[e]);
-  if (s == -1) {
+  // the player paramaters
+  player.feet.setRadius(3.5f);
+  player.control.setRadius(15.0f);
+
+  // set up the sprite
+  PlayerEntity.sprite = acquire_sprite(&PlayerEntity);
+  if (PlayerEntity.sprite == -1) {
     std::cout << "no sprite" << std::endl;
-    release_entity(e);
-    return;
+    release_entity(player.entity);
+    exit(EXIT_FAILURE);
   }
-  player.facing.direction = Direction::SOUTH;
-  entity_pool[e].sprite = s;
-  entity_pool[e].co_friction = 0.0f;  // direct control
-  entity_pool[e].co_air_resistance = 0;
-  entity_pool[e].terminal_velocity = 0.03f;
-  entity_pool[e].position.y = PLAYER_SPRITE_HEIGHT;
-  entity_pool[e].speed = 100;
-  entity_pool[e].mass = 3;
+
+  // sprite stuff
   PlayerSprite.spritesheet = Globals::GFX_FOLDER + "playerandball.png";
-  make_player_sprite(entity_pool[e].sprite, PlayerSprite.spritesheet);
-  set_sprite_z(sprite_pool[entity_pool[e].sprite], (rand() % 50) + 5);
+  make_player_sprite(PlayerEntity.sprite, PlayerSprite.spritesheet);
+  set_sprite_z(sprite_pool[PlayerEntity.sprite], (rand() % 50) + 5);
   PlayerSprite.setOrigin(PLAYER_SPRITE_WIDTH / 2, PLAYER_SPRITE_HEIGHT);
   init_player_shadow(player);
+
+  // player specific stuff
+  player.facing.direction = Direction::SOUTH;
   player.control.setOutlineThickness(2);
   player.control.setFillColor(sf::Color(0, 0, 0, 0));
   player.control.setOutlineColor(sf::Color::Red);
@@ -118,9 +127,6 @@ void do_stand_state(Player &player, Ball &ball) {
   if (player.facing.direction == Direction::WEST) {
     int b = 1;
   }
-  if (player.shirt_number == 1) {
-    std::cout << player.facing.print() << std::endl;
-  }
   start_player_animation(player, PlayerAnimationType::Stand,
                          player.facing.direction);
 
@@ -144,6 +150,7 @@ void do_run_state(Player &player, Ball &ball) {
     start_player_animation(player, PlayerAnimationType::Run,
                            player.facing.direction);
   }
+
   // check for ball collision (dribble)
   if (collides(player.feet, ball.collidable)) {
     do_dribble(player, ball);
@@ -169,28 +176,6 @@ void do_run_state(Player &player, Ball &ball) {
 void update_player(Player &player, Ball &ball) {
   player.control.setOutlineColor(sf::Color::Red);
 
-  PlayerEntity.velocity.x = PlayerEntity.velocity.y = 0;
-  if (Floats::greater_than(PlayerEntity.force.x, 0)) {
-    PlayerEntity.velocity.x =  1;
-  }
-  if (Floats::less_than(PlayerEntity.force.x, 0)) {
-    PlayerEntity.velocity.x = -1;
-  }
-  if (Floats::greater_than(PlayerEntity.force.y, 0)) {
-    PlayerEntity.velocity.y =  1;
-  }
-  if (Floats::less_than(PlayerEntity.force.y, 0)) {
-    PlayerEntity.velocity.y =  -1;
-  }
-
-  if (Floats::greater_than(PlayerEntity.velocity.magnitude(), 0)) {
-    auto mag = PlayerEntity.velocity.magnitude2d();
-    PlayerEntity.velocity = PlayerEntity.velocity.normalise2d();
-    PlayerEntity.velocity.x *= mag * PlayerEntity.speed; 
-    PlayerEntity.velocity.y *= mag * PlayerEntity.speed;
-    }
-
-  // player's can't exert a force whilst in the air!
   if (Floats::greater_than(PlayerEntity.position.z, 0)) {
     PlayerEntity.force.reset();
   }
@@ -263,7 +248,27 @@ void do_close_control(Player &player, Ball &ball) {
 void do_dribble(Player &player, Ball &ball) {
   player.ball_under_control = true;
   Vector3 force = player.facing.toVector();
-  force *= 6000;
+  float p = 6;
+  // normalize
+  auto mag = force.magnitude2d();
+  force = force.normalise2d();
+  force.x *= mag * p;
+  force.y *= mag * p;
   BallEntity.velocity.reset();
   apply_force(BallEntity, force);
+}
+//
+//
+//
+void kick(Player &player, float power) {
+  std::cout << "kick" << std::endl;
+  Vector3 force = player.facing.toVector();
+  // normalize
+  auto mag = force.magnitude2d();
+  force = force.normalise2d();
+  force.x *= mag * power;
+  force.y *= mag * power;
+  force.z = 1;
+  entity_pool[Globals::ball->entity].velocity.reset();
+  apply_force(entity_pool[Globals::ball->entity], force);
 }

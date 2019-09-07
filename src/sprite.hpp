@@ -3,7 +3,8 @@
 
 #include <string>
 #include <vector>
-
+// unused sprites have id -1
+static const int NO_SPRITE = -1;
 /**
  * @brief thin wrapper for sf::Sprite to make it sortable by z index,
  * and force informing the data pool when a z has changed (for sorting)

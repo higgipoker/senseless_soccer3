@@ -27,8 +27,10 @@ inline void control_ball(Ball &ball) {
 //
 //
 inline void control_player(Player &player, Gamepad &gamepad) {
-  controlled_entities.insert(std::make_pair(&PlayerEntity, &keyboard.device));
-  controlled_entities.insert(std::make_pair(&PlayerEntity, &gamepad.device));
+  // controlled_entities.insert(std::make_pair(&PlayerEntity,
+  // &keyboard.device));
+  // controlled_entities.insert(std::make_pair(&PlayerEntity, &gamepad.device));
+  gamepad.cb.player = &player;
 }
 //
 //
@@ -100,6 +102,7 @@ int main(int argc, char *argv[]) {
   //
   // ball
   Ball ball;
+  Globals::ball = &ball;
   if (init_ball(ball) == 0) {
     ball.inited = true;
     populate_frames(ball_frames, BALL_SPRITESHEET_COLS, BALL_SPRITE_WIDTH,
@@ -176,7 +179,7 @@ int main(int argc, char *argv[]) {
   Gamepad gamepad;
   init_gamepad(gamepad);
   gamepads.insert(&(gamepad));
-  //  control_ball(ball);
+  // control_ball(ball);
   control_player(players[0], gamepad);
   // control_camera(camera);
 
@@ -192,24 +195,14 @@ int main(int argc, char *argv[]) {
   // main loop
   //
   while (game.game_running) {
-    on_frame_started(framerate);
-
     update_debug(game);
-
     handle_input(game, camera);
     update_camera(camera, game.world_rect);
     update_entities(ball, players, pitch, camera);
     update_animations();
-    if (!sprite_pool_sorted) {
-      sort_sprite_pool();
-    }
-  
-    // (time_left(framerate) >= 0) {
-      step_sim(game.timestep);
-    //}
+    step_sim(game.timestep);
+    sort_sprite_pool();
     render(game.window, camera, game.debug);
-
-    on_frame_ended(framerate);
   }
   //  end main loop
   // --------------------------------------------------

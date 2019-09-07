@@ -3,7 +3,7 @@
 #include "vector.hpp"
 
 static const float CLAMP_TO_GROUND = 0.0000001f;
-static const float GRAVITATIONAL_CONSTANT = -55000.f;
+static const float GRAVITATIONAL_CONSTANT = -9.8f;
 //
 //
 //
@@ -15,12 +15,12 @@ inline void damp_velocity(Entity &entity) {
 //
 //
 //
-inline void bounce(Entity &entity, const float dt) {
+inline void bounce(Entity &entity) {
   // bounce
   entity.velocity.z = -entity.velocity.z;
   entity.velocity.z *= entity.co_bounciness;
   friction = entity.velocity.reverse();
-  friction = friction * entity.co_friction * dt;
+  friction = friction * entity.co_friction;
   entity.force = entity.force + friction;
 }
 //
@@ -38,10 +38,14 @@ inline void damp_bounce(Entity &entity) {
 //
 //
 inline Vector3 integrate(Entity &entity, const float dt) {
+  if (Floats::greater_than(entity.force.z, 0)) {
+    int a = 0;
+  }
+
   if (Floats::greater_than(entity.position.z, 0)) {
     // gravity
     Vector3 gravity;
-    gravity.z = GRAVITATIONAL_CONSTANT * dt;
+    gravity.z = GRAVITATIONAL_CONSTANT;
     entity.force += gravity * entity.mass * dt;
     // air resistance
     Vector3 air_resistance = entity.velocity.reverse().normalise();
@@ -50,52 +54,58 @@ inline Vector3 integrate(Entity &entity, const float dt) {
 
   } else {
     // drag
-    friction = entity.velocity.reverse();
-    friction = friction * entity.co_friction * dt;
-    entity.force = entity.force + friction;
+    if (Floats::greater_than(entity.velocity.magnitude2d(), 0)) {
+      friction = entity.velocity.reverse();
+      friction = friction * entity.co_friction;
+      entity.velocity = entity.velocity + friction;
+    }
   }
-  acceleration = entity.force / entity.mass;
-  return acceleration * dt;
+  acceleration = entity.force / entity.mass * entity.speed;
+  return acceleration;
 }
 //
 //
 //
 void integrate_euler(Entity &entity, const float dt) {
   // moving down
+  bool bounced = false;
   if (Floats::less_than(entity.velocity.z, 0) &&
       Floats::less_than(entity.position.z, 0)) {
-    bounce(entity, dt);
+    bounce(entity);
+    bounced = true;
 
   } else {
     if (Floats::greater_than(entity.position.z, 0)) {
-      // grabity
+      // gravity
       Vector3 gravity;
-      gravity.z = GRAVITATIONAL_CONSTANT * dt;
+      gravity.z = GRAVITATIONAL_CONSTANT;
       entity.force += gravity * entity.mass * dt;
     } else {
-      // drag
+      // friction
       friction = entity.velocity.reverse();
-      friction = friction * entity.co_friction * dt;
-      entity.force = entity.force + friction;
+      friction = friction * entity.co_friction;
+      entity.velocity = entity.velocity + friction;
     }
 
     // acceleration = entity.force / mass
     acceleration = entity.force / entity.mass;
 
     // difference in velocity = acceleration * difference time
-    dv = acceleration * dt;
+    dv = acceleration;
 
     // velocity = velocity + difference in velocity
     entity.velocity += dv;
 
     // difference in position = velocity * difference time
-    dp = entity.velocity * dt;
+    dp = entity.velocity;
 
     // update position
     entity.position += dp;
   }
   // dampens infinite bounce
-  damp_bounce(entity);
+  if (bounced) {
+    damp_bounce(entity);
+  }
   // reset forces for next step
   entity.force.reset();
 }
@@ -106,15 +116,8 @@ void integrate_improved_euler(Entity &entity, const float dt) {
   // moving down
   if (Floats::less_than(entity.velocity.z, 0) &&
       Floats::less_than(entity.position.z, 0)) {
-    bounce(entity, dt);
+    bounce(entity);
   } else {
-    // normalizes for diagonals
-    if (Floats::greater_than(entity.force.magnitude(), 0)) {
-      auto mag = entity.force.magnitude2d();
-      entity.force = entity.force.normalise2d();
-      entity.force.x *= mag * entity.speed * dt;
-      entity.force.y *= mag * entity.speed * dt;
-    }
     // step 1
     k1 = integrate(entity, dt);
     // step 2
@@ -122,7 +125,14 @@ void integrate_improved_euler(Entity &entity, const float dt) {
     // update velocity
     entity.velocity = entity.velocity + (k1 + k2) / 2;
     // change in position (converted to pixels)
-    dp = (entity.velocity * dt);
+    dp = (entity.velocity);
+    // normalizes for diagonals
+    if (Floats::greater_than(dp.magnitude(), 0)) {
+      auto mag = dp.magnitude2d();
+      dp = dp.normalise2d();
+      dp.x *= mag * entity.speed;
+      dp.y *= mag * entity.speed;
+    }
     // apply new position
     entity.position = entity.position + dp;
   }
@@ -132,6 +142,9 @@ void integrate_improved_euler(Entity &entity, const float dt) {
   damp_velocity(entity);
   // reset forces for next step
   entity.force.reset();
+  if (entity.type == EntityType::Ball) {
+    int b = 0;
+  }
 }
 //
 //

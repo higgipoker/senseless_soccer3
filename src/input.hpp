@@ -80,8 +80,8 @@ struct ControllerEvent {
   ControllerEventStatus status = ControllerEventStatus::Released;
   int param = 0;
 };
-static const int fire_tap_length = 5;
-static const int fire_double_tap_length = 10;
+static const int fire_tap_length = 8;
+static const int fire_double_tap_length = 12;
 
 /**
  * @brief The InputDevice struct
@@ -94,6 +94,13 @@ struct InputDevice {
   unsigned char buttonmask{0x0};
   unsigned char directionmask{0x0};
 };
+struct Player;
+// gamepad callback
+struct GamepadCallback {
+  Player *player = nullptr;
+  ControllerEventID event = ControllerEventID::NoEvent;
+  int param = 0;
+};
 
 /**
  * @brief The Gamepad struct
@@ -103,6 +110,8 @@ struct Gamepad {
   int sf_joystick_index = 0;
   float trigger_threshold = 0;
   float thumbstick_threshold = 50.0f;
+
+  GamepadCallback cb;
 };
 
 /**

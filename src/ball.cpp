@@ -19,8 +19,9 @@ int init_ball(Ball &ball) {
   // ball
   int e = acquire_entity();
   ball.entity = e;
-  BallEntity.co_friction = 0.5f;
+  BallEntity.co_friction = 0.01f;
   BallEntity.co_bounciness = 0.9f;
+  BallEntity.mass = 3.5f;
   BallEntity.type = EntityType::Ball;
   BallEntity.sprite = acquire_sprite(&BallEntity);
   BallSprite.spritesheet = Globals::GFX_FOLDER + "playerandball.png";

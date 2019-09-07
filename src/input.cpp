@@ -81,12 +81,30 @@ void handle_input(Game &game, Camera &camera) {
         break;
       case sf::Event::MouseMoved:
         if (game.debug) {
+          // get the current mouse position in the window
+          sf::Vector2i pixelPos = sf::Mouse::getPosition(game.window);
+          // convert it to world coordinates
+          sf::Vector2f worldPos = game.window.mapPixelToCoords(pixelPos);
           if (mouse_pressed) {
-            // get the current mouse position in the window
-            sf::Vector2i pixelPos = sf::Mouse::getPosition(game.window);
-            // convert it to world coordinates
-            sf::Vector2f worldPos = game.window.mapPixelToCoords(pixelPos);
             mouse_dragged(worldPos.x, worldPos.y);
+          } else {
+            bool hovered = false;
+            for (int i = used_entity_count - 1; i >= 0; --i) {
+              if (entity_pool[i].sprite != -1) {
+                auto sprite = sprite_pool[entity_pool[i].sprite];
+                auto bounds = sprite.getGlobalBounds();
+                if (bounds.contains(worldPos.x, worldPos.y)) {
+                  if (entity_pool[i].type != EntityType::Camera &&
+                      entity_pool[i].type != EntityType::Background) {
+                    hovered = true;
+                    hover_entity(i);
+                  }
+                }
+              }
+            }
+            if (!hovered) {
+              unhover();
+            }
           }
         }
         break;
@@ -133,7 +151,7 @@ void init_event(ControllerEvent &controller, ControllerEventID id,
 //
 //
 void update_controlled_entities() {
-  static const int f = 1000;
+  static const int f = 1;
   for (auto &entry : controlled_entities) {
     if (entry.second->states[InputState::Left]) {
       apply_force(*entry.first, Vector3(-f, 0));
@@ -148,7 +166,7 @@ void update_controlled_entities() {
       apply_force(*entry.first, Vector3(0, f));
     }
     if (entry.second->states[InputState::FireDown]) {
-      apply_force(*entry.first, Vector3(0.f, 0.f, 1000.f));
+      apply_force(*entry.first, Vector3(0.f, 0.f, 10.f));
     }
   }
 }

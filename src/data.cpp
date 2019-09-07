@@ -149,6 +149,7 @@ void pack_sprite_pool() {
 //
 //
 void sort_sprite_pool() {
+  if (sprite_pool_sorted) return;
   if (used_sprites.size() < 2) return;
 
   // simple selection sort is fine because array is quite small

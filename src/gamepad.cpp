@@ -1,4 +1,6 @@
 #include "gamepad.hpp"
+
+#include "player.hpp"
 //
 //
 //
@@ -104,15 +106,7 @@ void set_stick_mask(Gamepad &gamepad) {
 //
 //
 void update_gamepad(Gamepad &gamepad) {
-  memset(gamepad.device.states, 0, sizeof(gamepad.device.states));
-  gamepad.device.buttonmask = mask_zero;
-  gamepad.device.directionmask = mask_zero;
-
-  gamepad.sf_joystick_index = 0;
-  set_button_mask(gamepad);
-  set_dpad_mask(gamepad);
-  set_stick_mask(gamepad);
-
+  gamepad.cb.event = ControllerEventID::NoEvent;
   // for comparison for events (chaged statuses)
   int old_states[InputState::Totalevents] = {
       gamepad.device.states[0], gamepad.device.states[1],
@@ -121,6 +115,15 @@ void update_gamepad(Gamepad &gamepad) {
       gamepad.device.states[6], gamepad.device.states[7],
       gamepad.device.states[8], gamepad.device.states[9],
       gamepad.device.states[10]};
+
+  // memset(gamepad.device.states, 0, sizeof(gamepad.device.states));
+  gamepad.device.buttonmask = mask_zero;
+  gamepad.device.directionmask = mask_zero;
+
+  gamepad.sf_joystick_index = 0;
+  set_button_mask(gamepad);
+  set_dpad_mask(gamepad);
+  set_stick_mask(gamepad);
 
   // fire button
   gamepad.device.states[InputState::FireUp] = 0;
@@ -132,9 +135,7 @@ void update_gamepad(Gamepad &gamepad) {
       gamepad.device.states[InputState::FireLength] =
           gamepad.device.fire_ticks++;
     }
-  }
-
-  else if (gamepad.device.states[InputState::FireDown] == 1) {
+  } else if (gamepad.device.states[InputState::FireDown] == 1) {
     gamepad.device.states[InputState::FireUp] = 1;
     gamepad.device.states[InputState::FireDown] = 0;
     gamepad.device.states[InputState::FireLengthCached] =
@@ -167,7 +168,6 @@ void update_gamepad(Gamepad &gamepad) {
       (gamepad.device.directionmask & mask_stick_right)) {
     gamepad.device.states[InputState::Right] = 1;
   }
-
   //
   // Fire event
   //
@@ -179,21 +179,20 @@ void update_gamepad(Gamepad &gamepad) {
     }
   }
   if (old_states[InputState::FireDown]) {
-    if (gamepad.device.states[InputState::FireUp]) {
+    if (!gamepad.device.states[InputState::FireDown]) {
       if (gamepad.device.states[InputState::FireLengthCached] <=
           fire_tap_length) {
-        gamepad.device.ticks_since_tap = 0;
         if (gamepad.device.cached_tap) {
-          std::cout << "==========" << std::endl;
           std::cout << "double tap" << std::endl;
-          std::cout << "==========" << std::endl;
           gamepad.device.cached_tap = false;
+          gamepad.device.ticks_since_tap = 0;
         } else {
           gamepad.device.cached_tap = true;
         }
 
       } else {
         std::cout << "fire released" << std::endl;
+        gamepad.cb.event = ControllerEventID::Fire;
       }
     }
 
@@ -201,5 +200,11 @@ void update_gamepad(Gamepad &gamepad) {
     if (gamepad.device.states[InputState::FireDown]) {
       std::cout << "fire pressed" << std::endl;
     }
+  }
+
+  switch (gamepad.cb.event) {
+    case ControllerEventID::Fire:
+      kick(*gamepad.cb.player);
+      break;
   }
 }

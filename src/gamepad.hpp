@@ -4,6 +4,7 @@
 
 // list of gamepads/joysticks
 inline std::set<Gamepad *> gamepads;
+
 /**
  * @brief get_joystick_ids
  * @return

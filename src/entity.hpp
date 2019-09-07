@@ -1,6 +1,10 @@
 #pragma once
 #include "compass.hpp"
 #include "vector.hpp"
+
+// unused entites have id -1
+static const int NO_ENTITY = -1;
+
 enum class EntityType {
   Anonymous,
   Camera,
@@ -24,7 +28,7 @@ struct Entity {
   float co_friction = 0.01f;
   float co_bounciness = 0.0f;
   float co_air_resistance = 0.0f;
-  float mass = 10;
+  float mass = 1;
 };
 /**
  * @brief get_entity

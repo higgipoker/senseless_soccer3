@@ -12,9 +12,6 @@
 #include <array>
 #include <vector>
 
-// unused entites have id -1
-static const int NO_ENTITY = -1;
-
 // turn on debug next frame
 inline bool pending_debug_toggle = false;
 
@@ -26,6 +23,8 @@ inline sf::Clock ui_clock;
 
 // currently grabbed entity id
 inline int grabbed_entity = NO_ENTITY;
+inline int grabbed_sprite = NO_SPRITE;
+inline std::set<int> hovered_sprites;
 
 // where exactly the mouse was clicked
 inline sf::Vector2f mousegrab_offset;
@@ -34,10 +33,10 @@ inline sf::Vector2f mousegrab_offset;
 inline std::vector<sf::Drawable *> debug_shapes;
 
 // draw sprite bounds?
-inline static bool bounds_flag = false;
+inline static bool bounds_flag = true;
 
 // active entity
-inline static int active_entity_index=0;
+inline static int active_entity_index = 0;
 /**
  * @brief init_debug
  * @param window
@@ -57,7 +56,8 @@ void update_debug(sf::RenderWindow &window);
  * @param window
  * @param bounds
  */
-void draw_bounds(sf::RenderWindow &window, sf::FloatRect bounds);
+void draw_bounds(sf::RenderWindow &window, sf::FloatRect bounds,
+                 int highlight = 0);
 /**
  * @brief render_debug
  * @param window
@@ -80,4 +80,13 @@ void release_entity();
  * @brief mouse_dragged
  */
 void mouse_dragged(int x, int y);
+/**
+ * @brief hover_entity
+ * @param id
+ */
+void hover_entity(int id);
+/**
+ * @brief unhover
+ */
+void unhover();
 #endif
