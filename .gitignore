@@ -1,4 +1,6 @@
 CMakeLists.txt.user
 Debug/
+Release/
 bin/
 perf.data
+imgui.ini
