@@ -1,4 +1,5 @@
 #pragma once
+#include "arcshape.hpp"
 #include "camera.hpp"
 #include "globals.hpp"
 
@@ -15,26 +16,8 @@ inline std::string grass_tile{Globals::GFX_FOLDER + grasses.at(1) + ".png"};
 
 namespace sf {
 inline Color ChalkWhite{255, 255, 255, 200};
+}
 
-/**
- * @brief The ArcShape struct
- */
-struct ArcShape : public CircleShape {
-  /**
-   * @brief ArcShape
-   * @param radius
-   * @param pointCount
-   */
-  ArcShape(float radius = 0, std::size_t pointCount = 30)
-      : CircleShape(radius, pointCount) {}
-
-  /**
-   * @brief getPointCount
-   * @return
-   */
-  std::size_t getPointCount() const override { return (m_pointCount / 2) + 1; }
-};
-}  // namespace sf
 /**
  * @brief The PitchDimensions struct
  */
