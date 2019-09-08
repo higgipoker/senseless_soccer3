@@ -178,17 +178,13 @@ void init_penalty_spots(Pitch &pitch) {
 //
 //
 void init_north_arc(Pitch &pitch) {
-  int x, y, w, h;
-
-  pitch.dimensions.north_arc.setPointCount(60);
-
-  x = pitch.dimensions.bounds.getPosition().x +
-      pitch.dimensions.bounds.getSize().x / 2;
-  y = pitch.dimensions.bounds.getPosition().y +
-      pitch.dimensions.north_18.getSize().y + 2;
+  int x = pitch.dimensions.bounds.getPosition().x +
+          pitch.dimensions.bounds.getSize().x / 2;
+  int y = pitch.dimensions.bounds.getPosition().y +
+          pitch.dimensions.north_18.getSize().y + 2;
 
   pitch.dimensions.north_arc.setPosition(x, y);
-  pitch.dimensions.north_arc.setRadius(MetersToPixels(9.15f));
+  pitch.dimensions.north_arc.setRadius(MetersToPixels(7.f));
 
   pitch.dimensions.north_arc.setFillColor(sf::Color::Transparent);
   pitch.dimensions.north_arc.setOutlineColor(sf::ChalkWhite);
@@ -202,18 +198,14 @@ void init_north_arc(Pitch &pitch) {
 //
 //
 void init_south_arc(Pitch &pitch) {
-  int x, y, w, h;
-
-  pitch.dimensions.south_arc.setPointCount(60);
-
-  x = pitch.dimensions.bounds.getPosition().x +
-      pitch.dimensions.bounds.getSize().x / 2;
-  y = pitch.dimensions.bounds.getPosition().y +
-      pitch.dimensions.bounds.getSize().y -
-      pitch.dimensions.south_18.getSize().y - 2;
+  int x = pitch.dimensions.bounds.getPosition().x +
+          pitch.dimensions.bounds.getSize().x / 2;
+  int y = pitch.dimensions.bounds.getPosition().y +
+          pitch.dimensions.bounds.getSize().y -
+          pitch.dimensions.south_18.getSize().y - 2;
 
   pitch.dimensions.south_arc.setPosition(x, y);
-  pitch.dimensions.south_arc.setRadius(MetersToPixels(9.15f));
+  pitch.dimensions.south_arc.setRadius(MetersToPixels(7.f));
 
   pitch.dimensions.south_arc.setFillColor(sf::Color::Transparent);
   pitch.dimensions.south_arc.setOutlineColor(sf::ChalkWhite);

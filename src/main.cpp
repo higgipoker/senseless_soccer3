@@ -128,6 +128,7 @@ int main(int argc, char *argv[]) {
     ball.collidable.setOrigin(ball.collidable.getRadius() / 2,
                               ball.collidable.getRadius() / 2);
     camera_follow(camera, BallEntity);
+    BallEntity.position = Vector3(500, 500);
   }
 
   // --------------------------------------------------
