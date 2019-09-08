@@ -106,8 +106,8 @@ void set_stick_mask(Gamepad &gamepad) {
 //
 //
 void update_gamepad(Gamepad &gamepad) {
-  gamepad.cb.events.clear();
-  gamepad.cb.params.clear();
+  gamepad.device.cb.events.clear();
+  gamepad.device.cb.params.clear();
   // for comparison for events (chaged statuses)
   int old_states[InputState::Totalevents] = {
       gamepad.device.states[0], gamepad.device.states[1],
@@ -153,25 +153,25 @@ void update_gamepad(Gamepad &gamepad) {
   if ((gamepad.device.directionmask & mask_dpad_up) ||
       (gamepad.device.directionmask & mask_stick_up)) {
     gamepad.device.states[InputState::Up] = 1;
-    gamepad.cb.events.push_back(ControllerEventID::DPadUp);
+    gamepad.device.cb.events.push_back(ControllerEventID::DPadUp);
   }
 
   if ((gamepad.device.directionmask & mask_dpad_down) ||
       (gamepad.device.directionmask & mask_stick_down)) {
     gamepad.device.states[InputState::Down] = 1;
-    gamepad.cb.events.push_back(ControllerEventID::DPadDown);
+    gamepad.device.cb.events.push_back(ControllerEventID::DPadDown);
   }
 
   if ((gamepad.device.directionmask & mask_dpad_left) ||
       (gamepad.device.directionmask & mask_stick_left)) {
     gamepad.device.states[InputState::Left] = 1;
-    gamepad.cb.events.push_back(ControllerEventID::DPadLeft);
+    gamepad.device.cb.events.push_back(ControllerEventID::DPadLeft);
   }
 
   if ((gamepad.device.directionmask & mask_dpad_right) ||
       (gamepad.device.directionmask & mask_stick_right)) {
     gamepad.device.states[InputState::Right] = 1;
-    gamepad.cb.events.push_back(ControllerEventID::DPadRight);
+    gamepad.device.cb.events.push_back(ControllerEventID::DPadRight);
   }
   //
   // Fire event
@@ -180,7 +180,7 @@ void update_gamepad(Gamepad &gamepad) {
     if (++gamepad.device.ticks_since_tap > fire_double_tap_length) {
       gamepad.device.cached_tap = false;
       gamepad.device.ticks_since_tap = 0;
-      gamepad.cb.events.push_back(ControllerEventID::FireTap);
+      gamepad.device.cb.events.push_back(ControllerEventID::FireTap);
       std::cout << "tap" << std::endl;
     }
   }
@@ -198,37 +198,13 @@ void update_gamepad(Gamepad &gamepad) {
 
       } else {
         std::cout << "fire released" << std::endl;
-        gamepad.cb.events.push_back(ControllerEventID::Fire);
+        gamepad.device.cb.events.push_back(ControllerEventID::Fire);
       }
     }
 
   } else {
     if (gamepad.device.states[InputState::FireDown]) {
       std::cout << "fire pressed" << std::endl;
-    }
-  }
-
-  for (auto &event : gamepad.cb.events) {
-    Entity &player = entity_pool[gamepad.cb.player->entity];
-    switch (event) {
-      case ControllerEventID::Fire:
-        kick(*gamepad.cb.player);
-        break;
-      case ControllerEventID::DPadRight:
-        apply_force(player, Vector3(1, 0));
-        break;
-      case ControllerEventID::DPadLeft:
-        apply_force(player, Vector3(-1, 0));
-        break;
-      case ControllerEventID::DPadUp:
-        apply_force(player, Vector3(0, -1));
-        break;
-      case ControllerEventID::DPadDown:
-        apply_force(player, Vector3(0, 1));
-        break;
-      case ControllerEventID::FireTap:
-        kick(*gamepad.cb.player, 10);
-        break;
     }
   }
 }

@@ -12,6 +12,10 @@ struct Camera {
   Entity *entity = nullptr;
   sf::View view;
 };
+
+// a camera can follow an entity
+inline std::map<Camera *, Entity *> camera_tracking;
+
 /**
  * @brief init_camera
  * @param camera
@@ -30,3 +34,9 @@ void update_camera(Camera &camera, sf::IntRect world_rect);
  * @param bounds
  */
 void clamp_camera(Camera &camera, sf::IntRect bounds);
+/**
+ * @brief follow
+ * @param camera
+ * @param entity
+ */
+void camera_follow(Camera &camera, Entity &entity);

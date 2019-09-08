@@ -61,6 +61,7 @@ enum class ControllerEventID {
   NoEvent = 0,
   Fire,
   FireTap,
+  FiredoubleTap,
   DPadLeft,
   DPadRight,
   DPadUp,
@@ -83,6 +84,19 @@ struct ControllerEvent {
 static const int fire_tap_length = 8;
 static const int fire_double_tap_length = 12;
 
+// forward decl
+struct Player;
+
+static const int MAX_EVENTS = 10;
+
+/**
+ * @brief The GamepadCallback struct
+ */
+struct InputCallback {
+  Player *player = nullptr;
+  std::vector<ControllerEventID> events;
+  std::vector<int> params;
+};
 /**
  * @brief The InputDevice struct
  */
@@ -93,14 +107,7 @@ struct InputDevice {
   int ticks_since_tap = 0;
   unsigned char buttonmask{0x0};
   unsigned char directionmask{0x0};
-};
-struct Player;
-// gamepad callback
-static const int MAX_EVENTS = 10;
-struct GamepadCallback {
-  Player *player = nullptr;
-  std::vector<ControllerEventID> events;
-  std::vector<int> params;
+  InputCallback cb;
 };
 
 /**
@@ -111,8 +118,6 @@ struct Gamepad {
   int sf_joystick_index = 0;
   float trigger_threshold = 0;
   float thumbstick_threshold = 50.0f;
-
-  GamepadCallback cb;
 };
 
 /**

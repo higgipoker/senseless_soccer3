@@ -30,7 +30,7 @@ inline void control_player(Player &player, Gamepad &gamepad) {
   // controlled_entities.insert(std::make_pair(&PlayerEntity,
   // &keyboard.device));
   // controlled_entities.insert(std::make_pair(&PlayerEntity, &gamepad.device));
-  gamepad.cb.player = &player;
+  gamepad.device.cb.player = &player;
 }
 //
 //
@@ -127,6 +127,7 @@ int main(int argc, char *argv[]) {
 
     ball.collidable.setOrigin(ball.collidable.getRadius() / 2,
                               ball.collidable.getRadius() / 2);
+    camera_follow(camera, BallEntity);
   }
 
   // --------------------------------------------------
@@ -197,6 +198,7 @@ int main(int argc, char *argv[]) {
   while (game.game_running) {
     update_debug(game);
     handle_input(game, camera);
+    handle_player_inputs(gamepads);
     update_camera(camera, game.world_rect);
     update_entities(ball, players, pitch, camera);
     update_animations();
@@ -216,8 +218,8 @@ int main(int argc, char *argv[]) {
 
   // only testing, the os will do this and quit the program faster
   release_sprite(BallEntity.sprite);
-  release_entity(pitch.grass.entity);
   release_entity(camera.entity->id);
+  release_entity(pitch.entity);
 
   if (ball.inited) {
     release_sprite(BallShadowEntity.sprite);
@@ -227,6 +229,7 @@ int main(int argc, char *argv[]) {
     release_entity(ball.entity);
   }
   release_players(players);
+  release_texture(grass_tile);
   // delete_textures();
 
   std::cout << std::endl;

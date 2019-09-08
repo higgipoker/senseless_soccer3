@@ -56,6 +56,7 @@ struct Player {
   bool changed_direction = true;
   PlayerState state = PlayerState::Stand;
   bool ball_under_control = false;
+  int consecutive_dribble_turns = 0;
 };
 /**
  * @brief make_player_sprite
@@ -137,3 +138,8 @@ void do_dribble(Player &player, Ball &ball);
  * @brief kick
  */
 void kick(Player &player, float power = 20);
+/**
+ * @brief handle_input
+ * @param gamepads
+ */
+void handle_player_inputs(std::set<Gamepad *> gamepads);

@@ -24,13 +24,12 @@ void init_camera(Camera &camera, Game &game) {
 // update_camera
 //
 void update_camera(Camera &camera, sf::IntRect world_rect) {
-  // integrate_euler(*camera.entity, 0.01f);
+  auto track = camera_tracking.find(&camera);
+  if (track != camera_tracking.end()) {
+    camera.entity->velocity = track->second->velocity;
+  }
   clamp_camera(camera, world_rect);
   camera.view.setCenter(camera.entity->position.x, camera.entity->position.y);
-
-  //  if (camera.entity->velocity.magnitude() > 0.25f) {
-  //    camera.entity->velocity = camera.entity->velocity.setMagnitude(0.25f);
-  //  }
 }
 //
 // clamp_camera
@@ -67,4 +66,10 @@ void clamp_camera(Camera &camera, sf::IntRect bounds) {
     camera.entity->position = Vector3(act_x + camera.view.getSize().x / 2,
                                       act_y + camera.view.getSize().y / 2);
   }
+}
+//
+//
+//
+void camera_follow(Camera &camera, Entity &entity) {
+  camera_tracking.insert(std::make_pair(&camera, &entity));
 }

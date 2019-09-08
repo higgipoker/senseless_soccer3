@@ -3,22 +3,22 @@
 //
 //
 void make_grass_sprite(int sprite, const std::string &spritesheet) {
-  sf::Texture *tex = acquire_texture(spritesheet);
-  tex->setRepeated(true);
-  sprite_pool[sprite].setTexture(*tex);
-  set_sprite_z(sprite_pool[sprite], -1);
+  //  sf::Texture *tex = acquire_texture(spritesheet);
+  //  tex->setRepeated(true);
+  //  sprite_pool[sprite].setTexture(*tex);
+  //  set_sprite_z(sprite_pool[sprite], -1);
 }
 //
 //
 //
 void init_grass(Grass &grass, const std::string &spritesheet, Camera &camera) {
-  int e = acquire_entity();
-  entity_pool[e].type = EntityType::Background;
-  grass.entity = e;
-  entity_pool[e].sprite = acquire_sprite(&entity_pool[e]);
-  GrassSprite.spritesheet = spritesheet;
-  make_grass_sprite(entity_pool[e].sprite, GrassSprite.spritesheet);
-  update_grass(grass, camera);
+  //  int e = acquire_entity();
+  //  entity_pool[e].type = EntityType::Background;
+  //  grass.entity = e;
+  //  entity_pool[e].sprite = acquire_sprite(&entity_pool[e]);
+  //  GrassSprite.spritesheet = spritesheet;
+  //  make_grass_sprite(entity_pool[e].sprite, GrassSprite.spritesheet);
+  //  update_grass(grass, camera);
 }
 //
 //
