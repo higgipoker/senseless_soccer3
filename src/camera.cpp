@@ -28,7 +28,7 @@ void update_camera(Camera &camera, sf::IntRect world_rect) {
   if (track != camera_tracking.end()) {
     camera.entity->velocity = track->second->velocity;
   }
-  clamp_camera(camera, world_rect);
+  // clamp_camera(camera, world_rect);
   camera.view.setCenter(camera.entity->position.x, camera.entity->position.y);
 }
 //
@@ -72,4 +72,6 @@ void clamp_camera(Camera &camera, sf::IntRect bounds) {
 //
 void camera_follow(Camera &camera, Entity &entity) {
   camera_tracking.insert(std::make_pair(&camera, &entity));
+  camera.entity->position = entity.position;
+  camera.view.setCenter(camera.entity->position.x, camera.entity->position.y);
 }

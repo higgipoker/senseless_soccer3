@@ -45,7 +45,7 @@ void draw_bounds(sf::RenderWindow &window, sf::FloatRect bounds,
   sf::RectangleShape rect(sf::Vector2f(bounds.width, bounds.height));
   rect.setPosition(bounds.left, bounds.top);
   rect.setOutlineThickness(1);
-  rect.setFillColor(sf::Color(0, 0, 0, 0));
+  rect.setFillColor(sf::Color::Transparent);
   if (highlight == 1) {
     rect.setOutlineThickness(3);
     rect.setOutlineColor(sf::Color::Green);

@@ -52,7 +52,7 @@ void init_player(Player &player) {
   // player specific stuff
   player.facing.direction = Direction::SOUTH;
   player.control.setOutlineThickness(2);
-  player.control.setFillColor(sf::Color(0, 0, 0, 0));
+  player.control.setFillColor(sf::Color::Transparent);
   player.control.setOutlineColor(sf::Color::Red);
 }
 //

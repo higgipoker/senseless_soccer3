@@ -29,7 +29,7 @@ void init_pitch(Pitch &pitch, const std::string &grass_spritesheet,
   pitch.dimensions.bounds.setSize(
       sf::Vector2f(static_cast<float>(MetersToPixels(69)),
                    static_cast<float>(MetersToPixels(105))));
-  pitch.dimensions.bounds.setFillColor(sf::Color(0, 0, 0, 0));
+  pitch.dimensions.bounds.setFillColor(sf::Color::Transparent);
   pitch.dimensions.bounds.setOutlineColor(sf::Color::White);
   pitch.dimensions.bounds.setOutlineThickness(2);
   pitch.dimensions.center_circle_radius = MetersToPixels(9.15f);
