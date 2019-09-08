@@ -3,7 +3,7 @@
 #include <SFML/Graphics/Shape.hpp>
 
 namespace sf {
-class SFML_GRAPHICS_API ArcShape : public Shape {
+class  ArcShape : public Shape {
  public:
   explicit ArcShape(float radius = 0, std::size_t pointCount = 30);
   void setRadius(float radius);
