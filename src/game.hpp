@@ -3,8 +3,8 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
-static const int WINDOW_WIDTH = 800;
-static const int WINDOW_HEIGHT = 600;
+static const int WINDOW_WIDTH = 1280;
+static const int WINDOW_HEIGHT = 720;
 static const int WORLD_WIDTH = WINDOW_WIDTH * 2;
 static const int WORLD_HEIGHT = WINDOW_HEIGHT * 3;
 

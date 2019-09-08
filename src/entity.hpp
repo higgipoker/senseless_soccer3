@@ -20,6 +20,7 @@ enum class EntityType {
  */
 struct Entity {
   int id = -1;
+  bool clickable = true;
   int sprite = -1;
   float speed = 1.0f;
   EntityType type = EntityType::Anonymous;

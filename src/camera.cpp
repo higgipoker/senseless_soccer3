@@ -10,6 +10,7 @@
 void init_camera(Camera &camera, Game &game) {
   int e = acquire_entity();
   camera.entity = &entity_pool[e];
+  entity_pool[e].speed = 5;
 
   camera.view.setCenter(static_cast<float>(game.window_rect.width) / 2,
                         static_cast<float>(game.window_rect.height) / 2);
@@ -30,6 +31,9 @@ void update_camera(Camera &camera, sf::IntRect world_rect) {
   }
   // clamp_camera(camera, world_rect);
   camera.view.setCenter(camera.entity->position.x, camera.entity->position.y);
+  std::cout << camera.entity->position.x - camera.view.getSize().x / 2 << ", "
+            << camera.entity->position.y - camera.view.getSize().y / 2
+            << std::endl;
 }
 //
 // clamp_camera

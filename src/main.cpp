@@ -182,7 +182,7 @@ int main(int argc, char *argv[]) {
   gamepads.insert(&(gamepad));
   // control_ball(ball);
   control_player(players[0], gamepad);
-  // control_camera(camera);
+  control_camera(camera);
 
 #ifndef NDEBUG
   // --------------------------------------------------
