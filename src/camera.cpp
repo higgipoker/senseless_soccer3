@@ -26,6 +26,10 @@ void init_camera(Camera &camera, Game &game) {
   camera.inner_rect.setPosition(
       camera.view.getCenter().x - camera.inner_rect.getSize().x / 2,
       camera.view.getCenter().y - camera.inner_rect.getSize().y / 2);
+
+  camera.inner_rect.setFillColor(sf::Color::Transparent);
+  camera.inner_rect.setOutlineThickness(2);
+  camera.inner_rect.setOutlineColor(sf::Color::Blue);
 }
 //
 // update_camera
@@ -38,34 +42,32 @@ void update_camera(Camera &camera, sf::IntRect world_rect) {
         camera.view.getCenter().x - camera.inner_rect.getSize().x / 2,
         camera.view.getCenter().y - camera.inner_rect.getSize().y / 2);
 
-    camera.inner_rect.setFillColor(sf::Color::Transparent);
-    camera.inner_rect.setOutlineThickness(4);
-    camera.inner_rect.setOutlineColor(sf::Color::Red);
     debug_shapes.emplace_back(&camera.inner_rect);
 
-    if (track->second->velocity.y < 0) {
-      camera.inner_rect.move(0, 100);
-    } else {
-      camera.inner_rect.move(0, -100);
-    }
-    if (track->second->velocity.x < 0) {
-      camera.inner_rect.move(200, 0);
-    } else {
-      camera.inner_rect.move(-200, 0);
-    }
+    //    if (track->second->velocity.y < 0) {
+    //      camera.inner_rect.move(0, 100);
+    //    } else {
+    //      camera.inner_rect.move(0, -100);
+    //    }
+    //    if (track->second->velocity.x < 0) {
+    //      camera.inner_rect.move(200, 0);
+    //    } else {
+    //      camera.inner_rect.move(-200, 0);
+    //    }
 
+    static const int force = 6;
     if (track->second->position.y >
         camera.inner_rect.getPosition().y + camera.inner_rect.getSize().y) {
-      camera.entity->force = Vector3(0, 1, 0);
+      camera.entity->force = Vector3(0, force, 0);
     } else if (track->second->position.y < camera.inner_rect.getPosition().y) {
-      camera.entity->force = Vector3(0, -1, 0);
+      camera.entity->force = Vector3(0, -force, 0);
     }
 
     if (track->second->position.x < camera.inner_rect.getPosition().x) {
-      camera.entity->force = Vector3(-1, 0, 0);
+      camera.entity->force = Vector3(-force, 0, 0);
     } else if (track->second->position.x > camera.inner_rect.getPosition().x +
                                                camera.inner_rect.getSize().x) {
-      camera.entity->force = Vector3(1, 0, 0);
+      camera.entity->force = Vector3(force, 0, 0);
     }
   }
 
