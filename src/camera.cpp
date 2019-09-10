@@ -21,15 +21,14 @@ void init_camera(Camera &camera, Game &game) {
   camera.view.setSize(game.window_rect.width, game.window_rect.height);
   game.window.setView(camera.view);
 
-  camera.inner_rect.setSize(
-      sf::Vector2f(camera.view.getSize().x / 2, camera.view.getSize().y / 2));
-  camera.inner_rect.setPosition(
-      camera.view.getCenter().x - camera.inner_rect.getSize().x / 2,
-      camera.view.getCenter().y - camera.inner_rect.getSize().y / 2);
+  camera.inner_circle.setRadius(camera.view.getSize().x / 8);
+  camera.inner_circle.setPosition(
+      camera.view.getCenter().x - camera.inner_circle.getRadius(),
+      camera.view.getCenter().y - camera.inner_circle.getRadius());
 
-  camera.inner_rect.setFillColor(sf::Color::Transparent);
-  camera.inner_rect.setOutlineThickness(2);
-  camera.inner_rect.setOutlineColor(sf::Color::Blue);
+  camera.inner_circle.setFillColor(sf::Color::Transparent);
+  camera.inner_circle.setOutlineThickness(2);
+  camera.inner_circle.setOutlineColor(sf::Color::Blue);
 }
 //
 // update_camera
@@ -38,36 +37,26 @@ void update_camera(Camera &camera, sf::IntRect world_rect) {
   camera.view.setCenter(camera.entity->position.x, camera.entity->position.y);
   auto track = camera_tracking.find(&camera);
   if (track != camera_tracking.end()) {
-    camera.inner_rect.setPosition(
-        camera.view.getCenter().x - camera.inner_rect.getSize().x / 2,
-        camera.view.getCenter().y - camera.inner_rect.getSize().y / 2);
+    camera.inner_circle.setPosition(
+        camera.view.getCenter().x - camera.inner_circle.getRadius(),
+        camera.view.getCenter().y - camera.inner_circle.getRadius());
 
-    debug_shapes.emplace_back(&camera.inner_rect);
+    debug_shapes.emplace_back(&camera.inner_circle);
 
-    //    if (track->second->velocity.y < 0) {
-    //      camera.inner_rect.move(0, 100);
-    //    } else {
-    //      camera.inner_rect.move(0, -100);
-    //    }
-    //    if (track->second->velocity.x < 0) {
-    //      camera.inner_rect.move(200, 0);
-    //    } else {
-    //      camera.inner_rect.move(-200, 0);
-    //    }
+        if (track->second->velocity.y < 0) {
+          camera.inner_circle.move(0, 100);
+        } else {
+          camera.inner_circle.move(0, -100);
+        }
+//        if (track->second->velocity.x < 0) {
+//          camera.inner_circle.move(200, 0);
+//        } else {
+//          camera.inner_circle.move(-200, 0);
+//        }
 
-    static const int force = 6;
-    if (track->second->position.y >
-        camera.inner_rect.getPosition().y + camera.inner_rect.getSize().y) {
-      camera.entity->force = Vector3(0, force, 0);
-    } else if (track->second->position.y < camera.inner_rect.getPosition().y) {
-      camera.entity->force = Vector3(0, -force, 0);
-    }
-
-    if (track->second->position.x < camera.inner_rect.getPosition().x) {
-      camera.entity->force = Vector3(-force, 0, 0);
-    } else if (track->second->position.x > camera.inner_rect.getPosition().x +
-                                               camera.inner_rect.getSize().x) {
-      camera.entity->force = Vector3(force, 0, 0);
+    static const float f = 1.f;
+    if (!circle_contains_point(camera.inner_circle, track->second->position)) {
+      apply_force(*camera.entity, track->second->velocity.normalise()*f);
     }
   }
 

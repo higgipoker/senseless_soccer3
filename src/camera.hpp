@@ -3,7 +3,7 @@
 #include "entity.hpp"
 #include "game.hpp"
 
-#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/View.hpp>
 
 /**
@@ -12,7 +12,7 @@
 struct Camera {
   Entity *entity = nullptr;
   sf::View view;
-  sf::RectangleShape inner_rect;
+  sf::CircleShape inner_circle;
 };
 
 // a camera can follow an entity

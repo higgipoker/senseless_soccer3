@@ -187,3 +187,19 @@ bool contains(const sf::CircleShape &big, const sf::CircleShape &small) {
 
   return false;
 }
+//
+//
+//
+bool circle_contains_point(const sf::CircleShape circle, const Vector3 point) {
+  const Vector3 center(circle.getPosition().x + circle.getRadius(),
+                       circle.getPosition().y + circle.getRadius());
+  return (
+          (point.x - center.x) *
+          (point.x - center.x)
+          +
+          (point.y - center.y) *
+          (point.y - center.y)
+          <=
+          circle.getRadius() * circle.getRadius()
+        );
+}

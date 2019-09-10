@@ -38,3 +38,10 @@ bool collides(const sf::CircleShape &c1, const sf::CircleShape &c2);
  * @return
  */
 bool contains(const sf::CircleShape &big, const sf::CircleShape &small);
+/**
+ * @brief contains
+ * @param circle
+ * @param point
+ * @return
+ */
+bool circle_contains_point(const sf::CircleShape circle, const Vector3 point);
