@@ -35,7 +35,7 @@ class Sprite : public sf::Sprite {
   /**
    * @brief Sprite
    */
-  Sprite(const std::string in_filename);
+  Sprite(const std::string & in_filename);
 
   /**
    * @brief init

@@ -12,7 +12,7 @@ Sprite::Sprite() {}
 //
 //
 //
-Sprite::Sprite(const std::string in_filename) {
+Sprite::Sprite(const std::string &in_filename) {
   sf::Texture *tex = TextureManager::acquireTexture(in_filename);
   setTexture(*tex);
 }
@@ -48,7 +48,6 @@ void Sprite::init(const SpriteSetDefinition &_def) {
 //
 //
 void Sprite::setFrame(const int in_frame) {
-  assert(in_frame < frames.size());
   current_frame = in_frame;
   setTextureRect(frames.at(current_frame));
 }

@@ -11,5 +11,5 @@ class Player {
    */
   Player();
 
-  PlayerSprite *sprite;
+  PlayerSprite *sprite=nullptr;
 };

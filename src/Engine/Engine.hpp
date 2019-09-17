@@ -1,10 +1,12 @@
 #pragma once
 
+#include "Camera.hpp"
 #include "Movable.hpp"
 #include "Sprite.hpp"
 #include "Window.hpp"
 
 #include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/View.hpp>
 
 #include <map>
 #include <vector>
@@ -84,8 +86,14 @@ class Engine {
  private:
   /// wrapper of sf::window
   Window window;
+  /// a camera
+  Camera camera;
+  /// a view for hud elements
+  sf::View hud_view;
   /// list of layers to render
   std::map<int, RenderLayer> render_layers;
+  /// layer for hud drawables
+  RenderLayer hud_layer;
   /// list of physical stuff to integrate
   std::vector<Movable *> movable_list;
   /// integration step

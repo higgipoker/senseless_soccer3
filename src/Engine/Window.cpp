@@ -3,7 +3,7 @@ namespace Engine {
 //
 //
 //
-bool Window::validVideoMode(int width, int height) {
+bool Window::validVideoMode(unsigned int width, unsigned int height) {
   // get list of supported video modes
   std::vector<sf::VideoMode> modes = sf::VideoMode::getFullscreenModes();
 

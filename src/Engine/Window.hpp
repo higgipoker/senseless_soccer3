@@ -18,6 +18,6 @@ class Window : public sf::RenderWindow {
    * @param height
    * @return
    */
-  static bool validVideoMode(int width, int height);
+  static bool validVideoMode(unsigned int width, unsigned int height);
 };
 }

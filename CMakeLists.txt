@@ -41,8 +41,8 @@ endif (UNIX)
 # build files
 # --------------------------------------------------
 add_executable(senseless_soccer3
-    src/main.cpp
     src/Main/Main.cpp
+    src/Engine/Vector.cpp
     src/Engine/Files.cpp
     src/Engine/Window.cpp
     src/Engine/Movable.cpp
@@ -51,42 +51,17 @@ add_executable(senseless_soccer3
     src/Engine/SpriteAnimation.cpp
     src/Engine/Drawable.cpp
     src/Engine/TextureManager.cpp
+    src/Engine/Camera.cpp
     src/Engine/Compass.cpp
     src/Engine/Vector.cpp
     src/Player/Player.cpp
     src/Player/PlayerSprite.cpp
     src/Pitch/Pitch.cpp
-    src/data.cpp
-    src/ball.cpp
-    src/player.cpp
-    src/input.cpp
-    src/texture.cpp
-    src/window.cpp
-    src/entity.cpp
-    src/camera.cpp
-    src/animation.cpp
-    src/framerate.cpp
-    src/game.cpp
-    src/grass.cpp
-    src/physics.cpp
-    src/player_animations.cpp
-    src/ball_animations.cpp
-    src/sprite.cpp
-    src/sprite_tools.cpp
-    src/gamepad.cpp
-    src/keyboard.cpp
-    src/debug.cpp
-    src/files.cpp
-    src/vector.cpp
-    src/compass.cpp
-    src/pitch.cpp
-    src/arcshape.cpp
     src/imgui/imgui.cpp
     src/imgui/imgui_draw.cpp
     src/imgui/imgui_widgets.cpp
     src/imgui/imgui_demo.cpp
     src/imgui/imgui-SFML.cpp
-
 )
 
 # --------------------------------------------------

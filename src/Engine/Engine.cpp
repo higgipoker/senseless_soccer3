@@ -2,8 +2,8 @@
 
 #include <SFML/Window/Event.hpp>
 
-#include <iostream>
 #include <cassert>
+#include <iostream>
 
 namespace Engine {
 //
@@ -20,8 +20,7 @@ struct {
 Engine::Engine(const std::string &in_window_title, int in_window_width,
                int in_window_height, int in_flags, bool in_fullscreen)
     : window(in_window_title, in_window_width, in_window_height, in_flags,
-             in_fullscreen) {
-}
+             in_fullscreen) {}
 //
 //
 //
@@ -40,18 +39,28 @@ void Engine::step() {
 
   // render
   window.clear(sf::Color::Blue);
+
+  // normal drawables
   sort_drawables();
+  window.setView(camera.view);
   for (auto &layer : render_layers) {
     for (auto &drawable : layer.second.draw_list) {
       window.draw(*drawable);
     }
   }
+
+  // hud elements
+  window.setView(hud_view);
+  for (auto &drawable : hud_layer.draw_list) {
+    window.draw(*drawable);
+  }
+
   window.display();
 }
 //
 //
 //
-int Engine::addLayer(bool in_sortable){
+int Engine::addLayer(bool in_sortable) {
   const int new_id = render_layers.size();
   render_layers.insert({new_id, RenderLayer(in_sortable)});
   return new_id;
@@ -60,7 +69,10 @@ int Engine::addLayer(bool in_sortable){
 //
 //
 void Engine::addDrawable(sf::Drawable *in_drawable, int in_layer_id) {
-  assert(!render_layers.empty());
+  if(render_layers.empty()){
+    std::cout << "Engine::addDrawable > no layers" << std::endl;
+    return;
+  }
   if (in_layer_id == RenderLayer::INVALID_LAYER) {
     // add to last layer
     render_layers.at(render_layers.size() - 1)
@@ -206,7 +218,5 @@ void Engine::sort_drawables() {
 //
 //
 //
-sf::RenderTarget& Engine::getRenderTarget(){
-  return window;
-}
+sf::RenderTarget &Engine::getRenderTarget() { return window; }
 }  // namespace Engine

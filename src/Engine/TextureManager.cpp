@@ -26,7 +26,6 @@ sf::Texture *TextureManager::acquireTexture(const std::string &filename) {
     texture->loadFromFile(filename);
     textures.insert(std::make_pair(filename, make_counted_texture(texture)));
   }
-  assert(texture);
   return texture;
 }
 //
