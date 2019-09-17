@@ -64,7 +64,6 @@ struct Player {
  * @param spritesheet
  */
 void make_player_sprite(int sprite, const std::string &spritesheet);
-
 /**
  * @brief init_players
  * @param players
@@ -80,11 +79,6 @@ void init_player_shadow(Player &player);
  * @param players
  */
 void release_players(std::vector<Player> &players);
-/**
- * @brief think
- * @param player
- */
-void think(Player &player);
 /**
  * @brief start_player_animation
  * @param player

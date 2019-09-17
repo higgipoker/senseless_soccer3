@@ -16,7 +16,7 @@ inline std::vector<sf::IntRect> ball_frames;
 #define BallEntity entity_pool[ball.entity]
 #define BallShadowEntity entity_pool[ball.shadow_entity]
 #define BallSprite sprite_pool[BallEntity.sprite]
-#define BALL_SHADOW_SPRITE(B) sprite_pool[BallShadowEntity.sprite]
+#define BallShadowSPrite sprite_pool[BallShadowEntity.sprite]
 
 /**
  * @brief The Ball struct

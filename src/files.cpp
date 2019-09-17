@@ -2,7 +2,7 @@
 
 #ifdef _WIN32
 #include <direct.h>
-#include "dirent.h"
+#include "windows/dirent.h"
 #define GetCurrentDir _getcwd
 #else
 #include <unistd.h>

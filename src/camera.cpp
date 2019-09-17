@@ -21,7 +21,7 @@ void init_camera(Camera &camera, Game &game) {
   camera.view.setSize(game.window_rect.width, game.window_rect.height);
   game.window.setView(camera.view);
 
-  camera.inner_circle.setRadius(camera.view.getSize().x / 8);
+  camera.inner_circle.setRadius(camera.view.getSize().x / 7);
   camera.inner_circle.setPosition(
       camera.view.getCenter().x - camera.inner_circle.getRadius(),
       camera.view.getCenter().y - camera.inner_circle.getRadius());
@@ -43,20 +43,16 @@ void update_camera(Camera &camera, sf::IntRect world_rect) {
 
     debug_shapes.emplace_back(&camera.inner_circle);
 
-        if (track->second->velocity.y < 0) {
-          camera.inner_circle.move(0, 100);
-        } else {
-          camera.inner_circle.move(0, -100);
-        }
-//        if (track->second->velocity.x < 0) {
-//          camera.inner_circle.move(200, 0);
-//        } else {
-//          camera.inner_circle.move(-200, 0);
-//        }
-
-    static const float f = 1.f;
+    static const float f = 1.0f;
     if (!circle_contains_point(camera.inner_circle, track->second->position)) {
-      apply_force(*camera.entity, track->second->velocity.normalise()*f);
+      Vector3 camera_center = Vector3::fromSfVector(camera.view.getCenter());
+      Vector3 direction_to_target =
+          track->second->position - camera_center;
+      direction_to_target = direction_to_target.normalise();
+
+
+      float target_speed = track->second->velocity.magnitude();
+      apply_force(*camera.entity, direction_to_target * f * target_speed);
     }
   }
 

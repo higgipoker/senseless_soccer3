@@ -22,7 +22,7 @@ void init_player(Player &player) {
 
   // all the entity parameters
   PlayerEntity.type = EntityType::Player;
-  PlayerEntity.speed = 5.0f;
+  PlayerEntity.speed = 7.0f;
   PlayerEntity.terminal_velocity = 1;
   PlayerEntity.co_friction = 1.0f;
   PlayerEntity.co_bounciness = 0.0f;
@@ -63,7 +63,7 @@ void init_player_shadow(Player &player) {
   player.shadow_entity = e;
   PlayerShadowEntity.sprite = acquire_sprite(&PlayerShadowEntity);
   make_player_sprite(PlayerShadowEntity.sprite, PlayerSprite.spritesheet);
-  set_sprite_z(sprite_pool[PlayerShadowEntity.sprite], 1);
+  set_sprite_z(sprite_pool[PlayerShadowEntity.sprite], Globals::SHADOW_Z);
 }
 //
 //
@@ -78,10 +78,6 @@ void release_players(std::vector<Player> &players) {
     release_entity(player.shadow_entity);
   }
 }
-//
-//
-//
-void think(Player &player) {}
 //
 //
 //
@@ -242,7 +238,7 @@ void do_close_control(Player &player, Ball &ball) {
     return;
   }
   Vector3 f(player.feet.getPosition().x, player.feet.getPosition().y);
-  Vector3 ball_pos = f + (player.facing.toVector() * 6);
+  Vector3 ball_pos = f + (player.facing.toVector() * 8);
   BallEntity.force.reset();
   BallEntity.velocity.reset();
   BallEntity.position = ball_pos;
@@ -253,13 +249,9 @@ void do_close_control(Player &player, Ball &ball) {
 void do_dribble(Player &player, Ball &ball) {
   player.feet.setFillColor(sf::Color::Green);
   player.ball_under_control = true;
-  Vector3 force = player.facing.toVector();
-  float p = 5.f;
-  // normalize
-  auto mag = force.magnitude2d();
-  force = force.normalise2d();
-  force.x *= mag * p;
-  force.y *= mag * p;
+
+  float p =25.f;
+  Vector3 force =PlayerEntity.velocity.normalise2d()* PlayerEntity.velocity.magnitude2d()*p;
   BallEntity.velocity.reset();
   apply_force(BallEntity, force);
 }

@@ -24,6 +24,8 @@ void init_pitch(Pitch &pitch, const std::string &grass_spritesheet,
   sprite_pool[entity_pool[pitch.entity].sprite].setTexture(
       pitch.tex.getTexture());
 
+  set_sprite_z(sprite_pool[entity_pool[pitch.entity].sprite], -1);
+
   // pitch bounds
   init_bounds(pitch);
 

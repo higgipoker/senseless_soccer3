@@ -166,7 +166,7 @@ void update_controlled_entities() {
       apply_force(*entry.first, Vector3(0, f));
     }
     if (entry.second->states[InputState::FireDown]) {
-      apply_force(*entry.first, Vector3(0.f, 0.f, 10.f));
+      apply_force(*entry.first, Vector3(0.f, 0.f, 1.0f));
     }
   }
 }

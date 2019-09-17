@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cmath>
 
+namespace Engine {
 #define PI 3.14159265359f
 #define RADIANS(a) a *(PI / 180.0f)
 #define DEGREES(a) a *(180.0f / PI)
@@ -128,3 +129,4 @@ class Vector3 {
   // -------------------------------------------------------------------------
   static Vector3 fromSfVector(const sf::Vector2f &from);
 };
+}  // namespace Engine

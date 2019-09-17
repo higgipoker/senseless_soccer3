@@ -3,6 +3,9 @@
 #include "debug.hpp"
 #include "globals.hpp"
 #include "sprite.hpp"
+
+static const int BALL_SHADOW_OFFSET = 2;
+
 //
 // make_ball_sprite
 //
@@ -20,7 +23,7 @@ int init_ball(Ball &ball) {
   int e = acquire_entity();
   ball.entity = e;
   BallEntity.co_friction = 0.01f;
-  BallEntity.co_bounciness = 0.9f;
+  BallEntity.co_bounciness = 0.7f;
   BallEntity.mass = 3.5f;
   BallEntity.type = EntityType::Ball;
   BallEntity.sprite = acquire_sprite(&BallEntity);
@@ -40,30 +43,31 @@ void init_ball_shadow(Ball &ball) {
   ball.shadow_entity = e;
   BallShadowEntity.sprite = acquire_sprite(&BallShadowEntity);
   make_ball_sprite(BallShadowEntity.sprite, BallSprite.spritesheet);
-  set_sprite_z(sprite_pool[BallShadowEntity.sprite], 0);
+  set_sprite_z(sprite_pool[BallShadowEntity.sprite], Globals::SHADOW_Z);
 }
 //
 // update_ball
 //
 void update_ball(Ball &ball) {
   BallSprite.setPosition(BallEntity.position.x, BallEntity.position.y);
-  BALL_SHADOW_SPRITE(ball).setPosition(BallEntity.position.x + 2,
-                                       BallEntity.position.y + 2);
+  BallShadowSPrite.setPosition(BallEntity.position.x + 2,
+                               BallEntity.position.y + 2);
 
   // perspectivize returns false if ball is behind the camera
   if (perspectivize(BallSprite, BallEntity.position.z,
                     ball.collidable.getRadius() * 2, 50)) {
-    BALL_SHADOW_SPRITE(ball).setScale(BallSprite.getScale().x,
-                                      BallSprite.getScale().y);
+    BallShadowSPrite.setScale(BallSprite.getScale().x, BallSprite.getScale().y);
   } else {
-    BallSprite.setPosition(-BallSprite.getGlobalBounds().left,
-                           -BallSprite.getGlobalBounds().top);
+    BallSprite.setScale(0, 0);
 
-    float offset = BallEntity.velocity.z > 0 ? 0.2f : -0.2f;
+    float offset =
+        Floats::greater_than(BallEntity.velocity.z, 0) ? 0.2f : -0.2f;
 
-    BALL_SHADOW_SPRITE(ball).setScale(
-        BALL_SHADOW_SPRITE(ball).getScale().x + offset,
-        BALL_SHADOW_SPRITE(ball).getScale().y + offset);
+//    BallShadowSPrite.setScale(BallShadowSPrite.getScale().x /*+ offset*/,
+//                              BallShadowSPrite.getScale().y /*+ offset*/);
+
+    BallShadowSPrite.setScale(100,
+                              100);
   }
   ball.collidable.setPosition(
       BallEntity.position.x - ball.collidable.getRadius(),
