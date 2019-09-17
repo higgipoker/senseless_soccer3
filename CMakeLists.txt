@@ -12,6 +12,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON )
 # --------------------------------------------------
 # include dirs
 # --------------------------------------------------
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include)
 
 # --------------------------------------------------
@@ -41,6 +42,20 @@ endif (UNIX)
 # --------------------------------------------------
 add_executable(senseless_soccer3
     src/main.cpp
+    src/Main/Main.cpp
+    src/Engine/Files.cpp
+    src/Engine/Window.cpp
+    src/Engine/Movable.cpp
+    src/Engine/Engine.cpp
+    src/Engine/Sprite.cpp
+    src/Engine/SpriteAnimation.cpp
+    src/Engine/Drawable.cpp
+    src/Engine/TextureManager.cpp
+    src/Engine/Compass.cpp
+    src/Engine/Vector.cpp
+    src/Player/Player.cpp
+    src/Player/PlayerSprite.cpp
+    src/Pitch/Pitch.cpp
     src/data.cpp
     src/ball.cpp
     src/player.cpp
