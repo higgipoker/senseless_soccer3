@@ -32,6 +32,9 @@ void Engine::step() {
   // input
   poll_window();
 
+  // camera
+  camera.step(dt);
+
   // physics
   for (auto &movable : movable_list) {
     movable->step(dt);
@@ -69,7 +72,7 @@ int Engine::addLayer(bool in_sortable) {
 //
 //
 void Engine::addDrawable(sf::Drawable *in_drawable, int in_layer_id) {
-  if(render_layers.empty()){
+  if (render_layers.empty()) {
     std::cout << "Engine::addDrawable > no layers" << std::endl;
     return;
   }
@@ -134,6 +137,28 @@ void Engine::remMovable(Movable *in_movable) {
   auto it = find(movable_list.begin(), movable_list.end(), in_movable);
   if (it != movable_list.end()) {
     movable_list.erase(it);
+  }
+}
+//
+//
+//
+void Engine::addentity(Entity *in_entity) {
+  if (auto sprite = in_entity->sprite) {
+    addDrawable(sprite);
+  }
+  if (auto movable = in_entity->movable) {
+    addMovable(movable);
+  }
+}
+//
+//
+//
+void Engine::remEntity(Entity *in_entity) {
+  if (auto sprite = in_entity->sprite) {
+    remDrawable(sprite);
+  }
+  if (auto movable = in_entity->movable) {
+    remMovable(movable);
   }
 }
 //
@@ -219,4 +244,8 @@ void Engine::sort_drawables() {
 //
 //
 sf::RenderTarget &Engine::getRenderTarget() { return window; }
+//
+//
+//
+Camera &Engine::getMainCamera() { return camera; }
 }  // namespace Engine

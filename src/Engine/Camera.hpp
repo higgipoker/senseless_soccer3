@@ -14,6 +14,11 @@ class Camera : public Movable {
    * @brief Camera
    */
   Camera();
+  /**
+   * @brief step
+   * @param in_dt
+   */
+  void step(float in_dt);
 
   /// sf view
   sf::View view{sf::FloatRect{0, 0, 800, 600}};

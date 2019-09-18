@@ -43,7 +43,7 @@ endif (UNIX)
 add_executable(senseless_soccer3
     src/Main/Main.cpp
     src/Engine/Vector.cpp
-    src/Engine/Files.cpp
+    src/Engine/Folder.cpp
     src/Engine/Window.cpp
     src/Engine/Movable.cpp
     src/Engine/Engine.cpp
@@ -54,6 +54,7 @@ add_executable(senseless_soccer3
     src/Engine/Camera.cpp
     src/Engine/Compass.cpp
     src/Engine/Vector.cpp
+    src/Engine/Entity.cpp
     src/Player/Player.cpp
     src/Player/PlayerSprite.cpp
     src/Pitch/Pitch.cpp

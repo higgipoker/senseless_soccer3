@@ -4,14 +4,10 @@
 #endif
 
 #include "Engine/Engine.hpp"
-#include "Engine/Files.hpp"
+#include "Engine/Folder.hpp"
 #include "Pitch/Pitch.hpp"
 #include "Player/PlayerSprite.hpp"
 #include "Player/Player.hpp"
-//
-//
-//
-const std::string gfx_folder = Engine::Files::getWorkingDirectory() + "/gfx/";
 //
 //
 //
@@ -23,6 +19,10 @@ int main() {
   window_dimensions.height = 600;
   Engine::Engine engine("senseless soccer", window_dimensions.width,
                         window_dimensions.height);
+
+  Engine::WorkingFolder working_folder;
+  const std::string gfx_folder = working_folder.getPath() + "/gfx/";
+
 
   // bg layer
   int bg_layer_id = engine.addLayer(false);
@@ -42,10 +42,14 @@ int main() {
 
   Player player;
   player.sprite = &sprite1;
-  player.sprite->setAnimation(PlayerAnimationType::Run, Engine::Direction::NORTH);
+  player.animate(PlayerAnimationType::Run, Engine::Direction::NORTH);
 
   while (engine.isRunning()) {
+
+    // updat game stuff
     player.sprite->animate();
+
+    // step the engine
     engine.step();
   }
 

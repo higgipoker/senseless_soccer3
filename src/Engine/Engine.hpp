@@ -4,6 +4,7 @@
 #include "Movable.hpp"
 #include "Sprite.hpp"
 #include "Window.hpp"
+#include "Entity.hpp"
 
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -73,6 +74,16 @@ class Engine {
    */
   void remMovable(Movable *in_movable);
   /**
+   * @brief addentity
+   * @param in_entity
+   */
+  void addentity(Entity *in_entity);
+  /**
+   * @brief remEntity
+   * @param in_entity
+   */
+  void remEntity(Entity *in_entity);
+  /**
    * @brief isRunning
    * @return
    */
@@ -82,6 +93,11 @@ class Engine {
    * @return
    */
   sf::RenderTarget &getRenderTarget();
+  /**
+   * @brief getMainCamera
+   * @return
+   */
+  Camera& getMainCamera();
 
  private:
   /// wrapper of sf::window

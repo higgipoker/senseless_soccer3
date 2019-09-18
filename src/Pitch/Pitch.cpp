@@ -3,7 +3,6 @@
 #include "Engine/TextureManager.hpp"
 
 #include <SFML/Graphics/Texture.hpp>
-
 //
 //
 //
