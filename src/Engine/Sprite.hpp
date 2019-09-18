@@ -13,7 +13,6 @@ namespace Engine {
  * @brief The SpriteSheetDefinition struct
  */
 struct SpriteSetDefinition {
-  std::string spritesheet;
   int frame_width = 0;
   int frame_height = 0;
   int spriteset_frames = 0;

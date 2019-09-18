@@ -2,18 +2,11 @@
 //
 //
 //
-PlayerSprite::PlayerSprite(const std::string& in_filename)
+PlayerSprite::PlayerSprite(const std::string& in_filename,
+                           const Engine::SpriteSetDefinition in_def)
     : Engine::Sprite(in_filename) {
-  Engine::SpriteSetDefinition def;
-  def.spritesheet = in_filename;
-  def.frame_width = 32;
-  def.frame_height = 32;
-  def.spriteset_frames = 72;
-  def.start_row = 0;
-  def.start_col = 0;
-  def.sheet_cols = 24;
 
-  init(def);
+  init(in_def);
 
   populateStandAnimations(stand_animations);
   populateRunAnimations(run_animations);
@@ -36,3 +29,9 @@ void PlayerSprite::setAnimation(PlayerAnimationType in_type,
       break;
   }
 }
+//
+//
+//
+PlayerShadowSprite::PlayerShadowSprite(const std::string& in_filename,
+                                       const Engine::SpriteSetDefinition in_def)
+    : PlayerSprite(in_filename, in_def) {}

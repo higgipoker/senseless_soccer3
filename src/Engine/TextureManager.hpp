@@ -35,7 +35,7 @@ class TextureManager {
   /**
    * @brief deleteTextures
    */
-  void deleteTextures();
+  static void deleteTextures();
 
  private:
   /// track textures

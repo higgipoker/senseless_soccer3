@@ -7,9 +7,9 @@
 #include <vector>
 
 /// easier to read
-using Anims = std::vector<int>;
+using Frames = std::vector<int>;
 using AnimMap = std::map<Engine::Direction, Engine::SpriteAnimation>;
-/// anim speed for all player anims
+/// anim speed for all player Frames
 static const int PLAYER_ANIM_FRAME_TIME = 10;
 /**
  * @brief The PlayerAnimationType enum
@@ -18,36 +18,36 @@ enum class PlayerAnimationType { Stand, Run, Slide };
 //
 // standing animations
 //
-inline Anims stand_east{1};
-inline Anims stand_southeast{4};
-inline Anims stand_south{7};
-inline Anims stand_southwest{10};
-inline Anims stand_west{13};
-inline Anims stand_northwest{16};
-inline Anims stand_north{19};
-inline Anims stand_northeast{22};
+inline Frames stand_east{1};
+inline Frames stand_southeast{4};
+inline Frames stand_south{7};
+inline Frames stand_southwest{10};
+inline Frames stand_west{13};
+inline Frames stand_northwest{16};
+inline Frames stand_north{19};
+inline Frames stand_northeast{22};
 //
 // running animations
 //
-inline Anims run_east{0, 1};
-inline Anims run_southeast{3, 5};
-inline Anims run_south{6, 8};
-inline Anims run_southwest{9, 11};
-inline Anims run_west{12, 13};
-inline Anims run_northwest{15, 17};
-inline Anims run_north{18, 20};
-inline Anims run_northeast{21, 23};
+inline Frames run_east{0, 1};
+inline Frames run_southeast{3, 5};
+inline Frames run_south{6, 8};
+inline Frames run_southwest{9, 11};
+inline Frames run_west{12, 13};
+inline Frames run_northwest{15, 17};
+inline Frames run_north{18, 20};
+inline Frames run_northeast{21, 23};
 //
 // sliding animations
 //
-inline Anims slide_east{24, 25, 26, 26};
-inline Anims slide_southeast{27, 28, 29, 29};
-inline Anims slide_south{30, 31, 32, 32};
-inline Anims slide_southwest{33, 34, 35, 35};
-inline Anims slide_west{36, 37, 38, 38};
-inline Anims slide_northwest{39, 40, 41, 41};
-inline Anims slide_north{42, 43, 44, 44};
-inline Anims slide_northeast{45, 46, 47, 47};
+inline Frames slide_east{24, 25, 26, 26};
+inline Frames slide_southeast{27, 28, 29, 29};
+inline Frames slide_south{30, 31, 32, 32};
+inline Frames slide_southwest{33, 34, 35, 35};
+inline Frames slide_west{36, 37, 38, 38};
+inline Frames slide_northwest{39, 40, 41, 41};
+inline Frames slide_north{42, 43, 44, 44};
+inline Frames slide_northeast{45, 46, 47, 47};
 //
 //
 //

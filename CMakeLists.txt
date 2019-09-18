@@ -55,9 +55,13 @@ add_executable(senseless_soccer3
     src/Engine/Compass.cpp
     src/Engine/Vector.cpp
     src/Engine/Entity.cpp
+    src/Engine/Metrics.cpp
+    src/Engine/ArcShape.cpp
     src/Player/Player.cpp
     src/Player/PlayerSprite.cpp
     src/Pitch/Pitch.cpp
+    src/Ball/Ball.cpp
+    src/Ball/BallSprite.cpp
     src/imgui/imgui.cpp
     src/imgui/imgui_draw.cpp
     src/imgui/imgui_widgets.cpp

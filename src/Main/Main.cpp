@@ -3,11 +3,14 @@
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 #endif
 
+#include "Ball/Ball.hpp"
+#include "Ball/BallSprite.hpp"
 #include "Engine/Engine.hpp"
 #include "Engine/Folder.hpp"
 #include "Pitch/Pitch.hpp"
-#include "Player/PlayerSprite.hpp"
 #include "Player/Player.hpp"
+#include "Player/PlayerSprite.hpp"
+#include "Engine/TextureManager.hpp"
 //
 //
 //
@@ -23,35 +26,42 @@ int main() {
   Engine::WorkingFolder working_folder;
   const std::string gfx_folder = working_folder.getPath() + "/gfx/";
 
-
   // bg layer
   int bg_layer_id = engine.addLayer(false);
-  Pitch pitch(gfx_folder + "grass_checked.png");
-  pitch.setRect(window_dimensions);
+  sf::IntRect world{0, 0, 2000, 3000};
+  Pitch pitch(gfx_folder + "grass_checked.png", world);
   engine.addDrawable(&pitch, bg_layer_id);
+
+  // shadow layer
+  int shadow_layer_id = engine.addLayer(false);
+  PlayerShadowSprite shadow(gfx_folder + "playerandball.png");
+  engine.addDrawable(&shadow, shadow_layer_id);
 
   // sprite layer
   int sprite_layer_id = engine.addLayer(true);
   PlayerSprite sprite1(gfx_folder + "playerandball.png");
   engine.addDrawable(&sprite1, sprite_layer_id);
 
-  PlayerSprite sprite2(gfx_folder + "playerandball.png");
-  sprite2.move(40,0);
-  sprite2.setFrame(1);
-  engine.addDrawable(&sprite2, sprite_layer_id);
 
   Player player;
   player.sprite = &sprite1;
-  player.animate(PlayerAnimationType::Run, Engine::Direction::NORTH);
+  player.animate(PlayerAnimationType::Run, Engine::Direction::SOUTH);
+
+  Ball ball;
+  BallSprite ballsprite(gfx_folder + "playerandball.png");
+  ball.sprite = &ballsprite;
+  ball.sprite->move(100, 0);
+  engine.addDrawable(&ballsprite, sprite_layer_id);
 
   while (engine.isRunning()) {
-
     // updat game stuff
     player.sprite->animate();
+    ball.sprite->animate();
 
     // step the engine
     engine.step();
   }
+  Engine::TextureManager::deleteTextures();
 
   return 0;
 }

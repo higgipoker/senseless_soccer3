@@ -14,6 +14,7 @@ class Player : public Engine::Entity {
   Player();
 
   PlayerSprite *player_sprite = nullptr;
+  PlayerSprite *player_shadow = nullptr;
 
   // tmp test
   void animate(PlayerAnimationType in_type, Engine::Direction in_dir) {

@@ -20,7 +20,10 @@ struct {
 Engine::Engine(const std::string &in_window_title, int in_window_width,
                int in_window_height, int in_flags, bool in_fullscreen)
     : window(in_window_title, in_window_width, in_window_height, in_flags,
-             in_fullscreen) {}
+             in_fullscreen) {
+  camera.position.x = static_cast<float>(in_window_width) / 2;
+  camera.position.y = static_cast<float>(in_window_height) / 2;
+}
 //
 //
 //

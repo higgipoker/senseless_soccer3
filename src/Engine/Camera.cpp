@@ -3,12 +3,12 @@ namespace Engine {
 //
 //
 //
-Camera::Camera() {}
+Camera::Camera() = default;
 //
 //
 //
 void Camera::step(float in_dt) {
   //test
-  position.x++;
+  //position.x++;
   view.setCenter(position.x, position.y); }
 }  // namespace Engine

@@ -7,7 +7,7 @@ namespace Engine {
 //
 //  constructor
 //
-Compass::Compass() {}
+Compass::Compass() = default;
 //
 //  constructor
 //

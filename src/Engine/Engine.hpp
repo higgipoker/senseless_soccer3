@@ -113,7 +113,7 @@ class Engine {
   /// list of physical stuff to integrate
   std::vector<Movable *> movable_list;
   /// integration step
-  float dt = 0.01f;
+  float dt = 0.01F;
   /// desired framerate
   const int framerate = 60;
   /// app running flag

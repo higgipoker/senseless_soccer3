@@ -1,6 +1,6 @@
 #pragma once
-#include "Sprite.hpp"
 #include "Movable.hpp"
+#include "Sprite.hpp"
 namespace Engine {
 
 /**
@@ -15,6 +15,7 @@ class Entity {
 
   Movable *movable = nullptr;
   Sprite *sprite = nullptr;
+  Sprite *shadow = nullptr;
 };
 
 }  // namespace Engine
