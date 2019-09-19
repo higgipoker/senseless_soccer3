@@ -43,6 +43,8 @@ class PlayerSprite : public Engine::Sprite {
   void setAnimation(PlayerAnimationType in_type,
                     Engine::Direction in_direction);
 
+
+
  protected:
  private:
   AnimMap stand_animations;

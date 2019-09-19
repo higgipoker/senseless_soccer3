@@ -25,8 +25,7 @@ static std::map<Direction, std::string> direction_to_string = {
     std::make_pair(Direction::SOUTH, "SOUTH"),
     std::make_pair(Direction::SOUTH_WEST, "SOUTH_WEST"),
     std::make_pair(Direction::WEST, "WEST"),
-    std::make_pair(Direction::NORTH_WEST, "NORTH_WEST")
-};
+    std::make_pair(Direction::NORTH_WEST, "NORTH_WEST")};
 
 class Vector3;
 

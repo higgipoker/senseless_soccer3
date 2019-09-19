@@ -1,5 +1,6 @@
 #include "Sprite.hpp"
 
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
 #include <cassert>
@@ -7,6 +8,7 @@
 //
 //
 namespace Engine {
+bool Sprite::draw_bounds = false;
 //
 //
 //
@@ -14,7 +16,7 @@ Sprite::Sprite() {}
 //
 //
 //
-Sprite::Sprite(std::shared_ptr<sf::Texture> in_texture) : texture(in_texture){
+Sprite::Sprite(std::shared_ptr<sf::Texture> in_texture) : texture(in_texture) {
   setTexture(*texture.get());
 }
 //
@@ -48,6 +50,23 @@ void Sprite::init(const SpriteSetDefinition &_def) {
 //
 //
 //
+void Sprite::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+  sf::Sprite::draw(target, states);
+
+  if (draw_bounds) {
+    sf::RectangleShape bounds{
+        sf::Vector2f{getGlobalBounds().width, getGlobalBounds().height}};
+    bounds.setPosition({getGlobalBounds().left, getGlobalBounds().top});
+    bounds.setFillColor(sf::Color::Transparent);
+    bounds.setOutlineColor(sf::Color::Magenta);
+    bounds.setOutlineThickness(1);
+
+    target.draw(bounds);
+  }
+}
+//
+//
+//
 void Sprite::setFrame(const int in_frame) {
   current_frame = in_frame;
   setTextureRect(frames.at(current_frame));
@@ -55,9 +74,7 @@ void Sprite::setFrame(const int in_frame) {
 //
 //
 //
-int Sprite::getFrame(){
-  return current_frame;
-}
+int Sprite::getFrame() { return current_frame; }
 //
 //
 //

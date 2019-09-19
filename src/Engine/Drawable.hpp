@@ -8,6 +8,8 @@ namespace Engine {
  */
 class Drawable : public sf::Drawable {
  public:
+  /// for sorting
   int z = 0;
 };
+
 }  // namespace Engine

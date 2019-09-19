@@ -48,17 +48,19 @@ class Sprite : public sf::Sprite {
    */
   void init(const SpriteSetDefinition &_def);
   /**
+   * @brief drawBounds
+   */
+  void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+  /**
    * @brief setFrame
    * @param in_frame
    */
   void setFrame(const int in_frame);
-
   /**
    * @brief getFrame
    * @return
    */
   int getFrame();
-
   /**
    * @brief setAnimation
    * @param in_animation
@@ -68,6 +70,9 @@ class Sprite : public sf::Sprite {
    * @brief animate
    */
   void animate();
+
+  ///debug
+  static bool draw_bounds;
 
  protected:
   /// managed texture
