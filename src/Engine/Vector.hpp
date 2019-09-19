@@ -44,8 +44,6 @@ static bool abs_less_than(float a, float b, float epsilon = TOL) {
 //
 //  A class to represent a Vector
 //
-//  convention is to return a new vector for operation and not
-//    mutate *this. Except for operator overloads.
 //
 //  ----------------------------------------------------------------------------
 class Vector3 {

@@ -51,7 +51,6 @@ class Movable {
   Vector3 friction;
   Vector3 k1;
   Vector3 k2;
-  Vector3 k3;
   Vector3 dp;
   float co_friction = 0;
   float co_air_resistance = 0;

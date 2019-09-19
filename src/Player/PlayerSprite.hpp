@@ -32,7 +32,7 @@ class PlayerSprite : public Engine::Sprite {
    * @param in_def
    */
   PlayerSprite(
-      const std::string &in_filename,
+      std::shared_ptr<sf::Texture> in_texture,
       const Engine::SpriteSetDefinition in_def = Engine::SpriteSetDefinition{
           FRAME_WIDTH, FRAME_HEIGHT, FRAMES, START_ROW, START_COL, COLS});
   /**
@@ -59,7 +59,7 @@ class PlayerShadowSprite : public PlayerSprite {
    * @brief PlayerShadowSprite
    * @param in_filename
    */
-  PlayerShadowSprite(const std::string &in_filename,
+  PlayerShadowSprite(std::shared_ptr<sf::Texture> in_texture,
                      const Engine::SpriteSetDefinition in_def =
                          Engine::SpriteSetDefinition{FRAME_WIDTH, FRAME_HEIGHT,
                                                      FRAMES, SHADOW_START_ROW,

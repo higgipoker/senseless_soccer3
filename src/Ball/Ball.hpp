@@ -12,5 +12,10 @@ class Ball : public Engine::Entity {
    */
   Ball();
 
+  /**
+   * @brief Update
+   */
+  void update();
+
  protected:
 };

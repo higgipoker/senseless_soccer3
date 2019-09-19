@@ -50,13 +50,13 @@ add_executable(senseless_soccer3
     src/Engine/Sprite.cpp
     src/Engine/SpriteAnimation.cpp
     src/Engine/Drawable.cpp
-    src/Engine/TextureManager.cpp
     src/Engine/Camera.cpp
     src/Engine/Compass.cpp
     src/Engine/Vector.cpp
     src/Engine/Entity.cpp
     src/Engine/Metrics.cpp
     src/Engine/ArcShape.cpp
+    src/Engine/Debug.cpp
     src/Player/Player.cpp
     src/Player/PlayerSprite.cpp
     src/Pitch/Pitch.cpp
@@ -68,6 +68,14 @@ add_executable(senseless_soccer3
     src/imgui/imgui_demo.cpp
     src/imgui/imgui-SFML.cpp
 )
+
+target_compile_options(senseless_soccer3 PRIVATE
+  -Werror
+  -Wall
+  -Wextra
+  -Wno-unused-function
+  -Wno-unused-parameter
+  -Wno-implicit-fallthrough)
 
 # --------------------------------------------------
 # link libs

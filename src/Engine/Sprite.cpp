@@ -1,5 +1,4 @@
 #include "Sprite.hpp"
-#include "TextureManager.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -15,9 +14,8 @@ Sprite::Sprite() {}
 //
 //
 //
-Sprite::Sprite(const std::string &in_filename) {
-  sf::Texture *tex = TextureManager::acquireTexture(in_filename);
-  setTexture(*tex);
+Sprite::Sprite(std::shared_ptr<sf::Texture> in_texture) : texture(in_texture){
+  setTexture(*texture.get());
 }
 //
 //
@@ -57,6 +55,12 @@ void Sprite::setFrame(const int in_frame) {
 //
 //
 //
+int Sprite::getFrame(){
+  return current_frame;
+}
+//
+//
+//
 void Sprite::setAnimation(SpriteAnimation *in_animation) {
   animation = in_animation;
   setTextureRect(frames.at(animation->currentFrame()));
@@ -67,7 +71,8 @@ void Sprite::setAnimation(SpriteAnimation *in_animation) {
 void Sprite::animate() {
   if (animation) {
     animation->step();
+    current_frame = animation->currentFrame();
+    setTextureRect(frames.at(current_frame));
   }
-  setTextureRect(frames.at(animation->currentFrame()));
 }
 }  // namespace Engine

@@ -4,11 +4,8 @@ namespace Engine {
 //
 //
 bool Window::validVideoMode(unsigned int width, unsigned int height) {
-  // get list of supported video modes
-  std::vector<sf::VideoMode> modes = sf::VideoMode::getFullscreenModes();
-
   // search for one that matched the requested width and height
-  for (auto &mode : modes) {
+  for (auto &mode : sf::VideoMode::getFullscreenModes()) {
     if (mode.width == width && mode.height == height) {
       return true;
     }

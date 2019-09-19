@@ -20,7 +20,8 @@ struct {
 Engine::Engine(const std::string &in_window_title, int in_window_width,
                int in_window_height, int in_flags, bool in_fullscreen)
     : window(in_window_title, in_window_width, in_window_height, in_flags,
-             in_fullscreen) {
+             in_fullscreen),
+      debug_gui(window) {
   camera.position.x = static_cast<float>(in_window_width) / 2;
   camera.position.y = static_cast<float>(in_window_height) / 2;
 }
@@ -61,6 +62,11 @@ void Engine::step() {
     window.draw(*drawable);
   }
 
+  // imgui debug ui
+  if (show_debug_hud) {
+    debug_gui.update();
+  }
+
   window.display();
 }
 //
@@ -74,7 +80,7 @@ int Engine::addLayer(bool in_sortable) {
 //
 //
 //
-void Engine::addDrawable(sf::Drawable *in_drawable, int in_layer_id) {
+void Engine::addDrawable(sf::Drawable *in_drawable, size_t in_layer_id) {
   if (render_layers.empty()) {
     std::cout << "Engine::addDrawable > no layers" << std::endl;
     return;
@@ -102,7 +108,7 @@ void Engine::addMovable(Movable *in_movable) {
 //
 //
 //
-void Engine::remDrawable(sf::Drawable *in_drawable, int in_layer_id) {
+void Engine::remDrawable(sf::Drawable *in_drawable, size_t in_layer_id) {
   // do we know the layer?
   if (in_layer_id != RenderLayer::INVALID_LAYER) {
     if (in_layer_id < render_layers.size()) {
@@ -170,6 +176,9 @@ void Engine::remEntity(Entity *in_entity) {
 void Engine::poll_window() {
   static sf::Event event;
   while (window.pollEvent(event)) {
+    if (show_debug_hud) {
+      debug_gui.pollEvent(event);
+    }
     switch (event.type) {
       case sf::Event::Closed:
         running = false;
@@ -185,7 +194,13 @@ void Engine::poll_window() {
       case sf::Event::KeyPressed:
         if (window.hasFocus()) {
           if (event.key.code == sf::Keyboard::Escape) {
-            running = false;
+            if (show_debug_hud) {
+              show_debug_hud = !show_debug_hud;
+            } else {
+              running = false;
+            }
+          } else if (event.key.code == sf::Keyboard::Tab) {
+            show_debug_hud = !show_debug_hud;
           }
         }
         break;

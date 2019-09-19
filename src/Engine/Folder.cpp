@@ -22,6 +22,7 @@ namespace Engine {
 inline std::string getWorkingDirectory() {
   std::array<char, FILENAME_MAX> buff{};
   auto unused = GetCurrentDir(static_cast<char *>(buff.data()), FILENAME_MAX);
+  std::cout << unused << std::endl;
   return (static_cast<char *>(buff.data()));
 }
 //

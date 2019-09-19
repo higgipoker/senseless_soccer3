@@ -14,8 +14,7 @@ enum class Direction {
   SOUTH,
   SOUTH_WEST,
   WEST,
-  NORTH_WEST,
-  NONE
+  NORTH_WEST
 };
 
 static std::map<Direction, std::string> direction_to_string = {
@@ -26,8 +25,7 @@ static std::map<Direction, std::string> direction_to_string = {
     std::make_pair(Direction::SOUTH, "SOUTH"),
     std::make_pair(Direction::SOUTH_WEST, "SOUTH_WEST"),
     std::make_pair(Direction::WEST, "WEST"),
-    std::make_pair(Direction::NORTH_WEST, "NORTH_WEST"),
-    std::make_pair(Direction::NONE, "NONE"),
+    std::make_pair(Direction::NORTH_WEST, "NORTH_WEST")
 };
 
 class Vector3;
@@ -69,7 +67,7 @@ class Compass {
   /**
    * @brief direction
    */
-  Direction direction = Direction::NONE;
+  Direction direction = Direction::NORTH;
 
   /**
    * @brief operator ==

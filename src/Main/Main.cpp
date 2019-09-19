@@ -10,7 +10,6 @@
 #include "Pitch/Pitch.hpp"
 #include "Player/Player.hpp"
 #include "Player/PlayerSprite.hpp"
-#include "Engine/TextureManager.hpp"
 //
 //
 //
@@ -26,42 +25,54 @@ int main() {
   Engine::WorkingFolder working_folder;
   const std::string gfx_folder = working_folder.getPath() + "/gfx/";
 
+  // grass texture
+  auto tex_grass = std::make_shared<sf::Texture>();
+  tex_grass->loadFromFile(gfx_folder + "grass_checked.png");
+
+  // player and ball texture
+  auto tex_playerandball = std::make_shared<sf::Texture>();
+  tex_playerandball->loadFromFile(gfx_folder + "playerandball.png");
+
   // bg layer
   int bg_layer_id = engine.addLayer(false);
   sf::IntRect world{0, 0, 2000, 3000};
-  Pitch pitch(gfx_folder + "grass_checked.png", world);
+  Pitch pitch(tex_grass, world);
   engine.addDrawable(&pitch, bg_layer_id);
 
   // shadow layer
   int shadow_layer_id = engine.addLayer(false);
-  PlayerShadowSprite shadow(gfx_folder + "playerandball.png");
+  PlayerShadowSprite shadow(tex_playerandball);
   engine.addDrawable(&shadow, shadow_layer_id);
 
-  // sprite layer
-  int sprite_layer_id = engine.addLayer(true);
-  PlayerSprite sprite1(gfx_folder + "playerandball.png");
-  engine.addDrawable(&sprite1, sprite_layer_id);
+  BallShadowSprite ball_shadow(tex_playerandball);
+  engine.addDrawable(&ball_shadow, shadow_layer_id);
 
+
+  // sprite layer (sortable)
+  int sprite_layer_id = engine.addLayer(true);
+  PlayerSprite sprite1(tex_playerandball);
+  engine.addDrawable(&sprite1, sprite_layer_id);
 
   Player player;
   player.sprite = &sprite1;
+  player.shadow = &shadow;
   player.animate(PlayerAnimationType::Run, Engine::Direction::SOUTH);
 
   Ball ball;
-  BallSprite ballsprite(gfx_folder + "playerandball.png");
+  BallSprite ballsprite(tex_playerandball);
   ball.sprite = &ballsprite;
+  ball.shadow = &ball_shadow;
   ball.sprite->move(100, 0);
   engine.addDrawable(&ballsprite, sprite_layer_id);
 
   while (engine.isRunning()) {
     // updat game stuff
-    player.sprite->animate();
-    ball.sprite->animate();
+    player.update();
+    ball.update();
 
     // step the engine
     engine.step();
   }
-  Engine::TextureManager::deleteTextures();
 
   return 0;
 }

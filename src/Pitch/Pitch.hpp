@@ -7,6 +7,8 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+
+#include <memory>
 //
 //
 //
@@ -41,7 +43,7 @@ class Pitch : public Engine::Drawable {
    * @param in_filename
    * @param in_target
    */
-  Pitch(const std::string &in_filename, const sf::IntRect in_world_bounds);
+  Pitch(std::shared_ptr<sf::Texture> in_texture, const sf::IntRect in_world_bounds);
   /**
    *
    */

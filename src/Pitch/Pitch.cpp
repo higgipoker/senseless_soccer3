@@ -1,19 +1,17 @@
 #include "Pitch.hpp"
 
 #include "Engine/Metrics.hpp"
-#include "Engine/TextureManager.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Texture.hpp>
 //
 //
 //
-Pitch::Pitch(const std::string& in_filename,
+Pitch::Pitch(std::shared_ptr<sf::Texture> in_texture,
              const sf::IntRect in_world_bounds) {
   // set up the repeating grass texture
-  sf::Texture* tex = Engine::TextureManager::acquireTexture(in_filename);
-  tex->setRepeated(true);
-  grass.setTexture(*tex);
+  in_texture->setRepeated(true);
+  grass.setTexture(*in_texture);
 
   // make a texture for drawing the lines on
   pitch_texture = new sf::RenderTexture();
@@ -186,7 +184,7 @@ void Pitch::init_center_spot() {
 //
 void Pitch::init_penalty_spots() {
   // north
-  int x, y, w, h;
+  int x, y;
   x = dimensions.bounds.getPosition().x + dimensions.bounds.getSize().x / 2;
   y = dimensions.bounds.getPosition().y +
       Engine::Metrics::MetersToPixels(10.9f);

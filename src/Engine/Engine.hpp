@@ -5,6 +5,7 @@
 #include "Sprite.hpp"
 #include "Window.hpp"
 #include "Entity.hpp"
+#include "Debug.hpp"
 
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -24,7 +25,7 @@ struct RenderLayer {
   RenderLayer(bool in_sortable = false) : sortable(in_sortable) {}
   std::vector<sf::Drawable *> draw_list;
   bool sortable = false;
-  static const int INVALID_LAYER = -1;
+  static const size_t INVALID_LAYER = 999;
 };
 
 /**
@@ -56,7 +57,7 @@ class Engine {
    * @param _renderable
    */
   void addDrawable(sf::Drawable *in_drawable,
-                   int in_layer_id = RenderLayer::INVALID_LAYER);
+                   size_t in_layer_id = RenderLayer::INVALID_LAYER);
   /**
    * @brief addMovable
    * @param _movable
@@ -67,7 +68,7 @@ class Engine {
    * @param _renderable
    */
   void remDrawable(sf::Drawable *in_drawable,
-                   int in_layer_id = RenderLayer::INVALID_LAYER);
+                   size_t in_layer_id = RenderLayer::INVALID_LAYER);
   /**
    * @brief remMovable
    * @param _movable
@@ -112,12 +113,16 @@ class Engine {
   RenderLayer hud_layer;
   /// list of physical stuff to integrate
   std::vector<Movable *> movable_list;
+  /// an imgui debug gui
+  Debug debug_gui;
   /// integration step
   float dt = 0.01F;
   /// desired framerate
   const int framerate = 60;
   /// app running flag
   bool running = true;
+  /// display debug gui?
+  bool show_debug_hud = false;
   /**
    * @brief poll_window
    */

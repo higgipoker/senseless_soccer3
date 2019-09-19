@@ -13,12 +13,17 @@ class Player : public Engine::Entity {
    */
   Player();
 
+  /**
+   * @brief Update
+   */
+  void update();
+
   PlayerSprite *player_sprite = nullptr;
   PlayerSprite *player_shadow = nullptr;
 
   // tmp test
   void animate(PlayerAnimationType in_type, Engine::Direction in_dir) {
-    if (player_sprite = static_cast<PlayerSprite *>(sprite)) {
+    if ( (player_sprite = static_cast<PlayerSprite *>(sprite)) ) {
       player_sprite->setAnimation(in_type, in_dir);
     }
   }

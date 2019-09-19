@@ -5,6 +5,7 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -34,7 +35,7 @@ class Sprite : public sf::Sprite {
   /**
    * @brief Sprite
    */
-  Sprite(const std::string & in_filename);
+  Sprite(std::shared_ptr<sf::Texture> in_texture);
 
   /**
    * @brief init
@@ -53,6 +54,12 @@ class Sprite : public sf::Sprite {
   void setFrame(const int in_frame);
 
   /**
+   * @brief getFrame
+   * @return
+   */
+  int getFrame();
+
+  /**
    * @brief setAnimation
    * @param in_animation
    */
@@ -63,6 +70,8 @@ class Sprite : public sf::Sprite {
   void animate();
 
  protected:
+  /// managed texture
+  std::shared_ptr<sf::Texture> texture;
   /// frames
   std::vector<sf::IntRect> frames;
   /// track current frame

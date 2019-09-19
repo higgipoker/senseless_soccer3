@@ -17,6 +17,8 @@ inline constexpr int BALL_FRAMES = 7;
 inline constexpr int BALL_START_ROW = 6;
 inline constexpr int BALL_START_COL = 0;
 inline constexpr int BALL_COLS = 24;
+inline constexpr int BALL_SHADOW_FRAMES = 1;
+inline constexpr int BALL_SHADOW_START_COL = 7;
 //
 // rolling animation
 //
@@ -31,11 +33,27 @@ class BallSprite : public Engine::Sprite {
    * @brief BallSprite
    */
   BallSprite(
-      const std::string &in_filename,
+      std::shared_ptr<sf::Texture> in_texture,
       const Engine::SpriteSetDefinition in_def = Engine::SpriteSetDefinition{
           BALL_FRAME_WIDTH, BALL_FRAME_HEIGHT, BALL_FRAMES, BALL_START_ROW,
           BALL_START_COL, BALL_COLS});
 
  protected:
   Engine::SpriteAnimation roll_animation{BALL_ANIM_FRAME_TIME, roll};
+};
+
+/**
+ * @brief The PlayerShadowSprite class
+ */
+class BallShadowSprite : public BallSprite {
+ public:
+  /**
+   * @brief PlayerShadowSprite
+   * @param in_filename
+   */
+  BallShadowSprite(
+      std::shared_ptr<sf::Texture> in_texture,
+      const Engine::SpriteSetDefinition in_def = Engine::SpriteSetDefinition{
+      BALL_FRAME_WIDTH, BALL_FRAME_HEIGHT, BALL_SHADOW_FRAMES, BALL_START_ROW,
+      BALL_SHADOW_START_COL, BALL_COLS});
 };
