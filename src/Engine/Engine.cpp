@@ -9,7 +9,7 @@ namespace Engine {
 //
 // sort predicate for drawables
 //
-struct {
+inline struct {
   bool operator()(const sf::Drawable *d1, const sf::Drawable *d2) const {
     return d1->z < d2->z;
   }
