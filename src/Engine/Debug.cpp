@@ -18,8 +18,11 @@ Debug::~Debug() { ImGui::SFML::Shutdown(); }
 //
 void Debug::update() {
   ImGui::SFML::Update(window, ui_clock.restart());
-  ImGui::ShowDemoWindow();
+  //ImGui::ShowDemoWindow();
   ImGui::Begin("Debug");
+
+
+  { ImGui::Checkbox("Draw Bounds", &flag_draw_bounds); }
   ImGui::End();
   ImGui::SFML::Render(window);
 }

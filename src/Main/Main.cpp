@@ -7,6 +7,7 @@
 #include "Ball/BallSprite.hpp"
 #include "Engine/Engine.hpp"
 #include "Engine/Folder.hpp"
+#include "Match/Match.hpp"
 #include "Pitch/Pitch.hpp"
 #include "Player/Player.hpp"
 #include "Player/PlayerSprite.hpp"
@@ -24,6 +25,8 @@ int main() {
 
   Engine::WorkingFolder working_folder;
   const std::string gfx_folder = working_folder.getPath() + "/gfx/";
+
+  Match match;
 
   // grass texture
   auto tex_grass = std::make_shared<sf::Texture>();
@@ -47,28 +50,27 @@ int main() {
   BallShadowSprite ball_shadow(tex_playerandball);
   engine.addDrawable(&ball_shadow, shadow_layer_id);
 
-
   // sprite layer (sortable)
   int sprite_layer_id = engine.addLayer(true);
   PlayerSprite sprite1(tex_playerandball);
   engine.addDrawable(&sprite1, sprite_layer_id);
 
-  Player player;
-  player.sprite = &sprite1;
-  player.shadow = &shadow;
-  player.animate(PlayerAnimationType::Run, Engine::Direction::SOUTH);
+  Player player(&sprite1, &shadow);
 
-  Ball ball;
+
   BallSprite ballsprite(tex_playerandball);
-  ball.sprite = &ballsprite;
-  ball.shadow = &ball_shadow;
-  ball.sprite->move(100, 0);
+  match.ball.sprite = &ballsprite;
+  match.ball.shadow = &ball_shadow;
+  match.ball.movable->position = {100,100};
+  match.ball.sprite->move(100, 100);
   engine.addDrawable(&ballsprite, sprite_layer_id);
+
+  Player::match = &match;
 
   while (engine.isRunning()) {
     // updat game stuff
     player.update();
-    ball.update();
+    match.ball.update();
 
     // step the engine
     engine.step();

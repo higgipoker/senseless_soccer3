@@ -4,7 +4,9 @@ const int SHADOW_OFFSET_Y = 4;
 //
 //
 //
-Ball::Ball() = default;
+Ball::Ball() {
+  movable = &ball_movable;
+}
 //
 //
 //

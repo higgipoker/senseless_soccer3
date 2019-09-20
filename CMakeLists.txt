@@ -59,9 +59,13 @@ add_executable(senseless_soccer3
     src/Engine/Debug.cpp
     src/Player/Player.cpp
     src/Player/PlayerSprite.cpp
+    src/Player/PlayerState.cpp
+    src/Player/PlayerStateStand.cpp
+    src/Player/PlayerStateRun.cpp
     src/Pitch/Pitch.cpp
     src/Ball/Ball.cpp
     src/Ball/BallSprite.cpp
+    src/Match/Match.cpp
     src/imgui/imgui.cpp
     src/imgui/imgui_draw.cpp
     src/imgui/imgui_widgets.cpp

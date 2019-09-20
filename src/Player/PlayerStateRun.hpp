@@ -1,0 +1,30 @@
+#pragma once
+#include "PlayerState.hpp"
+class Player;
+/**
+ * @brief The PlayerStateRun class
+ */
+class PlayerStateRun : public PlayerState {
+ public:
+  /**
+   * @brief PlayerStateRun
+   */
+  PlayerStateRun(Player &in_player);
+  /**
+   * @brief start
+   */
+  void start() override;
+  /**
+   * @brief update
+   */
+  void step() override;
+  /**
+   * @brief end
+   */
+  void end() override;
+  /**
+   * @brief stateOver
+   * @return
+   */
+  bool stateOver() override;
+};

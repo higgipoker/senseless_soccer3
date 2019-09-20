@@ -70,6 +70,14 @@ class Sprite : public sf::Sprite {
    * @brief animate
    */
   void animate();
+  /**
+   * @brief perspectivize
+   * @param z
+   * @param width
+   * @param camera_height
+   * @return
+   */
+  bool perspectivize(float in_z, float in_width, float in_camera_height);
 
   ///debug
   static bool draw_bounds;

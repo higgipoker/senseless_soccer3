@@ -242,7 +242,7 @@ void Engine::poll_window() {
         break;
     }
   }
-  Sprite::draw_bounds = show_debug_hud;
+  Sprite::draw_bounds = debug_gui.flag_draw_bounds;
 }
 //
 //

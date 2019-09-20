@@ -18,4 +18,5 @@ class Ball : public Engine::Entity {
   void update();
 
  protected:
+  Engine::Movable ball_movable;
 };

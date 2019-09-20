@@ -1,6 +1,7 @@
 #pragma once
 #include "Movable.hpp"
 #include "Sprite.hpp"
+#include "Compass.hpp"
 namespace Engine {
 
 /**
@@ -12,6 +13,12 @@ class Entity {
    * @brief Entity
    */
   Entity();
+  /**
+   * @brief directionTo
+   * @param in_entity
+   * @return
+   */
+  Direction directionTo(const Entity& in_entity);
 
   Movable *movable = nullptr;
   Sprite *sprite = nullptr;

@@ -25,11 +25,13 @@ class Debug {
    * @param in_event
    */
   void pollEvent(sf::Event &in_event);
+  /// debug flags
+  bool flag_draw_bounds= false;
 
 private:
-  // target window
+  /// target window
   sf::RenderWindow &window;
-  // a clock for ui tick
+  /// a clock for ui tick
   sf::Clock ui_clock;
 };
 
