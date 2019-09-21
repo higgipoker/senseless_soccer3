@@ -1,10 +1,11 @@
 #pragma once
+#include <string>
 class Player;
 
 /**
  * @brief The player_state enum
  */
-enum class player_state { Stand, Run };
+enum class player_state { Stand, Run, Dribble };
 
 /**
  * @brief The PlayerState class
@@ -41,6 +42,9 @@ class PlayerState {
    * @brief changeToNextState
    */
   void changeToNextState();
+
+  /// degug
+  std::string name;
 
  protected:
   /// context for state  machine pattern

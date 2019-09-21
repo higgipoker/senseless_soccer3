@@ -27,4 +27,7 @@ class PlayerStateDribble : public PlayerState {
    * @return
    */
   bool stateOver() override;
+
+protected:
+
 };

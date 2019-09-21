@@ -1,6 +1,7 @@
 #include "Player.hpp"
 
 #include "Engine/Compass.hpp"
+#include "Engine/Debug.hpp"
 #include "Match/Match.hpp"
 
 Match* Player::match = nullptr;
@@ -10,32 +11,49 @@ const int SHADOW_OFFSET_Y = 4;
 //
 //
 //
-Player::Player(PlayerSprite* in_sprite, PlayerShadowSprite* in_shadow)
-    : state_stand(*this), state_run(*this), current_state(&state_stand) {
-  movable = &player_movable;
+Player::Player(PlayerSprite& in_sprite, PlayerShadowSprite& in_shadow)
+    : Entity(in_sprite, in_shadow),
+      state_stand(*this),
+      state_run(*this),
+      state_dribble(*this),
+      current_state(&state_stand),
+      player_sprite(in_sprite),
+      player_shadow(in_shadow) {
+  feet.setRadius(0.5F);
+  control.setRadius(15);
 
-  // base entity members
-  sprite = in_sprite;
-  shadow = in_shadow;
-
-  // player members
-  player_sprite = in_sprite;
-  player_shadow = in_shadow;
+  feet.setFillColor(Engine::Debug::disgnostics_color);
+  control.setFillColor(sf::Color::Transparent);
+  control.setOutlineThickness(1);
+  control.setOutlineColor(Engine::Debug::disgnostics_color);
 }
 //
 //
 //
 void Player::update() {
-  //test
-  if(locomotion){
-    locomotion->step();
-    if(locomotion->fiished()){
-      locomotion->stop();
-      delete locomotion;
-      locomotion = nullptr;
-    }
-  }
-  movable->velocity.normalizeToUnits();
+  Entity::Update();
+  ////////////////////////////////////////////////////////////////
+  /// test
+  //  if (locomotion) {
+  //    locomotion->step();
+  //    if (locomotion->fiished()) {
+  //      locomotion->stop();
+  //      delete locomotion;
+  //      locomotion = nullptr;
+  //    }
+  //  }
+  //  movable.velocity.normalizeToUnits();
+  ///
+  ////////////////////////////////////////////////////////////////
+
+  feet.setPosition(movable.position.x - feet.getRadius(),
+                   movable.position.y - feet.getRadius());
+  control.setPosition(movable.position.x - control.getRadius(),
+                      movable.position.y - control.getRadius());
+
+#ifndef NDEBUG
+  debug();
+#endif
 
   // state machine
   current_state->step();
@@ -43,20 +61,17 @@ void Player::update() {
     current_state->stop();
     current_state->changeToNextState();
     current_state->start();
+    std::cout << current_state->name << std::endl;
   }
 
-  sprite->setPosition(movable->position.x, movable->position.y);
-  sprite->animate();
-  shadow->setPosition(sprite->getPosition());
-  shadow->move(SHADOW_OFFSET_X, SHADOW_OFFSET_Y);
-  shadow->setFrame(sprite->getFrame());
+  shadow.setFrame(sprite.getFrame());
 }
 //
 //
 //
 void Player::face_ball() {
   Engine::Compass to_ball;
-  to_ball.direction = directionTo(match->ball);
+  to_ball.direction = directionTo(*match->ball);
   facing = to_ball.direction;
 }
 //
@@ -70,5 +85,16 @@ void Player::change_state(const player_state in_state) {
     case player_state::Run:
       current_state = &state_run;
       break;
+    case player_state::Dribble:
+      current_state = &state_dribble;
+      break;
   }
+}
+//
+//
+//
+void Player::debug() {
+  sprite.debug_shapes.clear();
+  sprite.debug_shapes.push_back(&feet);
+  sprite.debug_shapes.push_back(&control);
 }

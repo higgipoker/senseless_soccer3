@@ -1,6 +1,8 @@
 #include "Movable.hpp"
+
+#include <iostream>
 namespace Engine {
-static const float CLAMP_TO_GROUND = 0.0000001F;
+static const float CLAMP_TO_GROUND = 0.458F;
 static const float GRAVITATIONAL_CONSTANT = 9.8F;
 //
 //
@@ -14,21 +16,23 @@ void Movable::step(float in_dt) { integrate_improved_euler(in_dt); }
 //
 //
 void Movable::bounce() {
+  position.z = 0;
   velocity.z = -velocity.z;
   velocity.z *= co_bounciness;
   friction = velocity.reverse();
   friction = friction * co_friction;
   force = force + friction;
+  // dampens infinite bounce
+  damp_bounce();
 }
 //
 //
 //
 void Movable::damp_bounce() {
-  if (Floats::greater_than(fabsf(velocity.z), 0)) {
-    if (Floats::less_than(fabsf(position.z), CLAMP_TO_GROUND)) {
-      position.z = 0;
-      velocity.z = 0;
-    }
+  std::cout << fabsf(velocity.z) << std::endl;
+  if (Floats::less_than(fabsf(velocity.z), CLAMP_TO_GROUND)) {
+    position.z = 0;
+    velocity.z = 0;
   }
 }
 //
@@ -65,8 +69,6 @@ void Movable::integrate_improved_euler(const float in_dt) {
     // apply new position
     position = position + dp;
   }
-  // dampens infinite bounce
-  damp_bounce();
   // for very small velocities
   damp_velocity();
   // reset forces for next step
@@ -79,7 +81,7 @@ Vector3 Movable::integrate(const float in_dt) {
   if (Floats::greater_than(position.z, 0)) {
     // gravity
     Vector3 gravity;
-    gravity.z = GRAVITATIONAL_CONSTANT;
+    gravity.z = -GRAVITATIONAL_CONSTANT;
     force += gravity * mass * in_dt;
     // air resistance
     Vector3 air_resistance = velocity.reverse().normalise();

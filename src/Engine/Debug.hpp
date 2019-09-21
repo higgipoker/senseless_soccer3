@@ -4,7 +4,7 @@
 #include <SFML/System/Clock.hpp>
 
 namespace Engine {
-  /**
+/**
  * @brief The Debug class
  */
 class Debug {
@@ -12,9 +12,9 @@ class Debug {
   /**
    * @brief Debug
    */
-  Debug(sf::RenderWindow & in_window);
+  Debug(sf::RenderWindow &in_window);
   /**
-    */
+   */
   ~Debug();
   /**
    * @brief update
@@ -26,9 +26,12 @@ class Debug {
    */
   void pollEvent(sf::Event &in_event);
   /// debug flags
-  bool flag_draw_bounds= false;
+  static bool flag_draw_bounds;
+  static sf::Color bounds_color;
+  static bool flag_draw_diagnostics;
+  static sf::Color disgnostics_color;
 
-private:
+ private:
   /// target window
   sf::RenderWindow &window;
   /// a clock for ui tick

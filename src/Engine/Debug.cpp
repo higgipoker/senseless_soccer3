@@ -3,6 +3,10 @@
 #include "imgui/imgui-SFML.h"
 #include "imgui/imgui.h"
 namespace Engine {
+bool Debug::flag_draw_bounds= false;
+bool Debug::flag_draw_diagnostics= false;
+sf::Color Debug::bounds_color = sf::Color::Magenta;
+sf::Color Debug::disgnostics_color = sf::Color::Green;
 //
 //
 //
@@ -18,18 +22,18 @@ Debug::~Debug() { ImGui::SFML::Shutdown(); }
 //
 void Debug::update() {
   ImGui::SFML::Update(window, ui_clock.restart());
-  //ImGui::ShowDemoWindow();
+  // ImGui::ShowDemoWindow();
   ImGui::Begin("Debug");
 
-
   { ImGui::Checkbox("Draw Bounds", &flag_draw_bounds); }
+  { ImGui::Checkbox("Draw Diagnostics", &flag_draw_diagnostics); }
   ImGui::End();
   ImGui::SFML::Render(window);
 }
 //
 //
 //
-void Debug::pollEvent(sf::Event &in_event){
+void Debug::pollEvent(sf::Event &in_event) {
   ImGui::SFML::ProcessEvent(in_event);
 }
 }  // namespace Engine

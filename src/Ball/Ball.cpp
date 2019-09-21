@@ -1,18 +1,22 @@
 #include "Ball.hpp"
-const int SHADOW_OFFSET_X = 4;
-const int SHADOW_OFFSET_Y = 4;
+using namespace Engine;
 //
 //
 //
-Ball::Ball() {
-  movable = &ball_movable;
+Ball::Ball(Sprite &in_sprite, Sprite &in_shadow)
+    : Entity(in_sprite, in_shadow) {
+  // todo ball radius
+  perspective_width = 6;
+  collidable.setRadius(radius);
+  movable.co_friction = 0.01F;
+  movable.co_bounciness=0.8f;
 }
 //
 //
 //
 void Ball::update() {
-  sprite->animate();
-
-  shadow->setPosition(sprite->getPosition());
-  shadow->move(SHADOW_OFFSET_X, SHADOW_OFFSET_Y);
+  Entity::Update();
+  sprite.animate();
+  collidable.setPosition(movable.position.x - collidable.getRadius(),
+                         movable.position.y - collidable.getRadius());
 }

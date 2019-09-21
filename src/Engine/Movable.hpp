@@ -22,6 +22,13 @@ class Movable {
   Vector3 velocity;
   Vector3 force;
 
+  /// environment elements TODO struct
+  float co_friction = 0;
+  float co_air_resistance = 0;
+  float co_bounciness = 0;
+  float mass = 1;
+  float speed = 1;
+
  private:
   /**
    * @brief integrate
@@ -52,10 +59,5 @@ class Movable {
   Vector3 k1;
   Vector3 k2;
   Vector3 dp;
-  float co_friction = 0;
-  float co_air_resistance = 0;
-  float co_bounciness = 0;
-  float mass = 1;
-  float speed = 1;
 };
 }  // namespace Engine

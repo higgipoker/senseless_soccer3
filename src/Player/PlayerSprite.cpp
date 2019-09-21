@@ -11,6 +11,9 @@ PlayerSprite::PlayerSprite(std::shared_ptr<sf::Texture> in_texture,
   populateStandAnimations(stand_animations);
   populateRunAnimations(run_animations);
   populateSlideAnimations(slide_animations);
+
+  // for players, anchor the sprite to bottom (position is feet)
+  setOrigin(in_def.frame_width / 2, in_def.frame_height);
 }
 //
 //

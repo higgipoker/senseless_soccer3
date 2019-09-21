@@ -3,26 +3,38 @@
 #include <cmath>
 
 namespace sf {
-
+//
+//
+//
 ArcShape::ArcShape(float radius, std::size_t pointCount)
     : m_radius(radius), m_pointCount(pointCount) {
   update();
 }
-
+//
+//
+//
 void ArcShape::setRadius(float radius) {
   m_radius = radius;
   update();
 }
-
+//
+//
+//
 float ArcShape::getRadius() const { return m_radius; }
-
+//
+//
+//
 void ArcShape::setPointCount(std::size_t count) {
   m_pointCount = count;
   update();
 }
-
-std::size_t ArcShape::getPointCount() const { return m_pointCount / 2 + 1; }
-
+//
+//
+//
+std::size_t ArcShape::getPointCount() const { return (m_pointCount / 2) + 1; }
+//
+//
+//
 Vector2f ArcShape::getPoint(std::size_t index) const {
   static const float pi = 3.141592654F;
 

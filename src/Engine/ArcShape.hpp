@@ -2,14 +2,43 @@
 #include <SFML/Graphics/Shape.hpp>
 
 namespace sf {
+  /**
+ * @brief The ArcShape class
+ */
 class  ArcShape : public Shape {
  public:
+  /**
+   * @brief ArcShape
+   * @param radius
+   * @param pointCount
+   */
   explicit ArcShape(float radius = 0, std::size_t pointCount = 30);
-  void setRadius(float radius);
+  /**
+   * @brief setRadius
+   * @param radius
+   */
+  void setRadius(float radius) ;
+  /**
+   * @brief getRadius
+   * @return
+   */
   float getRadius() const;
+  /**
+   * @brief setPointCount
+   * @param count
+   */
   void setPointCount(std::size_t count);
-  virtual std::size_t getPointCount() const;
-  virtual Vector2f getPoint(std::size_t index) const;
+  /**
+   * @brief getPointCount
+   * @return
+   */
+   std::size_t getPointCount() const override;
+  /**
+   * @brief getPoint
+   * @param index
+   * @return
+   */
+   Vector2f getPoint(std::size_t index) const override;
 
  private:
   float m_radius;            ///< Radius of the circle

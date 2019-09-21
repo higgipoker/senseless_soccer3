@@ -3,6 +3,7 @@
 #include "SpriteAnimation.hpp"
 
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics/Shape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
 #include <memory>
@@ -46,7 +47,7 @@ class Sprite : public sf::Sprite {
    * @param _start_row
    * @param _start_col
    */
-  void init(const SpriteSetDefinition &_def);
+  void init(const SpriteSetDefinition& in_def);
   /**
    * @brief drawBounds
    */
@@ -70,17 +71,9 @@ class Sprite : public sf::Sprite {
    * @brief animate
    */
   void animate();
-  /**
-   * @brief perspectivize
-   * @param z
-   * @param width
-   * @param camera_height
-   * @return
-   */
-  bool perspectivize(float in_z, float in_width, float in_camera_height);
 
-  ///debug
-  static bool draw_bounds;
+  /// a list of shapes for debug drawing
+  std::vector<sf::Shape*> debug_shapes;
 
  protected:
   /// managed texture
@@ -90,6 +83,6 @@ class Sprite : public sf::Sprite {
   /// track current frame
   int current_frame = 0;
   /// animation
-  SpriteAnimation *animation = nullptr;
+  SpriteAnimation* animation = nullptr;
 };
 }  // namespace Engine

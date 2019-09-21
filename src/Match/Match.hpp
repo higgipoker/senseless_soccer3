@@ -11,7 +11,7 @@ class Match {
   Match();
 
   /// match has a ball
-  Ball ball;
+  Ball *ball;
 
  protected:
 };

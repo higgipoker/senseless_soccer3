@@ -1,19 +1,22 @@
 #pragma once
 
 #include "Camera.hpp"
+#include "Debug.hpp"
+#include "Entity.hpp"
 #include "Movable.hpp"
 #include "Sprite.hpp"
 #include "Window.hpp"
-#include "Entity.hpp"
-#include "Debug.hpp"
 
 #include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/View.hpp>
 
 #include <map>
 #include <vector>
 
 namespace Engine {
+
+using layer_id = size_t;
 
 /**
  * @brief The RenderLayer struct
@@ -25,7 +28,7 @@ struct RenderLayer {
   RenderLayer(bool in_sortable = false) : sortable(in_sortable) {}
   std::vector<sf::Drawable *> draw_list;
   bool sortable = false;
-  static const size_t INVALID_LAYER = 999;
+  static const layer_id INVALID_LAYER = 999;
 };
 
 /**
@@ -56,34 +59,35 @@ class Engine {
    * @brief addRenderable
    * @param _renderable
    */
-  void addDrawable(sf::Drawable *in_drawable,
-                   size_t in_layer_id = RenderLayer::INVALID_LAYER);
+  void addDrawable(sf::Drawable &in_drawable,
+                   layer_id in_layer_id = RenderLayer::INVALID_LAYER);
   /**
    * @brief addMovable
    * @param _movable
    */
-  void addMovable(Movable *in_movable);
+  void addMovable(Movable &in_movable);
   /**
    * @brief remRenderable
    * @param _renderable
    */
-  void remDrawable(sf::Drawable *in_drawable,
-                   size_t in_layer_id = RenderLayer::INVALID_LAYER);
+  void remDrawable(sf::Drawable &in_drawable,
+                   layer_id in_layer_id = RenderLayer::INVALID_LAYER);
   /**
    * @brief remMovable
    * @param _movable
    */
-  void remMovable(Movable *in_movable);
+  void remMovable(Movable &in_movable);
   /**
    * @brief addentity
    * @param in_entity
    */
-  void addentity(Entity *in_entity);
+  void addEntity(Entity &in_entity,
+                 layer_id in_layer_id = RenderLayer::INVALID_LAYER);
   /**
    * @brief remEntity
    * @param in_entity
    */
-  void remEntity(Entity *in_entity);
+  void remEntity(Entity &in_entity);
   /**
    * @brief isRunning
    * @return
@@ -98,7 +102,13 @@ class Engine {
    * @brief getMainCamera
    * @return
    */
-  Camera& getMainCamera();
+  Camera &getMainCamera();
+
+  // ground layer
+  layer_id background_layer = RenderLayer::INVALID_LAYER;
+  // layer aid for adding shadow sprites
+  layer_id shadow_layer = RenderLayer::INVALID_LAYER;
+
 
  private:
   /// wrapper of sf::window
@@ -113,6 +123,8 @@ class Engine {
   RenderLayer hud_layer;
   /// list of physical stuff to integrate
   std::vector<Movable *> movable_list;
+  /// list of sprites to perspectivize
+  std::vector<Entity *> entities;
   /// an imgui debug gui
   Debug debug_gui;
   /// integration step

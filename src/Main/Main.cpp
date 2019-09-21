@@ -36,43 +36,36 @@ int main() {
   auto tex_playerandball = std::make_shared<sf::Texture>();
   tex_playerandball->loadFromFile(gfx_folder + "playerandball.png");
 
-  // bg layer
-  int bg_layer_id = engine.addLayer(false);
   sf::IntRect world{0, 0, 2000, 3000};
   Pitch pitch(tex_grass, world);
-  engine.addDrawable(&pitch, bg_layer_id);
+  engine.addDrawable(pitch, engine.background_layer);
 
-  // shadow layer
-  int shadow_layer_id = engine.addLayer(false);
   PlayerShadowSprite shadow(tex_playerandball);
-  engine.addDrawable(&shadow, shadow_layer_id);
-
   BallShadowSprite ball_shadow(tex_playerandball);
-  engine.addDrawable(&ball_shadow, shadow_layer_id);
 
   // sprite layer (sortable)
   int sprite_layer_id = engine.addLayer(true);
   PlayerSprite sprite1(tex_playerandball);
-  engine.addDrawable(&sprite1, sprite_layer_id);
 
-  Player player(&sprite1, &shadow);
-  engine.addMovable(player.movable);
-
+  Player player(sprite1, shadow);
 
   BallSprite ballsprite(tex_playerandball);
-  match.ball.sprite = &ballsprite;
-  match.ball.shadow = &ball_shadow;
-  match.ball.movable->position = {100,100};
-  match.ball.sprite->move(100, 100);
-  engine.addDrawable(&ballsprite, sprite_layer_id);
+  Ball ball(ballsprite, ball_shadow);
+  match.ball = &ball;
+  match.ball->movable.position = {100, 100, 40};
+  match.ball->sprite.move(100, 100);
 
+  player.movable.position = {50,50};
+
+  engine.addEntity(player, sprite_layer_id);
+  engine.addEntity(ball, sprite_layer_id);
   Player::match = &match;
 
-  player.go_to(*(match.ball.movable));
+  //player.go_to(match.ball->movable);
   while (engine.isRunning()) {
     // updat game stuff
     player.update();
-    match.ball.update();
+    match.ball->update();
 
     // step the engine
     engine.step();
