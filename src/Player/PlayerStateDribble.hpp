@@ -2,14 +2,14 @@
 #include "PlayerState.hpp"
 class Player;
 /**
- * @brief The PlayerStateStand class
+ * @brief The PlayerStateDribble class
  */
-class PlayerStateStand : public PlayerState {
+class PlayerStateDribble : public PlayerState {
  public:
   /**
-   * @brief PlayerStateStand
+   * @brief PlayerStateDribble
    */
-  PlayerStateStand(Player &in_player);
+  PlayerStateDribble(Player &in_player);
   /**
    * @brief start
    */
@@ -27,5 +27,4 @@ class PlayerStateStand : public PlayerState {
    * @return
    */
   bool stateOver() override;
-
 };

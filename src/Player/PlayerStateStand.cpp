@@ -21,7 +21,7 @@ void PlayerStateStand::step() {
 //
 //
 //
-void PlayerStateStand::end() {}
+void PlayerStateStand::stop() {}
 //
 //
 //

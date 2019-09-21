@@ -56,6 +56,7 @@ int main() {
   engine.addDrawable(&sprite1, sprite_layer_id);
 
   Player player(&sprite1, &shadow);
+  engine.addMovable(player.movable);
 
 
   BallSprite ballsprite(tex_playerandball);
@@ -67,6 +68,7 @@ int main() {
 
   Player::match = &match;
 
+  player.go_to(*(match.ball.movable));
   while (engine.isRunning()) {
     // updat game stuff
     player.update();

@@ -1,6 +1,5 @@
 #include "Match.hpp"
-
-Match::Match()
-{
-
-}
+/**
+ * @brief Match::Match
+ */
+Match::Match() {}

@@ -369,20 +369,18 @@ void Vector3::reset() { x = y = z = 0; }
 //
 //
 //
-Vector3 Vector3::normalizeToUnits() {
-  Vector3 ret;
+void Vector3::normalizeToUnits() {
   if (x > 0) {
-    ret.x = 1;
+    x = 1;
   } else if (x < 0) {
-    ret.x = -1;
+    x = -1;
   }
 
   if (y > 0) {
-    ret.y = 1;
+    y = 1;
   } else if (y < 0) {
-    ret.y = -1;
+    y = -1;
   }
-  return ret;
 }
 //
 //

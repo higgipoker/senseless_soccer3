@@ -1,10 +1,11 @@
 #pragma once
 #include "PlayerSprite.hpp"
 
-#include "PlayerStateStand.hpp"
 #include "PlayerStateRun.hpp"
+#include "PlayerStateStand.hpp"
 
 #include "Engine/Entity.hpp"
+#include "Locomotion/Seek.hpp"
 
 class Match;
 /**
@@ -15,7 +16,7 @@ class Player : public Engine::Entity {
   /**
    * @brief Player
    */
-  Player(PlayerSprite *in_sprite, PlayerShadowSprite* in_shadow);
+  Player(PlayerSprite *in_sprite, PlayerShadowSprite *in_shadow);
 
   /**
    * @brief Update
@@ -25,13 +26,19 @@ class Player : public Engine::Entity {
   /// players know about the match, one match for all players
   static Match *match;
 
-
   /// entity aspects
   Engine::Movable player_movable;
   PlayerSprite *player_sprite = nullptr;
   PlayerSprite *player_shadow = nullptr;
 
-protected:
+  // test
+  void go_to(Engine::Movable &target) {
+    locomotion = new Seek(*this->movable, target);
+    locomotion->start();
+  }
+  Seek *locomotion = nullptr;
+
+ protected:
   /**
    * @brief face_ball
    */
@@ -49,9 +56,12 @@ protected:
   PlayerStateRun state_run;
   PlayerState *current_state;
 
-public:
+
+
+ public:
   // state machine pattern
   friend class PlayerState;
   friend class PlayerStateStand;
   friend class PlayerStateRun;
+  friend class PlayerStateDribble;
 };

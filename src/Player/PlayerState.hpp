@@ -31,7 +31,7 @@ class PlayerState {
   /**
    * @brief end
    */
-  virtual void end() = 0;
+  virtual void stop() = 0;
   /**
    * @brief stateOver
    * @return

@@ -26,14 +26,26 @@ Player::Player(PlayerSprite* in_sprite, PlayerShadowSprite* in_shadow)
 //
 //
 void Player::update() {
+  //test
+  if(locomotion){
+    locomotion->step();
+    if(locomotion->fiished()){
+      locomotion->stop();
+      delete locomotion;
+      locomotion = nullptr;
+    }
+  }
+  movable->velocity.normalizeToUnits();
+
   // state machine
   current_state->step();
   if (current_state->stateOver()) {
-    current_state->end();
+    current_state->stop();
     current_state->changeToNextState();
     current_state->start();
   }
 
+  sprite->setPosition(movable->position.x, movable->position.y);
   sprite->animate();
   shadow->setPosition(sprite->getPosition());
   shadow->move(SHADOW_OFFSET_X, SHADOW_OFFSET_Y);

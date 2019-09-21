@@ -21,7 +21,7 @@ class PlayerStateRun : public PlayerState {
   /**
    * @brief end
    */
-  void end() override;
+  void stop() override;
   /**
    * @brief stateOver
    * @return

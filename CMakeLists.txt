@@ -57,11 +57,14 @@ add_executable(senseless_soccer3
     src/Engine/Metrics.cpp
     src/Engine/ArcShape.cpp
     src/Engine/Debug.cpp
+    src/Locomotion/Locomotion.cpp
+    src/Locomotion/Seek.cpp
     src/Player/Player.cpp
     src/Player/PlayerSprite.cpp
     src/Player/PlayerState.cpp
     src/Player/PlayerStateStand.cpp
     src/Player/PlayerStateRun.cpp
+    src/Player/PlayerStateDribble.cpp
     src/Pitch/Pitch.cpp
     src/Ball/Ball.cpp
     src/Ball/BallSprite.cpp

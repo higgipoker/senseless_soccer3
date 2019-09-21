@@ -98,7 +98,7 @@ class Vector3 {
   Vector3 setMagnitude(float mag);
   Vector3 unit(Vector3 v);
   Vector3 reverse(void);
-  Vector3 normalizeToUnits();
+  void normalizeToUnits();
   Vector3 rotate(float a, float x_origin = 0, float y_origin = 0) const;
   Vector3 multiply(const Vector3 &rhs) const;
   Vector3 multiply2d(const float rhs) const;
