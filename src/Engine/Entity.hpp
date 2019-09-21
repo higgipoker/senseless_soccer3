@@ -12,11 +12,7 @@ class Entity {
   /**
    * @brief Entity
    */
-  Entity(Sprite &in_sprite, Sprite& in_shadow);
-  /**
-   * @brief Entity
-   */
-  Entity(Movable &in_movable, Sprite &in_sprite, Sprite& in_shadow);
+  Entity(Movable &in_movable, Sprite &in_sprite, Sprite &in_shadow);
   /**
    * @brief Update
    */
@@ -37,8 +33,7 @@ class Entity {
   void perspectivize(const float in_camera_height);
   float perspective_width = 0;
 
-  Movable &movable; // if provided from outside
-  Movable default_movable; // if just need a genericmovable
+  Movable &movable;
   Sprite &sprite;
   Sprite &shadow;
   int shadow_offset = 2;

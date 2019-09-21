@@ -1,9 +1,10 @@
 #include "Engine.hpp"
 
+#include "includes.hpp"
+
 #include <SFML/Window/Event.hpp>
 
 #include <cassert>
-#include <iostream>
 
 namespace Engine {
 //
@@ -74,7 +75,7 @@ void Engine::step() {
 
 #ifndef NDEBUG
   // imgui debug ui
-  if (show_debug_hud) {
+  if (Debug::show_debug_hud) {
     debug_gui.update();
   }
 #endif
@@ -186,7 +187,7 @@ void Engine::remEntity(Entity &in_entity) {
 void Engine::poll_window() {
   static sf::Event event;
   while (window.pollEvent(event)) {
-    if (show_debug_hud) {
+    if (Debug::show_debug_hud) {
       debug_gui.pollEvent(event);
     }
     switch (event.type) {
@@ -204,13 +205,13 @@ void Engine::poll_window() {
       case sf::Event::KeyPressed:
         if (window.hasFocus()) {
           if (event.key.code == sf::Keyboard::Escape) {
-            if (show_debug_hud) {
-              show_debug_hud = !show_debug_hud;
+            if (Debug::show_debug_hud) {
+              Debug::show_debug_hud = !Debug::show_debug_hud;
             } else {
               running = false;
             }
           } else if (event.key.code == sf::Keyboard::Tab) {
-            show_debug_hud = !show_debug_hud;
+            Debug::show_debug_hud = !Debug::show_debug_hud;
           }
         }
         break;

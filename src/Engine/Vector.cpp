@@ -394,8 +394,15 @@ bool Vector3::isMovingTowards(Vector3 testPoint, Vector3 objectPosition,
 //
 //
 //
-Vector3 Vector3::fromSfVector(const sf::Vector2f &from) {
-  return Vector3(from.x, from.y, 0.0f);
+void Vector3::fromSfVector(const sf::Vector2f &from) {
+  this->x = from.x;
+  this->y = from.y;
+}
+//
+//
+//
+Vector3 Vector3::to2d() const{
+  return Vector3(x, y, 0.F);
 }
 
 }  // namespace Engine

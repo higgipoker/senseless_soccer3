@@ -20,7 +20,6 @@ class PlayerState {
    * @brief ~PlayerState
    */
   virtual ~PlayerState();
-
   /**
    * @brief start
    */

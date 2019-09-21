@@ -17,6 +17,7 @@ PlayerStateDribble::PlayerStateDribble(Player &in_player)
 //
 //
 void PlayerStateDribble::start() {
+  player.ball_under_control = true;
   Engine::Compass direction(player.movable.velocity);
   player.player_sprite.setAnimation(PlayerAnimationType::Run,
                                     direction.direction);
@@ -45,6 +46,7 @@ bool PlayerStateDribble::stateOver() {
   // check if ball is outside control range
   if (!Collider::contains(player.control, player.match->ball->collidable)) {
     next_state = player_state::Run;
+    player.ball_under_control = false;
     return true;
   }
   // or if we stopped moving

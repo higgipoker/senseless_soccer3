@@ -1,7 +1,7 @@
 #include "Sprite.hpp"
+#include "Debug.hpp"
 #include "Metrics.hpp"
 #include "Vector.hpp"
-#include "Debug.hpp"
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -59,21 +59,9 @@ void Sprite::init(const SpriteSetDefinition &in_def) {
 void Sprite::draw(sf::RenderTarget &target, sf::RenderStates states) const {
   sf::Sprite::draw(target, states);
 
-  if (Debug::flag_draw_bounds) {
-    sf::RectangleShape bounds{
-        sf::Vector2f{getGlobalBounds().width, getGlobalBounds().height}};
-    bounds.setPosition({getGlobalBounds().left, getGlobalBounds().top});
-    bounds.setFillColor(sf::Color::Transparent);
-    bounds.setOutlineColor(Debug::bounds_color);
-    bounds.setOutlineThickness(1);
-
-    target.draw(bounds);
-  }
-  if(Debug::flag_draw_diagnostics){
-    for(auto &shape: debug_shapes){
-      target.draw(*shape);
-    }
-  }
+#ifndef NDEBUG
+  draw_debug(target);
+#endif
 }
 //
 //
@@ -101,6 +89,26 @@ void Sprite::animate() {
     animation->step();
     current_frame = animation->currentFrame();
     setTextureRect(frames.at(current_frame));
+  }
+}
+//
+//
+//
+void Sprite::draw_debug(sf::RenderTarget &target) const{
+  if (Debug::show_debug_hud && Debug::flag_draw_bounds) {
+    sf::RectangleShape bounds{
+        sf::Vector2f{getGlobalBounds().width, getGlobalBounds().height}};
+    bounds.setPosition({getGlobalBounds().left, getGlobalBounds().top});
+    bounds.setFillColor(sf::Color::Transparent);
+    bounds.setOutlineColor(Debug::bounds_color);
+    bounds.setOutlineThickness(1);
+
+    target.draw(bounds);
+  }
+  if (Debug::show_debug_hud && Debug::flag_draw_diagnostics) {
+    for (auto &shape : debug_shapes) {
+      target.draw(*shape);
+    }
   }
 }
 }  // namespace Engine

@@ -102,6 +102,7 @@ class Vector3 {
   Vector3 rotate(float a, float x_origin = 0, float y_origin = 0) const;
   Vector3 multiply(const Vector3 &rhs) const;
   Vector3 multiply2d(const float rhs) const;
+  Vector3 to2d() const;
 
   // -------------------------------------------------------------------------
   // scaler operations
@@ -125,6 +126,6 @@ class Vector3 {
   // -------------------------------------------------------------------------
   // conversions
   // -------------------------------------------------------------------------
-  static Vector3 fromSfVector(const sf::Vector2f &from);
+  void fromSfVector(const sf::Vector2f &from);
 };
 }  // namespace Engine

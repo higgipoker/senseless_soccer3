@@ -17,14 +17,16 @@ PlayerStateRun::PlayerStateRun(Player &in_player) : PlayerState(in_player) {
 //
 //
 void PlayerStateRun::start() {
-  Engine::Compass direction(player.movable.velocity);
-  player.player_sprite.setAnimation(PlayerAnimationType::Run,
-                                    direction.direction);
+
 }
 //
 //
 //
-void PlayerStateRun::step() {}
+void PlayerStateRun::step() {
+  Engine::Compass direction(player.movable.velocity);
+  player.player_sprite.setAnimation(PlayerAnimationType::Run,
+                                    direction.direction);
+}
 //
 //
 //

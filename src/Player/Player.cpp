@@ -12,7 +12,8 @@ const int SHADOW_OFFSET_Y = 4;
 //
 //
 Player::Player(PlayerSprite& in_sprite, PlayerShadowSprite& in_shadow)
-    : Entity(in_sprite, in_shadow),
+    : Entity(movable, in_sprite, in_shadow),
+      brain(*this),
       state_stand(*this),
       state_run(*this),
       state_dribble(*this),
@@ -32,28 +33,14 @@ Player::Player(PlayerSprite& in_sprite, PlayerShadowSprite& in_shadow)
 //
 void Player::update() {
   Entity::Update();
-  ////////////////////////////////////////////////////////////////
-  /// test
-  //  if (locomotion) {
-  //    locomotion->step();
-  //    if (locomotion->fiished()) {
-  //      locomotion->stop();
-  //      delete locomotion;
-  //      locomotion = nullptr;
-  //    }
-  //  }
-  //  movable.velocity.normalizeToUnits();
-  ///
-  ////////////////////////////////////////////////////////////////
+
+  // either ai brain or controller (human brain)
+  brain.update();
 
   feet.setPosition(movable.position.x - feet.getRadius(),
                    movable.position.y - feet.getRadius());
   control.setPosition(movable.position.x - control.getRadius(),
                       movable.position.y - control.getRadius());
-
-#ifndef NDEBUG
-  debug();
-#endif
 
   // state machine
   current_state->step();
@@ -65,6 +52,10 @@ void Player::update() {
   }
 
   shadow.setFrame(sprite.getFrame());
+
+#ifndef NDEBUG
+  debug();
+#endif
 }
 //
 //

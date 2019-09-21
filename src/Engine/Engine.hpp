@@ -133,8 +133,6 @@ class Engine {
   const int framerate = 60;
   /// app running flag
   bool running = true;
-  /// display debug gui?
-  bool show_debug_hud = false;
   /**
    * @brief poll_window
    */

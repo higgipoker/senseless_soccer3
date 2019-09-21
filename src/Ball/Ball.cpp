@@ -4,7 +4,7 @@ using namespace Engine;
 //
 //
 Ball::Ball(Sprite &in_sprite, Sprite &in_shadow)
-    : Entity(in_sprite, in_shadow) {
+    : Entity(movable, in_sprite, in_shadow) {
   // todo ball radius
   perspective_width = 6;
   collidable.setRadius(radius);

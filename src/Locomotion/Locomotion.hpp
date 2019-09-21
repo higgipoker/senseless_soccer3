@@ -9,7 +9,7 @@ class Locomotion {
   /**
    * @brief Locomotion
    */
-  Locomotion(Engine::Movable &in_entity, Engine::Movable &in_target);
+  Locomotion(Engine::Movable &in_entity);
   /**
    * @brief ~Locomotion
    */
@@ -30,12 +30,9 @@ class Locomotion {
    * @brief fiished
    * @return
    */
-  virtual bool fiished() = 0;
+  virtual bool finished() = 0;
 
  protected:
   /// entity to manipulate
   Engine::Movable &entity;
-
-  /// a locomotion can have a target
-  Engine::Movable &target;
 };

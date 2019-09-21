@@ -3,22 +3,22 @@
 #include "Locomotion.hpp"
 
 /**
- * @brief The Seek locomotion sents the subject to a fixed location
+ * @brief The Head locomotion sents the subject to a fixed location
  */
-class Seek : public Locomotion{
+class Head : public Locomotion{
  public:
   /**
-   * @brief Seek
+   * @brief Head
    */
-  Seek(Engine::Movable & in_movable);
+  Head(Engine::Movable & in_entity);
   /**
     */
-  ~Seek() override = default;
+  ~Head() override = default;
   /**
    * @brief init
    * @param in_target
    */
-  void init(Engine::Vector3 in_target);
+  void init(Engine::Vector3 in_direction);
   /**
    * @brief start
    */
@@ -38,5 +38,5 @@ class Seek : public Locomotion{
    bool finished() override;
 
 private:
-   Engine::Vector3 target;
+   Engine::Vector3 direction;
 };

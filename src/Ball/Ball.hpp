@@ -21,8 +21,9 @@ class Ball : public Engine::Entity {
 
   sf::CircleShape collidable;
 
+  Engine::Movable movable;
+
  protected:
-  Engine::Movable ball_movable;
   float radius = 3;
 
 };

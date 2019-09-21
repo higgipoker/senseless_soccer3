@@ -84,5 +84,10 @@ class Sprite : public sf::Sprite {
   int current_frame = 0;
   /// animation
   SpriteAnimation* animation = nullptr;
+  /**
+   * @brief unclutter draw function
+   * @param target
+   */
+  void draw_debug(sf::RenderTarget& target) const;
 };
 }  // namespace Engine

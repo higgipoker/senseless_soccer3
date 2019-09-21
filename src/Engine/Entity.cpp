@@ -5,13 +5,6 @@ namespace Engine {
 //
 //
 //
-Entity::Entity(Sprite &in_sprite, Sprite &in_shadow)
-    : movable(default_movable), sprite(in_sprite), shadow(in_shadow) {
-  perspective_width = sprite.getLocalBounds().width;
-}
-//
-//
-//
 Entity::Entity(Movable &in_movable, Sprite &in_sprite, Sprite &in_shadow)
     : movable(in_movable), sprite(in_sprite), shadow(in_shadow) {
   perspective_width = sprite.getLocalBounds().width;

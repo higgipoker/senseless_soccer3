@@ -2,17 +2,17 @@
 //
 //
 //
-Seek::Seek(Engine::Movable& in_entity, Engine::Movable& in_target)
-    : Locomotion(in_entity, in_target) {}
+Seek::Seek(Engine::Movable& in_movable) : Locomotion(in_movable) {}
+//
+//
+//
+void Seek::init(Engine::Vector3 in_target) { target = in_target; }
 //
 //
 //
 void Seek::start() {
-  // nothing can fly in this game!
-  entity.position.z = 0;
-
-  // this will be normalised within player logic
-  entity.velocity = target.position - entity.position;
+  entity.velocity = target - entity.position;
+  entity.velocity.normalizeToUnits();
 }
 //
 //
@@ -21,11 +21,10 @@ void Seek::step() {}
 //
 //
 //
-void Seek::stop() {entity.velocity.reset();}
+void Seek::stop() { entity.velocity.reset(); }
 //
 //
 //
-bool Seek::fiished() {
-  return Engine::Floats::equal((target.position - entity.position).magnitude(),
-                               0);
+bool Seek::finished() {
+  return Engine::Floats::equal((target - entity.position).magnitude(), 0);
 }

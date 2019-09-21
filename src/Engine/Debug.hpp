@@ -31,6 +31,9 @@ class Debug {
   static bool flag_draw_diagnostics;
   static sf::Color disgnostics_color;
 
+  /// display debug gui?
+  static bool show_debug_hud;
+
  private:
   /// target window
   sf::RenderWindow &window;

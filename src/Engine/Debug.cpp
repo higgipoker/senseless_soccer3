@@ -3,8 +3,9 @@
 #include "imgui/imgui-SFML.h"
 #include "imgui/imgui.h"
 namespace Engine {
-bool Debug::flag_draw_bounds= false;
-bool Debug::flag_draw_diagnostics= false;
+bool Debug::show_debug_hud = false;
+bool Debug::flag_draw_bounds = true;
+bool Debug::flag_draw_diagnostics = true;
 sf::Color Debug::bounds_color = sf::Color::Magenta;
 sf::Color Debug::disgnostics_color = sf::Color::Green;
 //

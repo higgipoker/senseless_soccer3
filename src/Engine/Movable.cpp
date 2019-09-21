@@ -1,7 +1,11 @@
 #include "Movable.hpp"
-
-#include <iostream>
+//
+//
+//
 namespace Engine {
+//
+//
+//
 static const float CLAMP_TO_GROUND = 0.458F;
 static const float GRAVITATIONAL_CONSTANT = 9.8F;
 //
@@ -29,7 +33,6 @@ void Movable::bounce() {
 //
 //
 void Movable::damp_bounce() {
-  std::cout << fabsf(velocity.z) << std::endl;
   if (Floats::less_than(fabsf(velocity.z), CLAMP_TO_GROUND)) {
     position.z = 0;
     velocity.z = 0;

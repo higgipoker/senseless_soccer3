@@ -1,13 +1,14 @@
 #pragma once
-#include <iostream>
+#include "includes.hpp"
+
 #include <map>
 
 namespace Engine {
 /**
  * @brief The Direction enum
  */
-enum class Direction {
-  NORTH,
+enum class Direction : int{
+  NORTH = 0,
   NORTH_EAST,
   EAST,
   SOUTH_EAST,

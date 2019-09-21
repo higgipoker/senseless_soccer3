@@ -52,16 +52,17 @@ int main() {
   BallSprite ballsprite(tex_playerandball);
   Ball ball(ballsprite, ball_shadow);
   match.ball = &ball;
-  match.ball->movable.position = {100, 100, 40};
-  match.ball->sprite.move(100, 100);
+  match.ball->movable.position = {100, 300, 0};
+  match.ball->sprite.move(109, 134);
 
-  player.movable.position = {50,50};
+  player.movable.position = {400,300};
 
   engine.addEntity(player, sprite_layer_id);
   engine.addEntity(ball, sprite_layer_id);
   Player::match = &match;
 
-  //player.go_to(match.ball->movable);
+  player.brain.activate();
+
   while (engine.isRunning()) {
     // updat game stuff
     player.update();

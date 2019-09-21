@@ -1,12 +1,12 @@
 #pragma once
 #include "PlayerSprite.hpp"
 
+#include "PlayerStateDribble.hpp"
 #include "PlayerStateRun.hpp"
 #include "PlayerStateStand.hpp"
-#include "PlayerStateDribble.hpp"
 
+#include "Brain/Brain.hpp"
 #include "Engine/Entity.hpp"
-#include "Locomotion/Seek.hpp"
 
 #include <SFML/Graphics/CircleShape.hpp>
 
@@ -19,22 +19,24 @@ class Player : public Engine::Entity {
   /**
    * @brief Player
    */
-  Player(PlayerSprite & in_sprite, PlayerShadowSprite & in_shadow);
+  Player(PlayerSprite &in_sprite, PlayerShadowSprite &in_shadow);
 
   /**
    * @brief Update
    */
   void update();
 
+  // movable aspect for entity
+  Engine::Movable movable;
+
   /// players know about the match, one match for all players
   static Match *match;
 
-  // test
-  void go_to(Engine::Movable &target) {
-    locomotion = new Seek(movable, target);
-    locomotion->start();
-  }
-  Seek *locomotion = nullptr;
+  /// a player has a brain (well, most do)
+  Brain brain;
+
+  /// track if the ball is under control
+  bool ball_under_control = false;
 
  protected:
   /**
