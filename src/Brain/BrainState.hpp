@@ -43,8 +43,11 @@ class BrainState {
   std::string name;
 
  protected:
-  // sm context
+  /// sm context
   Brain &brain;
+
+  /// next
+  brain_state next_state = brain_state::Idle;
 };
 
 /**

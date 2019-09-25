@@ -95,7 +95,7 @@ int Engine::addLayer(bool in_sortable) {
 //
 void Engine::addDrawable(sf::Drawable &in_drawable, layer_id in_layer_id) {
   if (render_layers.empty()) {
-    std::cout << "Engine::addDrawable > no layers" << std::endl;
+    std::cout << "Engine::addDrawable> no layers" << std::endl;
     return;
   }
   if (in_layer_id == RenderLayer::INVALID_LAYER) {
@@ -107,7 +107,7 @@ void Engine::addDrawable(sf::Drawable &in_drawable, layer_id in_layer_id) {
     if (in_layer_id < render_layers.size()) {
       render_layers.at(in_layer_id).draw_list.emplace_back(&in_drawable);
     } else {
-      std::cout << "Engine::addRenderable >Tried to add to non existent layer: "
+      std::cout << "Engine::addRenderable> Tried to add to non existent layer: "
                 << in_layer_id << std::endl;
     }
   }
@@ -132,7 +132,7 @@ void Engine::remDrawable(sf::Drawable &in_drawable, layer_id in_layer_id) {
         render_layers.at(in_layer_id).draw_list.erase(it);
       }
     } else {
-      std::cout << "Engine::remRenderable > Invalid layer provided: "
+      std::cout << "Engine::remRenderable> Invalid layer provided: "
                 << in_layer_id << std::endl;
     }
   } else {
@@ -148,7 +148,7 @@ void Engine::remDrawable(sf::Drawable &in_drawable, layer_id in_layer_id) {
       }
     }
     if (!found) {
-      std::cout << "Engine::remRenderable > Renderable not found" << std::endl;
+      std::cout << "Engine::remRenderable> Renderable not found" << std::endl;
     }
   }
 }

@@ -52,10 +52,10 @@ int main() {
   BallSprite ballsprite(tex_playerandball);
   Ball ball(ballsprite, ball_shadow);
   match.ball = &ball;
-  match.ball->movable.position = {100, 300, 0};
+  match.ball->movable.position = {400, 300, 0};
   match.ball->sprite.move(109, 134);
 
-  player.movable.position = {400,300};
+  player.movable.position = {100,120};
 
   engine.addEntity(player, sprite_layer_id);
   engine.addEntity(ball, sprite_layer_id);
@@ -65,8 +65,8 @@ int main() {
 
   while (engine.isRunning()) {
     // updat game stuff
-    player.update();
     match.ball->update();
+    player.update();
 
     // step the engine
     engine.step();

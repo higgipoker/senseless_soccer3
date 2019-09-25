@@ -22,7 +22,7 @@ namespace Engine {
 inline std::string getWorkingDirectory() {
   std::array<char, FILENAME_MAX> buff{};
   auto unused = GetCurrentDir(static_cast<char *>(buff.data()), FILENAME_MAX);
-  std::cout << unused << std::endl;
+  std::cout << "getWorkingDirectory> " << unused << std::endl;
   return (static_cast<char *>(buff.data()));
 }
 //
@@ -47,12 +47,12 @@ const std::set<std::string> Folder::getFileList(bool in_refresh) {
         if (strncmp(ent->d_name, ".", sizeof(ent->d_name)) == 0 ||
             strncmp(ent->d_name, "..", sizeof(ent->d_name)) == 0)
           continue;
-        std::cout << path + "/" + ent->d_name << std::endl;
+        std::cout << "Folder::getFileList> " << path + "/" + ent->d_name << std::endl;
         files.insert(path + "/" + ent->d_name);
       }
       closedir(dir);
     } else {
-      std::cout << "Folder::getFileList > could not open directory: " << path
+      std::cout << "Folder::getFileList> could not open directory: " << path
                 << std::endl;
     }
   }

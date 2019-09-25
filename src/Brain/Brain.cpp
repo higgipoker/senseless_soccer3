@@ -18,10 +18,7 @@ void Brain::update() {
   // state machine
   current_state->step();
   if (current_state->stateOver()) {
-    current_state->stop();
     current_state->changeToNextState();
-    current_state->start();
-    std::cout << current_state->name << std::endl;
   }
 
   locomotion.update();
@@ -44,4 +41,5 @@ void Brain::changeState(const brain_state in_state) {
       break;
   }
   current_state->start();
+  std::cout << "Brain::changeState> " << current_state->name << std::endl;
 }

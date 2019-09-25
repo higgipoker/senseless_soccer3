@@ -1,9 +1,11 @@
 #include "Player.hpp"
 
+#include "Engine/Collider.hpp"
 #include "Engine/Compass.hpp"
 #include "Engine/Debug.hpp"
 #include "Match/Match.hpp"
 
+using namespace Engine;
 Match* Player::match = nullptr;
 
 const int SHADOW_OFFSET_X = 1;
@@ -20,13 +22,13 @@ Player::Player(PlayerSprite& in_sprite, PlayerShadowSprite& in_shadow)
       current_state(&state_stand),
       player_sprite(in_sprite),
       player_shadow(in_shadow) {
-  feet.setRadius(0.5F);
+  feet.setRadius(3.0F);
   control.setRadius(15);
 
-  feet.setFillColor(Engine::Debug::disgnostics_color);
+  feet.setFillColor(Debug::disgnostics_color);
   control.setFillColor(sf::Color::Transparent);
   control.setOutlineThickness(1);
-  control.setOutlineColor(Engine::Debug::disgnostics_color);
+  control.setOutlineColor(Debug::disgnostics_color);
 }
 //
 //
@@ -36,6 +38,10 @@ void Player::update() {
 
   // either ai brain or controller (human brain)
   brain.update();
+  // normalizes for diagonals
+  if (Floats::greater_than(movable.velocity.magnitude(), 0)) {
+    movable.velocity = movable.velocity.normalise2d();
+  }
 
   feet.setPosition(movable.position.x - feet.getRadius(),
                    movable.position.y - feet.getRadius());
@@ -48,7 +54,7 @@ void Player::update() {
     current_state->stop();
     current_state->changeToNextState();
     current_state->start();
-    std::cout << current_state->name << std::endl;
+    std::cout <<"Player::update> " << current_state->name << std::endl;
   }
 
   shadow.setFrame(sprite.getFrame());
@@ -61,9 +67,9 @@ void Player::update() {
 //
 //
 void Player::face_ball() {
-  Engine::Compass to_ball;
+  Compass to_ball;
   to_ball.direction = directionTo(*match->ball);
-  facing = to_ball.direction;
+  facing.direction = to_ball.direction;
 }
 //
 //
@@ -88,4 +94,26 @@ void Player::debug() {
   sprite.debug_shapes.clear();
   sprite.debug_shapes.push_back(&feet);
   sprite.debug_shapes.push_back(&control);
+}
+//
+//
+//
+bool Player::ballInControlRange(){
+  return Collider::contains(control, match->ball->collidable);
+}
+//
+//
+//
+void Player::close_control(){
+  Vector3 f(feet.getPosition().x, feet.getPosition().y);
+  Vector3 ball_pos = f + (facing.toVector() * 8);
+  match->ball->movable.velocity.reset();
+  match->ball->movable.velocity.reset();
+  match->ball->movable.position = ball_pos;
+}
+//
+//
+//
+Compass Player::direction(){
+  return facing;
 }

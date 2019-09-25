@@ -18,7 +18,7 @@ void PlayerStateStand::start() { next_state = player_state::Run; }
 //
 void PlayerStateStand::step() {
   player.face_ball();
-  player.player_sprite.setAnimation(PlayerAnimationType::Stand, player.facing);
+  player.player_sprite.setAnimation(PlayerAnimationType::Stand, player.facing.direction);
 }
 //
 //

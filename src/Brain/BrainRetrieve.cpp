@@ -1,18 +1,21 @@
 #include "BrainRetrieve.hpp"
 
+#include "Ball/Ball.hpp"
 #include "Brain.hpp"
 #include "Match/Match.hpp"
 #include "Player/Player.hpp"
-#include "Ball/Ball.hpp"
 //
 //
 //
-BrainRetrieve::BrainRetrieve(Brain& in_brain) : BrainState(in_brain) {name = "Retrieve";}
+BrainRetrieve::BrainRetrieve(Brain& in_brain) : BrainState(in_brain) {
+  name = "Retrieve";
+  next_state = brain_state::Dribble;
+}
 //
 //
 //
 void BrainRetrieve::start() {
-  brain.locomotion.pursue_til_caught(brain.player.match->ball->movable, 5);
+  brain.locomotion.pursue(brain.player.match->ball->movable);
 }
 //
 //
@@ -25,4 +28,4 @@ void BrainRetrieve::stop() {}
 //
 //
 //
-bool BrainRetrieve::stateOver() { return false; }
+bool BrainRetrieve::stateOver() { return brain.player.ball_under_control; }

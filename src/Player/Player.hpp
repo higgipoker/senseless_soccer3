@@ -20,11 +20,20 @@ class Player : public Engine::Entity {
    * @brief Player
    */
   Player(PlayerSprite &in_sprite, PlayerShadowSprite &in_shadow);
-
   /**
    * @brief Update
    */
   void update();
+  /**
+   * @brief ballInControlRange
+   * @return
+   */
+  bool ballInControlRange();
+  /**
+   * @brief direction
+   * @return
+   */
+  Engine::Compass direction();
 
   // movable aspect for entity
   Engine::Movable movable;
@@ -40,6 +49,10 @@ class Player : public Engine::Entity {
 
  protected:
   /**
+   * @brief close_control
+   */
+  void close_control();
+  /**
    * @brief face_ball
    */
   void face_ball();
@@ -50,7 +63,7 @@ class Player : public Engine::Entity {
   void change_state(const player_state in_state);
 
   /// currently facing direction
-  Engine::Direction facing;
+  Engine::Compass facing;
 
   /// represents the players feet for collisions
   sf::CircleShape feet;

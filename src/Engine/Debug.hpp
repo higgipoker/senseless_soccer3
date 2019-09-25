@@ -1,5 +1,5 @@
 #pragma once
-
+#ifndef NDEBUG
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
 
@@ -42,3 +42,4 @@ class Debug {
 };
 
 }  // namespace Engine
+#endif

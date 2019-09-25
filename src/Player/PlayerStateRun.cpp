@@ -35,14 +35,14 @@ void PlayerStateRun::stop() {}
 //
 //
 bool PlayerStateRun::stateOver() {
+  // check if we need to transition to dribble
+  if (Collider::collides(player.feet, player.match->ball->collidable)) {
+    next_state = player_state::Dribble;
+    return true;
+  }
   // stopped moving
   if (Floats::equal(player.movable.velocity.magnitude2d(), 0)) {
     next_state = player_state::Stand;
-    return true;
-  }
-  // check if we need to transitio to dribble
-  if (Collider::collides(player.feet, player.match->ball->collidable)) {
-    next_state = player_state::Dribble;
     return true;
   }
   return false;

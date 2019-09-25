@@ -1,4 +1,5 @@
 #include "Pursue.hpp"
+#include "Engine/Compass.hpp"
 //
 //
 //
@@ -15,9 +16,17 @@ void Pursue::start() {}
 //
 //
 void Pursue::step() {
-  entity.velocity = target->position.to2d() - entity.position;
-  entity.velocity.roundAngle(45);
-  entity.velocity.normalizeToUnits();
+  // change direction when we stop getting closer to the target
+  float distance = (target->position - entity.position).magnitude();
+  if (Engine::Floats::greater_than(distance, last_distance)) {
+    entity.velocity = target->position.to2d() - entity.position;
+
+    // todo: witha pathfinding algorithm, cpu controlled players should
+    // work out a path based on 45 degree turns
+    // entity.velocity.roundAngle(45);
+    // entity.velocity.normalizeToUnits();
+  }
+  last_distance = distance;
 }
 //
 //

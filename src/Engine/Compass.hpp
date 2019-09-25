@@ -39,7 +39,6 @@ class Compass {
    * @brief Compass
    */
   Compass();
-
   /**
    * @brief Compass
    * @param dir
