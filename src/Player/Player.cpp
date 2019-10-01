@@ -6,25 +6,24 @@
 #include "Match/Match.hpp"
 
 using namespace Engine;
-Match* Player::match = nullptr;
+Match *Player::match = nullptr;
 
 const int SHADOW_OFFSET_X = 1;
 const int SHADOW_OFFSET_Y = 4;
 //
 //
 //
-Player::Player(PlayerSprite& in_sprite, PlayerShadowSprite& in_shadow)
-    : Entity(movable, in_sprite, in_shadow),
-      brain(*this),
-      state_stand(*this),
-      state_run(*this),
-      state_dribble(*this),
-      current_state(&state_stand),
-      player_sprite(in_sprite),
-      player_shadow(in_shadow) {
+Player::Player(PlayerSprite &in_sprite, PlayerShadowSprite &in_shadow)
+  : Entity(movable, in_sprite, in_shadow)
+  , brain(*this)
+  , state_stand(*this)
+  , state_run(*this)
+  , state_dribble(*this)
+  , state(&state_stand)
+  , player_sprite(in_sprite)
+  , player_shadow(in_shadow) {
   feet.setRadius(3.0F);
   control.setRadius(15);
-
   feet.setFillColor(Debug::disgnostics_color);
   control.setFillColor(sf::Color::Transparent);
   control.setOutlineThickness(1);
@@ -38,23 +37,14 @@ void Player::update() {
 
   // either ai brain or controller (human brain)
   brain.update();
-  // normalizes for diagonals
-  if (Floats::greater_than(movable.velocity.magnitude(), 0)) {
-    movable.velocity = movable.velocity.normalise2d();
-  }
-
-  feet.setPosition(movable.position.x - feet.getRadius(),
-                   movable.position.y - feet.getRadius());
-  control.setPosition(movable.position.x - control.getRadius(),
-                      movable.position.y - control.getRadius());
 
   // state machine
-  current_state->step();
-  if (current_state->stateOver()) {
-    current_state->stop();
-    current_state->changeToNextState();
-    current_state->start();
-    std::cout <<"Player::update> " << current_state->name << std::endl;
+  state->step();
+  if (state->stateOver()) {
+    state->stop();
+    change_state(state->nextState());
+    state->start();
+    std::cout << "Player::update> " << state->name << std::endl;
   }
 
   shadow.setFrame(sprite.getFrame());
@@ -77,13 +67,13 @@ void Player::face_ball() {
 void Player::change_state(const player_state in_state) {
   switch (in_state) {
     case player_state::Stand:
-      current_state = &state_stand;
+      state = &state_stand;
       break;
     case player_state::Run:
-      current_state = &state_run;
+      state = &state_run;
       break;
     case player_state::Dribble:
-      current_state = &state_dribble;
+      state = &state_dribble;
       break;
   }
 }
@@ -98,13 +88,13 @@ void Player::debug() {
 //
 //
 //
-bool Player::ballInControlRange(){
+bool Player::ballInControlRange() {
   return Collider::contains(control, match->ball->collidable);
 }
 //
 //
 //
-void Player::close_control(){
+void Player::close_control() {
   Vector3 f(feet.getPosition().x, feet.getPosition().y);
   Vector3 ball_pos = f + (facing.toVector() * 8);
   match->ball->movable.velocity.reset();
@@ -114,6 +104,6 @@ void Player::close_control(){
 //
 //
 //
-Compass Player::direction(){
+Compass Player::direction() {
   return facing;
 }

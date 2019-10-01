@@ -23,7 +23,8 @@ void Movable::bounce() {
   position.z = 0;
   velocity.z = -velocity.z;
   velocity.z *= co_bounciness;
-  friction = velocity.reverse();
+  friction = velocity;
+  friction.reverse();
   friction = friction * co_friction;
   force = force + friction;
   // dampens infinite bounce
@@ -33,7 +34,7 @@ void Movable::bounce() {
 //
 //
 void Movable::damp_bounce() {
-  if (Floats::less_than(fabsf(velocity.z), CLAMP_TO_GROUND)) {
+  if (Math::less_than(fabsf(velocity.z), CLAMP_TO_GROUND)) {
     position.z = 0;
     velocity.z = 0;
   }
@@ -42,7 +43,7 @@ void Movable::damp_bounce() {
 //
 //
 void Movable::damp_velocity() {
-  if (Floats::less_than(velocity.magnitude2d(), 0)) {
+  if (Math::less_than(velocity.magnitude2d(), 0)) {
     velocity.reset();
   }
 }
@@ -51,7 +52,7 @@ void Movable::damp_velocity() {
 //
 void Movable::integrate_improved_euler(const float in_dt) {
   // moving down
-  if (Floats::less_than(velocity.z, 0) && Floats::less_than(position.z, 0)) {
+  if (Math::less_than(velocity.z, 0) && Math::less_than(position.z, 0)) {
     bounce();
   } else {
     // step 1
@@ -63,9 +64,9 @@ void Movable::integrate_improved_euler(const float in_dt) {
     // change in position (converted to pixels)
     dp = (velocity);
     // normalizes for diagonals
-    if (Floats::greater_than(dp.magnitude(), 0)) {
+    if (Math::greater_than(dp.magnitude(), 0)) {
       auto mag = dp.magnitude2d();
-      dp = dp.normalise2d();
+      dp.normalise2d();
       dp.x *= mag * speed;
       dp.y *= mag * speed;
     }
@@ -81,20 +82,23 @@ void Movable::integrate_improved_euler(const float in_dt) {
 //
 //
 Vector3 Movable::integrate(const float in_dt) {
-  if (Floats::greater_than(position.z, 0)) {
+  if (Math::greater_than(position.z, 0)) {
     // gravity
     Vector3 gravity;
     gravity.z = -GRAVITATIONAL_CONSTANT;
     force += gravity * mass * in_dt;
     // air resistance
-    Vector3 air_resistance = velocity.reverse().normalise();
+    Vector3 air_resistance = velocity;
+    air_resistance.reverse();
+    air_resistance.normalise();
     air_resistance *= co_air_resistance;
     force += air_resistance * in_dt;
 
   } else {
     // drag
-    if (Floats::greater_than(velocity.magnitude2d(), 0)) {
-      friction = velocity.reverse();
+    if (Math::greater_than(velocity.magnitude2d(), 0)) {
+      friction = velocity;
+      friction.reverse();
       friction = friction * co_friction;
       velocity = velocity + friction;
     }

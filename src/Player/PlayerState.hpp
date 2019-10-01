@@ -27,7 +27,7 @@ class PlayerState {
   /**
    * @brief update
    */
-  virtual void step() = 0;
+  virtual void step();
   /**
    * @brief end
    */
@@ -40,7 +40,7 @@ class PlayerState {
   /**
    * @brief changeToNextState
    */
-  void changeToNextState();
+  player_state nextState();
 
   /// degug
   std::string name;

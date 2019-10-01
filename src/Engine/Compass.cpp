@@ -70,28 +70,28 @@ Vector3 Compass::toVector() {
 //  fromVector
 //
 void Compass::fromVector(const Vector3 &v) {
-  if (Floats::equal(v.x, 0) && Floats::less_than(v.y, 0))
+  if (Math::equal(v.x, 0) && Math::less_than(v.y, 0))
     direction = Direction::NORTH;
 
-  else if (Floats::greater_than(v.x, 0) && Floats::less_than(v.y, 0))
+  else if (Math::greater_than(v.x, 0) && Math::less_than(v.y, 0))
     direction = Direction::NORTH_EAST;
 
-  else if (Floats::greater_than(v.x, 0) && Floats::equal(v.y, 0))
+  else if (Math::greater_than(v.x, 0) && Math::equal(v.y, 0))
     direction = Direction::EAST;
 
-  else if (Floats::greater_than(v.x, 0) && Floats::greater_than(v.y, 0))
+  else if (Math::greater_than(v.x, 0) && Math::greater_than(v.y, 0))
     direction = Direction::SOUTH_EAST;
 
-  else if (Floats::equal(v.x, 0) && Floats::greater_than(v.y, 0))
+  else if (Math::equal(v.x, 0) && Math::greater_than(v.y, 0))
     direction = Direction::SOUTH;
 
-  else if (Floats::less_than(v.x, 0) && Floats::greater_than(v.y, 0))
+  else if (Math::less_than(v.x, 0) && Math::greater_than(v.y, 0))
     direction = Direction::SOUTH_WEST;
 
-  else if (Floats::less_than(v.x, 0) && Floats::equal(v.y, 0))
+  else if (Math::less_than(v.x, 0) && Math::equal(v.y, 0))
     direction = Direction::WEST;
 
-  else if (Floats::less_than(v.x, 0) && Floats::less_than(v.y, 0))
+  else if (Math::less_than(v.x, 0) && Math::less_than(v.y, 0))
     direction = Direction::NORTH_WEST;
 }
 }  // namespace Engine

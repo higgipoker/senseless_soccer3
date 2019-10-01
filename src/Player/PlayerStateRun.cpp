@@ -23,6 +23,8 @@ void PlayerStateRun::start() {
 //
 //
 void PlayerStateRun::step() {
+  PlayerState::step();
+
   Engine::Compass direction(player.movable.velocity);
   player.player_sprite.setAnimation(PlayerAnimationType::Run,
                                     direction.direction);
@@ -41,7 +43,7 @@ bool PlayerStateRun::stateOver() {
     return true;
   }
   // stopped moving
-  if (Floats::equal(player.movable.velocity.magnitude2d(), 0)) {
+  if (Math::equal(player.movable.velocity.magnitude2d(), 0)) {
     next_state = player_state::Stand;
     return true;
   }

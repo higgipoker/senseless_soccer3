@@ -74,7 +74,7 @@ class Player : public Engine::Entity {
   PlayerStateStand state_stand;
   PlayerStateRun state_run;
   PlayerStateDribble state_dribble;
-  PlayerState *current_state;
+  PlayerState *state;
 
   // convenience to avoid casting everywhere
   PlayerSprite &player_sprite;

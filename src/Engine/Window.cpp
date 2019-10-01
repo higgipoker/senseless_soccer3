@@ -24,10 +24,10 @@ Window::Window(const std::string &title, const int width, const int height,
   if (fullscreen && validVideoMode(video_mode.width, video_mode.height)) {
     create(video_mode, title, sf::Style::Fullscreen, settings);
   } else {
-    sf::VideoMode vm = sf::VideoMode::getDesktopMode();
-    vm.width = width;
-    vm.height = height;
-    create(vm, title, flags, settings);
+    video_mode = sf::VideoMode::getDesktopMode();
+    video_mode.width = width;
+    video_mode.height = height;
+    create(video_mode, title, flags, settings);
   }
   setFramerateLimit(in_fps);
 }

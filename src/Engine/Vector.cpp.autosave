@@ -104,12 +104,6 @@ Vector3 const Vector3::operator^(Vector3 &v) {
 //
 //
 //
-//float Vector3::operator*(Vector3 &rhs) {
-//  return (x * rhs.x + y * rhs.y + z * rhs.z);
-//}
-//
-//
-//
 const Vector3 Vector3::operator+(const float scalar) {
   return Vector3(this->x + scalar, this->y + scalar, this->z + scalar);
 }

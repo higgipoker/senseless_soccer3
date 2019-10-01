@@ -7,7 +7,7 @@ namespace Engine {
 //
 bool Collider::collides(const sf::CircleShape &c1, const sf::CircleShape &c2) {
   // One of the circles has no size
-  if (Floats::equal(c1.getRadius(), 0) || Floats::equal(c2.getRadius(), 0)) {
+  if (Math::equal(c1.getRadius(), 0) || Math::equal(c2.getRadius(), 0)) {
     return false;
   }
 

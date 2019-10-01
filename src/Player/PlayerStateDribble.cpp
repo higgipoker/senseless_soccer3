@@ -21,6 +21,7 @@ void PlayerStateDribble::start() { player.ball_under_control = true; }
 //
 //
 void PlayerStateDribble::step() {
+  PlayerState::step();
 
   // check for changed direction (close control)
   Compass new_direction(player.movable.velocity);
@@ -56,7 +57,7 @@ bool PlayerStateDribble::stateOver() {
     return true;
   }
   // or if we stopped moving
-  if (Floats::equal(player.movable.velocity.magnitude2d(), 0)) {
+  if (Math::equal(player.movable.velocity.magnitude2d(), 0)) {
     next_state = player_state::Stand;
     return true;
   }

@@ -26,5 +26,5 @@ void Seek::stop() { entity.velocity.reset(); }
 //
 //
 bool Seek::finished() {
-  return Engine::Floats::equal((target - entity.position).magnitude(), 0);
+  return Engine::Math::equal((target - entity.position).magnitude(), 0);
 }
