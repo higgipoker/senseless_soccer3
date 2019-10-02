@@ -2,17 +2,23 @@
 
 #include "Metrics.hpp"
 namespace Engine {
+Sprite Entity::dummy_sprite;
+Sprite Entity::dummy_shadow;
 //
 //
 //
-Entity::Entity(Movable &in_movable, Sprite &in_sprite, Sprite &in_shadow)
-    : movable(in_movable), sprite(in_sprite), shadow(in_shadow) {
+Entity::Entity() : sprite(dummy_sprite), shadow(dummy_shadow) {}
+//
+//
+//
+Entity::Entity(Sprite &in_sprite, Sprite &in_shadow)
+    : sprite(in_sprite), shadow(in_shadow) {
   perspective_width = sprite.getLocalBounds().width;
 }
 //
 //
 //
-void Entity::Update(){
+void Entity::update() {
   sprite.setPosition(movable.position.x, movable.position.y);
   sprite.animate();
 }
@@ -59,6 +65,5 @@ void Entity::perspectivize(const float in_camera_height) {
     float y_offset = Metrics::Y_OFFSET_DUE_TO_HEIGHT * z_cm;
     sprite.move(0, -y_offset);
   }
-
 }
 }  // namespace Engine

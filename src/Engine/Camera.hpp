@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Movable.hpp"
+#include "Entity.hpp"
 
 #include <SFML/Graphics/View.hpp>
 
@@ -8,12 +8,8 @@ namespace Engine {
 /**
  * @brief The Camera class
  */
-class Camera : public Movable {
+class Camera : public Entity {
  public:
-  /**
-   * @brief Camera
-   */
-  Camera();
   /**
    * @brief step
    * @param in_dt
@@ -22,8 +18,7 @@ class Camera : public Movable {
   /// sf view
   sf::View view{sf::FloatRect{0, 0, 800, 600}};
   /// camera height off the ground
-  const float height= 50;
-
+  const float height = 50;
 };
 
 }  // namespace Engine

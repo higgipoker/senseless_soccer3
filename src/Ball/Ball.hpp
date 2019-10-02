@@ -9,21 +9,19 @@
  */
 class Ball : public Engine::Entity {
  public:
-  /**
-   * @brief Ball
-   */
-  Ball(Engine::Sprite & in_sprite, Engine::Sprite & in_shadow);
-
-  /**
-   * @brief Update
-   */
-  void update();
-
+  //
+  //
+  //
+  Ball(Engine::Sprite& in_sprite, Engine::Sprite& in_shadow);
+  //
+  //
+  //
+  void update() override;
+  //
+  //
+  //
   sf::CircleShape collidable;
-
-  Engine::Movable movable;
 
  protected:
   float radius = 3;
-
 };

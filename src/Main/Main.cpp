@@ -55,7 +55,7 @@ int main() {
   match.ball->movable.position = {400, 300, 0};
   match.ball->sprite.move(109, 134);
 
-  player.movable.position = {100,120};
+  player.movable.position = {100, 120};
 
   engine.addEntity(player, sprite_layer_id);
   engine.addEntity(ball, sprite_layer_id);
@@ -64,11 +64,6 @@ int main() {
   player.brain.activate();
 
   while (engine.isRunning()) {
-    // updat game stuff
-    match.ball->update();
-    player.update();
-
-    // step the engine
     engine.step();
   }
 

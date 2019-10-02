@@ -18,12 +18,11 @@ namespace Engine {
 
 using layer_id = size_t;
 
-/**
- * @brief The RenderLayer struct
- * this allows for only sorting of layers which will change order
- * dynamically. For other layers just add drawable elements in
- * the correct order!
- */
+///
+/// this allows for only sorting of layers which will change order
+/// dynamically. For other layers just add drawable elements in
+/// the correct order!
+///
 struct RenderLayer {
   RenderLayer(bool in_sortable = false) : sortable(in_sortable) {}
   std::vector<sf::Drawable *> draw_list;
@@ -36,110 +35,73 @@ struct RenderLayer {
  */
 class Engine {
  public:
-  /**
-   * @brief Engine
-   */
+  //
+  //
+  //
   Engine(const std::string &in_window_title = "Untitled",
          int in_window_width = 800, int in_window_height = 600,
          int in_flags = sf::Style::Default, bool in_fullscreen = false);
-  /**
-   *
-   */
+  //
+  //
+  //
   ~Engine();
-  /**
-   * @brief step
-   */
+  //
+  //
+  //
   void step();
-  /**
-   * @brief addLayer
-   * @return
-   */
+  //
+  //
+  //
   int addLayer(bool in_sortable = false);
-  /**
-   * @brief addRenderable
-   * @param _renderable
-   */
+  //
+  //
+  //
   void addDrawable(sf::Drawable &in_drawable,
                    layer_id in_layer_id = RenderLayer::INVALID_LAYER);
-  /**
-   * @brief addMovable
-   * @param _movable
-   */
-  void addMovable(Movable &in_movable);
-  /**
-   * @brief remRenderable
-   * @param _renderable
-   */
-  void remDrawable(sf::Drawable &in_drawable,
-                   layer_id in_layer_id = RenderLayer::INVALID_LAYER);
-  /**
-   * @brief remMovable
-   * @param _movable
-   */
-  void remMovable(Movable &in_movable);
-  /**
-   * @brief addentity
-   * @param in_entity
-   */
+  //
+  //
+  //
   void addEntity(Entity &in_entity,
                  layer_id in_layer_id = RenderLayer::INVALID_LAYER);
-  /**
-   * @brief remEntity
-   * @param in_entity
-   */
-  void remEntity(Entity &in_entity);
-  /**
-   * @brief isRunning
-   * @return
-   */
+  //
+  //
+  //
   bool isRunning();
-  /**
-   * @brief getRenderTarget
-   * @return
-   */
+  //
+  //
+  //
   sf::RenderTarget &getRenderTarget();
-  /**
-   * @brief getMainCamera
-   * @return
-   */
+  //
+  //
+  //
   Camera &getMainCamera();
+  //
+  //
+  //
+  Entity makeEntity(Sprite &in_sprite, Sprite &in_shadow);
 
-  // ground layer
   layer_id background_layer = RenderLayer::INVALID_LAYER;
-  // layer aid for adding shadow sprites
   layer_id shadow_layer = RenderLayer::INVALID_LAYER;
 
-
  private:
-  /// wrapper of sf::window
   Window window;
-  /// a camera
   Camera camera;
-  /// a view for hud elements
   sf::View hud_view;
-  /// list of layers to render
   std::map<int, RenderLayer> render_layers;
-  /// layer for hud drawables
   RenderLayer hud_layer;
-  /// list of physical stuff to integrate
-  std::vector<Movable *> movable_list;
-  /// list of sprites to perspectivize
+  std::vector<Movable> movable_list;
   std::vector<Entity *> entities;
-  /// an imgui debug gui
   Debug debug_gui;
-  /// integration step
   float dt = 0.01F;
-  /// desired framerate
   const int framerate = 60;
-  /// app running flag
   bool running = true;
-  /**
-   * @brief poll_window
-   */
+  //
+  //
+  //
   void poll_window();
-  /**
-   * @brief sort_drawables
-   */
+  //
+  //
+  //
   void sort_drawables();
 };
 }  // namespace Engine

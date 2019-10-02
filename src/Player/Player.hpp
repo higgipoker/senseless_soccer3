@@ -16,58 +16,52 @@ class Match;
  */
 class Player : public Engine::Entity {
  public:
-  /**
-   * @brief Player
-   */
+  //
+  //
+  //
   Player(PlayerSprite &in_sprite, PlayerShadowSprite &in_shadow);
-  /**
-   * @brief Update
-   */
-  void update();
-  /**
-   * @brief ballInControlRange
-   * @return
-   */
+  //
+  //
+  //
+  void update() override;
+  //
+  //
+  //
   bool ballInControlRange();
-  /**
-   * @brief direction
-   * @return
-   */
+  //
+  //
+  //
   Engine::Compass direction();
 
-  // movable aspect for entity
-  Engine::Movable movable;
-
-  /// players know about the match, one match for all players
+  // players know about the match, one match for all players
   static Match *match;
 
-  /// a player has a brain (well, most do)
+  // a player has a brain (well, most do)
   Brain brain;
 
-  /// track if the ball is under control
+  // track if the ball is under control
   bool ball_under_control = false;
 
  protected:
-  /**
-   * @brief close_control
-   */
+  //
+  //
+  //
   void close_control();
-  /**
-   * @brief face_ball
-   */
+  //
+  //
+  //
   void face_ball();
-  /**
-   * @brief change_state
-   * @param in_state
-   */
+  //
+  //
+  //
   void change_state(const player_state in_state);
 
-  /// currently facing direction
+  // currently facing direction
   Engine::Compass facing;
 
-  /// represents the players feet for collisions
+  // represents the players feet for collisions
   sf::CircleShape feet;
-  /// represents an area where the ball is under control for dribbling
+  // represents an area where the ball is under control for dribbling
   sf::CircleShape control;
 
   // state machine

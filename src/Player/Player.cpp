@@ -14,7 +14,7 @@ const int SHADOW_OFFSET_Y = 4;
 //
 //
 Player::Player(PlayerSprite &in_sprite, PlayerShadowSprite &in_shadow)
-  : Entity(movable, in_sprite, in_shadow)
+  : Entity(in_sprite, in_shadow)
   , brain(*this)
   , state_stand(*this)
   , state_run(*this)
@@ -33,7 +33,7 @@ Player::Player(PlayerSprite &in_sprite, PlayerShadowSprite &in_shadow)
 //
 //
 void Player::update() {
-  Entity::Update();
+  Entity::update();
 
   // either ai brain or controller (human brain)
   brain.update();

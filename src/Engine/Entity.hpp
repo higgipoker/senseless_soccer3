@@ -9,33 +9,35 @@ namespace Engine {
  */
 class Entity {
  public:
-  /**
-   * @brief Entity
-   */
-  Entity(Movable &in_movable, Sprite &in_sprite, Sprite &in_shadow);
-  /**
-   * @brief Update
-   */
-  virtual void Update();
-  /**
-   * @brief directionTo
-   * @param in_entity
-   * @return
-   */
+  //
+  //
+  //
+  Entity();
+  //
+  //
+  //
+  Entity(Sprite &in_sprite, Sprite &in_shadow);
+  //
+  //
+  //
+  virtual void update();
+  //
+  //
+  //
   Direction directionTo(const Entity &in_entity);
-  /**
-   * @brief perspectivize
-   * @param z
-   * @param width
-   * @param camera_height
-   * @return
-   */
+  //
+  //
+  //
   void perspectivize(const float in_camera_height);
+  //
+  //
+  //
   float perspective_width = 0;
-
-  Movable &movable;
+  Movable movable;
   Sprite &sprite;
   Sprite &shadow;
+  static Sprite dummy_sprite;
+  static Sprite dummy_shadow;
   int shadow_offset = 2;
 };
 

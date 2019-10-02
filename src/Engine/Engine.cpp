@@ -23,13 +23,14 @@ Engine::Engine(const std::string &in_window_title, int in_window_width,
     : window(in_window_title, in_window_width, in_window_height, in_flags,
              in_fullscreen),
       debug_gui(window) {
-  camera.position.x = static_cast<float>(in_window_width) / 2;
-  camera.position.y = static_cast<float>(in_window_height) / 2;
-
+  camera.movable.position.x = static_cast<float>(in_window_width) / 2;
+  camera.movable.position.y = static_cast<float>(in_window_height) / 2;
   // set up a layer for bg
   background_layer = addLayer(false);
   // set up a layer for shadows
   shadow_layer = addLayer(false);
+  // camera should always be the first entity
+  entities.push_back(&camera);
 }
 //
 //
@@ -42,21 +43,15 @@ void Engine::step() {
   // input
   poll_window();
 
-  // camera
-  camera.step(dt);
-
-  // physics
-  for (auto &movable : movable_list) {
-    movable->step(dt);
+  // entities
+  for (auto &entity : entities) {
+    entity->movable.step(dt);
+    entity->perspectivize(camera.height);
+    entity->update();
   }
 
   // render
   window.clear(sf::Color::Blue);
-
-  // perspectivize
-  for (auto &e : entities) {
-    e->perspectivize(camera.height);
-  }
 
   // normal drawables
   sort_drawables();
@@ -115,71 +110,10 @@ void Engine::addDrawable(sf::Drawable &in_drawable, layer_id in_layer_id) {
 //
 //
 //
-void Engine::addMovable(Movable &in_movable) {
-  movable_list.emplace_back(&in_movable);
-}
-//
-//
-//
-void Engine::remDrawable(sf::Drawable &in_drawable, layer_id in_layer_id) {
-  // do we know the layer?
-  if (in_layer_id != RenderLayer::INVALID_LAYER) {
-    if (in_layer_id < render_layers.size()) {
-      auto it =
-          find(render_layers.at(in_layer_id).draw_list.begin(),
-               render_layers.at(in_layer_id).draw_list.begin(), &in_drawable);
-      if (it != render_layers.at(in_layer_id).draw_list.end()) {
-        render_layers.at(in_layer_id).draw_list.erase(it);
-      }
-    } else {
-      std::cout << "Engine::remRenderable> Invalid layer provided: "
-                << in_layer_id << std::endl;
-    }
-  } else {
-    // search all layers for the renderable
-    bool found = false;
-    for (auto &layer : render_layers) {
-      auto it = find(layer.second.draw_list.begin(),
-                     layer.second.draw_list.end(), &in_drawable);
-      if (it != layer.second.draw_list.end()) {
-        layer.second.draw_list.erase(it);
-        found = true;
-        break;
-      }
-    }
-    if (!found) {
-      std::cout << "Engine::remRenderable> Renderable not found" << std::endl;
-    }
-  }
-}
-//
-//
-//
-void Engine::remMovable(Movable &in_movable) {
-  auto it = find(movable_list.begin(), movable_list.end(), &in_movable);
-  if (it != movable_list.end()) {
-    movable_list.erase(it);
-  }
-}
-//
-//
-//
 void Engine::addEntity(Entity &in_entity, layer_id in_layer_id) {
   addDrawable(in_entity.sprite, in_layer_id);
   addDrawable(in_entity.shadow, shadow_layer);
-  addMovable(in_entity.movable);
   entities.emplace_back(&in_entity);
-}
-//
-//
-//
-void Engine::remEntity(Entity &in_entity) {
-  remDrawable(in_entity.sprite);
-  remMovable(in_entity.movable);
-  auto it = find(entities.begin(), entities.end(), &in_entity);
-  if (it != entities.end()) {
-    entities.erase(it);
-  }
 }
 //
 //
@@ -277,4 +211,10 @@ sf::RenderTarget &Engine::getRenderTarget() { return window; }
 //
 //
 Camera &Engine::getMainCamera() { return camera; }
+//
+//
+//
+Entity Engine::makeEntity(Sprite &in_sprite, Sprite &in_shadow) {
+  return Entity(in_sprite, in_shadow);
+}
 }  // namespace Engine
