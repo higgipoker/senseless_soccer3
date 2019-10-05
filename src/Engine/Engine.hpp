@@ -66,7 +66,7 @@ class Engine {
   //
   //
   //
-  bool isRunning();
+  bool isRunning() const;
   //
   //
   //
@@ -78,7 +78,7 @@ class Engine {
   //
   //
   //
-  Entity makeEntity(Sprite &in_sprite, Sprite &in_shadow);
+  Entity makeEntity(Sprite &in_sprite, Sprite &in_shadow) const;
 
   layer_id background_layer = RenderLayer::INVALID_LAYER;
   layer_id shadow_layer = RenderLayer::INVALID_LAYER;

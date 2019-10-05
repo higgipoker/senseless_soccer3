@@ -9,16 +9,22 @@ namespace Engine {
  * @brief The Camera class
  */
 class Camera : public Entity {
- public:
-  /**
-   * @brief step
-   * @param in_dt
-   */
-  void step(float in_dt);
-  /// sf view
+public:
+  //
+  //
+  //
+  Camera();
+  //
+  //
+  //
+  void update() override;
+  //
+  //
+  //
+  sf::View &getview();
+
+private:
   sf::View view{sf::FloatRect{0, 0, 800, 600}};
-  /// camera height off the ground
-  const float height = 50;
 };
 
-}  // namespace Engine
+} // namespace Engine

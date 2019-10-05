@@ -1,10 +1,6 @@
 #include "Movable.hpp"
 //
-//
-//
 namespace Engine {
-//
-//
 //
 static const float CLAMP_TO_GROUND = 0.458F;
 static const float GRAVITATIONAL_CONSTANT = 9.8F;
@@ -82,7 +78,7 @@ void Movable::integrate_improved_euler(const float in_dt) {
 //
 //
 Vector3 Movable::integrate(const float in_dt) {
-  if (Math::greater_than(position.z, 0)) {
+  if (Math::greater_than(position.z, 0) && affected_by_gravity) {
     // gravity
     Vector3 gravity;
     gravity.z = -GRAVITATIONAL_CONSTANT;
@@ -105,5 +101,11 @@ Vector3 Movable::integrate(const float in_dt) {
   }
   acceleration = force / mass * speed;
   return acceleration;
+}
+//
+//
+//
+void Movable::toggleGravity(bool in_status){
+  affected_by_gravity = in_status;
 }
 }  // namespace Engine

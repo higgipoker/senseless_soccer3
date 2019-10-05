@@ -24,11 +24,11 @@ class Entity {
   //
   //
   //
-  Direction directionTo(const Entity &in_entity);
+  Direction directionTo(const Entity &in_entity) const;
   //
   //
   //
-  void perspectivize(const float in_camera_height);
+  void perspectivize(const float in_camera_height) const;
   //
   //
   //
@@ -39,6 +39,9 @@ class Entity {
   static Sprite dummy_sprite;
   static Sprite dummy_shadow;
   int shadow_offset = 2;
+
+protected:
+  bool perspectivizable = true;
 };
 
 }  // namespace Engine

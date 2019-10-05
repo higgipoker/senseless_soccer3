@@ -1,5 +1,4 @@
 #include "Folder.hpp"
-#include "includes.hpp"
 
 #ifdef _WIN32
 #include <direct.h>
@@ -14,7 +13,8 @@
 #include <cstring>
 #endif
 #include <array>
-//#endif
+#include <iostream>
+
 namespace Engine {
 //
 //
@@ -57,6 +57,13 @@ const std::set<std::string> Folder::getFileList(bool in_refresh) {
     }
   }
   return files;
+}
+//
+//
+//
+void Folder::changeDirectory(const std::string &in_dir){
+  path = in_dir;
+  getFileList(true);
 }
 //
 //

@@ -10,21 +10,22 @@ namespace Engine {
 class Folder {
  public:
   Folder() = default;
-  /**
-   * @brief Folder
-   * @param in_path
-   */
+  //
+  //
+  //
   Folder(const std::string &in_path);
-  /**
-   * @brief getPath
-   * @return
-   */
+  //
+  //
+  //
   const std::string getPath();
-  /**
-   * @brief getFileList
-   * @return
-   */
+  //
+  //
+  //
   const std::set<std::string> getFileList(bool in_refresh = false);
+  //
+  //
+  //
+  void changeDirectory(const std::string &in_dir);
 
  protected:
   /// full path of this folder
@@ -37,9 +38,9 @@ class Folder {
  */
 class WorkingFolder : public Folder {
  public:
-  /**
-   * @brief WorkingFolder
-   */
+  //
+  //
+  //
   WorkingFolder();
 };
 

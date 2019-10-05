@@ -123,6 +123,7 @@ const Vector3 Vector3::operator-(const float scalar) {
 //
 //
 void Vector3::normalise() {
+  if(Math::equal(this->magnitude(), 0))return;
 
   float m = sqrtf(x * x + y * y + z * z);
 

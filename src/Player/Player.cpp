@@ -5,6 +5,8 @@
 #include "Engine/Debug.hpp"
 #include "Match/Match.hpp"
 
+#include <iostream>
+
 using namespace Engine;
 Match *Player::match = nullptr;
 

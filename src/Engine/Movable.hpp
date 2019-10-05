@@ -16,6 +16,10 @@ class Movable {
    * @brief step
    */
   void step(float in_dt);
+  //
+  //
+  //
+  void toggleGravity(bool in_status);
 
   /// movable elements
   Vector3 position;
@@ -59,5 +63,8 @@ class Movable {
   Vector3 k1;
   Vector3 k2;
   Vector3 dp;
+
+  // tmp hack
+  bool affected_by_gravity = true;
 };
 }  // namespace Engine

@@ -1,10 +1,9 @@
 #include "Engine.hpp"
 
-#include "includes.hpp"
-
 #include <SFML/Window/Event.hpp>
 
 #include <cassert>
+#include <iostream>
 
 namespace Engine {
 //
@@ -46,7 +45,7 @@ void Engine::step() {
   // entities
   for (auto &entity : entities) {
     entity->movable.step(dt);
-    entity->perspectivize(camera.height);
+    entity->perspectivize(camera.movable.position.z);
     entity->update();
   }
 
@@ -55,7 +54,7 @@ void Engine::step() {
 
   // normal drawables
   sort_drawables();
-  window.setView(camera.view);
+  window.setView(camera.getview());
   for (auto &layer : render_layers) {
     for (auto &drawable : layer.second.draw_list) {
       window.draw(*drawable);
@@ -191,7 +190,7 @@ void Engine::poll_window() {
 //
 //
 //
-bool Engine::isRunning() { return running; }
+bool Engine::isRunning() const { return running; }
 //
 //
 //
@@ -214,7 +213,7 @@ Camera &Engine::getMainCamera() { return camera; }
 //
 //
 //
-Entity Engine::makeEntity(Sprite &in_sprite, Sprite &in_shadow) {
+Entity Engine::makeEntity(Sprite &in_sprite, Sprite &in_shadow) const {
   return Entity(in_sprite, in_shadow);
 }
 }  // namespace Engine

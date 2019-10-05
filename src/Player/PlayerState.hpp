@@ -43,7 +43,7 @@ class PlayerState {
   player_state nextState();
 
   /// degug
-  std::string name;
+  std::string name="Not Set";
 
  protected:
   /// context for state  machine pattern

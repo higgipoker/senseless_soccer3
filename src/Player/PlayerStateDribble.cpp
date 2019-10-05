@@ -5,6 +5,8 @@
 
 #include "Engine/Collider.hpp"
 #include "Engine/Compass.hpp"
+
+#include <iostream>
 using namespace Engine;
 //
 //
