@@ -1,18 +1,19 @@
 #include "Seek.hpp"
+
+using namespace Engine;
 //
 //
 //
-Seek::Seek(Engine::Movable& in_movable) : Locomotion(in_movable) {}
+Seek::Seek(Movable& in_movable) : Locomotion(in_movable) {}
 //
 //
 //
-void Seek::init(Engine::Vector3 in_target) { target = in_target; }
+void Seek::init(Vector3 in_target) { target = in_target; }
 //
 //
 //
 void Seek::start() {
-  entity.velocity = target - entity.position;
-  entity.velocity.normalizeToUnits();
+  entity.setVelocity(target - entity.getPosition());
 }
 //
 //
@@ -21,10 +22,10 @@ void Seek::step() {}
 //
 //
 //
-void Seek::stop() { entity.velocity.reset(); }
+void Seek::stop() { entity.setVelocity(Vector3{}); }
 //
 //
 //
 bool Seek::finished() {
-  return Engine::Math::equal((target - entity.position).magnitude(), 0);
+  return Math::equal((target - entity.getPosition()).magnitude(), 0);
 }

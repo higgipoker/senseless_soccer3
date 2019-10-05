@@ -16,14 +16,14 @@ const int SHADOW_OFFSET_Y = 4;
 //
 //
 Player::Player(PlayerSprite &in_sprite, PlayerShadowSprite &in_shadow)
-  : Entity(in_sprite, in_shadow)
-  , brain(*this)
-  , state_stand(*this)
-  , state_run(*this)
-  , state_dribble(*this)
-  , state(&state_stand)
-  , player_sprite(in_sprite)
-  , player_shadow(in_shadow) {
+    : Entity(in_sprite, in_shadow),
+      brain(*this),
+      state_stand(*this),
+      state_run(*this),
+      state_dribble(*this),
+      state(&state_stand),
+      player_sprite(in_sprite),
+      player_shadow(in_shadow) {
   feet.setRadius(3.0F);
   control.setRadius(15);
   feet.setFillColor(Debug::disgnostics_color);
@@ -99,13 +99,11 @@ bool Player::ballInControlRange() {
 void Player::close_control() {
   Vector3 f(feet.getPosition().x, feet.getPosition().y);
   Vector3 ball_pos = f + (facing.toVector() * 8);
-  match->ball->movable.velocity.reset();
-  match->ball->movable.velocity.reset();
-  match->ball->movable.position = ball_pos;
+  match->ball->movable.resetVelocity();
+  match->ball->movable.resetForces();
+  match->ball->movable.setPosition(ball_pos);
 }
 //
 //
 //
-Compass Player::direction() {
-  return facing;
-}
+Compass Player::direction() { return facing; }

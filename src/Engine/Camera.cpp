@@ -9,18 +9,29 @@ namespace Engine {
 Camera::Camera() {
   perspectivizable = false;
   movable.toggleGravity(false);
-  movable.position.z = 50;
 }
 //
 //
 //
 void Camera::update() {
-  view.setCenter(movable.position.x, movable.position.y);
+  view.setCenter(movable.getX(), movable.getY());
 }
 //
 //
 //
 sf::View &Camera::getview() {
   return view;
+}
+//
+//
+//
+float Camera::getHeight(){
+  return movable.getZ();
+}
+//
+//
+//
+void Camera::setHeight(const float in_height){
+  movable.setZ(in_height);
 }
 } // namespace Engine

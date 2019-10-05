@@ -17,6 +17,6 @@ Ball::Ball(Sprite &in_sprite, Sprite &in_shadow)
 void Ball::update() {
   Entity::update();
   sprite.animate();
-  collidable.setPosition(movable.position.x - collidable.getRadius(),
-                         movable.position.y - collidable.getRadius());
+  collidable.setPosition(movable.getX() - collidable.getRadius(),
+                         movable.getY() - collidable.getRadius());
 }

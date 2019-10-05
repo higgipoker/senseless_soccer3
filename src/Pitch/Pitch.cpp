@@ -4,6 +4,8 @@
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Texture.hpp>
+
+using namespace Engine;
 //
 //
 //
@@ -16,8 +18,8 @@ Pitch::Pitch(std::shared_ptr<sf::Texture> in_texture,
   // make a texture for drawing the lines on
   pitch_texture = new sf::RenderTexture();
   pitch_texture->create(
-      static_cast<float>(Engine::Metrics::MetersToPixels(69) + 400),
-      static_cast<float>(Engine::Metrics::MetersToPixels(105) + 400));
+      static_cast<float>(Metrics::MetersToPixels(69) + 400),
+      static_cast<float>(Metrics::MetersToPixels(105) + 400));
   pitch.setTexture(pitch_texture->getTexture());
 
   // size of the target rect for grass tile
@@ -82,8 +84,8 @@ void Pitch::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 void Pitch::init_bounds() {
   dimensions.bounds.setPosition(200, 200);
   dimensions.bounds.setSize(
-      sf::Vector2f(static_cast<float>(Engine::Metrics::MetersToPixels(69)),
-                   static_cast<float>(Engine::Metrics::MetersToPixels(105))));
+      sf::Vector2f(static_cast<float>(Metrics::MetersToPixels(69)),
+                   static_cast<float>(Metrics::MetersToPixels(105))));
   dimensions.bounds.setFillColor(sf::Color::Transparent);
   dimensions.bounds.setOutlineColor(sf::ChalkWhite);
   dimensions.bounds.setOutlineThickness(2);
@@ -94,8 +96,8 @@ void Pitch::init_bounds() {
 void Pitch::init_6_yard_boxes() {
   float x, y, w, h;
 
-  w = static_cast<float>(Engine::Metrics::MetersToPixels(18.32f));
-  h = static_cast<float>(Engine::Metrics::MetersToPixels(5.5f));
+  w = static_cast<float>(Metrics::MetersToPixels(18.32f));
+  h = static_cast<float>(Metrics::MetersToPixels(5.5f));
   dimensions.north_6.setSize(sf::Vector2f(w, h));
 
   x = (dimensions.bounds.getPosition().x +
@@ -126,8 +128,8 @@ void Pitch::init_18_yard_boxes() {
   // north
   float x, y, w, h;
 
-  w = static_cast<float>(Engine::Metrics::MetersToPixels(40.32f));
-  h = static_cast<float>(Engine::Metrics::MetersToPixels(16.5f));
+  w = static_cast<float>(Metrics::MetersToPixels(40.32f));
+  h = static_cast<float>(Metrics::MetersToPixels(16.5f));
   dimensions.north_18.setSize(sf::Vector2f(w, h));
 
   x = (dimensions.bounds.getPosition().x +
@@ -156,7 +158,7 @@ void Pitch::init_18_yard_boxes() {
 //
 //
 void Pitch::init_center_circle() {
-  dimensions.center_circle.setRadius(Engine::Metrics::MetersToPixels(9.15f));
+  dimensions.center_circle.setRadius(Metrics::MetersToPixels(9.15f));
   dimensions.center_circle.setPosition(
       dimensions.bounds.getPosition().x + dimensions.bounds.getSize().x / 2 -
           dimensions.center_circle.getRadius(),
@@ -176,7 +178,7 @@ void Pitch::init_center_spot() {
   y = dimensions.bounds.getPosition().y + dimensions.bounds.getSize().y / 2 - 2;
 
   dimensions.center_spot.setPosition(x, y);
-  dimensions.center_spot.setRadius(Engine::Metrics::MetersToPixels(0.2f));
+  dimensions.center_spot.setRadius(Metrics::MetersToPixels(0.2f));
   dimensions.center_spot.setFillColor(sf::ChalkWhite);
 }
 //
@@ -187,11 +189,11 @@ void Pitch::init_penalty_spots() {
   int x, y;
   x = dimensions.bounds.getPosition().x + dimensions.bounds.getSize().x / 2;
   y = dimensions.bounds.getPosition().y +
-      Engine::Metrics::MetersToPixels(10.9f);
+      Metrics::MetersToPixels(10.9f);
 
   dimensions.north_penalty_spot.setPosition(x, y);
   dimensions.north_penalty_spot.setRadius(
-      Engine::Metrics::MetersToPixels(0.2f));
+      Metrics::MetersToPixels(0.2f));
   dimensions.north_penalty_spot.setFillColor(sf::ChalkWhite);
 }
 //
@@ -203,7 +205,7 @@ void Pitch::init_north_arc() {
       dimensions.bounds.getPosition().y + dimensions.north_18.getSize().y + 2;
 
   dimensions.north_arc.setPosition(x, y);
-  dimensions.north_arc.setRadius(Engine::Metrics::MetersToPixels(7.f));
+  dimensions.north_arc.setRadius(Metrics::MetersToPixels(7.f));
 
   dimensions.north_arc.setFillColor(sf::Color::Transparent);
   dimensions.north_arc.setOutlineColor(sf::ChalkWhite);
@@ -221,7 +223,7 @@ void Pitch::init_south_arc() {
           dimensions.south_18.getSize().y - 2;
 
   dimensions.south_arc.setPosition(x, y);
-  dimensions.south_arc.setRadius(Engine::Metrics::MetersToPixels(7.f));
+  dimensions.south_arc.setRadius(Metrics::MetersToPixels(7.f));
 
   dimensions.south_arc.setFillColor(sf::Color::Transparent);
   dimensions.south_arc.setOutlineColor(sf::ChalkWhite);

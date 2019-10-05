@@ -5,11 +5,11 @@
 #include <SFML/Graphics/View.hpp>
 
 namespace Engine {
-/**
- * @brief The Camera class
- */
+//
+//
+//
 class Camera : public Entity {
-public:
+ public:
   //
   //
   //
@@ -22,9 +22,17 @@ public:
   //
   //
   sf::View &getview();
+  //
+  //
+  //
+  float getHeight();
+  //
+  //
+  //
+  void setHeight(const float in_height);
 
-private:
+ private:
   sf::View view{sf::FloatRect{0, 0, 800, 600}};
 };
 
-} // namespace Engine
+}  // namespace Engine

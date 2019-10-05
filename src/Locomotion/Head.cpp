@@ -1,18 +1,19 @@
 #include "Head.hpp"
+
+using namespace Engine;
 //
 //
 //
-Head::Head(Engine::Movable& in_entity) : Locomotion(in_entity) {}
+Head::Head(Movable& in_entity) : Locomotion(in_entity) {}
 //
 //
 //
-void Head::init(Engine::Vector3 in_direction) { direction = in_direction; }
+void Head::init(Vector3 in_direction) { direction = in_direction; }
 //
 //
 //
 void Head::start() {
-  entity.velocity = direction;
-  entity.velocity.normalizeToUnits();
+  entity.setVelocity( direction);
 }
 //
 //
@@ -21,7 +22,7 @@ void Head::step() {}
 //
 //
 //
-void Head::stop() { entity.velocity.reset(); }
+void Head::stop() { entity.setVelocity(Vector3{}); }
 //
 //
 //

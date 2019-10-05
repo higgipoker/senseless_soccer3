@@ -46,7 +46,7 @@ add_executable(senseless_soccer3
     src/Engine/Folder.cpp
     src/Engine/Window.cpp
     src/Engine/Movable.cpp
-    src/Engine/Engine.cpp
+    src/Engine/GameEngine.cpp
     src/Engine/Sprite.cpp
     src/Engine/SpriteAnimation.cpp
     src/Engine/Drawable.cpp

@@ -23,14 +23,14 @@ Entity::Entity(Sprite &in_sprite, Sprite &in_shadow)
 //
 //
 void Entity::update() {
-  sprite.setPosition(movable.position.x, movable.position.y);
+  sprite.setPosition(movable.getX(), movable.getY());
   sprite.animate();
 }
 //
 //
 //
-Engine::Direction Entity::directionTo(const Entity &in_entity) const {
-  Vector3 direction = in_entity.movable.position - movable.position;
+Direction Entity::directionTo(const Entity &in_entity) const {
+  Vector3 direction = in_entity.movable.getPosition() - movable.getPosition();
   direction.roundAngle(45);
   direction.normalise();
   Compass c(direction);
@@ -43,7 +43,7 @@ void Entity::perspectivize(const float in_camera_height) const {
   if (perspectivizable) {
     // size depending on distance from camera
     float dimensions = perspective_width;
-    float dist_from_camera = in_camera_height - movable.position.z;
+    float dist_from_camera = in_camera_height - movable.getZ();
 
     // other side of camera, don't perspectivize!
     if (dist_from_camera <= 0) {
@@ -65,7 +65,7 @@ void Entity::perspectivize(const float in_camera_height) const {
     shadow.move(shadow_offset, shadow_offset);
 
     // y offset due to height
-    float z_cm = movable.position.z * Metrics::Z_PERSP_OFFSET;
+    float z_cm = movable.getZ() * Metrics::Z_PERSP_OFFSET;
     if (Math::greater_than(z_cm, 0)) {
       float y_offset = Metrics::Y_OFFSET_DUE_TO_HEIGHT * z_cm;
       sprite.move(0, -y_offset);

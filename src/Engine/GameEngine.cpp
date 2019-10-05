@@ -1,4 +1,6 @@
-#include "Engine.hpp"
+#include "GameEngine.hpp"
+
+#include "Vector.hpp"
 
 #include <SFML/Window/Event.hpp>
 
@@ -17,13 +19,13 @@ inline struct {
 //
 //
 //
-Engine::Engine(const std::string &in_window_title, int in_window_width,
+GameEngine::GameEngine(const std::string &in_window_title, int in_window_width,
                int in_window_height, int in_flags, bool in_fullscreen)
     : window(in_window_title, in_window_width, in_window_height, in_flags,
              in_fullscreen),
       debug_gui(window) {
-  camera.movable.position.x = static_cast<float>(in_window_width) / 2;
-  camera.movable.position.y = static_cast<float>(in_window_height) / 2;
+  camera.movable.setPosition(Vector3{static_cast<float>(in_window_width) / 2,static_cast<float>(in_window_height) / 2});
+  camera.setHeight(50);
   // set up a layer for bg
   background_layer = addLayer(false);
   // set up a layer for shadows
@@ -34,18 +36,18 @@ Engine::Engine(const std::string &in_window_title, int in_window_width,
 //
 //
 //
-Engine::~Engine() { window.close(); }
+GameEngine::~GameEngine() { window.close(); }
 //
 //
 //
-void Engine::step() {
+void GameEngine::step() {
   // input
   poll_window();
 
   // entities
   for (auto &entity : entities) {
     entity->movable.step(dt);
-    entity->perspectivize(camera.movable.position.z);
+    entity->perspectivize(camera.movable.getZ());
     entity->update();
   }
 
@@ -79,7 +81,7 @@ void Engine::step() {
 //
 //
 //
-int Engine::addLayer(bool in_sortable) {
+int GameEngine::addLayer(bool in_sortable) {
   const int new_id = render_layers.size();
   render_layers.insert({new_id, RenderLayer(in_sortable)});
   return new_id;
@@ -87,7 +89,7 @@ int Engine::addLayer(bool in_sortable) {
 //
 //
 //
-void Engine::addDrawable(sf::Drawable &in_drawable, layer_id in_layer_id) {
+void GameEngine::addDrawable(sf::Drawable &in_drawable, layer_id in_layer_id) {
   if (render_layers.empty()) {
     std::cout << "Engine::addDrawable> no layers" << std::endl;
     return;
@@ -109,7 +111,7 @@ void Engine::addDrawable(sf::Drawable &in_drawable, layer_id in_layer_id) {
 //
 //
 //
-void Engine::addEntity(Entity &in_entity, layer_id in_layer_id) {
+void GameEngine::addEntity(Entity &in_entity, layer_id in_layer_id) {
   addDrawable(in_entity.sprite, in_layer_id);
   addDrawable(in_entity.shadow, shadow_layer);
   entities.emplace_back(&in_entity);
@@ -117,7 +119,7 @@ void Engine::addEntity(Entity &in_entity, layer_id in_layer_id) {
 //
 //
 //
-void Engine::poll_window() {
+void GameEngine::poll_window() {
   static sf::Event event;
   while (window.pollEvent(event)) {
     if (Debug::show_debug_hud) {
@@ -190,11 +192,11 @@ void Engine::poll_window() {
 //
 //
 //
-bool Engine::isRunning() const { return running; }
+bool GameEngine::isRunning() const { return running; }
 //
 //
 //
-void Engine::sort_drawables() {
+void GameEngine::sort_drawables() {
   for (auto &layer : render_layers) {
     if (layer.second.sortable) {
       std::sort(layer.second.draw_list.begin(), layer.second.draw_list.end(),
@@ -205,15 +207,15 @@ void Engine::sort_drawables() {
 //
 //
 //
-sf::RenderTarget &Engine::getRenderTarget() { return window; }
+sf::RenderTarget &GameEngine::getRenderTarget() { return window; }
 //
 //
 //
-Camera &Engine::getMainCamera() { return camera; }
+Camera &GameEngine::getMainCamera() { return camera; }
 //
 //
 //
-Entity Engine::makeEntity(Sprite &in_sprite, Sprite &in_shadow) const {
+Entity GameEngine::makeEntity(Sprite &in_sprite, Sprite &in_shadow) const {
   return Entity(in_sprite, in_shadow);
 }
 }  // namespace Engine

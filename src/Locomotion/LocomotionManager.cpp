@@ -4,6 +4,7 @@
 
 #include "Player/Player.hpp"
 
+using namespace Engine;
 //
 //
 //
@@ -16,7 +17,7 @@ LocomotionManager::LocomotionManager(Player &in_player)
 //
 //
 //
-void LocomotionManager::seek(const Engine::Vector3 in_target) {
+void LocomotionManager::seek(const Vector3 in_target) {
   if (current_locomotion) {
     current_locomotion->stop();
   }
@@ -27,7 +28,7 @@ void LocomotionManager::seek(const Engine::Vector3 in_target) {
 //
 //
 //
-void LocomotionManager::head(const Engine::Vector3 in_target) {
+void LocomotionManager::head(const Vector3 in_target) {
   if (current_locomotion) {
     current_locomotion->stop();
   }
@@ -38,7 +39,7 @@ void LocomotionManager::head(const Engine::Vector3 in_target) {
 //
 //
 //
-void LocomotionManager::pursue(Engine::Movable &in_target){
+void LocomotionManager::pursue(Movable &in_target){
   if (current_locomotion) {
     current_locomotion->stop();
   }
@@ -49,7 +50,7 @@ void LocomotionManager::pursue(Engine::Movable &in_target){
 //
 //
 //
-void LocomotionManager::pursue_til_caught(Engine::Movable &in_target, float in_range){
+void LocomotionManager::pursue_til_caught(Movable &in_target, float in_range){
   if (current_locomotion) {
     current_locomotion->stop();
   }

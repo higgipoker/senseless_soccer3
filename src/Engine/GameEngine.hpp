@@ -33,18 +33,18 @@ struct RenderLayer {
 /**
  * @brief The Engine class
  */
-class Engine {
+class GameEngine {
  public:
   //
   //
   //
-  Engine(const std::string &in_window_title = "Untitled",
+  GameEngine(const std::string &in_window_title = "Untitled",
          int in_window_width = 800, int in_window_height = 600,
          int in_flags = sf::Style::Default, bool in_fullscreen = false);
   //
   //
   //
-  ~Engine();
+  ~GameEngine();
   //
   //
   //

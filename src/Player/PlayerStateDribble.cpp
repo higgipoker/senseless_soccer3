@@ -26,7 +26,7 @@ void PlayerStateDribble::step() {
   PlayerState::step();
 
   // check for changed direction (close control)
-  Compass new_direction(player.movable.velocity);
+  Compass new_direction(player.movable.getVelocity());
   if (new_direction.direction != player.facing.direction) {
     player.close_control();
     std::cout << "PlayerStateDribble::step> close_control" << std::endl;
@@ -34,9 +34,10 @@ void PlayerStateDribble::step() {
     // check for collision with ball
     if (Collider::collides(player.feet, player.match->ball->collidable)) {
       float force = 1.F;
-      player.match->ball->movable.velocity.reset();
-      player.match->ball->movable.force =
-          Compass(player.facing).toVector() * force;
+      player.match->ball->movable.resetVelocity();
+      player.match->ball->movable.resetForces();
+      player.match->ball->movable.applyForce(Compass(player.facing).toVector() *
+                                             force);
       std::cout << "PlayerStateDribble::step> kick" << std::endl;
     }
   }
@@ -59,7 +60,7 @@ bool PlayerStateDribble::stateOver() {
     return true;
   }
   // or if we stopped moving
-  if (Math::equal(player.movable.velocity.magnitude2d(), 0)) {
+  if (Math::equal(player.movable.getVelocityMag(true), 0)) {
     next_state = player_state::Stand;
     return true;
   }

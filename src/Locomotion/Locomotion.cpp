@@ -1,5 +1,7 @@
 #include "Locomotion.hpp"
+
+using namespace Engine;
 //
 //
 //
-Locomotion::Locomotion(Engine::Movable& in_entity) : entity(in_entity) {}
+Locomotion::Locomotion(Movable& in_entity) : entity(in_entity) {}
