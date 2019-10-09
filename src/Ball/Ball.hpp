@@ -23,5 +23,5 @@ class Ball : public Engine::Entity {
   sf::CircleShape collidable;
 
  protected:
-  float radius = 3;
+  float radius = 6;
 };

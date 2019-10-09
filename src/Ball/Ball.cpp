@@ -1,4 +1,6 @@
 #include "Ball.hpp"
+
+#include <iostream>
 using namespace Engine;
 //
 //
@@ -16,6 +18,8 @@ Ball::Ball(Sprite &in_sprite, Sprite &in_shadow)
 //
 void Ball::update() {
   Entity::update();
+  sprite.setRotation(movable.getVelocity().angle());
+  std::cout << movable.getVelocity().angle() << std::endl;
   sprite.animate();
   collidable.setPosition(movable.getX() - collidable.getRadius(),
                          movable.getY() - collidable.getRadius());

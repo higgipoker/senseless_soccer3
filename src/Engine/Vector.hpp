@@ -27,7 +27,7 @@ class Vector3 {
   // construct / destruct / setter
   // -------------------------------------------------------------------------
   Vector3(void) {}
-  constexpr Vector3(float xi, float yi, float zi){
+  constexpr Vector3(float xi, float yi, float zi) {
     x = xi;
     y = yi;
     z = zi;
@@ -38,6 +38,11 @@ class Vector3 {
     z = static_cast<float>(zi);
   }
   Vector3(float xi, float yi);
+  Vector3(const sf::Vector2f &_v) {
+    x = _v.x;
+    y = _v.y;
+    z = 0;
+  }
   void reset();
 
   // -------------------------------------------------------------------------
@@ -83,9 +88,9 @@ class Vector3 {
   // vector properties
   // -------------------------------------------------------------------------
   float magnitude(void) const;
-  float magnitude2d(void);
-  float magSquared(void);
-  float angle(void);
+  float magnitude2d(void) const;
+  float magSquared(void) const;
+  float angle(void) const;
 
   // -------------------------------------------------------------------------
   // static vector ops
@@ -93,7 +98,8 @@ class Vector3 {
   static sf::Vector2f toSfVector(const Vector3 &v);
   static float projectionOn(const Vector3 &from, Vector3 &line);
   static float dotProduct(const Vector3 &lhs, const Vector3 &rhs);
-  static float perpProduct(const Vector3 &lhs, const Vector3 &v, bool right_normal = true);
+  static float perpProduct(const Vector3 &lhs, const Vector3 &v,
+                           bool right_normal = true);
   static bool isMovingTowards(Vector3 testPoint, Vector3 objectPosition,
                               Vector3 objectVelocity);
 

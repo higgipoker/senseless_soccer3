@@ -8,6 +8,7 @@ BallSprite::BallSprite(std::shared_ptr<sf::Texture> in_texture,
                        const SpriteSetDefinition in_def)
     : Sprite(in_texture) {
   init(in_def);
+  setAnimation(&roll_animation);
 }
 //
 //

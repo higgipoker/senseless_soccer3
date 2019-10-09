@@ -40,7 +40,7 @@ int main() {
 
   sf::IntRect world{0, 0, 2000, 3000};
   Pitch pitch(tex_grass, world);
-  engine.addDrawable(pitch, engine.background_layer);
+  engine.addDrawable(pitch, engine.getBackgroundLayer());
 
   PlayerShadowSprite shadow(tex_playerandball);
   BallShadowSprite ball_shadow(tex_playerandball);
@@ -54,7 +54,7 @@ int main() {
   BallSprite ballsprite(tex_playerandball);
   Ball ball(ballsprite, ball_shadow);
   match.ball = &ball;
-  match.ball->movable.setPosition({400, 300, 0});
+  match.ball->movable.setPosition({200, 200, 0});
   match.ball->sprite.move(109, 134);
 
   player.movable.setPosition({100, 120});

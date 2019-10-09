@@ -26,8 +26,10 @@ void PlayerStateDribble::step() {
   PlayerState::step();
 
   // check for changed direction (close control)
-  Compass new_direction(player.movable.getVelocity());
-  if (new_direction.direction != player.facing.direction) {
+  Compass old_direction = player.facing;
+  Vector3 dir = player.movable.getVelocity();
+  player.facing.fromVector(dir);
+  if (old_direction.direction != player.facing.direction) {
     player.close_control();
     std::cout << "PlayerStateDribble::step> close_control" << std::endl;
   } else {
@@ -36,12 +38,12 @@ void PlayerStateDribble::step() {
       float force = 1.F;
       player.match->ball->movable.resetVelocity();
       player.match->ball->movable.resetForces();
-      player.match->ball->movable.applyForce(Compass(player.facing).toVector() *
-                                             force);
+      Vector3 kick_force = Compass(player.facing).toVector();
+      kick_force.normalise2d();
+      player.match->ball->movable.applyForce(kick_force * force);
       std::cout << "PlayerStateDribble::step> kick" << std::endl;
     }
   }
-  player.facing = new_direction;
   player.player_sprite.setAnimation(PlayerAnimationType::Run,
                                     player.facing.direction);
 }

@@ -97,11 +97,15 @@ bool Player::ballInControlRange() {
 //
 //
 void Player::close_control() {
-  Vector3 f(feet.getPosition().x, feet.getPosition().y);
-  Vector3 ball_pos = f + (facing.toVector() * 8);
+  // edge of feet circle in direction of movement
+  Vector3 ball_position{feet.getCenter()};
+  Vector3 offset = facing.toVector() * (feet.getRadius()+match->ball->collidable.getRadius());
+  ball_position += offset;
+
+  // put the ball there
   match->ball->movable.resetVelocity();
   match->ball->movable.resetForces();
-  match->ball->movable.setPosition(ball_pos);
+  match->ball->movable.setPosition(ball_position);
 }
 //
 //

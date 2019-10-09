@@ -3,36 +3,50 @@
 #include "Engine/Compass.hpp"
 #include "Engine/Vector.hpp"
 
-class Brain;
+#include <iostream>
 
+class Brain;
+//
+//
+//
 class DribblePattern {
  public:
-  DribblePattern() = default;
-  virtual ~DribblePattern() = default;
-
-  virtual Engine::Vector3 nextDirection() = 0;
+  //
+  //
+  //
+  virtual Engine::Vector3 nextDirection(Engine::Compass in_current_dir) = 0;
+  //
+  //
+  //
   virtual bool changeDirection() = 0;
 
  protected:
   int counter = 0;
 };
-
+//
+//
+//
 class DribblePatternRandom : public DribblePattern {
  public:
-  Engine::Vector3 nextDirection() override {
+  //
+  //
+  //
+  Engine::Vector3 nextDirection(Engine::Compass in_current_dir) override {
     counter = 0;
-    Engine::Compass compass(static_cast<Engine::Direction>(rand() % 8));
-    return compass.toVector();
+    Engine::Vector3 dir = in_current_dir.toVector();
+    dir.rotate(rand() % 2 == 1 ? 45 : -45);
+    return dir;
   }
-
+  //
+  //
+  //
   bool changeDirection() override {
-    return (++counter > ((rand() % 100) + 50));
+    return (++counter > ((rand() % 50) + 10));
   }
 };
-
-/**
- * @brief The Retrieve class
- */
+//
+//
+//
 class BrainDribble : public BrainState {
  public:
   /**

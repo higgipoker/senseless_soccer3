@@ -9,7 +9,7 @@
 
 namespace Engine {
 //
-// sort predicate for drawables
+//
 //
 inline struct {
   bool operator()(const sf::Drawable *d1, const sf::Drawable *d2) const {
@@ -20,17 +20,15 @@ inline struct {
 //
 //
 GameEngine::GameEngine(const std::string &in_window_title, int in_window_width,
-               int in_window_height, int in_flags, bool in_fullscreen)
+                       int in_window_height, int in_flags, bool in_fullscreen)
     : window(in_window_title, in_window_width, in_window_height, in_flags,
              in_fullscreen),
       debug_gui(window) {
-  camera.movable.setPosition(Vector3{static_cast<float>(in_window_width) / 2,static_cast<float>(in_window_height) / 2});
-  camera.setHeight(50);
-  // set up a layer for bg
+  camera.movable.setPosition({static_cast<float>(in_window_width) / 2,
+                              static_cast<float>(in_window_height) / 2});
   background_layer = addLayer(false);
-  // set up a layer for shadows
   shadow_layer = addLayer(false);
-  // camera should always be the first entity
+  camera.setHeight(50);
   entities.push_back(&camera);
 }
 //
@@ -41,42 +39,9 @@ GameEngine::~GameEngine() { window.close(); }
 //
 //
 void GameEngine::step() {
-  // input
   poll_window();
-
-  // entities
-  for (auto &entity : entities) {
-    entity->movable.step(dt);
-    entity->perspectivize(camera.movable.getZ());
-    entity->update();
-  }
-
-  // render
-  window.clear(sf::Color::Blue);
-
-  // normal drawables
-  sort_drawables();
-  window.setView(camera.getview());
-  for (auto &layer : render_layers) {
-    for (auto &drawable : layer.second.draw_list) {
-      window.draw(*drawable);
-    }
-  }
-
-  // hud elements
-  window.setView(hud_view);
-  for (auto &drawable : hud_layer.draw_list) {
-    window.draw(*drawable);
-  }
-
-#ifndef NDEBUG
-  // imgui debug ui
-  if (Debug::show_debug_hud) {
-    debug_gui.update();
-  }
-#endif
-
-  window.display();
+  update_entities();
+  render();
 }
 //
 //
@@ -97,11 +62,11 @@ void GameEngine::addDrawable(sf::Drawable &in_drawable, layer_id in_layer_id) {
   if (in_layer_id == RenderLayer::INVALID_LAYER) {
     // add to last layer
     render_layers.at(render_layers.size() - 1)
-        .draw_list.emplace_back(&in_drawable);
+        .draw_list.push_back(&in_drawable);
   } else {
     // add to specified layer
     if (in_layer_id < render_layers.size()) {
-      render_layers.at(in_layer_id).draw_list.emplace_back(&in_drawable);
+      render_layers.at(in_layer_id).draw_list.push_back(&in_drawable);
     } else {
       std::cout << "Engine::addRenderable> Tried to add to non existent layer: "
                 << in_layer_id << std::endl;
@@ -114,7 +79,7 @@ void GameEngine::addDrawable(sf::Drawable &in_drawable, layer_id in_layer_id) {
 void GameEngine::addEntity(Entity &in_entity, layer_id in_layer_id) {
   addDrawable(in_entity.sprite, in_layer_id);
   addDrawable(in_entity.shadow, shadow_layer);
-  entities.emplace_back(&in_entity);
+  entities.push_back(&in_entity);
 }
 //
 //
@@ -147,6 +112,14 @@ void GameEngine::poll_window() {
             }
           } else if (event.key.code == sf::Keyboard::Tab) {
             Debug::show_debug_hud = !Debug::show_debug_hud;
+          } else if (event.key.code == sf::Keyboard::W) {
+            camera.movable.applyForce({0, -10});
+          } else if (event.key.code == sf::Keyboard::S) {
+            camera.movable.applyForce({0, 10});
+          } else if (event.key.code == sf::Keyboard::A) {
+            camera.movable.applyForce({-10, 0});
+          } else if (event.key.code == sf::Keyboard::D) {
+            camera.movable.applyForce({10, 0});
           }
         }
         break;
@@ -215,7 +188,65 @@ Camera &GameEngine::getMainCamera() { return camera; }
 //
 //
 //
-Entity GameEngine::makeEntity(Sprite &in_sprite, Sprite &in_shadow) const {
-  return Entity(in_sprite, in_shadow);
+void GameEngine::update_entities() {
+  // entities
+  for (auto &entity : entities) {
+    entity->movable.step(dt);
+    entity->perspectivize(camera.movable.getZ());
+    entity->update();
+  }
+}
+//
+//
+//
+void GameEngine::render() {
+  window.clear(sf::Color::Blue);
+  render_entities();
+  render_hud();
+#ifndef NDEBUG
+  render_debug();
+#endif
+  window.display();
+}
+//
+//
+//
+void GameEngine::render_entities() {
+  sort_drawables();
+  window.setView(camera.getview());
+  for (auto &layer : render_layers) {
+    for (auto &drawable : layer.second.draw_list) {
+      window.draw(*drawable);
+    }
+  }
+}
+//
+//
+//
+void GameEngine::render_hud() {
+  window.setView(hud_view);
+  for (auto &drawable : hud_layer.draw_list) {
+    window.draw(*drawable);
+  }
+}
+//
+//
+//
+void GameEngine::render_debug() {
+  if (Debug::show_debug_hud) {
+    debug_gui.update();
+  }
+}
+//
+//
+//
+layer_id GameEngine::getBackgroundLayer() const{
+  return background_layer;
+}
+//
+//
+//
+layer_id GameEngine::getShadowLayer() const{
+  return shadow_layer;
 }
 }  // namespace Engine

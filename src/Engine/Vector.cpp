@@ -311,8 +311,14 @@ float Vector3::magnitude() const {
 //
 //
 //
-float Vector3::magnitude2d() {
+float Vector3::magnitude2d() const{
   return sqrtf(x * x + y * y);
+}
+//
+//
+//
+float Vector3::angle()const {
+  return Degrees(atan2f(y, x));
 }
 //
 //
@@ -326,7 +332,7 @@ void Vector3::unit(Vector3 v) {
 //
 //
 //
-float Vector3::magSquared() {
+float Vector3::magSquared() const{
   return magnitude() * magnitude();
 }
 //
@@ -336,12 +342,6 @@ void Vector3::reverse() {
   x = -x;
   y = -y;
   z = -z;
-}
-//
-//
-//
-float Vector3::angle() {
-  return Degrees(atan2f(y, x));
 }
 //
 //

@@ -39,8 +39,8 @@ class GameEngine {
   //
   //
   GameEngine(const std::string &in_window_title = "Untitled",
-         int in_window_width = 800, int in_window_height = 600,
-         int in_flags = sf::Style::Default, bool in_fullscreen = false);
+             int in_window_width = 800, int in_window_height = 600,
+             int in_flags = sf::Style::Default, bool in_fullscreen = false);
   //
   //
   //
@@ -78,10 +78,11 @@ class GameEngine {
   //
   //
   //
-  Entity makeEntity(Sprite &in_sprite, Sprite &in_shadow) const;
-
-  layer_id background_layer = RenderLayer::INVALID_LAYER;
-  layer_id shadow_layer = RenderLayer::INVALID_LAYER;
+  layer_id getBackgroundLayer() const;
+  //
+  //
+  //
+  layer_id getShadowLayer() const;
 
  private:
   Window window;
@@ -89,12 +90,13 @@ class GameEngine {
   sf::View hud_view;
   std::map<int, RenderLayer> render_layers;
   RenderLayer hud_layer;
-  std::vector<Movable> movable_list;
   std::vector<Entity *> entities;
   Debug debug_gui;
   float dt = 0.01F;
   const int framerate = 60;
   bool running = true;
+  layer_id background_layer = RenderLayer::INVALID_LAYER;
+  layer_id shadow_layer = RenderLayer::INVALID_LAYER;
   //
   //
   //
@@ -103,5 +105,25 @@ class GameEngine {
   //
   //
   void sort_drawables();
+  //
+  //
+  //
+  void update_entities();
+  //
+  //
+  //
+  void render();
+  //
+  //
+  //
+  void render_entities();
+  //
+  //
+  //
+  void render_hud();
+  //
+  //
+  //
+  void render_debug();
 };
 }  // namespace Engine

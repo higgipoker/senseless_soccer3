@@ -7,7 +7,7 @@
 #include <map>
 
 using Frames = std::vector<int>;
-static const int BALL_ANIM_FRAME_TIME = 2;
+static const int BALL_ANIM_FRAME_TIME = 6;
 //
 // spritesheet layout defines
 //
@@ -54,6 +54,6 @@ class BallShadowSprite : public BallSprite {
   BallShadowSprite(
       std::shared_ptr<sf::Texture> in_texture,
       const Engine::SpriteSetDefinition in_def = Engine::SpriteSetDefinition{
-      BALL_FRAME_WIDTH, BALL_FRAME_HEIGHT, BALL_SHADOW_FRAMES, BALL_START_ROW,
-      BALL_SHADOW_START_COL, BALL_COLS});
+          BALL_FRAME_WIDTH, BALL_FRAME_HEIGHT, BALL_SHADOW_FRAMES,
+          BALL_START_ROW, BALL_SHADOW_START_COL, BALL_COLS});
 };

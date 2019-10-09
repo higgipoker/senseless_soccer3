@@ -3,9 +3,9 @@
 #include <map>
 
 namespace Engine {
-/**
- * @brief The Direction enum
- */
+//
+//
+//
 enum class Direction : int{
   NORTH = 0,
   NORTH_EAST,
@@ -16,7 +16,9 @@ enum class Direction : int{
   WEST,
   NORTH_WEST
 };
-
+//
+//
+//
 static std::map<Direction, std::string> direction_to_string = {
     std::make_pair(Direction::NORTH, "NORTH"),
     std::make_pair(Direction::NORTH_EAST, "NORTH_EAST"),
@@ -26,69 +28,54 @@ static std::map<Direction, std::string> direction_to_string = {
     std::make_pair(Direction::SOUTH_WEST, "SOUTH_WEST"),
     std::make_pair(Direction::WEST, "WEST"),
     std::make_pair(Direction::NORTH_WEST, "NORTH_WEST")};
-
+//
+//
+//
 class Vector3;
-
-/**
- * @brief The Compass class
- */
+//
+//
+//
 class Compass {
  public:
-  /**
-   * @brief Compass
-   */
+  //
+  //
+  //
   Compass();
-  /**
-   * @brief Compass
-   * @param dir
-   */
+  //
+  //
+  //
   Compass(Direction dir);
-
-  /**
-   * @brief Compass
-   * @param vec
-   */
+  //
+  //
+  //
   Compass(const Vector3 &vec);
-
-  /**
-   * @brief toVector
-   * @return
-   */
+  //
+  //
+  //
   Vector3 toVector();
-
-  /**
-   * @brief fromVector
-   * @param v
-   */
+  //
+  //
+  //
   void fromVector(const Vector3 &v);
-
-  /**
-   * @brief direction
-   */
+  //
+  //
+  //
   Direction direction = Direction::NORTH;
-
-  /**
-   * @brief operator ==
-   * @param rhs
-   * @return
-   */
+  //
+  //
+  //
   inline bool operator==(const Compass &rhs) {
     return direction == rhs.direction;
   }
-
-  /**
-   * @brief operator !=
-   * @param rhs
-   * @return
-   */
+  //
+  //
+  //
   inline bool operator!=(const Compass &rhs) {
     return direction != rhs.direction;
   }
-
-  /**
-   * @brief print
-   * @return
-   */
+  //
+  //
+  //
   inline std::string print() { return direction_to_string[direction]; }
 };
 }  // namespace Engine

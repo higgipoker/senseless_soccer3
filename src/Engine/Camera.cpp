@@ -9,6 +9,7 @@ namespace Engine {
 Camera::Camera() {
   perspectivizable = false;
   movable.toggleGravity(false);
+  movable.co_friction = 0.01F;
 }
 //
 //
