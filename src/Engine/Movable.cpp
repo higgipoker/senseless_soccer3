@@ -160,11 +160,12 @@ void Movable::integrate_improved_euler(const float in_dt) {
     // change in position (converted to pixels)
     Vector3 dp = (velocity);
     // normalizes for diagonals
-    if (Math::greater_than(dp.magnitude(), 0)) {
-      auto mag = dp.magnitude2d();
+    auto mag = dp.magnitude();
+    if (Math::greater_than(mag, 0)) {
       dp.normalise2d();
       dp.x *= mag * speed;
       dp.y *= mag * speed;
+      dp.z *= mag * speed;
     }
     // apply new position
     position = position + dp;

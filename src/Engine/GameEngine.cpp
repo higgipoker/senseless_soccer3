@@ -29,7 +29,7 @@ GameEngine::GameEngine(const std::string &in_window_title, int in_window_width,
   background_layer = addLayer(false);
   shadow_layer = addLayer(false);
   camera.setHeight(50);
-  //camera.attachInput(&default_keyboard);
+  // camera.attachInput(&default_keyboard);
   entities.push_back(&camera);
 }
 //
@@ -93,6 +93,19 @@ void GameEngine::handle_input() {
       debug_gui.pollEvent(event);
     }
     switch (event.type) {
+      case sf::Event::KeyPressed:
+        if (window.hasFocus()) {
+          if (event.key.code == sf::Keyboard::Tab) {
+            Debug::show_debug_hud = !Debug::show_debug_hud;
+          } else if (event.key.code == sf::Keyboard::Escape) {
+            if (Debug::show_debug_hud) {
+              Debug::show_debug_hud = !Debug::show_debug_hud;
+            } else {
+              running = false;
+            }
+          }
+        }
+        break;
       case sf::Event::Closed:
         running = false;
         break;
@@ -103,17 +116,6 @@ void GameEngine::handle_input() {
       case sf::Event::GainedFocus:
         break;
       case sf::Event::TextEntered:
-        break;
-      case sf::Event::KeyPressed:
-        if (window.hasFocus()) {
-          if (event.key.code == sf::Keyboard::Escape) {
-            if (Debug::show_debug_hud) {
-              Debug::show_debug_hud = !Debug::show_debug_hud;
-            } else {
-              running = false;
-            }
-          }
-        }
         break;
       case sf::Event::KeyReleased:
         break;
@@ -241,7 +243,5 @@ layer_id GameEngine::getShadowLayer() const { return shadow_layer; }
 //
 //
 //
-Keyboard& GameEngine::getDefaultKeyboard(){
-  return default_keyboard;
-}
+Keyboard &GameEngine::getDefaultKeyboard() { return default_keyboard; }
 }  // namespace Engine

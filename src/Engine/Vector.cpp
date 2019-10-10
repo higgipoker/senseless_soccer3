@@ -151,7 +151,7 @@ void Vector3::normalise() {
 void Vector3::normalise2d() {
   float m = sqrtf(x * x + y * y);
 
-  if (Math::less_than(m, 0)) {
+  if (Math::equal(m, 0)) {
     m = 1;
   }
 
