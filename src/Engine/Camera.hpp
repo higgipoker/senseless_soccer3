@@ -17,6 +17,10 @@ class Camera : public Entity {
   //
   //
   //
+  void handleInput() override;
+  //
+  //
+  //
   void update() override;
   //
   //

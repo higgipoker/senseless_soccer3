@@ -14,25 +14,24 @@ Camera::Camera() {
 //
 //
 //
-void Camera::update() {
-  view.setCenter(movable.getX(), movable.getY());
+void Camera::handleInput() {
+  Entity::handleInput();
 }
 //
 //
 //
-sf::View &Camera::getview() {
-  return view;
-}
+void Camera::update() { view.setCenter(movable.getX(), movable.getY()); }
 //
 //
 //
-float Camera::getHeight(){
-  return movable.getZ();
-}
+sf::View &Camera::getview() { return view; }
 //
 //
 //
-void Camera::setHeight(const float in_height){
-  movable.setZ(in_height);
-}
-} // namespace Engine
+float Camera::getHeight() { return movable.getZ(); }
+//
+//
+//
+void Camera::setHeight(const float in_height) { movable.setZ(in_height); }
+
+}  // namespace Engine

@@ -16,6 +16,10 @@ class Ball : public Engine::Entity {
   //
   //
   //
+  void handleInput() override;
+  //
+  //
+  //
   void update() override;
   //
   //
@@ -23,5 +27,5 @@ class Ball : public Engine::Entity {
   sf::CircleShape collidable;
 
  protected:
-  float radius = 6;
+  float radius = 3;
 };

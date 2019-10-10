@@ -11,16 +11,22 @@ Ball::Ball(Sprite &in_sprite, Sprite &in_shadow)
   perspective_width = radius * 2;
   collidable.setRadius(radius);
   movable.co_friction = 0.01F;
-  movable.co_bounciness=0.8f;
+  movable.co_bounciness = 0.8f;
 }
+//
+//
+//
+void Ball::handleInput() {Entity::handleInput();}
 //
 //
 //
 void Ball::update() {
   Entity::update();
+
+  // update collidable object
+  collidable.setCenter(movable.getX(), movable.getY());
+
+  // sprite rotates in direction of movement (unless spin...later!!)
   sprite.setRotation(movable.getVelocity().angle());
-  std::cout << movable.getVelocity().angle() << std::endl;
   sprite.animate();
-  collidable.setPosition(movable.getX() - collidable.getRadius(),
-                         movable.getY() - collidable.getRadius());
 }

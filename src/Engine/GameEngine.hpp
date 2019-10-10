@@ -3,6 +3,7 @@
 #include "Camera.hpp"
 #include "Debug.hpp"
 #include "Entity.hpp"
+#include "Keyboard.hpp"
 #include "Movable.hpp"
 #include "Sprite.hpp"
 #include "Window.hpp"
@@ -83,9 +84,14 @@ class GameEngine {
   //
   //
   layer_id getShadowLayer() const;
+  //
+  //
+  //
+  Keyboard& getDefaultKeyboard();
 
  private:
   Window window;
+  Keyboard default_keyboard;
   Camera camera;
   sf::View hud_view;
   std::map<int, RenderLayer> render_layers;
@@ -100,7 +106,7 @@ class GameEngine {
   //
   //
   //
-  void poll_window();
+  void handle_input();
   //
   //
   //

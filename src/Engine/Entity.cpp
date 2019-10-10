@@ -7,17 +7,32 @@ Sprite Entity::dummy_shadow;
 //
 //
 //
-Entity::Entity()
-  : sprite(dummy_sprite)
-  , shadow(dummy_shadow) {
-}
+Entity::Entity() : sprite(dummy_sprite), shadow(dummy_shadow) {}
 //
 //
 //
 Entity::Entity(Sprite &in_sprite, Sprite &in_shadow)
-  : sprite(in_sprite)
-  , shadow(in_shadow) {
+    : sprite(in_sprite), shadow(in_shadow) {
   perspective_width = sprite.getLocalBounds().width;
+}
+//
+//
+//
+void Entity::handleInput(){
+  if (!input) return;
+
+  if (input->up()) {
+    movable.applyForce({0, -speed});
+  }
+  if (input->down()) {
+    movable.applyForce({0, speed});
+  }
+  if (input->left()) {
+    movable.applyForce({-speed, 0});
+  }
+  if (input->right()) {
+    movable.applyForce({speed, 0});
+  }
 }
 //
 //
@@ -72,4 +87,16 @@ void Entity::perspectivize(const float in_camera_height) const {
     }
   }
 }
-} // namespace Engine
+//
+//
+//
+void Entity::attachInput(InputDevice &in_device) { input = &in_device; }
+//
+//
+//
+void Entity::detachInput() { input = nullptr; }
+//
+//
+//
+InputDevice *Entity::getInput() const { return input; }
+}  // namespace Engine

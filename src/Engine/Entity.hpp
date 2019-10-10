@@ -1,7 +1,11 @@
 #pragma once
 #include "Compass.hpp"
+#include "InputDevice.hpp"
 #include "Movable.hpp"
 #include "Sprite.hpp"
+//
+//
+//
 namespace Engine {
 
 /**
@@ -10,13 +14,17 @@ namespace Engine {
 class Entity {
  public:
   //
-  //
+  // constructs an enitty without a graphical aspect (default movable)
   //
   Entity();
   //
   //
   //
   Entity(Sprite &in_sprite, Sprite &in_shadow);
+  //
+  //
+  //
+  virtual void handleInput();
   //
   //
   //
@@ -32,6 +40,18 @@ class Entity {
   //
   //
   //
+  void attachInput(InputDevice & in_device);
+  //
+  //
+  //
+  void detachInput();
+  //
+  //
+  //
+  InputDevice *getInput() const;
+  //
+  //
+  //
   float perspective_width = 0;
   Movable movable;
   Sprite &sprite;
@@ -40,7 +60,9 @@ class Entity {
   static Sprite dummy_shadow;
   int shadow_offset = 2;
 
-protected:
+ protected:
+  float speed = 1.F;
+  InputDevice *input = nullptr;
   bool perspectivizable = true;
 };
 

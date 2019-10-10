@@ -34,6 +34,10 @@ Player::Player(PlayerSprite &in_sprite, PlayerShadowSprite &in_shadow)
 //
 //
 //
+void Player::handleInput() {Entity::handleInput();}
+//
+//
+//
 void Player::update() {
   Entity::update();
 
@@ -99,7 +103,8 @@ bool Player::ballInControlRange() {
 void Player::close_control() {
   // edge of feet circle in direction of movement
   Vector3 ball_position{feet.getCenter()};
-  Vector3 offset = facing.toVector() * (feet.getRadius()+match->ball->collidable.getRadius());
+  Vector3 offset = facing.toVector() *
+                   (feet.getRadius() + match->ball->collidable.getRadius());
   ball_position += offset;
 
   // put the ball there

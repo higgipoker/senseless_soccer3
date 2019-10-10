@@ -29,6 +29,7 @@ GameEngine::GameEngine(const std::string &in_window_title, int in_window_width,
   background_layer = addLayer(false);
   shadow_layer = addLayer(false);
   camera.setHeight(50);
+  //camera.attachInput(&default_keyboard);
   entities.push_back(&camera);
 }
 //
@@ -39,7 +40,7 @@ GameEngine::~GameEngine() { window.close(); }
 //
 //
 void GameEngine::step() {
-  poll_window();
+  handle_input();
   update_entities();
   render();
 }
@@ -84,9 +85,10 @@ void GameEngine::addEntity(Entity &in_entity, layer_id in_layer_id) {
 //
 //
 //
-void GameEngine::poll_window() {
+void GameEngine::handle_input() {
   static sf::Event event;
   while (window.pollEvent(event)) {
+    default_keyboard.update(event);
     if (Debug::show_debug_hud) {
       debug_gui.pollEvent(event);
     }
@@ -110,16 +112,6 @@ void GameEngine::poll_window() {
             } else {
               running = false;
             }
-          } else if (event.key.code == sf::Keyboard::Tab) {
-            Debug::show_debug_hud = !Debug::show_debug_hud;
-          } else if (event.key.code == sf::Keyboard::W) {
-            camera.movable.applyForce({0, -10});
-          } else if (event.key.code == sf::Keyboard::S) {
-            camera.movable.applyForce({0, 10});
-          } else if (event.key.code == sf::Keyboard::A) {
-            camera.movable.applyForce({-10, 0});
-          } else if (event.key.code == sf::Keyboard::D) {
-            camera.movable.applyForce({10, 0});
           }
         }
         break;
@@ -191,6 +183,7 @@ Camera &GameEngine::getMainCamera() { return camera; }
 void GameEngine::update_entities() {
   // entities
   for (auto &entity : entities) {
+    entity->handleInput();
     entity->movable.step(dt);
     entity->perspectivize(camera.movable.getZ());
     entity->update();
@@ -240,13 +233,15 @@ void GameEngine::render_debug() {
 //
 //
 //
-layer_id GameEngine::getBackgroundLayer() const{
-  return background_layer;
-}
+layer_id GameEngine::getBackgroundLayer() const { return background_layer; }
 //
 //
 //
-layer_id GameEngine::getShadowLayer() const{
-  return shadow_layer;
+layer_id GameEngine::getShadowLayer() const { return shadow_layer; }
+//
+//
+//
+Keyboard& GameEngine::getDefaultKeyboard(){
+  return default_keyboard;
 }
 }  // namespace Engine

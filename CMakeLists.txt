@@ -58,6 +58,8 @@ add_executable(senseless_soccer3
     src/Engine/ArcShape.cpp
     src/Engine/Debug.cpp
     src/Engine/Collider.cpp
+    src/Engine/InputDevice.cpp
+    src/Engine/Keyboard.cpp
     src/Locomotion/LocomotionManager.cpp
     src/Locomotion/Locomotion.cpp
     src/Locomotion/Seek.cpp

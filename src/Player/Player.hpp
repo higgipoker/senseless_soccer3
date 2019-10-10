@@ -23,6 +23,10 @@ class Player : public Engine::Entity {
   //
   //
   //
+  void handleInput() override;
+  //
+  //
+  //
   void update() override;
   //
   //

@@ -53,6 +53,7 @@ int main() {
 
   BallSprite ballsprite(tex_playerandball);
   Ball ball(ballsprite, ball_shadow);
+  ball.attachInput(engine.getDefaultKeyboard());
   match.ball = &ball;
   match.ball->movable.setPosition({200, 200, 0});
   match.ball->sprite.move(109, 134);

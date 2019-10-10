@@ -20,11 +20,8 @@ void PlayerState::step() {
     player.movable.normalizeVelocity(true);
   }
 
-  player.feet.setPosition(player.movable.getX() - player.feet.getRadius(),
-                          player.movable.getY() - player.feet.getRadius());
-  player.control.setPosition(
-      player.movable.getX() - player.control.getRadius(),
-      player.movable.getY() - player.control.getRadius());
+  player.feet.setCenter(player.movable.getX(), player.movable.getY());
+  player.control.setCenter(player.movable.getX(), player.movable.getY());
 }
 //
 //
