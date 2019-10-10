@@ -162,7 +162,7 @@ void Movable::integrate_improved_euler(const float in_dt) {
     // normalizes for diagonals
     auto mag = dp.magnitude();
     if (Math::greater_than(mag, 0)) {
-      dp.normalise2d();
+      dp.normalise();
       dp.x *= mag * speed;
       dp.y *= mag * speed;
       dp.z *= mag * speed;

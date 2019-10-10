@@ -35,8 +35,7 @@ void PlayerStateDribble::step() {
   } else {
     // check for collision with ball
     if (Collider::collides(player.feet, player.match->ball->collidable)) {
-      float force = 1.F;
-      player.match->ball->movable.resetVelocity();
+      constexpr float force = 0.1F; // tmp
       player.match->ball->movable.resetForces();
       Vector3 kick_force = Compass(player.facing).toVector();
       kick_force.normalise2d();

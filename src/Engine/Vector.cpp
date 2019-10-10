@@ -104,7 +104,7 @@ Vector3 const Vector3::operator^(Vector3 &v) {
 //
 //
 //
-//float Vector3::operator*(Vector3 &rhs) {
+// float Vector3::operator*(Vector3 &rhs) {
 //  return (x * rhs.x + y * rhs.y + z * rhs.z);
 //}
 //
@@ -123,7 +123,7 @@ const Vector3 Vector3::operator-(const float scalar) {
 //
 //
 void Vector3::normalise() {
-  if(Math::equal(this->magnitude(), 0))return;
+  if (Math::equal(this->magnitude(), 0)) return;
 
   float m = sqrtf(x * x + y * y + z * z);
 
@@ -269,13 +269,14 @@ void Vector3::roundAngle(int nearest_angle) {
     }
   }
 
-  //todo do we want to normalise here or leave that up to the caller?
+  // todo do we want to normalise here or leave that up to the caller?
   normalise();
 }
 //
 //
 //
-float Vector3::perpProduct(const Vector3 &lhs, const Vector3 &rhs, bool right_normal) {
+float Vector3::perpProduct(const Vector3 &lhs, const Vector3 &rhs,
+                           bool right_normal) {
   float y_component, x_component;
 
   if (right_normal) {
@@ -305,26 +306,20 @@ void Vector3::setMagnitude(float mag) {
 //
 //
 //
-float Vector3::magnitude() const {
-  return sqrtf(x * x + y * y + z * z);
-}
+float Vector3::magnitude() const { return sqrtf(x * x + y * y + z * z); }
 //
 //
 //
-float Vector3::magnitude2d() const{
-  return sqrtf(x * x + y * y);
-}
+float Vector3::magnitude2d() const { return sqrtf(x * x + y * y); }
 //
 //
 //
-float Vector3::angle()const {
-  return Degrees(atan2f(y, x));
-}
+float Vector3::angle() const { return Degrees(atan2f(y, x)); }
 //
 //
 //
 void Vector3::unit(Vector3 v) {
-  Vector3 unit =  v / v.magnitude();
+  Vector3 unit = v / v.magnitude();
   x = unit.x;
   y = unit.y;
   z = unit.z;
@@ -332,9 +327,7 @@ void Vector3::unit(Vector3 v) {
 //
 //
 //
-float Vector3::magSquared() const{
-  return magnitude() * magnitude();
-}
+float Vector3::magSquared() const { return magnitude() * magnitude(); }
 //
 //
 //
@@ -346,9 +339,7 @@ void Vector3::reverse() {
 //
 //
 //
-void Vector3::reset() {
-  x = y = z = 0;
-}
+void Vector3::reset() { x = y = z = 0; }
 //
 //
 //
@@ -368,7 +359,8 @@ void Vector3::normalizeToUnits() {
 //
 //
 //
-bool Vector3::isMovingTowards(Vector3 testPoint, Vector3 objectPosition, Vector3 objectVelocity) {
+bool Vector3::isMovingTowards(Vector3 testPoint, Vector3 objectPosition,
+                              Vector3 objectVelocity) {
   Vector3 toPoint = testPoint - objectPosition;
   float dot = dotProduct(toPoint, objectVelocity);
   return dot > 0;
@@ -383,9 +375,7 @@ void Vector3::fromSfVector(const sf::Vector2f &from) {
 //
 //
 //
-sf::Vector2f Vector3::toSfVector() {
-  return sf::Vector2f{x, y};
-}
+sf::Vector2f Vector3::toSfVector() { return sf::Vector2f{x, y}; }
 //
 //
 //
@@ -395,8 +385,6 @@ sf::Vector2f Vector3::toSfVector(const Vector3 &v) {
 //
 //
 //
-void Vector3::to2d()  {
-  this->z =0;
-}
+void Vector3::to2d() { this->z = 0; }
 
-} // namespace Engine
+}  // namespace Engine

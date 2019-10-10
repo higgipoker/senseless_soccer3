@@ -30,7 +30,7 @@ class Brain {
 
   // tmp
   void activate(){
-    //changeState(brain_state::Retrieve);
+    changeState(brain_state::Retrieve);
   };
 
  protected:

@@ -34,5 +34,6 @@ void Ball::update() {
     sprite.startAnimating();
   } else {
     sprite.stopAnimating();
+    std::cout << "stop anim" << std::endl;
   }
 }
