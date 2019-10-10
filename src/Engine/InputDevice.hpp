@@ -76,6 +76,10 @@ class InputDevice {
   //
   //
   virtual bool right() = 0;
+  //
+  //
+  //
+  virtual bool fire_down() = 0;
 
  protected:
   int states[InputState::Totalevents]{};

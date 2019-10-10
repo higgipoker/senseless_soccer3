@@ -66,11 +66,19 @@ class Sprite : public sf::Sprite {
    * @brief setAnimation
    * @param in_animation
    */
-  virtual void setAnimation(SpriteAnimation* in_animation);
+  virtual void setAnimation(SpriteAnimation* in_animation, bool in_autostart = true);
   /**
    * @brief animate
    */
   void animate();
+  //
+  //
+  //
+  void startAnimating();
+  //
+  //
+  //
+  void stopAnimating();
 
   /// a list of shapes for debug drawing
   std::vector<sf::Shape*> debug_shapes;
@@ -84,6 +92,8 @@ class Sprite : public sf::Sprite {
   int current_frame = 0;
   /// animation
   SpriteAnimation* animation = nullptr;
+  /// animation controller
+  bool animating = false;
   /**
    * @brief unclutter draw function
    * @param target

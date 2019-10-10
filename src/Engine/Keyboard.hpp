@@ -49,5 +49,9 @@ class Keyboard : public InputDevice {
   //
   //
   bool right() override;
+  //
+  //
+  //
+  bool fire_down() override;
 };
 }  // namespace Engine

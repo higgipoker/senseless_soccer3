@@ -16,7 +16,7 @@ Ball::Ball(Sprite &in_sprite, Sprite &in_shadow)
 //
 //
 //
-void Ball::handleInput() {Entity::handleInput();}
+void Ball::handleInput() { Entity::handleInput(); }
 //
 //
 //
@@ -26,7 +26,13 @@ void Ball::update() {
   // update collidable object
   collidable.setCenter(movable.getX(), movable.getY());
 
-  // sprite rotates in direction of movement (unless spin...later!!)
-  sprite.setRotation(movable.getVelocity().angle());
-  sprite.animate();
+  // spriteonly animates if moving
+  if (Math::greater_than(movable.getVelocityMag(), 0)) {
+    // sprite rotates in direction of movement (unless spin...later!!)
+    constexpr float offset = 180;  // according to the spritesheet image
+    sprite.setRotation(movable.getVelocity().angle() + offset);
+    sprite.startAnimating();
+  } else {
+    sprite.stopAnimating();
+  }
 }

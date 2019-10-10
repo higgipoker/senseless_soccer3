@@ -77,7 +77,9 @@ int Sprite::getFrame() { return current_frame; }
 //
 //
 //
-void Sprite::setAnimation(SpriteAnimation *in_animation) {
+void Sprite::setAnimation(SpriteAnimation *in_animation, bool in_autostart) {
+  if (in_animation == animation) return;
+  animating = in_autostart;
   animation = in_animation;
   setTextureRect(frames.at(animation->currentFrame()));
 }
@@ -85,7 +87,7 @@ void Sprite::setAnimation(SpriteAnimation *in_animation) {
 //
 //
 void Sprite::animate() {
-  if (animation) {
+  if (animation && animating) {
     animation->step();
     current_frame = animation->currentFrame();
     setTextureRect(frames.at(current_frame));
@@ -94,7 +96,7 @@ void Sprite::animate() {
 //
 //
 //
-void Sprite::draw_debug(sf::RenderTarget &target) const{
+void Sprite::draw_debug(sf::RenderTarget &target) const {
   if (Debug::show_debug_hud && Debug::flag_draw_bounds) {
     sf::RectangleShape bounds{
         sf::Vector2f{getGlobalBounds().width, getGlobalBounds().height}};
@@ -111,4 +113,12 @@ void Sprite::draw_debug(sf::RenderTarget &target) const{
     }
   }
 }
+//
+//
+//
+void Sprite::startAnimating() { animating = true; }
+//
+//
+//
+void Sprite::stopAnimating() { animating = false; }
 }  // namespace Engine

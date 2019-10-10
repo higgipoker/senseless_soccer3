@@ -1,6 +1,8 @@
 #include "Entity.hpp"
 
 #include "Metrics.hpp"
+
+#include <iostream>
 namespace Engine {
 Sprite Entity::dummy_sprite;
 Sprite Entity::dummy_shadow;
@@ -18,7 +20,7 @@ Entity::Entity(Sprite &in_sprite, Sprite &in_shadow)
 //
 //
 //
-void Entity::handleInput(){
+void Entity::handleInput() {
   if (!input) return;
 
   if (input->up()) {
@@ -33,12 +35,17 @@ void Entity::handleInput(){
   if (input->right()) {
     movable.applyForce({speed, 0});
   }
+  if(input->fire_down()){
+    movable.applyForce({0.F, 0.F, speed * 0.4F});
+  }
 }
 //
 //
 //
 void Entity::update() {
   sprite.setPosition(movable.getX(), movable.getY());
+  shadow.setPosition(sprite.getPosition());
+  shadow.move(shadow_offset, shadow_offset);
   sprite.animate();
 }
 //
@@ -56,6 +63,7 @@ Direction Entity::directionTo(const Entity &in_entity) const {
 //
 void Entity::perspectivize(const float in_camera_height) const {
   if (perspectivizable) {
+
     // size depending on distance from camera
     float dimensions = perspective_width;
     float dist_from_camera = in_camera_height - movable.getZ();
@@ -74,10 +82,6 @@ void Entity::perspectivize(const float in_camera_height) const {
     sprite_scale_factor *= sprite_ratio;
     sprite.setScale(sprite_scale_factor, sprite_scale_factor);
     shadow.setScale(sprite_scale_factor, sprite_scale_factor);
-
-    // shadow
-    shadow.setPosition(sprite.getPosition());
-    shadow.move(shadow_offset, shadow_offset);
 
     // y offset due to height
     float z_cm = movable.getZ() * Metrics::Z_PERSP_OFFSET;

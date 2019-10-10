@@ -184,9 +184,9 @@ void GameEngine::update_entities() {
   // entities
   for (auto &entity : entities) {
     entity->handleInput();
+    entity->update();
     entity->movable.step(dt);
     entity->perspectivize(camera.movable.getZ());
-    entity->update();
   }
 }
 //

@@ -23,6 +23,12 @@ inline constexpr int BALL_SHADOW_START_COL = 7;
 // rolling animation
 //
 inline Frames roll{0, 1, 2, 3, 4, 5, 6};
+//
+// anim ids
+//
+enum {
+  ID_ANIM_ROLL=1,
+};
 
 /**
  * @brief The BallSprite class
@@ -39,7 +45,7 @@ class BallSprite : public Engine::Sprite {
           BALL_START_COL, BALL_COLS});
 
  protected:
-  Engine::SpriteAnimation roll_animation{BALL_ANIM_FRAME_TIME, roll};
+  Engine::SpriteAnimation roll_animation{ID_ANIM_ROLL,BALL_ANIM_FRAME_TIME, roll};
 };
 
 /**
