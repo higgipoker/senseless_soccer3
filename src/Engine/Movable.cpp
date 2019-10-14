@@ -207,4 +207,12 @@ Vector3 Movable::integrate(const float in_dt) {
 //
 //
 void Movable::toggleGravity(bool in_status) { affected_by_gravity = in_status; }
+//
+//
+//
+void Movable::place(Vector3 in_position){
+  resetVelocity();
+  resetForces();
+  setPosition(in_position);
+}
 }  // namespace Engine

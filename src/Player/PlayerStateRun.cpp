@@ -16,9 +16,7 @@ PlayerStateRun::PlayerStateRun(Player &in_player) : PlayerState(in_player) {
 //
 //
 //
-void PlayerStateRun::start() {
-
-}
+void PlayerStateRun::start() {}
 //
 //
 //
@@ -37,12 +35,12 @@ void PlayerStateRun::stop() {}
 //
 //
 bool PlayerStateRun::stateOver() {
-  // check if we need to transition to dribble
-  if (Collider::collides(player.feet, player.match->ball->collidable)) {
+  // go to dribble
+  if (player.ballInControlRange()) {
     next_state = player_state::Dribble;
     return true;
   }
-  // stopped moving
+  // go to stand
   if (Math::equal(player.movable.getVelocityMag(true), 0)) {
     next_state = player_state::Stand;
     return true;

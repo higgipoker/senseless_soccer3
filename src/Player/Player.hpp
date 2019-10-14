@@ -1,6 +1,5 @@
 #pragma once
 #include "PlayerSprite.hpp"
-
 #include "PlayerStateDribble.hpp"
 #include "PlayerStateRun.hpp"
 #include "PlayerStateStand.hpp"
@@ -11,9 +10,9 @@
 #include <SFML/Graphics/CircleShape.hpp>
 
 class Match;
-/**
- * @brief The Player class
- */
+//
+//
+//
 class Player : public Engine::Entity {
  public:
   //
@@ -32,25 +31,47 @@ class Player : public Engine::Entity {
   //
   //
   Engine::Compass direction();
-
-  // players know about the match, one match for all players
-  static Match *match;
-
-  // a player has a brain (well, most do)
-  Brain brain;
-
-  // track if the ball is under control
-  bool ball_under_control = false;
+  //
+  //
+  //
+  Brain &getBrain();
+  //
+  //
+  //
+  static void connectMatch(Match &in_match);
+  //
+  //
+  //
+  static Match &getMatch();
+  //
+  //
+  //
+  bool ballInControlRange();
 
  protected:
   //
   //
   //
-  bool ballInControlRange();
-  //
-  //
-  //
-  void close_control();
+  // players know about the match, one match for all players
+  static Match *match;
+  // a player has a brain (well, most do)
+  Brain brain;
+  // track if the ball is under control
+  bool ball_under_control = false;
+  // currently facing direction
+  Engine::Compass facing;
+  // represents the players feet for collisions
+  sf::CircleShape feet;
+  // represents an area where the ball is under control for dribbling
+  sf::CircleShape control;
+  // state machine
+  PlayerStateStand state_stand;
+  PlayerStateRun state_run;
+  PlayerStateDribble state_dribble;
+  PlayerState *state;
+  // convenience to avoid casting everywhere
+  PlayerSprite &player_sprite;
+  PlayerSprite &player_shadow;
   //
   //
   //
@@ -59,29 +80,9 @@ class Player : public Engine::Entity {
   //
   //
   void change_state(const player_state in_state);
-
-  // currently facing direction
-  Engine::Compass facing;
-
-  // represents the players feet for collisions
-  sf::CircleShape feet;
-  // represents an area where the ball is under control for dribbling
-  sf::CircleShape control; 
-
-  // state machine
-  PlayerStateStand state_stand;
-  PlayerStateRun state_run;
-  PlayerStateDribble state_dribble;
-  PlayerState *state;
-
-  // convenience to avoid casting everywhere
-  PlayerSprite &player_sprite;
-  PlayerSprite &player_shadow;
-
-  // only apply th eforce once per kick
-  bool kick_locked = false;
-
-  // helper to not clutter up main methods
+  //
+  //
+  //
   void debug();
 
  public:
@@ -90,6 +91,6 @@ class Player : public Engine::Entity {
   friend class PlayerStateStand;
   friend class PlayerStateRun;
   friend class PlayerStateDribble;
-
   friend class BrainDribble;
+  friend class BrainRetrieve;
 };

@@ -27,6 +27,7 @@ class Movable {
   void setY(float in_y);
   void setZ(float in_z);
   void resetVelocity();
+  void place(Vector3 in_position);
   //
   //
   //

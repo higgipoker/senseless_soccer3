@@ -34,5 +34,9 @@ class PlayerStateDribble : public PlayerState {
   //
   //
   //
+  void close_control();
+  //
+  //
+  //
   void kick();
 };

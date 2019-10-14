@@ -1,5 +1,7 @@
 #include "Ball.hpp"
 
+#include "Engine/Debug.hpp"
+
 #include <iostream>
 using namespace Engine;
 //
@@ -26,13 +28,35 @@ void Ball::update() {
   // update collidable object
   collidable.setCenter(movable.getX(), movable.getY());
 
-  // spriteonly animates if moving
+  // sprite only animates if moving
   if (Math::greater_than(movable.getVelocityMag(), 0)) {
     // sprite rotates in direction of movement (unless spin...later!!)
     constexpr float offset = 180;  // according to the spritesheet image
     sprite.setRotation(movable.getVelocity().angle() + offset);
     sprite.startAnimating();
   } else {
-    sprite.stopAnimating();    
+    sprite.stopAnimating();
   }
+#ifndef NDEBUG
+  debug();
+#endif
+}
+//
+//
+//
+void Ball::debug() {
+  collidable.setFillColor(sf::Color::Transparent);
+  collidable.setOutlineThickness(1);
+  collidable.setOutlineColor(Debug::defaultDiagnosticsColor());
+
+  sprite.debug_shapes.clear();
+  sprite.debug_shapes.push_back(&collidable);
+}
+//
+//
+//
+void Ball::kick(Vector3 in_force) {
+  movable.resetForces();
+  movable.resetVelocity();
+  movable.applyForce(in_force);
 }

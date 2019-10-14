@@ -5,13 +5,22 @@
  */
 class Match {
  public:
-  /**
-   * @brief Match
-   */
+  //
+  //
+  //
   Match();
-
+  //
+  //
+  //
+  void setBall(Ball &in_ball);
+  //
+  //
+  //
+  Ball &getBall();
+  //
+  //
+  //
+ protected:
   /// match has a ball
   Ball *ball;
-
- protected:
 };

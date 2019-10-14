@@ -25,11 +25,7 @@ Player::Player(PlayerSprite &in_sprite, PlayerShadowSprite &in_shadow)
       player_sprite(in_sprite),
       player_shadow(in_shadow) {
   feet.setRadius(1.0F);
-  control.setRadius(15);
-  feet.setFillColor(Debug::defaultDiagnosticsColor());
-  control.setFillColor(sf::Color::Transparent);
-  control.setOutlineThickness(1);
-  control.setOutlineColor(Debug::defaultDiagnosticsColor());
+  control.setRadius(12);
 }
 //
 //
@@ -58,7 +54,7 @@ void Player::update() {
     movable.normalizeVelocity(true);
   }
   feet.setCenter(movable.getX(), movable.getY() - feet.getRadius());
-  control.setCenter(movable.getX(), movable.getY()- feet.getRadius());
+  control.setCenter(feet.getCenter());
   shadow.setFrame(sprite.getFrame());
 
 #ifndef NDEBUG
@@ -70,7 +66,7 @@ void Player::update() {
 //
 void Player::face_ball() {
   Compass to_ball;
-  to_ball.direction = directionTo(*match->ball);
+  to_ball.direction = directionTo(getMatch().getBall());
   facing.direction = to_ball.direction;
 }
 //
@@ -92,34 +88,45 @@ void Player::change_state(const player_state in_state) {
 //
 //
 //
-void Player::debug() {
-  sprite.debug_shapes.clear();
-  sprite.debug_shapes.push_back(&feet);
-  sprite.debug_shapes.push_back(&control);
-}
-//
-//
-//
 bool Player::ballInControlRange() {
-  return Collider::contains(control, match->ball->collidable);
-}
-//
-//
-//
-void Player::close_control() {
-  kick_locked = false;
-  // edge of feet circle in direction of movement
-  Vector3 ball_position{feet.getCenter()};
-  Vector3 offset = facing.toVector() *
-                   (feet.getRadius() + match->ball->collidable.getRadius());
-  ball_position += offset*1.1f;
-
-  // put the ball there
-  match->ball->movable.resetVelocity();
-  match->ball->movable.resetForces();
-  match->ball->movable.setPosition(ball_position);
+  return Collider::contains(control, getMatch().getBall().collidable);
 }
 //
 //
 //
 Compass Player::direction() { return facing; }
+//
+//
+//
+Brain &Player::getBrain() { return brain; }
+//
+//
+//
+void Player::connectMatch(Match &in_match) { match = &in_match; }
+//
+//
+//
+Match &Player::getMatch() { return *match; }
+//
+//
+//
+void Player::debug() {
+  feet.setFillColor(Debug::defaultDiagnosticsColor());
+  control.setFillColor(sf::Color::Transparent);
+  control.setOutlineThickness(1);
+  control.setOutlineColor(Debug::defaultDiagnosticsColor());
+
+  // change color if ball under control
+  if (ball_under_control) {
+    control.setOutlineColor(sf::Color::Red);
+  }
+
+  // change color if ball touching feet
+  if (Collider::collides(feet, getMatch().getBall().collidable)) {
+    feet.setFillColor(sf::Color::Red);
+  }
+
+  sprite.debug_shapes.clear();
+  sprite.debug_shapes.push_back(&feet);
+  sprite.debug_shapes.push_back(&control);
+}

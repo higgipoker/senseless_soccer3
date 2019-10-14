@@ -24,8 +24,16 @@ class Ball : public Engine::Entity {
   //
   //
   //
+  void kick(Engine::Vector3 in_force);
+  //
+  //
+  //
   sf::CircleShape collidable;
 
  protected:
   float radius = 3;
+  //
+  //
+  //
+  void debug();
 };

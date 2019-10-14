@@ -28,11 +28,6 @@ class Brain {
   /// brain controls movement
   LocomotionManager locomotion;
 
-  // tmp
-  void activate(){
-    changeState(brain_state::Retrieve);
-  };
-
  protected:
   /// associated player
   Player &player;

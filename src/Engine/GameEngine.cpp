@@ -29,7 +29,7 @@ GameEngine::GameEngine(const std::string &in_window_title, int in_window_width,
   background_layer = addLayer(false);
   shadow_layer = addLayer(false);
   camera.setHeight(50);
-  // camera.attachInput(&default_keyboard);
+  camera.attachInput(default_keyboard);
   entities.push_back(&camera);
 }
 //

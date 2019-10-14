@@ -26,17 +26,12 @@ bool Collider::collides(const sf::CircleShape &c1, const sf::CircleShape &c2) {
 //
 bool Collider::contains(const sf::CircleShape &big,
                         const sf::CircleShape &small) {
-  // get the center points of circles
-  sf::Vector2 center_big_circle(big.getCenter().x + big.getRadius(),
-                                big.getCenter().y + big.getRadius());
-  sf::Vector2 center_small_circle(small.getCenter().x + small.getRadius(),
-                                  small.getCenter().y + small.getRadius());
 
   // distance
-  int dist_sq = sqrt(((center_small_circle.x - center_big_circle.x) *
-                      (center_small_circle.x - center_big_circle.x)) +
-                     ((center_small_circle.y - center_big_circle.y) *
-                      (center_small_circle.y - center_big_circle.y)));
+  int dist_sq = sqrt(((small.getCenter().x - big.getCenter().x) *
+                      (small.getCenter().x - big.getCenter().x)) +
+                     ((small.getCenter().y - big.getCenter().y) *
+                      (small.getCenter().y - big.getCenter().y)));
 
   if (big.getRadius() > (dist_sq + small.getRadius())) {
     return true;

@@ -6,7 +6,6 @@
 #include "Engine/Collider.hpp"
 #include "Engine/Compass.hpp"
 
-
 #include <iostream>
 using namespace Engine;
 //
@@ -26,6 +25,21 @@ void PlayerStateDribble::start() {
 //
 //
 //
+void PlayerStateDribble::close_control() {
+  already_kicked = false;
+  // edge of feet circle in direction of movement
+  Vector3 ball_position{player.feet.getCenter()};
+  Vector3 offset = player.facing.toVector() *
+                   (player.feet.getRadius() +
+                    player.getMatch().getBall().collidable.getRadius());
+  ball_position += offset * 1.f;
+
+  // put the ball there
+  player.getMatch().getBall().movable.place(ball_position);
+}
+//
+//
+//
 void PlayerStateDribble::step() {
   PlayerState::step();
 
@@ -34,30 +48,17 @@ void PlayerStateDribble::step() {
   Vector3 dir = player.movable.getVelocity();
   player.facing.fromVector(dir);
   if (old_direction.direction != player.facing.direction) {
-    player.close_control();
+    close_control();
     std::cout << "PlayerStateDribble::step> close_control" << std::endl;
   } else {
     // check for collision with ball
-    if (Collider::collides(player.feet, player.match->ball->collidable)) {
-<<<<<<< HEAD
+    if (Collider::collides(player.feet,
+                           player.getMatch().getBall().collidable)) {
       if (!already_kicked) {
         kick();
       }
     } else {
       already_kicked = false;
-=======
-      if (!player.kick_locked) {
-        player.kick_locked = true;
-        const float force = 0.18F;  // tmp
-        player.match->ball->movable.resetForces();
-        Vector3 kick_force = Compass(player.facing).toVector();
-        kick_force.normalise2d();
-        player.match->ball->movable.applyForce(kick_force * force);
-        std::cout << "PlayerStateDribble::step> kick" << std::endl;
-      }
-    }else if(player.kick_locked){
-      player.kick_locked = false;
->>>>>>> 8112c3c5e5571a2baecfefc9066343665be0d073
     }
   }
 
@@ -67,13 +68,13 @@ void PlayerStateDribble::step() {
 //
 //
 //
-void PlayerStateDribble::stop() {player.kick_locked = false;}
+void PlayerStateDribble::stop() {}
 //
 //
 //
 bool PlayerStateDribble::stateOver() {
   // check if ball is outside control range
-  if (!Collider::contains(player.control, player.match->ball->collidable)) {
+  if (!player.ballInControlRange()) {
     next_state = player_state::Run;
     player.ball_under_control = false;
     return true;
@@ -91,10 +92,10 @@ bool PlayerStateDribble::stateOver() {
 //
 void PlayerStateDribble::kick() {
   already_kicked = true;
-  constexpr float force = 1.3F;  // tmp
-  player.match->ball->movable.resetForces();
+  constexpr float force = 1.4F;  // tmp
   Vector3 kick_force = Compass(player.facing).toVector();
   kick_force.normalise2d();
-  player.match->ball->movable.applyForce(kick_force * force);
+  kick_force *= force;
+  player.getMatch().getBall().kick(kick_force);
   std::cout << "PlayerStateDribble::step> kick" << std::endl;
 }

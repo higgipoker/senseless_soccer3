@@ -53,18 +53,18 @@ int main() {
 
   BallSprite ballsprite(tex_playerandball);
   Ball ball(ballsprite, ball_shadow);
-  ball.attachInput(engine.getDefaultKeyboard());
-  match.ball = &ball;
-  match.ball->movable.setPosition({200, 200, 0});
-  match.ball->sprite.move(109, 134);
+  //ball.attachInput(engine.getDefaultKeyboard());
+  match.setBall(ball);
+  match.getBall().movable.setPosition({200, 200, 0});
+  match.getBall().sprite.move(109, 134);
 
   player.movable.setPosition({100, 120});
 
   engine.addEntity(player, sprite_layer_id);
   engine.addEntity(ball, sprite_layer_id);
-  Player::match = &match;
+  Player::connectMatch(match);
 
-  player.brain.activate();
+  player.getBrain().changeState(brain_state::Retrieve);
 
   while (engine.isRunning()) {
     engine.step();
