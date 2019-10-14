@@ -8,14 +8,14 @@
 #include <map>
 
 // sprite frame constants
-inline constexpr int FRAME_WIDTH = 32;
-inline constexpr int FRAME_HEIGHT = 32;
-inline constexpr int FRAMES = 72;
-inline constexpr int START_ROW = 0;
-inline constexpr int START_COL = 0;
-inline constexpr int COLS = 24;
+inline const int FRAME_WIDTH = 32;
+inline const int FRAME_HEIGHT = 32;
+inline const int FRAMES = 72;
+inline const int START_ROW = 0;
+inline const int START_COL = 0;
+inline const int COLS = 24;
 
-inline constexpr int SHADOW_START_ROW = 3;
+inline const int SHADOW_START_ROW = 3;
 
 /**
  * @brief The PlayerSprite class

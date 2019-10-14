@@ -27,12 +27,12 @@ class Vector3 {
   // construct / destruct / setter
   // -------------------------------------------------------------------------
   Vector3(void) {}
-  constexpr Vector3(float xi, float yi, float zi) {
+  Vector3(float xi, float yi, float zi) {
     x = xi;
     y = yi;
     z = zi;
   }
-  constexpr Vector3(int xi, int yi, int zi) {
+  Vector3(int xi, int yi, int zi) {
     x = static_cast<float>(xi);
     y = static_cast<float>(yi);
     z = static_cast<float>(zi);

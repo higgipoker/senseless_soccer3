@@ -39,20 +39,35 @@ void PlayerStateDribble::step() {
   } else {
     // check for collision with ball
     if (Collider::collides(player.feet, player.match->ball->collidable)) {
+<<<<<<< HEAD
       if (!already_kicked) {
         kick();
       }
     } else {
       already_kicked = false;
+=======
+      if (!player.kick_locked) {
+        player.kick_locked = true;
+        const float force = 0.18F;  // tmp
+        player.match->ball->movable.resetForces();
+        Vector3 kick_force = Compass(player.facing).toVector();
+        kick_force.normalise2d();
+        player.match->ball->movable.applyForce(kick_force * force);
+        std::cout << "PlayerStateDribble::step> kick" << std::endl;
+      }
+    }else if(player.kick_locked){
+      player.kick_locked = false;
+>>>>>>> 8112c3c5e5571a2baecfefc9066343665be0d073
     }
   }
+
   player.player_sprite.setAnimation(PlayerAnimationType::Run,
                                     player.facing.direction);
 }
 //
 //
 //
-void PlayerStateDribble::stop() {}
+void PlayerStateDribble::stop() {player.kick_locked = false;}
 //
 //
 //

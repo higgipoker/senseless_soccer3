@@ -31,10 +31,6 @@ class Player : public Engine::Entity {
   //
   //
   //
-  bool ballInControlRange();
-  //
-  //
-  //
   Engine::Compass direction();
 
   // players know about the match, one match for all players
@@ -47,6 +43,10 @@ class Player : public Engine::Entity {
   bool ball_under_control = false;
 
  protected:
+  //
+  //
+  //
+  bool ballInControlRange();
   //
   //
   //
@@ -78,6 +78,9 @@ class Player : public Engine::Entity {
   PlayerSprite &player_sprite;
   PlayerSprite &player_shadow;
 
+  // only apply th eforce once per kick
+  bool kick_locked = false;
+
   // helper to not clutter up main methods
   void debug();
 
@@ -87,4 +90,6 @@ class Player : public Engine::Entity {
   friend class PlayerStateStand;
   friend class PlayerStateRun;
   friend class PlayerStateDribble;
+
+  friend class BrainDribble;
 };
