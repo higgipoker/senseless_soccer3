@@ -25,6 +25,37 @@ class Debug {
    * @param in_event
    */
   void pollEvent(sf::Event &in_event);
+  //
+  //
+  //
+  static void toggle();
+  //
+  //
+  //
+  static bool showHud();
+  //
+  //
+  //
+  static bool drawBounds();
+  //
+  //
+  //
+  static bool drawDiagnostics();
+  //
+  //
+  //
+  static sf::Color defaultBoundsColor();
+  //
+  //
+  //
+  static sf::Color defaultDiagnosticsColor();
+
+ private:
+  /// target window
+  sf::RenderWindow &window;
+  /// a clock for ui tick
+  sf::Clock ui_clock;
+
   /// debug flags
   static bool flag_draw_bounds;
   static sf::Color bounds_color;
@@ -33,12 +64,6 @@ class Debug {
 
   /// display debug gui?
   static bool show_debug_hud;
-
- private:
-  /// target window
-  sf::RenderWindow &window;
-  /// a clock for ui tick
-  sf::Clock ui_clock;
 };
 
 }  // namespace Engine

@@ -97,17 +97,17 @@ void Sprite::animate() {
 //
 //
 void Sprite::draw_debug(sf::RenderTarget &target) const {
-  if (Debug::show_debug_hud && Debug::flag_draw_bounds) {
+  if (Debug::showHud() && Debug::drawBounds()) {
     sf::RectangleShape bounds{
         sf::Vector2f{getGlobalBounds().width, getGlobalBounds().height}};
     bounds.setPosition({getGlobalBounds().left, getGlobalBounds().top});
     bounds.setFillColor(sf::Color::Transparent);
-    bounds.setOutlineColor(Debug::bounds_color);
+    bounds.setOutlineColor(Debug::defaultBoundsColor());
     bounds.setOutlineThickness(1);
 
     target.draw(bounds);
   }
-  if (Debug::show_debug_hud && Debug::flag_draw_diagnostics) {
+  if (Debug::showHud() && Debug::drawDiagnostics()) {
     for (auto &shape : debug_shapes) {
       target.draw(*shape);
     }

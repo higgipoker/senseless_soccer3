@@ -41,7 +41,7 @@ class DribblePatternRandom : public DribblePattern {
   //
   //
   bool changeDirection() override {
-    return (++counter > ((rand() % 50) + 10));
+    return (++counter > ((rand() % 50) + 100));
   }
 };
 //

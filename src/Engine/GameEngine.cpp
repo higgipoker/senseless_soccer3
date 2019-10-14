@@ -89,18 +89,23 @@ void GameEngine::handle_input() {
   static sf::Event event;
   while (window.pollEvent(event)) {
     default_keyboard.update(event);
-    if (Debug::show_debug_hud) {
+    if (Debug::showHud()) {
       debug_gui.pollEvent(event);
     }
     switch (event.type) {
       case sf::Event::KeyPressed:
         if (window.hasFocus()) {
           if (event.key.code == sf::Keyboard::Tab) {
-            Debug::show_debug_hud = !Debug::show_debug_hud;
+#ifndef NDEBUG
+            Debug::toggle();
+#endif
           } else if (event.key.code == sf::Keyboard::Escape) {
-            if (Debug::show_debug_hud) {
-              Debug::show_debug_hud = !Debug::show_debug_hud;
-            } else {
+#ifndef NDEBUG
+            if (Debug::showHud()) {
+              Debug::toggle();
+            }
+#endif
+            else {
               running = false;
             }
           }
@@ -198,9 +203,7 @@ void GameEngine::render() {
   window.clear(sf::Color::Blue);
   render_entities();
   render_hud();
-#ifndef NDEBUG
   render_debug();
-#endif
   window.display();
 }
 //
@@ -228,7 +231,7 @@ void GameEngine::render_hud() {
 //
 //
 void GameEngine::render_debug() {
-  if (Debug::show_debug_hud) {
+  if (Debug::showHud()) {
     debug_gui.update();
   }
 }

@@ -24,12 +24,12 @@ Player::Player(PlayerSprite &in_sprite, PlayerShadowSprite &in_shadow)
       state(&state_stand),
       player_sprite(in_sprite),
       player_shadow(in_shadow) {
-  feet.setRadius(3.0F);
+  feet.setRadius(1.0F);
   control.setRadius(15);
-  feet.setFillColor(Debug::disgnostics_color);
+  feet.setFillColor(Debug::defaultDiagnosticsColor());
   control.setFillColor(sf::Color::Transparent);
   control.setOutlineThickness(1);
-  control.setOutlineColor(Debug::disgnostics_color);
+  control.setOutlineColor(Debug::defaultDiagnosticsColor());
 }
 //
 //
@@ -101,11 +101,12 @@ bool Player::ballInControlRange() {
 //
 //
 void Player::close_control() {
+  kick_locked = false;
   // edge of feet circle in direction of movement
   Vector3 ball_position{feet.getCenter()};
   Vector3 offset = facing.toVector() *
                    (feet.getRadius() + match->ball->collidable.getRadius());
-  ball_position += offset;
+  ball_position += offset*1.1f;
 
   // put the ball there
   match->ball->movable.resetVelocity();

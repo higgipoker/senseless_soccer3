@@ -1,4 +1,3 @@
-#ifndef NDEBUG
 #include "Debug.hpp"
 
 #include "imgui/imgui-SFML.h"
@@ -40,5 +39,28 @@ void Debug::update() {
 void Debug::pollEvent(sf::Event &in_event) {
   ImGui::SFML::ProcessEvent(in_event);
 }
+//
+//
+//
+void Debug::toggle() { show_debug_hud = !show_debug_hud; }
+//
+//
+//
+bool Debug::showHud() { return show_debug_hud; }
+//
+//
+//
+bool Debug::drawBounds() { return flag_draw_bounds; }
+//
+//
+//
+bool Debug::drawDiagnostics() { return flag_draw_diagnostics; }
+//
+//
+//
+sf::Color Debug::defaultBoundsColor() { return bounds_color; }
+//
+//
+//
+sf::Color Debug::defaultDiagnosticsColor() { return disgnostics_color; }
 }  // namespace Engine
-#endif
