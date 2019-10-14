@@ -33,7 +33,6 @@ void Ball::update() {
     sprite.setRotation(movable.getVelocity().angle() + offset);
     sprite.startAnimating();
   } else {
-    sprite.stopAnimating();
-    std::cout << "stop anim" << std::endl;
+    sprite.stopAnimating();    
   }
 }

@@ -6,6 +6,7 @@
 #include "Engine/Collider.hpp"
 #include "Engine/Compass.hpp"
 
+
 #include <iostream>
 using namespace Engine;
 //
@@ -18,7 +19,10 @@ PlayerStateDribble::PlayerStateDribble(Player &in_player)
 //
 //
 //
-void PlayerStateDribble::start() { player.ball_under_control = true; }
+void PlayerStateDribble::start() {
+  player.ball_under_control = true;
+  already_kicked = false;
+}
 //
 //
 //
@@ -35,12 +39,11 @@ void PlayerStateDribble::step() {
   } else {
     // check for collision with ball
     if (Collider::collides(player.feet, player.match->ball->collidable)) {
-      constexpr float force = 0.1F; // tmp
-      player.match->ball->movable.resetForces();
-      Vector3 kick_force = Compass(player.facing).toVector();
-      kick_force.normalise2d();
-      player.match->ball->movable.applyForce(kick_force * force);
-      std::cout << "PlayerStateDribble::step> kick" << std::endl;
+      if (!already_kicked) {
+        kick();
+      }
+    } else {
+      already_kicked = false;
     }
   }
   player.player_sprite.setAnimation(PlayerAnimationType::Run,
@@ -67,4 +70,16 @@ bool PlayerStateDribble::stateOver() {
   }
 
   return false;
+}
+//
+//
+//
+void PlayerStateDribble::kick() {
+  already_kicked = true;
+  constexpr float force = 1.3F;  // tmp
+  player.match->ball->movable.resetForces();
+  Vector3 kick_force = Compass(player.facing).toVector();
+  kick_force.normalise2d();
+  player.match->ball->movable.applyForce(kick_force * force);
+  std::cout << "PlayerStateDribble::step> kick" << std::endl;
 }

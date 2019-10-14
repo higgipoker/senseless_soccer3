@@ -66,7 +66,7 @@ class Player : public Engine::Entity {
   // represents the players feet for collisions
   sf::CircleShape feet;
   // represents an area where the ball is under control for dribbling
-  sf::CircleShape control;
+  sf::CircleShape control; 
 
   // state machine
   PlayerStateStand state_stand;

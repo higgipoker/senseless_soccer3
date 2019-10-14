@@ -28,6 +28,11 @@ class PlayerStateDribble : public PlayerState {
    */
   bool stateOver() override;
 
-protected:
-
+ protected:
+  // kick once until the ball leaves the foot!
+  bool already_kicked = false;
+  //
+  //
+  //
+  void kick();
 };

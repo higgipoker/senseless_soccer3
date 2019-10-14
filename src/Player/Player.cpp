@@ -34,7 +34,7 @@ Player::Player(PlayerSprite &in_sprite, PlayerShadowSprite &in_shadow)
 //
 //
 //
-void Player::handleInput() {Entity::handleInput();}
+void Player::handleInput() { Entity::handleInput(); }
 //
 //
 //
@@ -53,6 +53,12 @@ void Player::update() {
     std::cout << "Player::update> " << state->name << std::endl;
   }
 
+  // normalizes for diagonals
+  if (Math::greater_than(movable.getVelocityMag(), 0)) {
+    movable.normalizeVelocity(true);
+  }
+  feet.setCenter(movable.getX(), movable.getY() - feet.getRadius());
+  control.setCenter(movable.getX(), movable.getY()- feet.getRadius());
   shadow.setFrame(sprite.getFrame());
 
 #ifndef NDEBUG
