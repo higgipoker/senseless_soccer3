@@ -14,7 +14,7 @@ class DribblePattern {
   //
   //
   //
-  virtual Engine::Vector3 nextDirection(Engine::Compass in_current_dir) = 0;
+  virtual Engine::Compass nextDirection(Engine::Compass in_current_dir) = 0;
   //
   //
   //
@@ -31,10 +31,11 @@ class DribblePatternRandom : public DribblePattern {
   //
   //
   //
-  Engine::Vector3 nextDirection(Engine::Compass in_current_dir) override {
+  Engine::Compass nextDirection(Engine::Compass in_current_dir) override {
     counter = 0;
-    Engine::Vector3 dir = in_current_dir.toVector();
-    dir.rotate(rand() % 2 == 1 ? 45 : -45);
+    Engine::Vector3 v = in_current_dir.toVector();
+    v.rotate(rand() % 2 == 1 ? 45 : -45);
+    Engine::Compass dir(v);
     return dir;
   }
   //

@@ -40,7 +40,7 @@ int main() {
 
   sf::IntRect world{0, 0, 2000, 3000};
   Pitch pitch(tex_grass, world);
-  engine.addDrawable(pitch, engine.getBackgroundLayer());
+  engine.addSprite(pitch, engine.getBackgroundLayer());
 
   PlayerShadowSprite shadow(tex_playerandball);
   BallShadowSprite ball_shadow(tex_playerandball);

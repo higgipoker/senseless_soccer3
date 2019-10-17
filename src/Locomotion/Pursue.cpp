@@ -1,11 +1,12 @@
 #include "Pursue.hpp"
 #include "Engine/Compass.hpp"
+#include "Player/Player.hpp"
 
 using namespace Engine;
 //
 //
 //
-Pursue::Pursue(Movable &in_movable) : Locomotion(in_movable) {}
+Pursue::Pursue(Player & in_player) : Locomotion(in_player) {}
 //
 //
 //
@@ -19,13 +20,12 @@ void Pursue::start() {}
 //
 void Pursue::step() {
   // change direction when we stop getting closer to the target
-  float distance = (target->getPosition() - entity.getPosition()).magnitude();
+  float distance = (target->getPosition() - player.movable.getPosition()).magnitude();
   if (Math::greater_than(distance, last_distance)) {
     Vector3 pos2d = target->getPosition();
     pos2d.to2d();
-    Vector3 heading = pos2d - entity.getPosition();
-    heading.normalise();
-    entity.setVelocity(heading);
+    Vector3 heading = pos2d - player.movable.getPosition();
+    player.run(heading);
 
     // todo: witha pathfinding algorithm, cpu controlled players should
     // work out a path based on 45 degree turns
@@ -37,32 +37,8 @@ void Pursue::step() {
 //
 //
 //
-void Pursue::stop() { entity.setVelocity(Vector3{}); }
+void Pursue::stop() { player.stopRunning(); }
 //
 //
 //
 bool Pursue::finished() { return false; }
-//
-//
-//
-//
-//
-//
-PursueTilCaught::PursueTilCaught(Movable &in_movable, float in_range)
-    : Pursue(in_movable), range(in_range) {}
-//
-//
-//
-void PursueTilCaught::init(Movable &in_target, float in_range) {
-  target = &in_target;
-  range = in_range;
-}
-//
-//
-//
-bool PursueTilCaught::finished() {
-  Vector3 pos2d = target->getPosition();
-  pos2d.to2d();
-  Vector3 distance = pos2d - entity.getPosition();
-  return (Math::less_than(distance.magnitude(), range));
-}

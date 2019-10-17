@@ -36,11 +36,7 @@ class Entity {
   //
   //
   //
-  void perspectivize(const float in_camera_height) const;
-  //
-  //
-  //
-  void attachInput(InputDevice & in_device);
+  void attachInput(InputDevice &in_device);
   //
   //
   //
@@ -52,18 +48,16 @@ class Entity {
   //
   //
   //
-  float perspective_width = 0;
   Movable movable;
   Sprite &sprite;
   Sprite &shadow;
+  int shadow_offset = 2;
   static Sprite dummy_sprite;
   static Sprite dummy_shadow;
-  int shadow_offset = 2;
 
  protected:
   float speed = 1.F;
   InputDevice *input = nullptr;
-  bool perspectivizable = true;
 };
 
 }  // namespace Engine

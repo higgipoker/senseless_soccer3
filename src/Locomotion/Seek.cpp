@@ -1,10 +1,11 @@
 #include "Seek.hpp"
 
+#include "Player/Player.hpp"
 using namespace Engine;
 //
 //
 //
-Seek::Seek(Movable& in_movable) : Locomotion(in_movable) {}
+Seek::Seek(Player & in_player) : Locomotion(in_player) {}
 //
 //
 //
@@ -13,7 +14,7 @@ void Seek::init(Vector3 in_target) { target = in_target; }
 //
 //
 void Seek::start() {
-  entity.setVelocity(target - entity.getPosition());
+  player.run(Compass(target - player.movable.getPosition()));
 }
 //
 //
@@ -22,10 +23,10 @@ void Seek::step() {}
 //
 //
 //
-void Seek::stop() { entity.setVelocity(Vector3{}); }
+void Seek::stop() { player.stopRunning(); }
 //
 //
 //
 bool Seek::finished() {
-  return Math::equal((target - entity.getPosition()).magnitude(), 0);
+  return Math::equal((target - player.movable.getPosition()).magnitude(), 0);
 }

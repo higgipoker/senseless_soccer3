@@ -10,7 +10,7 @@ class Head : public Locomotion{
   /**
    * @brief Head
    */
-  Head(Engine::Movable & in_entity);
+  Head(Player & in_player);
   /**
     */
   ~Head() override = default;

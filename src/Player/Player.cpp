@@ -12,6 +12,7 @@ Match *Player::match = nullptr;
 
 const int SHADOW_OFFSET_X = 1;
 const int SHADOW_OFFSET_Y = 4;
+
 //
 //
 //
@@ -26,6 +27,8 @@ Player::Player(PlayerSprite &in_sprite, PlayerShadowSprite &in_shadow)
       player_shadow(in_shadow) {
   feet.setRadius(1.0F);
   control.setRadius(12);
+
+  spd = PlayerSpeed::Normal;
 }
 //
 //
@@ -49,10 +52,6 @@ void Player::update() {
     std::cout << "Player::update> " << state->name << std::endl;
   }
 
-  // normalizes for diagonals
-  if (Math::greater_than(movable.getVelocityMag(), 0)) {
-    movable.normalizeVelocity(true);
-  }
   feet.setCenter(movable.getX(), movable.getY() - feet.getRadius());
   control.setCenter(feet.getCenter());
   shadow.setFrame(sprite.getFrame());
@@ -129,4 +128,27 @@ void Player::debug() {
   sprite.debug_shapes.clear();
   sprite.debug_shapes.push_back(&feet);
   sprite.debug_shapes.push_back(&control);
+}
+//
+//
+//
+void Player::run(Engine::Compass in_direction){
+  Vector3 v = in_direction.toVector();
+  v.normalise2d();
+  v*=movable.speed;
+  movable.setVelocity(v);
+}
+//
+//
+//
+void Player::run(Engine::Vector3 in_direction){
+  in_direction.normalise2d();
+  in_direction*=movable.speed;
+  movable.setVelocity(in_direction);
+}
+//
+//
+//
+void Player::stopRunning(){
+  movable.resetVelocity();
 }

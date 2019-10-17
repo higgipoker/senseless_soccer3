@@ -1,6 +1,7 @@
 #pragma once
+#include "Engine/Vector.hpp"
 
-#include "Engine/Movable.hpp"
+class Player;
 /**
  * @brief The Locomotion class
  */
@@ -9,7 +10,7 @@ class Locomotion {
   /**
    * @brief Locomotion
    */
-  Locomotion(Engine::Movable &in_entity);
+  Locomotion(Player &in_player);
   /**
    * @brief ~Locomotion
    */
@@ -34,5 +35,5 @@ class Locomotion {
 
  protected:
   /// entity to manipulate
-  Engine::Movable &entity;
+  Player &player;
 };

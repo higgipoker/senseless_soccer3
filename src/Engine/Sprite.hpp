@@ -79,9 +79,20 @@ class Sprite : public sf::Sprite {
   //
   //
   void stopAnimating();
+  //
+  //
+  //
+  void setBasePerspectiveWidth(const float in_width);
+  //
+  //
+  //
+  virtual void perspectivize(const float in_camera_height);
 
   /// a list of shapes for debug drawing
   std::vector<sf::Shape*> debug_shapes;
+  /// for perspective
+  float entity_height=0.F;
+  Sprite *shadow = nullptr;
 
  protected:
   /// managed texture
@@ -94,6 +105,10 @@ class Sprite : public sf::Sprite {
   SpriteAnimation* animation = nullptr;
   /// animation controller
   bool animating = false;
+  /// scale according to distance from camera?
+  bool perspectivizable = true;
+  /// desired width of sprite unprespectervized
+  float perspective_width = 0;
   /**
    * @brief unclutter draw function
    * @param target

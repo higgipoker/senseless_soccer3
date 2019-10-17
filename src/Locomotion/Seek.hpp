@@ -10,7 +10,7 @@ class Seek : public Locomotion{
   /**
    * @brief Seek
    */
-  Seek(Engine::Movable & in_movable);
+  Seek(Player & in_player);
   /**
     */
   ~Seek() override = default;

@@ -55,7 +55,7 @@ int GameEngine::addLayer(bool in_sortable) {
 //
 //
 //
-void GameEngine::addDrawable(sf::Drawable &in_drawable, layer_id in_layer_id) {
+void GameEngine::addSprite(Sprite &in_sprite, layer_id in_layer_id) {
   if (render_layers.empty()) {
     std::cout << "Engine::addDrawable> no layers" << std::endl;
     return;
@@ -63,11 +63,11 @@ void GameEngine::addDrawable(sf::Drawable &in_drawable, layer_id in_layer_id) {
   if (in_layer_id == RenderLayer::INVALID_LAYER) {
     // add to last layer
     render_layers.at(render_layers.size() - 1)
-        .draw_list.push_back(&in_drawable);
+        .sprite_list.push_back(&in_sprite);
   } else {
     // add to specified layer
     if (in_layer_id < render_layers.size()) {
-      render_layers.at(in_layer_id).draw_list.push_back(&in_drawable);
+      render_layers.at(in_layer_id).sprite_list.push_back(&in_sprite);
     } else {
       std::cout << "Engine::addRenderable> Tried to add to non existent layer: "
                 << in_layer_id << std::endl;
@@ -78,8 +78,8 @@ void GameEngine::addDrawable(sf::Drawable &in_drawable, layer_id in_layer_id) {
 //
 //
 void GameEngine::addEntity(Entity &in_entity, layer_id in_layer_id) {
-  addDrawable(in_entity.sprite, in_layer_id);
-  addDrawable(in_entity.shadow, shadow_layer);
+  addSprite(in_entity.sprite, in_layer_id);
+  addSprite(in_entity.shadow, shadow_layer);
   entities.push_back(&in_entity);
 }
 //
@@ -171,7 +171,7 @@ bool GameEngine::isRunning() const { return running; }
 void GameEngine::sort_drawables() {
   for (auto &layer : render_layers) {
     if (layer.second.sortable) {
-      std::sort(layer.second.draw_list.begin(), layer.second.draw_list.end(),
+      std::sort(layer.second.sprite_list.begin(), layer.second.sprite_list.end(),
                 sort_drawable);
     }
   }
@@ -193,7 +193,6 @@ void GameEngine::update_entities() {
     entity->handleInput();
     entity->update();
     entity->movable.step(dt);
-    entity->perspectivize(camera.movable.getZ());
   }
 }
 //
@@ -213,7 +212,8 @@ void GameEngine::render_entities() {
   sort_drawables();
   window.setView(camera.getview());
   for (auto &layer : render_layers) {
-    for (auto &drawable : layer.second.draw_list) {
+    for (auto &drawable : layer.second.sprite_list) {
+      drawable->perspectivize(camera.getHeight());
       window.draw(*drawable);
     }
   }
@@ -223,7 +223,7 @@ void GameEngine::render_entities() {
 //
 void GameEngine::render_hud() {
   window.setView(hud_view);
-  for (auto &drawable : hud_layer.draw_list) {
+  for (auto &drawable : hud_layer.sprite_list) {
     window.draw(*drawable);
   }
 }

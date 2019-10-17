@@ -52,6 +52,9 @@ void Sprite::init(const SpriteSetDefinition &in_def) {
 
   // default set origin to center
   setOrigin(in_def.frame_width / 2, in_def.frame_height / 2);
+
+  // for perspective scaling
+  perspective_width = getLocalBounds().width;
 }
 //
 //
@@ -121,4 +124,56 @@ void Sprite::startAnimating() { animating = true; }
 //
 //
 void Sprite::stopAnimating() { animating = false; }
+//
+//
+//
+void Sprite::perspectivize(const float in_camera_height) {
+
+//  float dist_from_camera = in_camera_height - entity_height - default_height;
+//  dist_from_camera = -dist_from_camera;
+//  if(dist_from_camera){
+//  float desired_width = getLocalBounds().width/(1-dist_from_camera);
+//  float desired_height = getLocalBounds().height/(1-dist_from_camera);
+//  float scale_factor_x = desired_width / getLocalBounds().width;
+//  float scale_factor_y = desired_height / getLocalBounds().height;
+//  setScale(scale_factor_x, scale_factor_y);
+//  }
+
+//  return;
+  if (perspectivizable) {
+    // size depending on distance from camera
+    float dimensions = perspective_width;
+    float dist_from_camera = in_camera_height - entity_height;
+
+    // other side of camera, don't perspectivize!
+    if (dist_from_camera <= 0) {
+      setScale({0.f, 0.f});
+      if (shadow) shadow->setScale(100, 100);
+      return;
+    }
+
+    float angular_diameter = 2 * (atanf(dimensions / (2 * dist_from_camera)));
+    float degs = Degrees(angular_diameter);
+    float sprite_scale_factor = degs / dimensions;
+    float tmp = getLocalBounds().width;
+    tmp++;
+    float sprite_ratio = dimensions / getLocalBounds().width;
+    sprite_scale_factor *= sprite_ratio;
+    setScale(sprite_scale_factor, sprite_scale_factor);
+    if (shadow) shadow->setScale(sprite_scale_factor, sprite_scale_factor);
+
+    // y offset due to height
+    float z_cm = entity_height * Metrics::Z_PERSP_OFFSET;
+    if (Math::greater_than(z_cm, 0)) {
+      float y_offset = Metrics::Y_OFFSET_DUE_TO_HEIGHT * z_cm;
+      move(0, -y_offset);
+    }
+  }
+}
+//
+//
+//
+void Sprite::setBasePerspectiveWidth(const float in_width) {
+  perspective_width = in_width;
+}
 }  // namespace Engine

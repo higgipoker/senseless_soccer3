@@ -2,6 +2,7 @@
 
 #include "Locomotion.hpp"
 
+#include "Engine/Movable.hpp"
 /**
  * @brief The Pursue locomotion sents the subject to a fixed location
  */
@@ -10,7 +11,7 @@ class Pursue : public Locomotion {
   /**
    * @brief Pursue
    */
-  Pursue(Engine::Movable &in_movable);
+  Pursue(Player &in_player);
   /**
    */
   ~Pursue() override = default;
@@ -40,26 +41,4 @@ class Pursue : public Locomotion {
  protected:
   Engine::Movable *target = nullptr;
   float last_distance = 0;
-};
-
-class PursueTilCaught : public Pursue {
- public:
-  /**
-   * @brief PursueTilCaught
-   * @param in_movable
-   */
-  PursueTilCaught(Engine::Movable &in_movable, float in_range = 1);
-  /**
-   * @brief fiished
-   * @return
-   */
-  bool finished() override;
-  /**
-   * @brief init
-   * @param in_target
-   */
-  void init(Engine::Movable &in_target, float in_range = 20);
-
- protected:
-  float range = 0;
 };

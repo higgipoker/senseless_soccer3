@@ -32,11 +32,6 @@ public:
    */
   void pursue(Engine::Movable &in_target);
   /**
-   * @brief pursue_til_caught
-   * @param in_target
-   */
-  void pursue_til_caught(Engine::Movable &in_target, float in_range);
-  /**
    * @brief update
    */
   void update();
@@ -45,7 +40,6 @@ private:
   Seek seek_locomotion;
   Head head_locomotion;
   Pursue pursue_locomotion;
-  PursueTilCaught pursue_til_caught_locomotion;
   Locomotion *current_locomotion = nullptr;
 };
 

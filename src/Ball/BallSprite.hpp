@@ -27,17 +27,16 @@ inline Frames roll{0, 1, 2, 3, 4, 5, 6};
 // anim ids
 //
 enum {
-  ID_ANIM_ROLL=1,
+  ID_ANIM_ROLL = 1,
 };
-
-/**
- * @brief The BallSprite class
- */
+//
+//
+//
 class BallSprite : public Engine::Sprite {
  public:
-  /**
-   * @brief BallSprite
-   */
+  //
+  //
+  //
   BallSprite(
       std::shared_ptr<sf::Texture> in_texture,
       const Engine::SpriteSetDefinition in_def = Engine::SpriteSetDefinition{
@@ -45,18 +44,17 @@ class BallSprite : public Engine::Sprite {
           BALL_START_COL, BALL_COLS});
 
  protected:
-  Engine::SpriteAnimation roll_animation{ID_ANIM_ROLL,BALL_ANIM_FRAME_TIME, roll};
+  Engine::SpriteAnimation roll_animation{ID_ANIM_ROLL, BALL_ANIM_FRAME_TIME,
+                                         roll};
 };
-
-/**
- * @brief The PlayerShadowSprite class
- */
+//
+//
+//
 class BallShadowSprite : public BallSprite {
  public:
-  /**
-   * @brief PlayerShadowSprite
-   * @param in_filename
-   */
+  //
+  //
+  //
   BallShadowSprite(
       std::shared_ptr<sf::Texture> in_texture,
       const Engine::SpriteSetDefinition in_def = Engine::SpriteSetDefinition{

@@ -7,6 +7,9 @@
 #include "Engine/Compass.hpp"
 
 #include <iostream>
+
+// tmp lookup for kick force needed depeinding on player speed
+
 using namespace Engine;
 //
 //
@@ -21,6 +24,7 @@ PlayerStateDribble::PlayerStateDribble(Player &in_player)
 void PlayerStateDribble::start() {
   player.ball_under_control = true;
   already_kicked = false;
+  player.movable.speed = dribble_speeds[player.spd];
 }
 //
 //
@@ -92,7 +96,9 @@ bool PlayerStateDribble::stateOver() {
 //
 void PlayerStateDribble::kick() {
   already_kicked = true;
-  constexpr float force = 1.4F;  // tmp
+  float force = kick_mods[static_cast<PlayerSpeed>(player.spd)];
+  auto f= player.movable.getVelocityMag(true);
+  f++;
   Vector3 kick_force = Compass(player.facing).toVector();
   kick_force.normalise2d();
   kick_force *= force;

@@ -9,6 +9,42 @@
 
 #include <SFML/Graphics/CircleShape.hpp>
 
+#include <map>
+//
+//
+//
+enum class PlayerSpeed : int {
+  VerySlow = 1,
+  Slow = 2,
+  Normal = 3,
+  Fast = 4,
+  VeryFast = 5
+};
+//
+// running speeds
+//
+inline std::map<PlayerSpeed, float> run_speeds = {
+    {PlayerSpeed::VerySlow, 0.75F}, {PlayerSpeed::Slow, 1.0F},
+    {PlayerSpeed::Normal, 1.5F},    {PlayerSpeed::Fast, 2.0F},
+    {PlayerSpeed::VeryFast, 2.5F},
+};
+//
+// dribbling speeds
+//
+inline std::map<PlayerSpeed, float> dribble_speeds = {
+    {PlayerSpeed::VerySlow, 0.25F}, {PlayerSpeed::Slow, 0.5F},
+    {PlayerSpeed::Normal, 1.0F},    {PlayerSpeed::Fast, 1.5F},
+    {PlayerSpeed::VeryFast, 2.0F},
+};
+//
+// dribble knock on forces
+//
+inline std::map<PlayerSpeed, float> kick_mods = {
+    {PlayerSpeed::VerySlow, 0.8F}, {PlayerSpeed::Slow, 1.2F},
+    {PlayerSpeed::Normal, 1.4F},   {PlayerSpeed::Fast, 2.3F},
+    {PlayerSpeed::VeryFast, 3.0F},
+};
+
 class Match;
 //
 //
@@ -27,6 +63,18 @@ class Player : public Engine::Entity {
   //
   //
   void update() override;
+  //
+  //
+  //
+  void run(Engine::Compass in_direction);
+  //
+  //
+  //
+  void run(Engine::Vector3 in_direction);
+  //
+  //
+  //
+  void stopRunning();
   //
   //
   //
@@ -72,6 +120,8 @@ class Player : public Engine::Entity {
   // convenience to avoid casting everywhere
   PlayerSprite &player_sprite;
   PlayerSprite &player_shadow;
+  // speed attrib
+  PlayerSpeed spd = PlayerSpeed::Normal;
   //
   //
   //

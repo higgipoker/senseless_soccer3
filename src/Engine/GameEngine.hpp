@@ -26,7 +26,7 @@ using layer_id = size_t;
 ///
 struct RenderLayer {
   RenderLayer(bool in_sortable = false) : sortable(in_sortable) {}
-  std::vector<sf::Drawable *> draw_list;
+  std::vector<Sprite *> sprite_list;
   bool sortable = false;
   static const layer_id INVALID_LAYER = 999;
 };
@@ -57,7 +57,7 @@ class GameEngine {
   //
   //
   //
-  void addDrawable(sf::Drawable &in_drawable,
+  void addSprite(Sprite & in_sprite,
                    layer_id in_layer_id = RenderLayer::INVALID_LAYER);
   //
   //

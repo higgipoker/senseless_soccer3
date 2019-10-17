@@ -7,7 +7,6 @@ namespace Engine {
 //
 //
 Camera::Camera() {
-  perspectivizable = false;
   movable.toggleGravity(false);
   movable.co_friction = 0.01F;
 }
@@ -20,7 +19,8 @@ void Camera::handleInput() {
 //
 //
 //
-void Camera::update() { view.setCenter(movable.getX(), movable.getY()); }
+void Camera::update() { view.setCenter(movable.getX(), movable.getY());
+                      std::cout << movable.getZ() << std::endl;}
 //
 //
 //

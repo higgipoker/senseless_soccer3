@@ -5,8 +5,7 @@ using namespace Engine;
 //
 //
 //
-PlayerStateStand::PlayerStateStand(Player &in_player)
-    : PlayerState(in_player) {
+PlayerStateStand::PlayerStateStand(Player &in_player) : PlayerState(in_player) {
   name = "Stand";
 }
 //
@@ -18,9 +17,9 @@ void PlayerStateStand::start() { next_state = player_state::Run; }
 //
 void PlayerStateStand::step() {
   PlayerState::step();
-
   player.face_ball();
-  player.player_sprite.setAnimation(PlayerAnimationType::Stand, player.facing.direction);
+  player.player_sprite.setAnimation(PlayerAnimationType::Stand,
+                                    player.facing.direction);
 }
 //
 //

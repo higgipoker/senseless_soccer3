@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Engine/ArcShape.hpp"
-#include "Engine/Drawable.hpp"
+#include "Engine/Sprite.hpp"
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
@@ -9,6 +9,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 
 #include <memory>
+#include <vector>
 //
 //
 //
@@ -32,32 +33,50 @@ struct PitchDimensions {
   sf::CircleShape south_penalty_spot;
   sf::ArcShape north_arc;
   sf::ArcShape south_arc;
+
+  std::vector<sf::Shape *> all_lines;
+
+  PitchDimensions() {
+    all_lines.push_back(&bounds);
+    all_lines.push_back(&north_6);
+    all_lines.push_back(&north_18);
+    all_lines.push_back(&south_6);
+    all_lines.push_back(&south_18);
+    all_lines.push_back(&halfway_line);
+    all_lines.push_back(&center_circle);
+    all_lines.push_back(&center_spot);
+    all_lines.push_back(&north_penalty_spot);
+    all_lines.push_back(&south_penalty_spot);
+    all_lines.push_back(&north_arc);
+    all_lines.push_back(&south_arc);
+  }
 };
 /**
  * @brief The Pitch class
  */
-class Pitch : public Engine::Drawable {
+class Pitch : public Engine::Sprite {
  public:
-  /**
-   * @brief Pitch
-   * @param in_filename
-   * @param in_target
-   */
-  Pitch(std::shared_ptr<sf::Texture> in_texture, const sf::IntRect in_world_bounds);
-  /**
-   *
-   */
+  //
+  //
+  //
+  Pitch(std::shared_ptr<sf::Texture> in_texture,
+        const sf::IntRect in_world_bounds);
+  //
+  //
+  //
   ~Pitch();
-  /**
-   * @brief create
-   */
+  //
+  //
+  //
   void create();
-  /**
-   * @brief draw
-   * @param target
-   * @param states
-   */
+  //
+  //
+  //
   void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+  //
+  //
+  //
+  virtual void perspectivize(const float in_camera_height) override;
 
  protected:
   /// the repeatig grass sprite

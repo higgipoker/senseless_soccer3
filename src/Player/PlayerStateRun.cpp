@@ -16,7 +16,7 @@ PlayerStateRun::PlayerStateRun(Player &in_player) : PlayerState(in_player) {
 //
 //
 //
-void PlayerStateRun::start() {}
+void PlayerStateRun::start() {player.movable.speed =  run_speeds[player.spd];}
 //
 //
 //

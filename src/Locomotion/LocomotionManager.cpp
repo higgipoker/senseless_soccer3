@@ -9,10 +9,9 @@ using namespace Engine;
 //
 //
 LocomotionManager::LocomotionManager(Player &in_player)
-    : seek_locomotion(in_player.movable),
-      head_locomotion(in_player.movable),
-      pursue_locomotion(in_player.movable),
-      pursue_til_caught_locomotion(in_player.movable) {}
+    : seek_locomotion(in_player),
+      head_locomotion(in_player),
+      pursue_locomotion(in_player) {}
 
 //
 //
@@ -39,23 +38,12 @@ void LocomotionManager::head(const Vector3 in_target) {
 //
 //
 //
-void LocomotionManager::pursue(Movable &in_target){
+void LocomotionManager::pursue(Movable &in_target) {
   if (current_locomotion) {
     current_locomotion->stop();
   }
   pursue_locomotion.init(in_target);
   current_locomotion = &pursue_locomotion;
-  current_locomotion->start();
-}
-//
-//
-//
-void LocomotionManager::pursue_til_caught(Movable &in_target, float in_range){
-  if (current_locomotion) {
-    current_locomotion->stop();
-  }
-  pursue_til_caught_locomotion.init(in_target, in_range);
-  current_locomotion = &pursue_til_caught_locomotion;
   current_locomotion->start();
 }
 //

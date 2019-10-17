@@ -17,11 +17,11 @@ Vector3::Vector3(float xi, float yi) {
 //
 float Vector3::operator[](Index idx) const {
   switch (idx) {
-    case X:
+    case Index::X:
       return x;
-    case Y:
+    case Index::Y:
       return y;
-    case Z:
+    case Index::Z:
       return z;
   }
   return 0;
@@ -101,12 +101,6 @@ Vector3 const Vector3::operator/(const float rhs) const {
 Vector3 const Vector3::operator^(Vector3 &v) {
   return Vector3(y * v.z - z * v.y, -x * v.z + z * v.x, x * v.y - y * v.x);
 }
-//
-//
-//
-// float Vector3::operator*(Vector3 &rhs) {
-//  return (x * rhs.x + y * rhs.y + z * rhs.z);
-//}
 //
 //
 //

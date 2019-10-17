@@ -34,7 +34,7 @@ void Movable::setPosition(const float in_x, const float in_y) {
 //
 //
 //
-void Movable::move(float in_dx, float in_dy){
+void Movable::move(float in_dx, float in_dy) {
   position.x += in_dx;
   position.y += in_dy;
 }
@@ -53,21 +53,15 @@ float Movable::getZ() const { return position.z; }
 //
 //
 //
-void Movable::setX(float in_x){
-  position.x = in_x;
-}
+void Movable::setX(float in_x) { position.x = in_x; }
 //
 //
 //
-void Movable::setY(float in_y){
-  position.y = in_y;
-}
+void Movable::setY(float in_y) { position.y = in_y; }
 //
 //
 //
-void Movable::setZ(float in_z){
-  position.z = in_z;
-}
+void Movable::setZ(float in_z) { position.z = in_z; }
 //
 //
 //
@@ -75,39 +69,33 @@ const Vector3 Movable::getVelocity() const { return velocity; }
 //
 //
 //
-float Movable::getVelocityMag(bool in_2d){
+float Movable::getVelocityMag(bool in_2d) {
   return in_2d ? velocity.magnitude2d() : velocity.magnitude();
 }
 //
 //
 //
-void Movable::setVelocity(const Vector3 &in_velocity){
+void Movable::setVelocity(const Vector3 &in_velocity) {
   velocity = in_velocity;
 }
 //
 //
 //
-void Movable::resetVelocity(){
-  velocity.reset();
+void Movable::resetVelocity() { velocity.reset(); }
+//
+//
+//
+void Movable::normalizeVelocity(bool in_2d) {
+  in_2d ? velocity.normalise2d() : velocity.normalise();
 }
 //
 //
 //
-void Movable::normalizeVelocity(bool in_2d){
-  in_2d ? velocity.normalise2d() :  velocity.normalise();
-}
+void Movable::applyForce(Vector3 in_force) { force += in_force; }
 //
 //
 //
-void Movable::applyForce(Vector3 in_force){
-  force += in_force;
-}
-//
-//
-//
-void Movable::resetForces(){
-  force.reset();
-}
+void Movable::resetForces() { force.reset(); }
 //
 //
 //
@@ -158,17 +146,12 @@ void Movable::integrate_improved_euler(const float in_dt) {
     // update velocity
     velocity = velocity + (k1 + k2) / 2;
     // change in position (converted to pixels)
-    Vector3 dp = (velocity);
     // normalizes for diagonals
-    auto mag = dp.magnitude();
-    if (Math::greater_than(mag, 0)) {
-      dp.normalise();
-      dp.x *= mag * speed;
-      dp.y *= mag * speed;
-      dp.z *= mag * speed;
-    }
+//    if (Math::greater_than(getVelocityMag(), 0)) {
+//      normalizeVelocity();
+//    }
     // apply new position
-    position = position + dp;
+    position = position + velocity;
   }
   // for very small velocities
   damp_velocity();
@@ -210,7 +193,7 @@ void Movable::toggleGravity(bool in_status) { affected_by_gravity = in_status; }
 //
 //
 //
-void Movable::place(Vector3 in_position){
+void Movable::place(Vector3 in_position) {
   resetVelocity();
   resetForces();
   setPosition(in_position);

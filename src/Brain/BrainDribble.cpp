@@ -22,8 +22,9 @@ void BrainDribble::start() {
 //
 //
 void BrainDribble::step() {
-  if(pattern->changeDirection()){
-    brain.locomotion.head(pattern->nextDirection(brain.player.direction()));
+  if (pattern->changeDirection()) {
+    brain.locomotion.head(
+        pattern->nextDirection(brain.player.direction()).toVector());
   }
 }
 //
