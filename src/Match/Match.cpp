@@ -6,7 +6,9 @@ Match::Match() {}
 //
 //
 //
-void Match::setBall(Ball& in_ball) { ball = &in_ball; }
+void Match::setBall(std::unique_ptr<Ball> in_ball) {
+  ball = std::move(in_ball);
+}
 //
 //
 //

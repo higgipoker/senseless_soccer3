@@ -7,14 +7,14 @@ using namespace Engine;
 //
 //
 //
-Ball::Ball(Sprite &in_sprite, Sprite &in_shadow)
-    : Entity(in_sprite, in_shadow) {
+Ball::Ball(std::unique_ptr<Sprite> in_sprite, std::unique_ptr<Sprite>in_shadow)
+    : Entity(std::move(in_sprite), std::move(in_shadow)) {
   // todo ball radius
   collidable.setRadius(radius);
   movable.co_friction = 0.01F;
   movable.co_bounciness = 0.8f;
-  in_sprite.setBasePerspectiveWidth(radius*2);
-  in_shadow.setBasePerspectiveWidth(radius*2);
+  sprite->setBasePerspectiveWidth(radius*2);
+  shadow->setBasePerspectiveWidth(radius*2);
 }
 //
 //
@@ -33,10 +33,10 @@ void Ball::update() {
   if (Math::greater_than(movable.getVelocityMag(), 0)) {
     // sprite rotates in direction of movement (unless spin...later!!)
     constexpr float offset = 180;  // according to the spritesheet image
-    sprite.setRotation(movable.getVelocity().angle() + offset);
-    sprite.startAnimating();
+    sprite->setRotation(movable.getVelocity().angle() + offset);
+    sprite->startAnimating();
   } else {
-    sprite.stopAnimating();
+    sprite->stopAnimating();
   }
 #ifndef NDEBUG
   debug();
@@ -50,8 +50,8 @@ void Ball::debug() {
   collidable.setOutlineThickness(1);
   collidable.setOutlineColor(Debug::defaultDiagnosticsColor());
 
-  sprite.debug_shapes.clear();
-  sprite.debug_shapes.push_back(&collidable);
+  sprite->debug_shapes.clear();
+  sprite->debug_shapes.push_back(&collidable);
 }
 //
 //

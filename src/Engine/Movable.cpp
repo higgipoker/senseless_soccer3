@@ -34,6 +34,12 @@ void Movable::setPosition(const float in_x, const float in_y) {
 //
 //
 //
+void Movable::setPosition(const int in_x, const int in_y) {
+  position = {static_cast<float>(in_x), static_cast<float>(in_y), position.z};
+}
+//
+//
+//
 void Movable::move(float in_dx, float in_dy) {
   position.x += in_dx;
   position.y += in_dy;
@@ -147,9 +153,9 @@ void Movable::integrate_improved_euler(const float in_dt) {
     velocity = velocity + (k1 + k2) / 2;
     // change in position (converted to pixels)
     // normalizes for diagonals
-//    if (Math::greater_than(getVelocityMag(), 0)) {
-//      normalizeVelocity();
-//    }
+    //    if (Math::greater_than(getVelocityMag(), 0)) {
+    //      normalizeVelocity();
+    //    }
     // apply new position
     position = position + velocity;
   }

@@ -6,14 +6,15 @@
 #include <SFML/Graphics/Shape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
+#include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
 
 namespace Engine {
-/**
- * @brief The SpriteSheetDefinition struct
- */
+//
+//
+//
 struct SpriteSetDefinition {
   int frame_width = 0;
   int frame_height = 0;
@@ -22,54 +23,43 @@ struct SpriteSetDefinition {
   int start_col = 0;
   int sheet_cols = 0;
 };
-
-/**
- * @brief The Sprite class
- */
+//
+//
+//
 class Sprite : public sf::Sprite {
  public:
-  /**
-   * @brief Sprite
-   * @param in_target
-   */
+  //
+  //
+  //
   Sprite();
-  /**
-   * @brief Sprite
-   */
+  //
+  //
+  //
   Sprite(std::shared_ptr<sf::Texture> in_texture);
-
-  /**
-   * @brief init
-   * @param _spritesheet
-   * @param _rows
-   * @param _cols
-   * @param _frames
-   * @param _start_row
-   * @param _start_col
-   */
+  //
+  //
+  //
   void init(const SpriteSetDefinition& in_def);
-  /**
-   * @brief drawBounds
-   */
+  //
+  //
+  //
   void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-  /**
-   * @brief setFrame
-   * @param in_frame
-   */
+  //
+  //
+  //
   void setFrame(const int in_frame);
-  /**
-   * @brief getFrame
-   * @return
-   */
+  //
+  //
+  //
   int getFrame();
-  /**
-   * @brief setAnimation
-   * @param in_animation
-   */
-  virtual void setAnimation(SpriteAnimation* in_animation, bool in_autostart = true);
-  /**
-   * @brief animate
-   */
+  //
+  //
+  //
+  virtual void setAnimation(SpriteAnimation* in_animation,
+                            bool in_autostart = true);
+  //
+  //
+  //
   void animate();
   //
   //
@@ -91,8 +81,8 @@ class Sprite : public sf::Sprite {
   /// a list of shapes for debug drawing
   std::vector<sf::Shape*> debug_shapes;
   /// for perspective
-  float entity_height=0.F;
-  Sprite *shadow = nullptr;
+  float entity_height = 0.F;
+  Sprite* shadow = nullptr;
 
  protected:
   /// managed texture

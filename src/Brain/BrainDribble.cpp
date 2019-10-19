@@ -16,7 +16,7 @@ BrainDribble::BrainDribble(Brain& in_brain)
 //
 //
 void BrainDribble::start() {
-  brain.locomotion.head(brain.player.direction().toVector());
+  brain.locomotion.head(brain.player.getDirection().toVector());
 }
 //
 //
@@ -24,7 +24,7 @@ void BrainDribble::start() {
 void BrainDribble::step() {
   if (pattern->changeDirection()) {
     brain.locomotion.head(
-        pattern->nextDirection(brain.player.direction()).toVector());
+        pattern->nextDirection(brain.player.getDirection()).toVector());
   }
 }
 //

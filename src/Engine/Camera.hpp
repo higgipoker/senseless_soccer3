@@ -34,9 +34,14 @@ class Camera : public Entity {
   //
   //
   void setHeight(const float in_height);
+  //
+  //
+  //
+  void setWorldRect(sf::IntRect in_rect);
 
  private:
   sf::View view{sf::FloatRect{0, 0, 800, 600}};
+  sf::IntRect world;
 };
 
 }  // namespace Engine

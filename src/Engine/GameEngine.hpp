@@ -93,7 +93,7 @@ class GameEngine {
   Window window;
   Keyboard default_keyboard;
   Camera camera;
-  sf::View hud_view;
+  sf::View hud_view{sf::FloatRect{0, 0, 800, 600}};
   std::map<int, RenderLayer> render_layers;
   RenderLayer hud_layer;
   std::vector<Entity *> entities;
@@ -119,17 +119,5 @@ class GameEngine {
   //
   //
   void render();
-  //
-  //
-  //
-  void render_entities();
-  //
-  //
-  //
-  void render_hud();
-  //
-  //
-  //
-  void render_debug();
 };
 }  // namespace Engine

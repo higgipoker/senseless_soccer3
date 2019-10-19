@@ -128,18 +128,17 @@ void Sprite::stopAnimating() { animating = false; }
 //
 //
 void Sprite::perspectivize(const float in_camera_height) {
+  //  float dist_from_camera = in_camera_height - entity_height -
+  //  default_height; dist_from_camera = -dist_from_camera;
+  //  if(dist_from_camera){
+  //  float desired_width = getLocalBounds().width/(1-dist_from_camera);
+  //  float desired_height = getLocalBounds().height/(1-dist_from_camera);
+  //  float scale_factor_x = desired_width / getLocalBounds().width;
+  //  float scale_factor_y = desired_height / getLocalBounds().height;
+  //  setScale(scale_factor_x, scale_factor_y);
+  //  }
 
-//  float dist_from_camera = in_camera_height - entity_height - default_height;
-//  dist_from_camera = -dist_from_camera;
-//  if(dist_from_camera){
-//  float desired_width = getLocalBounds().width/(1-dist_from_camera);
-//  float desired_height = getLocalBounds().height/(1-dist_from_camera);
-//  float scale_factor_x = desired_width / getLocalBounds().width;
-//  float scale_factor_y = desired_height / getLocalBounds().height;
-//  setScale(scale_factor_x, scale_factor_y);
-//  }
-
-//  return;
+  //  return;
   if (perspectivizable) {
     // size depending on distance from camera
     float dimensions = perspective_width;

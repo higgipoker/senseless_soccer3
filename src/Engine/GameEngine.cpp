@@ -13,7 +13,7 @@ namespace Engine {
 //
 inline struct {
   bool operator()(const sf::Drawable *d1, const sf::Drawable *d2) const {
-    return d1->z < d2->z;
+    return d1->z <= d2->z;
   }
 } sort_drawable;
 //
@@ -78,8 +78,8 @@ void GameEngine::addSprite(Sprite &in_sprite, layer_id in_layer_id) {
 //
 //
 void GameEngine::addEntity(Entity &in_entity, layer_id in_layer_id) {
-  addSprite(in_entity.sprite, in_layer_id);
-  addSprite(in_entity.shadow, shadow_layer);
+  addSprite(in_entity.getSprite(), in_layer_id);
+  addSprite(in_entity.getShadow(), shadow_layer);
   entities.push_back(&in_entity);
 }
 //
@@ -90,7 +90,7 @@ void GameEngine::handle_input() {
   while (window.pollEvent(event)) {
     default_keyboard.update(event);
     if (Debug::showHud()) {
-      debug_gui.pollEvent(event);
+      debug_gui.handleInput(event);
     }
     switch (event.type) {
       case sf::Event::KeyPressed:
@@ -171,8 +171,8 @@ bool GameEngine::isRunning() const { return running; }
 void GameEngine::sort_drawables() {
   for (auto &layer : render_layers) {
     if (layer.second.sortable) {
-      std::sort(layer.second.sprite_list.begin(), layer.second.sprite_list.end(),
-                sort_drawable);
+      std::sort(layer.second.sprite_list.begin(),
+                layer.second.sprite_list.end(), sort_drawable);
     }
   }
 }
@@ -189,7 +189,7 @@ Camera &GameEngine::getMainCamera() { return camera; }
 //
 void GameEngine::update_entities() {
   // entities
-  for (auto &entity : entities) {
+  for (const auto &entity : entities) {
     entity->handleInput();
     entity->update();
     entity->movable.step(dt);
@@ -200,40 +200,39 @@ void GameEngine::update_entities() {
 //
 void GameEngine::render() {
   window.clear(sf::Color::Blue);
-  render_entities();
-  render_hud();
-  render_debug();
-  window.display();
-}
-//
-//
-//
-void GameEngine::render_entities() {
-  sort_drawables();
-  window.setView(camera.getview());
-  for (auto &layer : render_layers) {
-    for (auto &drawable : layer.second.sprite_list) {
-      drawable->perspectivize(camera.getHeight());
+  //
+  //
+  //
+  {  // render entities
+    window.setView(camera.getview());
+    sort_drawables();
+    for (const auto &layer : render_layers) {
+      for (const auto &drawable : layer.second.sprite_list) {
+        drawable->perspectivize(camera.getHeight());
+        window.draw(*drawable);
+      }
+    }
+  }
+  //
+  //
+  //
+  {  // render hud
+    window.setView(hud_view);
+    for (const auto &drawable : hud_layer.sprite_list) {
       window.draw(*drawable);
     }
   }
-}
-//
-//
-//
-void GameEngine::render_hud() {
-  window.setView(hud_view);
-  for (auto &drawable : hud_layer.sprite_list) {
-    window.draw(*drawable);
+  //
+  //
+  //
+  {  // render debug
+    if (Debug::showHud()) {
+      window.setView(hud_view);
+      debug_gui.update();
+    }
   }
-}
-//
-//
-//
-void GameEngine::render_debug() {
-  if (Debug::showHud()) {
-    debug_gui.update();
-  }
+  window.display();
+  window.setView(camera.getview());
 }
 //
 //

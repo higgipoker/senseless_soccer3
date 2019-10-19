@@ -12,7 +12,7 @@ class Match {
   //
   //
   //
-  void setBall(Ball &in_ball);
+  void setBall(std::unique_ptr<Ball> in_ball);
   //
   //
   //
@@ -22,5 +22,5 @@ class Match {
   //
  protected:
   /// match has a ball
-  Ball *ball;
+  std::unique_ptr<Ball> ball;
 };

@@ -20,7 +20,7 @@ class Entity {
   //
   //
   //
-  Entity(Sprite &in_sprite, Sprite &in_shadow);
+  Entity(std::unique_ptr<Sprite> in_sprite, std::unique_ptr<Sprite> in_shadow);
   //
   //
   //
@@ -32,7 +32,7 @@ class Entity {
   //
   //
   //
-  Direction directionTo(const Entity &in_entity) const;
+  Vector3 directionTo(const Entity &in_entity) const;
   //
   //
   //
@@ -44,18 +44,26 @@ class Entity {
   //
   //
   //
-  InputDevice *getInput() const;
+  Sprite &getSprite();
   //
   //
   //
+  Sprite &getShadow();
+  //
+  //
+  //
+  bool isInputAttached();
+  //
+  //
+  //
+  InputDevice & getInputDevice() const;
+  // has a movable aspect, instead of inheritance
   Movable movable;
-  Sprite &sprite;
-  Sprite &shadow;
-  int shadow_offset = 2;
-  static Sprite dummy_sprite;
-  static Sprite dummy_shadow;
 
  protected:
+  std::unique_ptr<Sprite> sprite;
+  std::unique_ptr<Sprite> shadow;
+  int shadow_offset = 2;
   float speed = 1.F;
   InputDevice *input = nullptr;
 };

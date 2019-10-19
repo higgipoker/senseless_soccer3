@@ -13,7 +13,15 @@
 //
 //
 //
-enum class RunningSpeed  { VerySlow, Slow, Normal, Fast, VeryFast };
+struct TeamData {
+  int shirt_number = 0;
+};
+struct Attributes {};
+
+//
+//
+//
+enum class RunningSpeed { VerySlow, Slow, Normal, Fast, VeryFast };
 //
 // running speeds
 //
@@ -48,7 +56,8 @@ class Player : public Engine::Entity {
   //
   //
   //
-  Player(PlayerSprite &in_sprite, PlayerShadowSprite &in_shadow);
+  Player(std::unique_ptr<PlayerSprite> in_sprite,
+         std::unique_ptr<PlayerSprite> in_shadow);
   //
   //
   //
@@ -57,6 +66,18 @@ class Player : public Engine::Entity {
   //
   //
   void update() override;
+  //
+  //
+  //
+  void setTeamData(TeamData in_data);
+  //
+  //
+  //
+  void pass(Engine::Vector3 in_force);
+  //
+  //
+  //
+  void pass(Player &in_receiver);
   //
   //
   //
@@ -72,7 +93,7 @@ class Player : public Engine::Entity {
   //
   //
   //
-  Engine::Compass direction();
+  Engine::Compass getDirection();
   //
   //
   //
@@ -116,6 +137,10 @@ class Player : public Engine::Entity {
   PlayerSprite &player_shadow;
   // speed attrib
   RunningSpeed speed = RunningSpeed::Normal;
+  // team stuff
+  TeamData team_data;
+  // playing attributes
+  Attributes attribs;
   //
   //
   //

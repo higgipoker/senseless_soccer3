@@ -16,8 +16,7 @@ Pitch::Pitch(std::shared_ptr<sf::Texture> in_texture,
   grass.setTexture(*in_texture);
 
   // make a texture for drawing the lines on
-  pitch_texture->create(static_cast<float>(Metrics::MetersToPixels(69) + 400),
-                        static_cast<float>(Metrics::MetersToPixels(105) + 400));
+  pitch_texture->create(in_world_bounds.width, in_world_bounds.height);
   pitch.setTexture(pitch_texture->getTexture());
 
   // size of the target rect for grass tile
@@ -58,7 +57,7 @@ Pitch::Pitch(std::shared_ptr<sf::Texture> in_texture,
 //
 //
 //
-Pitch::~Pitch() {  }
+Pitch::~Pitch() {}
 //
 //
 //
@@ -247,31 +246,31 @@ void Pitch::init_halfway_line() {
 //
 //
 void Pitch::perspectivize(const float in_camera_height) {
-//  float dist_from_camera = in_camera_height - entity_height - 50;
-//  dist_from_camera = -dist_from_camera;
-//  if(dist_from_camera){
-//  float desired_width = pitch_texture->getSize().x /(1-dist_from_camera);
-//  float desired_height = pitch_texture->getSize().y /(1-dist_from_camera);
-//  float scale_factor_x = desired_width / pitch.getLocalBounds().width;
-//  float scale_factor_y = desired_height / pitch.getLocalBounds().height;
-//  pitch.setScale(scale_factor_x, scale_factor_y);
-//  }
+  //  float dist_from_camera = in_camera_height - entity_height - 50;
+  //  dist_from_camera = -dist_from_camera;
+  //  if(dist_from_camera){
+  //  float desired_width = pitch_texture->getSize().x /(1-dist_from_camera);
+  //  float desired_height = pitch_texture->getSize().y /(1-dist_from_camera);
+  //  float scale_factor_x = desired_width / pitch.getLocalBounds().width;
+  //  float scale_factor_y = desired_height / pitch.getLocalBounds().height;
+  //  pitch.setScale(scale_factor_x, scale_factor_y);
+  //  }
   if (perspectivizable) {
     // size depending on distance from camera
-//    float dimensions = perspective_width;
-//    float dist_from_camera = in_camera_height - entity_height;
+    //    float dimensions = perspective_width;
+    //    float dist_from_camera = in_camera_height - entity_height;
 
-//    // other side of camera, don't perspectivize!
-//    if (dist_from_camera <= 0) {
-//      setScale({0.f, 0.f});
-//      return;
-//    }
+    //    // other side of camera, don't perspectivize!
+    //    if (dist_from_camera <= 0) {
+    //      setScale({0.f, 0.f});
+    //      return;
+    //    }
 
-//    float angular_diameter = 2 * (atanf(dimensions / (2 * dist_from_camera)));
-//    float degs = Degrees(angular_diameter);
-//    float sprite_scale_factor = degs / dimensions;
-//    float sprite_ratio = dimensions / getLocalBounds().width;
-//    sprite_scale_factor *= sprite_ratio;
-//    pitch.setScale(sprite_scale_factor, sprite_scale_factor);
+    //    float angular_diameter = 2 * (atanf(dimensions / (2 *
+    //    dist_from_camera))); float degs = Degrees(angular_diameter); float
+    //    sprite_scale_factor = degs / dimensions; float sprite_ratio =
+    //    dimensions / getLocalBounds().width; sprite_scale_factor *=
+    //    sprite_ratio; pitch.setScale(sprite_scale_factor,
+    //    sprite_scale_factor);
   }
 }

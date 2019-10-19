@@ -1,4 +1,4 @@
-#include "Folder.hpp"
+﻿#include "Folder.hpp"
 
 #ifdef _WIN32
 #include <direct.h>
@@ -28,15 +28,51 @@ inline std::string getWorkingDirectory() {
 //
 //
 //
-Folder::Folder(const std::string &in_path) : path(in_path) {}
+Folder::Folder(const std::string &in_path) : path(in_path) {read_files_and_folders();}
 //
 //
 //
-const std::string Folder::getPath() { return path; }
+const std::string Folder::getPath(bool in_add_trailing_slash) {
+  return in_add_trailing_slash ? path + "/" : path;
+}
 //
 //
 //
 const std::set<std::string> Folder::getFileList(bool in_refresh) {
+  if (in_refresh) {
+    read_files_and_folders();
+  }
+  return files;
+}
+//
+//
+//
+const std::set<std::string> Folder::getFolderList(bool in_refresh) {
+  if (in_refresh) {
+    read_files_and_folders();
+  }
+  return folders;
+}
+//
+//
+//
+const std::set<std::string> Folder::getFileAndFolderList(bool in_refresh) {
+  if (in_refresh) {
+    read_files_and_folders();
+  }
+  return files_and_folders;
+}
+//
+//
+//
+void Folder::changeDirectory(const std::string &in_dir) {
+  path = in_dir;
+  getFileList(true);
+}
+//
+//
+//
+void Folder::read_files_and_folders(bool in_refresh, GetType in_type) {
   if (in_refresh || files.empty()) {
     // first call, or refresh requested
     files.clear();
@@ -47,8 +83,13 @@ const std::set<std::string> Folder::getFileList(bool in_refresh) {
         if (strncmp(ent->d_name, ".", sizeof(ent->d_name)) == 0 ||
             strncmp(ent->d_name, "..", sizeof(ent->d_name)) == 0)
           continue;
-        std::cout << "Folder::getFileList> " << path + "/" + ent->d_name << std::endl;
-        files.insert(path + "/" + ent->d_name);
+        if (ent->d_type == DT_DIR) {
+          // files.insert(path + "/" + ent->d_name);
+          folders.insert(ent->d_name);
+        } else {
+          files.insert(ent->d_name);
+        }
+        files_and_folders.insert(ent->d_name);
       }
       closedir(dir);
     } else {
@@ -56,14 +97,6 @@ const std::set<std::string> Folder::getFileList(bool in_refresh) {
                 << std::endl;
     }
   }
-  return files;
-}
-//
-//
-//
-void Folder::changeDirectory(const std::string &in_dir){
-  path = in_dir;
-  getFileList(true);
 }
 //
 //

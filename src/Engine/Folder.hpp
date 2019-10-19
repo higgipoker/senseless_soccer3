@@ -4,6 +4,8 @@
 #include <string>
 
 namespace Engine {
+enum class GetType { Files, Folders, All };
+
 /**
  * @brief The Folder class
  */
@@ -17,11 +19,19 @@ class Folder {
   //
   //
   //
-  const std::string getPath();
+  const std::string getPath(bool in_add_trailing_slash = false);
   //
   //
   //
   const std::set<std::string> getFileList(bool in_refresh = false);
+  //
+  //
+  //
+  const std::set<std::string> getFolderList(bool in_refresh = false);
+  //
+  //
+  //
+  const std::set<std::string> getFileAndFolderList(bool in_refresh = false);
   //
   //
   //
@@ -32,6 +42,15 @@ class Folder {
   std::string path;
   /// save the list of files in this folder for convenience
   std::set<std::string> files;
+  /// save the list of folders
+  std::set<std::string> folders;
+  /// union of the above
+  std::set<std::string> files_and_folders;
+
+  //
+  //
+  //
+  void read_files_and_folders(bool in_refresh = false, GetType in_type=GetType::All);
 };
 /**
  * @brief The WorkingFolder class

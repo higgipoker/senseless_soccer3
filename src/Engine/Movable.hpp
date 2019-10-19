@@ -19,6 +19,7 @@ class Movable {
   void setPosition(const Vector3 &in_position);
   void setPosition(const float in_x, const float in_y, const float in_z);
   void setPosition(const float in_x, const float in_y);
+  void setPosition(const int in_x, const int in_y);
   void move(float in_dx, float in_dy);
   float getX()const;
   float getY()const;

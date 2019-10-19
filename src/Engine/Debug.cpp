@@ -2,6 +2,11 @@
 
 #include "imgui/imgui-SFML.h"
 #include "imgui/imgui.h"
+
+#include <SFML/Window/Event.hpp>
+
+#include <iostream>
+
 namespace Engine {
 bool Debug::show_debug_hud = false;
 bool Debug::flag_draw_bounds = false;
@@ -36,8 +41,21 @@ void Debug::update() {
 //
 //
 //
-void Debug::pollEvent(sf::Event &in_event) {
+void Debug::handleInput(sf::Event &in_event) {
   ImGui::SFML::ProcessEvent(in_event);
+  // handle mouse clicks
+  if (in_event.type == sf::Event::MouseButtonPressed) {
+    if (in_event.mouseButton.button == sf::Mouse::Left) {
+      // get the current mouse position in the window
+      sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+      // convert it to world coordinates
+      sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
+      std::cout << "click at " << static_cast<int>(worldPos.x) << ", "
+                << static_cast<int>(worldPos.y) << std::endl;
+//      std::cout << "click at " << static_cast<int>(pixelPos.x) << ", "
+//                << static_cast<int>(pixelPos.y) << std::endl;
+    }
+  }
 }
 //
 //

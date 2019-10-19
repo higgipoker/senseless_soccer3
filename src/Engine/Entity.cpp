@@ -2,20 +2,16 @@
 
 #include "Metrics.hpp"
 
+#include <cassert>
 #include <iostream>
 namespace Engine {
-Sprite Entity::dummy_sprite;
-Sprite Entity::dummy_shadow;
 //
 //
 //
-Entity::Entity() : sprite(dummy_sprite), shadow(dummy_shadow) {}
-//
-//
-//
-Entity::Entity(Sprite &in_sprite, Sprite &in_shadow)
-    : sprite(in_sprite), shadow(in_shadow) {
-  sprite.shadow = &shadow;
+Entity::Entity(std::unique_ptr<Sprite> in_sprite,
+               std::unique_ptr<Sprite> in_shadow)
+    : sprite(std::move(in_sprite)), shadow(std::move(in_shadow)) {
+  sprite->shadow = shadow.get();
 }
 //
 //
@@ -36,28 +32,25 @@ void Entity::handleInput() {
     movable.applyForce({speed, 0});
   }
   if (input->fire_down()) {
-    movable.applyForce({0.F, 0.F, speed*1.F});
+    movable.applyForce({0.F, 0.F, speed * 1.F});
   }
 }
 //
 //
 //
 void Entity::update() {
-  sprite.setPosition(movable.getX(), movable.getY());
-  shadow.setPosition(sprite.getPosition());
-  shadow.move(shadow_offset, shadow_offset);
-  sprite.animate();
-  sprite.entity_height = movable.getZ();
+  sprite->setPosition(movable.getX(), movable.getY());
+  shadow->setPosition({sprite->getPosition().x + shadow_offset,
+                       sprite->getPosition().y + shadow_offset});
+  sprite->animate();
+  sprite->entity_height = movable.getZ();
+  sprite->z = movable.getPosition().y;
 }
 //
 //
 //
-Direction Entity::directionTo(const Entity &in_entity) const {
-  Vector3 direction = in_entity.movable.getPosition() - movable.getPosition();
-  direction.roundAngle(45);
-  direction.normalise();
-  Compass c(direction);
-  return c.direction;
+Vector3 Entity::directionTo(const Entity &in_entity) const {
+  return in_entity.movable.getPosition() - movable.getPosition();
 }
 //
 //
@@ -66,9 +59,30 @@ void Entity::attachInput(InputDevice &in_device) { input = &in_device; }
 //
 //
 //
-void Entity::detachInput() { input = nullptr; }
+void Entity::detachInput() {
+  assert("input is null" && input);
+  input = nullptr;
+}
 //
 //
 //
-InputDevice *Entity::getInput() const { return input; }
+InputDevice &Entity::getInputDevice() const {
+  assert(
+      "No input device is attached to this entity, call isInputAttached "
+      "first." &&
+      input);
+  return *input;
+}
+//
+//
+//
+bool Entity::isInputAttached() { return input != nullptr; }
+//
+//
+//
+Sprite &Entity::getSprite() { return *sprite.get(); }
+//
+//
+//
+Sprite &Entity::getShadow() { return *shadow.get(); }
 }  // namespace Engine

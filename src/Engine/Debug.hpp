@@ -24,7 +24,7 @@ class Debug {
    * @brief pollEvent
    * @param in_event
    */
-  void pollEvent(sf::Event &in_event);
+  void handleInput(sf::Event &in_event);
   //
   //
   //
