@@ -28,7 +28,7 @@ Player::Player(PlayerSprite &in_sprite, PlayerShadowSprite &in_shadow)
   feet.setRadius(1.0F);
   control.setRadius(12);
 
-  spd = PlayerSpeed::Normal;
+  speed = RunningSpeed::Normal;
 }
 //
 //
@@ -41,7 +41,9 @@ void Player::update() {
   Entity::update();
 
   // either ai brain or controller (human brain)
-  brain.update();
+  if (!input) {
+    brain.update();
+  }
 
   // state machine
   state->step();
@@ -132,23 +134,21 @@ void Player::debug() {
 //
 //
 //
-void Player::run(Engine::Compass in_direction){
+void Player::run(Engine::Compass in_direction) {
   Vector3 v = in_direction.toVector();
   v.normalise2d();
-  v*=movable.speed;
+  v *= movable.speed;
   movable.setVelocity(v);
 }
 //
 //
 //
-void Player::run(Engine::Vector3 in_direction){
+void Player::run(Engine::Vector3 in_direction) {
   in_direction.normalise2d();
-  in_direction*=movable.speed;
+  in_direction *= movable.speed;
   movable.setVelocity(in_direction);
 }
 //
 //
 //
-void Player::stopRunning(){
-  movable.resetVelocity();
-}
+void Player::stopRunning() { movable.resetVelocity(); }

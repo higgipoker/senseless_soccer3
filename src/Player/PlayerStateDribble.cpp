@@ -24,7 +24,7 @@ PlayerStateDribble::PlayerStateDribble(Player &in_player)
 void PlayerStateDribble::start() {
   player.ball_under_control = true;
   already_kicked = false;
-  player.movable.speed = dribble_speeds[player.spd];
+  player.movable.speed = dribble_speeds[player.speed];
 }
 //
 //
@@ -96,7 +96,7 @@ bool PlayerStateDribble::stateOver() {
 //
 void PlayerStateDribble::kick() {
   already_kicked = true;
-  float force = kick_mods[static_cast<PlayerSpeed>(player.spd)];
+  float force = kick_mods[static_cast<RunningSpeed>(player.speed)];
   auto f= player.movable.getVelocityMag(true);
   f++;
   Vector3 kick_force = Compass(player.facing).toVector();

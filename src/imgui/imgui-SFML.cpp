@@ -121,9 +121,9 @@ static bool s_mousePressed[3] = {false, false, false};
 static bool s_touchDown[3] = {false, false, false};
 static bool s_mouseMoved = false;
 static sf::Vector2i s_touchPos;
-static sf::Texture* s_fontTexture =
-    NULL;  // owning pointer to internal font atlas which is used if user
-           // doesn't set custom sf::Texture.
+static std::unique_ptr<sf::Texture>
+    s_fontTexture;  // owning pointer to internal font atlas which is used if
+                    // user doesn't set custom sf::Texture.
 
 static const unsigned int NULL_JOYSTICK_ID = sf::Joystick::Count;
 static unsigned int s_joystickId = NULL_JOYSTICK_ID;
@@ -180,7 +180,7 @@ void loadMouseCursor(ImGuiMouseCursor imguiCursorType,
                      sf::Cursor::Type sfmlCursorType);
 void updateMouseCursor(sf::Window& window);
 
-sf::Cursor* s_mouseCursors[ImGuiMouseCursor_COUNT];
+std::unique_ptr<sf::Cursor> s_mouseCursors[ImGuiMouseCursor_COUNT];
 bool s_mouseCursorLoaded[ImGuiMouseCursor_COUNT];
 
 }  // namespace
@@ -266,10 +266,7 @@ void Init(sf::Window& window, sf::RenderTarget& target, bool loadDefaultFont) {
   loadMouseCursor(ImGuiMouseCursor_ResizeNWSE,
                   sf::Cursor::SizeTopLeftBottomRight);
 
-  if (s_fontTexture) {  // delete previously created texture
-    delete s_fontTexture;
-  }
-  s_fontTexture = new sf::Texture;
+  s_fontTexture = std::make_unique<sf::Texture>();
 
   if (loadDefaultFont) {
     // this will load default font automatically
@@ -455,16 +452,8 @@ void Render(sf::RenderTarget& target) {
 void Shutdown() {
   ImGui::GetIO().Fonts->TexID = (ImTextureID)NULL;
 
-  if (s_fontTexture) {  // if internal texture was created, we delete it
-    delete s_fontTexture;
-    s_fontTexture = NULL;
-  }
-
   for (int i = 0; i < ImGuiMouseCursor_COUNT; ++i) {
     if (s_mouseCursorLoaded[i]) {
-      delete s_mouseCursors[i];
-      s_mouseCursors[i] = NULL;
-
       s_mouseCursorLoaded[i] = false;
     }
   }
@@ -886,7 +875,7 @@ const char* getClipboadText(void* /*userData*/) {
 
 void loadMouseCursor(ImGuiMouseCursor imguiCursorType,
                      sf::Cursor::Type sfmlCursorType) {
-  s_mouseCursors[imguiCursorType] = new sf::Cursor();
+  s_mouseCursors[imguiCursorType] = std::make_unique<sf::Cursor>();
   s_mouseCursorLoaded[imguiCursorType] =
       s_mouseCursors[imguiCursorType]->loadFromSystem(sfmlCursorType);
 }

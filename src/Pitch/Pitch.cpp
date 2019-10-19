@@ -16,7 +16,6 @@ Pitch::Pitch(std::shared_ptr<sf::Texture> in_texture,
   grass.setTexture(*in_texture);
 
   // make a texture for drawing the lines on
-  pitch_texture = new sf::RenderTexture();
   pitch_texture->create(static_cast<float>(Metrics::MetersToPixels(69) + 400),
                         static_cast<float>(Metrics::MetersToPixels(105) + 400));
   pitch.setTexture(pitch_texture->getTexture());
@@ -59,7 +58,7 @@ Pitch::Pitch(std::shared_ptr<sf::Texture> in_texture,
 //
 //
 //
-Pitch::~Pitch() { delete pitch_texture; }
+Pitch::~Pitch() {  }
 //
 //
 //
