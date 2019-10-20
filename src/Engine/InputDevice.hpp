@@ -1,5 +1,8 @@
 #pragma once
 #include <SFML/Window/Event.hpp>
+
+#include <map>
+#include <vector>
 //
 //
 //
@@ -30,23 +33,59 @@ constexpr unsigned char mask_stick_left{1 << 7};   // 1000 0000
 //
 //
 //
-enum InputState {
-  Up = 0,
-  Down,
-  Left,
-  Right,
+enum class Buttons {
+  DPadUp = 0,
+  DPadDown,
+  DPadLeft,
+  DPadRight,
 
-  FireDown,
+  Button1,
+  Button2,
+  Button3,
+  Button4,
+
+  ShoulderLeft1,
+  ShoulderLeft2,
+  Shoulderright1,
+  Shoulderright2,
+
+  Start,
+  Select
+};
+//
+//
+//
+enum class InputEvent {
+  FireDown = 0,
   FireUp,
-  FireLength,
-  FireLengthCached,
   SingleTap,
   DoubleTap,
-  FirePress,
 
   Totalevents
 };
+//
+//
+//
+class InputListener {
+ public:
+  //
+  //
+  //
+  virtual ~InputListener() = default;
+  //
+  //
+  //
+  virtual void onEvent(const InputEvent in_event,
+                       const std::vector<int> &in_params) = 0;
+};
+
+//
+//
+//
 class InputDevice {
+  //////////////////////////////////////////////////////////////////////
+  /// Public Interface
+  //////////////////////////////////////////////////////////////////////
  public:
   //
   //
@@ -63,27 +102,62 @@ class InputDevice {
   //
   //
   //
-  virtual bool up() = 0;
+  bool up();
   //
   //
   //
-  virtual bool down() = 0;
+  bool down();
   //
   //
   //
-  virtual bool left() = 0;
+  bool left();
   //
   //
   //
-  virtual bool right() = 0;
+  bool right();
   //
   //
   //
-  virtual bool fire_down() = 0;
+  bool fire_down();
+  //
+  //
+  //
+  void setListener(InputListener &in_listener);
 
+  //////////////////////////////////////////////////////////////////////
+  /// Protected
+  //////////////////////////////////////////////////////////////////////
  protected:
-  int states[InputState::Totalevents]{};
+  std::map<InputEvent, int> events{
+      {std::make_pair(InputEvent::FireDown, 0)},
+      {std::make_pair(InputEvent::FireUp, 0)},
+      {std::make_pair(InputEvent::SingleTap, 0)},
+      {std::make_pair(InputEvent::DoubleTap, 0)}
+  };
+  struct {
+    int FireLength = 0;
+    int FireLengthCached = 0;
+    int fire_ticks = 0;
+    int ticks_since_tap = 0;
+    bool cached_tap = false;
+
+    const int fire_tap_length = 8;
+    const int fire_double_tap_length = 12;
+  } fire_params;
   unsigned char buttonmask{0x0};
   unsigned char directionmask{0x0};
+
+  unsigned char old_buttonmask{0x00};
+  //
+  //
+  //
+  void resetStates();
+  //
+  //
+  //
+  void notify(const InputEvent in_event, const std::vector<int> &in_params);
+  /// for now, only one listener per input device
+  InputListener *listener = nullptr;
 };
+
 }  // namespace Engine

@@ -60,6 +60,7 @@ add_executable(senseless_soccer3
     src/Engine/Collider.cpp
     src/Engine/InputDevice.cpp
     src/Engine/Keyboard.cpp
+    src/Engine/Gamepad.cpp
     src/Locomotion/LocomotionManager.cpp
     src/Locomotion/Locomotion.cpp
     src/Locomotion/Seek.cpp
@@ -69,6 +70,7 @@ add_executable(senseless_soccer3
     src/Brain/BrainState.cpp
     src/Brain/BrainRetrieve.cpp
     src/Brain/BrainDribble.cpp
+    src/Player/PlayerFactory.cpp
     src/Player/Player.cpp
     src/Player/PlayerSprite.cpp
     src/Player/PlayerState.cpp

@@ -160,6 +160,7 @@ void GameEngine::handle_input() {
         break;
     }
   }
+  gamepad1.update(event);
 }
 //
 //

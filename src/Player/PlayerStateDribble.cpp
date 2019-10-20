@@ -53,7 +53,6 @@ void PlayerStateDribble::step() {
   player.facing.fromVector(dir);
   if (old_direction.direction != player.facing.direction) {
     close_control();
-    std::cout << "PlayerStateDribble::step> close_control" << std::endl;
   } else {
     // check for collision with ball
     if (Collider::collides(player.feet,
@@ -103,5 +102,4 @@ void PlayerStateDribble::kick() {
   kick_force.normalise2d();
   kick_force *= force;
   player.getMatch().getBall().kick(kick_force);
-  std::cout << "PlayerStateDribble::step> kick" << std::endl;
 }

@@ -3,6 +3,7 @@
 #include "Camera.hpp"
 #include "Debug.hpp"
 #include "Entity.hpp"
+#include "Gamepad.hpp"
 #include "Keyboard.hpp"
 #include "Movable.hpp"
 #include "Sprite.hpp"
@@ -57,8 +58,8 @@ class GameEngine {
   //
   //
   //
-  void addSprite(Sprite & in_sprite,
-                   layer_id in_layer_id = RenderLayer::INVALID_LAYER);
+  void addSprite(Sprite &in_sprite,
+                 layer_id in_layer_id = RenderLayer::INVALID_LAYER);
   //
   //
   //
@@ -87,11 +88,12 @@ class GameEngine {
   //
   //
   //
-  Keyboard& getDefaultKeyboard();
+  Keyboard &getDefaultKeyboard();
 
  private:
   Window window;
   Keyboard default_keyboard;
+  Gamepad gamepad1;
   Camera camera;
   sf::View hud_view{sf::FloatRect{0, 0, 800, 600}};
   std::map<int, RenderLayer> render_layers;

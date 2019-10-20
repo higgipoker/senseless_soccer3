@@ -9,12 +9,12 @@ namespace Engine {
 //
 //
 //
-inline std::map<InputState, sf::Keyboard::Key> keymap{
-    {InputState::Up, sf::Keyboard::W},
-    {InputState::Left, sf::Keyboard::A},
-    {InputState::Down, sf::Keyboard::S},
-    {InputState::Right, sf::Keyboard::D},
-    {InputState::FireDown, sf::Keyboard::Up}};
+inline std::map<Buttons, sf::Keyboard::Key> keymap{
+    {Buttons::DPadUp, sf::Keyboard::W},
+    {Buttons::DPadDown, sf::Keyboard::S},
+    {Buttons::DPadLeft, sf::Keyboard::A},
+    {Buttons::DPadRight, sf::Keyboard::D},
+    {Buttons::Button1, sf::Keyboard::Up}};
 //
 //
 //
@@ -33,25 +33,5 @@ class Keyboard : public InputDevice {
   //
   //
   void update(const sf::Event &in_event) override;
-  //
-  //
-  //
-  bool up() override;
-  //
-  //
-  //
-  bool down() override;
-  //
-  //
-  //
-  bool left() override;
-  //
-  //
-  //
-  bool right() override;
-  //
-  //
-  //
-  bool fire_down() override;
 };
 }  // namespace Engine
