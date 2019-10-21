@@ -19,7 +19,7 @@ Sprite::Sprite() {}
 //
 //
 //
-Sprite::Sprite(std::shared_ptr<sf::Texture> in_texture) : texture(in_texture) {
+Sprite::Sprite(SharedPtr<sf::Texture> in_texture) : texture(in_texture) {
   setTexture(*texture.get());
 }
 //

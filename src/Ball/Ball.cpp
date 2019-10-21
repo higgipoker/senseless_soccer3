@@ -1,20 +1,21 @@
 #include "Ball.hpp"
 
 #include "Engine/Debug.hpp"
+#include "Engine/Types.hpp"
 
 #include <iostream>
 using namespace Engine;
 //
 //
 //
-Ball::Ball(std::unique_ptr<Sprite> in_sprite, std::unique_ptr<Sprite>in_shadow)
+Ball::Ball(UnqPtr<Sprite> in_sprite, UnqPtr<Sprite> in_shadow)
     : Entity(std::move(in_sprite), std::move(in_shadow)) {
   // todo ball radius
   collidable.setRadius(radius);
   movable.co_friction = 0.01F;
   movable.co_bounciness = 0.8f;
-  sprite->setBasePerspectiveWidth(radius*2);
-  shadow->setBasePerspectiveWidth(radius*2);
+  sprite->setBasePerspectiveWidth(radius * 2);
+  shadow->setBasePerspectiveWidth(radius * 2);
 }
 //
 //

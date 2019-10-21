@@ -60,6 +60,10 @@ void Debug::handleInput(sf::Event &in_event) {
 //
 //
 //
+void Debug::show(){show_debug_hud = true;}
+//
+//
+//
 void Debug::toggle() { show_debug_hud = !show_debug_hud; }
 //
 //

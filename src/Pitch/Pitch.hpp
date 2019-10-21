@@ -2,6 +2,7 @@
 
 #include "Engine/ArcShape.hpp"
 #include "Engine/Sprite.hpp"
+#include "Engine/Types.hpp"
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
@@ -59,7 +60,7 @@ class Pitch : public Engine::Sprite {
   //
   //
   //
-  Pitch(std::shared_ptr<sf::Texture> in_texture,
+  Pitch(SharedPtr<sf::Texture> in_texture,
         const sf::IntRect in_world_bounds);
   //
   //
@@ -84,7 +85,7 @@ class Pitch : public Engine::Sprite {
   /// pitch sprite
   sf::Sprite pitch;
   /// a texture to render the grass and lines to
-  std::unique_ptr<sf::RenderTexture> pitch_texture =
+  UnqPtr<sf::RenderTexture> pitch_texture =
       std::make_unique<sf::RenderTexture>();
   /// pitch dimensions
   PitchDimensions dimensions;

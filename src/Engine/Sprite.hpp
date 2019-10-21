@@ -2,6 +2,8 @@
 
 #include "SpriteAnimation.hpp"
 
+#include "Types.hpp"
+
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Shape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -35,7 +37,7 @@ class Sprite : public sf::Sprite {
   //
   //
   //
-  Sprite(std::shared_ptr<sf::Texture> in_texture);
+  Sprite(SharedPtr<sf::Texture> in_texture);
   //
   //
   //
@@ -86,7 +88,7 @@ class Sprite : public sf::Sprite {
 
  protected:
   /// managed texture
-  std::shared_ptr<sf::Texture> texture;
+  SharedPtr<sf::Texture> texture;
   /// frames
   std::vector<sf::IntRect> frames;
   /// track current frame

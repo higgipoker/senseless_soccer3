@@ -16,8 +16,7 @@ const int SHADOW_OFFSET_Y = 4;
 //
 //
 //
-Player::Player(std::unique_ptr<PlayerSprite> in_sprite,
-               std::unique_ptr<PlayerSprite> in_shadow)
+Player::Player(UnqPtr<PlayerSprite> in_sprite, UnqPtr<PlayerSprite> in_shadow)
     : Entity(std::move(in_sprite), std::move(in_shadow)),
       brain(*this),
       state_stand(*this),
@@ -32,7 +31,7 @@ Player::Player(std::unique_ptr<PlayerSprite> in_sprite,
   feet.setRadius(1.0F);
   control.setRadius(12);
 
-  speed = RunningSpeed::Normal;
+  speed = RunningSpeed::Fast;
 
   // debug
   feet.setFillColor(Debug::defaultDiagnosticsColor());
@@ -47,7 +46,26 @@ void Player::setTeamData(TeamData in_data) { team_data = in_data; }
 //
 //
 //
-void Player::handleInput() { Entity::handleInput(); }
+void Player::handleInput() {  // Entity::handleInput();
+  if (!input) return;
+
+  // no momentum system for player movement, just set velocity
+
+  Vector3 movement_vector;
+  if (input->up()) {
+    movement_vector.y = -1;
+  }
+  if (input->down()) {
+    movement_vector.y = 1;
+  }
+  if (input->left()) {
+    movement_vector.x = -1;
+  }
+  if (input->right()) {
+    movement_vector.x = 1;
+  }
+  run(movement_vector);
+}
 //
 //
 //
@@ -82,7 +100,6 @@ void Player::update() {
 void Player::face_ball() {
   auto direction = directionTo(getMatch().getBall());
   direction.roundAngle(45);
-  direction.normalise();
   Compass to_ball(direction);
   facing.direction = to_ball.direction;
 }
@@ -173,6 +190,21 @@ void Player::pass(Engine::Vector3 in_force) { match->getBall().kick(in_force); }
 void Player::pass(Player &in_receiver) {
   Vector3 force = directionTo(in_receiver);
   int force_needed = 10;
-  force*=force_needed;
+  force *= force_needed;
   match->getBall().kick(force);
+}
+//
+//
+//
+void Player::onEvent(const InputEvent in_event,
+                     const std::vector<int> &in_params) {
+  switch (in_event) {
+    case InputEvent::FireDown:
+      break;
+    case InputEvent::FireUp:
+    case InputEvent::DoubleTap:
+    case InputEvent::SingleTap:
+      std::cout << InputListener::toString(in_event) << std::endl;
+      break;
+  }
 }

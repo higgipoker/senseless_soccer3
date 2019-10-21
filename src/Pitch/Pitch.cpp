@@ -9,7 +9,7 @@ using namespace Engine;
 //
 //
 //
-Pitch::Pitch(std::shared_ptr<sf::Texture> in_texture,
+Pitch::Pitch(SharedPtr<sf::Texture> in_texture,
              const sf::IntRect in_world_bounds) {
   // set up the repeating grass texture
   in_texture->setRepeated(true);

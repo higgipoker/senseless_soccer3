@@ -40,6 +40,11 @@ GameEngine::~GameEngine() { window.close(); }
 //
 //
 void GameEngine::step() {
+  if (gamepad1.isButtonPressed(mask_l1)) {
+    if (!Debug::showHud()) toggle_debg(true);
+  } else {
+    if (Debug::showHud()) toggle_debg(false);
+  }
   handle_input();
   update_entities();
   render();
@@ -96,13 +101,11 @@ void GameEngine::handle_input() {
       case sf::Event::KeyPressed:
         if (window.hasFocus()) {
           if (event.key.code == sf::Keyboard::Tab) {
-#ifndef NDEBUG
-            Debug::toggle();
-#endif
+            toggle_debg();
           } else if (event.key.code == sf::Keyboard::Escape) {
 #ifndef NDEBUG
             if (Debug::showHud()) {
-              Debug::toggle();
+              toggle_debg();
             }
 #endif
             else {
@@ -247,4 +250,20 @@ layer_id GameEngine::getShadowLayer() const { return shadow_layer; }
 //
 //
 Keyboard &GameEngine::getDefaultKeyboard() { return default_keyboard; }
+//
+//
+//
+Gamepad &GameEngine::getDefaultGamepad() { return gamepad1; }
+//
+//
+//
+void GameEngine::toggle_debg(bool in_keep_on) {
+#ifndef NDEBUG
+  if (in_keep_on) {
+    Debug::show();
+  } else {
+    Debug::toggle();
+  }
+#endif
+}
 }  // namespace Engine

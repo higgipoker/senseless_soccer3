@@ -59,9 +59,13 @@ enum class InputEvent {
   FireDown = 0,
   FireUp,
   SingleTap,
-  DoubleTap,
-
-  Totalevents
+  DoubleTap
+};
+static std::map<InputEvent, std::string> event_to_string{
+    {InputEvent::FireDown, "FireDown"},
+    {InputEvent::FireUp, "FireUp"},
+    {InputEvent::SingleTap, "SingleTap"},
+    {InputEvent::DoubleTap, "DoubleTap"},
 };
 //
 //
@@ -77,6 +81,12 @@ class InputListener {
   //
   virtual void onEvent(const InputEvent in_event,
                        const std::vector<int> &in_params) = 0;
+  //
+  //
+  //
+  static std::string toString(const InputEvent in_event) {
+    return event_to_string.at(in_event);
+  }
 };
 
 //
@@ -122,18 +132,16 @@ class InputDevice {
   //
   //
   //
+  bool isButtonPressed(const unsigned char in_which);
+  //
+  //
+  //
   void setListener(InputListener &in_listener);
 
   //////////////////////////////////////////////////////////////////////
   /// Protected
   //////////////////////////////////////////////////////////////////////
  protected:
-  std::map<InputEvent, int> events{
-      {std::make_pair(InputEvent::FireDown, 0)},
-      {std::make_pair(InputEvent::FireUp, 0)},
-      {std::make_pair(InputEvent::SingleTap, 0)},
-      {std::make_pair(InputEvent::DoubleTap, 0)}
-  };
   struct {
     int FireLength = 0;
     int FireLengthCached = 0;
@@ -148,10 +156,6 @@ class InputDevice {
   unsigned char directionmask{0x0};
 
   unsigned char old_buttonmask{0x00};
-  //
-  //
-  //
-  void resetStates();
   //
   //
   //

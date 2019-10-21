@@ -31,5 +31,9 @@ class Gamepad : public InputDevice {
   //
   //
   void set_stick_mask();
+  //
+  //
+  //
+  void check_event();
 };
 }  // namespace Engine

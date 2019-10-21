@@ -1,8 +1,11 @@
 #pragma once
 #include "Ball/Ball.hpp"
-/**
- * @brief The Match class
- */
+
+#include "Engine/Types.hpp"
+//
+//
+//
+
 class Match {
  public:
   //
@@ -12,7 +15,7 @@ class Match {
   //
   //
   //
-  void setBall(std::unique_ptr<Ball> in_ball);
+  void setBall(UnqPtr<Ball> in_ball);
   //
   //
   //
@@ -22,5 +25,5 @@ class Match {
   //
  protected:
   /// match has a ball
-  std::unique_ptr<Ball> ball;
+  UnqPtr<Ball> ball;
 };

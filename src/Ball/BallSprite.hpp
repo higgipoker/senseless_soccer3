@@ -3,6 +3,7 @@
 #include "Engine/Compass.hpp"
 #include "Engine/Sprite.hpp"
 #include "Engine/SpriteAnimation.hpp"
+#include "Engine/Types.hpp"
 
 #include <map>
 
@@ -38,7 +39,7 @@ class BallSprite : public Engine::Sprite {
   //
   //
   BallSprite(
-      std::shared_ptr<sf::Texture> in_texture,
+      SharedPtr<sf::Texture> in_texture,
       const Engine::SpriteSetDefinition in_def = Engine::SpriteSetDefinition{
           BALL_FRAME_WIDTH, BALL_FRAME_HEIGHT, BALL_FRAMES, BALL_START_ROW,
           BALL_START_COL, BALL_COLS});
@@ -56,7 +57,7 @@ class BallShadowSprite : public BallSprite {
   //
   //
   BallShadowSprite(
-      std::shared_ptr<sf::Texture> in_texture,
+      SharedPtr<sf::Texture> in_texture,
       const Engine::SpriteSetDefinition in_def = Engine::SpriteSetDefinition{
           BALL_FRAME_WIDTH, BALL_FRAME_HEIGHT, BALL_SHADOW_FRAMES,
           BALL_START_ROW, BALL_SHADOW_START_COL, BALL_COLS});

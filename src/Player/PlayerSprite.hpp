@@ -31,7 +31,7 @@ class PlayerSprite : public Engine::Sprite {
   //
   //
   PlayerSprite(
-      std::shared_ptr<sf::Texture> in_texture,
+      SharedPtr<sf::Texture> in_texture,
       const Engine::SpriteSetDefinition in_def = Engine::SpriteSetDefinition{
           FRAME_WIDTH, FRAME_HEIGHT, FRAMES, START_ROW, START_COL, COLS});
   //
@@ -56,7 +56,7 @@ class PlayerShadowSprite : public PlayerSprite {
   //
   //
   //
-  PlayerShadowSprite(std::shared_ptr<sf::Texture> in_texture,
+  PlayerShadowSprite(SharedPtr<sf::Texture> in_texture,
                      const Engine::SpriteSetDefinition in_def =
                          Engine::SpriteSetDefinition{FRAME_WIDTH, FRAME_HEIGHT,
                                                      FRAMES, SHADOW_START_ROW,

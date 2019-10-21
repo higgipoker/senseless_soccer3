@@ -12,6 +12,7 @@
 #include "Player/Player.hpp"
 #include "Player/PlayerFactory.hpp"
 #include "Player/PlayerSprite.hpp"
+#include "Engine/Types.hpp"
 
 using namespace Engine;
 //
@@ -49,7 +50,7 @@ int main() {
   // players
   //
   Player::connectMatch(match);
-  std::vector<std::unique_ptr<Player>> players;
+  std::vector<UnqPtr<Player>> players;
   for (auto i = 0; i < 10; ++i) {
     players.push_back(PlayerFactory::makePlayer(tex_playerandball));
     TeamData td;
@@ -58,19 +59,22 @@ int main() {
     players.back()->movable.setPosition(i * 10, 120);
     engine.addEntity(*players.back(), sprite_layer_id);
   }
+  engine.getDefaultGamepad().setListener(*players.back().get());
+  players.back()->attachInput(engine.getDefaultGamepad());
+
   //
   // pitch
   //
   sf::IntRect world{0, 0, 2000, 3000};
   engine.getMainCamera().setWorldRect(world);
-  std::unique_ptr<Sprite> pitch = std::make_unique<Pitch>(tex_grass, world);
+  UnqPtr<Sprite> pitch = std::make_unique<Pitch>(tex_grass, world);
   engine.addSprite(*pitch.get(), engine.getBackgroundLayer());
-  std::unique_ptr<Sprite> ball_shadow =
+  UnqPtr<Sprite> ball_shadow =
       std::make_unique<BallShadowSprite>(tex_playerandball);
   //
   // ball
   //
-  std::unique_ptr<Sprite> ballsprite =
+  UnqPtr<Sprite> ballsprite =
       std::make_unique<BallSprite>(tex_playerandball);
   auto ball =
       std::make_unique<Ball>(std::move(ballsprite), std::move(ball_shadow));
@@ -80,7 +84,7 @@ int main() {
   match.getBall().movable.setPosition({200, 200, 0});
   engine.addEntity(match.getBall(), sprite_layer_id);
 
-  players[0]->getBrain().changeState(brain_state::Retrieve);
+  //players[0]->getBrain().changeState(brain_state::Retrieve);
   while (engine.isRunning()) {
     engine.step();
   }

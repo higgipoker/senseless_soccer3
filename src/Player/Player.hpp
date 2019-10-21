@@ -6,6 +6,7 @@
 
 #include "Brain/Brain.hpp"
 #include "Engine/Entity.hpp"
+#include "Engine/Types.hpp"
 
 #include <SFML/Graphics/CircleShape.hpp>
 
@@ -43,7 +44,7 @@ inline std::map<RunningSpeed, float> dribble_speeds = {
 //
 inline std::map<RunningSpeed, float> kick_mods = {
     {RunningSpeed::VerySlow, 0.8F}, {RunningSpeed::Slow, 1.2F},
-    {RunningSpeed::Normal, 1.4F},   {RunningSpeed::Fast, 2.3F},
+    {RunningSpeed::Normal, 1.4F},   {RunningSpeed::Fast, 2.1F},
     {RunningSpeed::VeryFast, 3.0F},
 };
 
@@ -56,8 +57,7 @@ class Player : public Engine::Entity {
   //
   //
   //
-  Player(std::unique_ptr<PlayerSprite> in_sprite,
-         std::unique_ptr<PlayerSprite> in_shadow);
+  Player(UnqPtr<PlayerSprite> in_sprite, UnqPtr<PlayerSprite> in_shadow);
   //
   //
   //
@@ -110,6 +110,11 @@ class Player : public Engine::Entity {
   //
   //
   bool ballInControlRange();
+  //
+  // inputlistener interface implementation
+  //
+  void onEvent(const Engine::InputEvent in_event,
+               const std::vector<int> &in_params) override;
 
  protected:
   //

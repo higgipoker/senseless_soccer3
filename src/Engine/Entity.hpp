@@ -3,6 +3,7 @@
 #include "InputDevice.hpp"
 #include "Movable.hpp"
 #include "Sprite.hpp"
+#include "Types.hpp"
 //
 //
 //
@@ -11,7 +12,7 @@ namespace Engine {
 /**
  * @brief The Entity class
  */
-class Entity {
+class Entity : public InputListener{
  public:
   //
   // constructs an enitty without a graphical aspect (default movable)
@@ -20,7 +21,7 @@ class Entity {
   //
   //
   //
-  Entity(std::unique_ptr<Sprite> in_sprite, std::unique_ptr<Sprite> in_shadow);
+  Entity(UnqPtr<Sprite> in_sprite, UnqPtr<Sprite> in_shadow);
   //
   //
   //
@@ -59,10 +60,15 @@ class Entity {
   InputDevice & getInputDevice() const;
   // has a movable aspect, instead of inheritance
   Movable movable;
+  //
+  // inputlistener interface implementation
+  //
+  void onEvent(const InputEvent in_event,
+                       const std::vector<int> &in_params) override{};
 
  protected:
-  std::unique_ptr<Sprite> sprite;
-  std::unique_ptr<Sprite> shadow;
+  UnqPtr<Sprite> sprite;
+  UnqPtr<Sprite> shadow;
   int shadow_offset = 2;
   float speed = 1.F;
   InputDevice *input = nullptr;

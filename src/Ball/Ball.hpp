@@ -12,7 +12,7 @@ class Ball : public Engine::Entity {
   //
   //
   //
-  Ball(std::unique_ptr<Engine::Sprite> in_sprite, std::unique_ptr<Engine::Sprite> in_shadow);
+  Ball(UnqPtr<Engine::Sprite> in_sprite, UnqPtr<Engine::Sprite> in_shadow);
   //
   //
   //

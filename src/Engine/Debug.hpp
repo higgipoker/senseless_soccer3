@@ -28,6 +28,10 @@ class Debug {
   //
   //
   //
+  static void show();
+  //
+  //
+  //
   static void toggle();
   //
   //

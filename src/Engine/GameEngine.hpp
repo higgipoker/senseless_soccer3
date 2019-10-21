@@ -89,6 +89,10 @@ class GameEngine {
   //
   //
   Keyboard &getDefaultKeyboard();
+  //
+  //
+  //
+  Gamepad &getDefaultGamepad();
 
  private:
   Window window;
@@ -121,5 +125,9 @@ class GameEngine {
   //
   //
   void render();
+  //
+  //
+  //
+  void toggle_debg(bool in_keep_on = false);
 };
 }  // namespace Engine

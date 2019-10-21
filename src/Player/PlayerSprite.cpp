@@ -6,7 +6,7 @@ using namespace Engine;
 //
 //
 //
-PlayerSprite::PlayerSprite(std::shared_ptr<sf::Texture> in_texture,
+PlayerSprite::PlayerSprite(SharedPtr<sf::Texture> in_texture,
                            const SpriteSetDefinition in_def)
     : Sprite(in_texture) {
   init(in_def);
@@ -38,6 +38,6 @@ void PlayerSprite::setAnimation(PlayerAnimationType in_type,
 //
 //
 //
-PlayerShadowSprite::PlayerShadowSprite(std::shared_ptr<sf::Texture> in_texture,
+PlayerShadowSprite::PlayerShadowSprite(SharedPtr<sf::Texture> in_texture,
                                        const SpriteSetDefinition in_def)
     : PlayerSprite(in_texture, in_def) {}

@@ -7,7 +7,6 @@ namespace Engine {
 void Keyboard::update(const sf::Event& in_event) {
   directionmask = mask_zero;
   buttonmask = mask_zero;
-  resetStates();
   if (sf::Keyboard::isKeyPressed(keymap[Buttons::DPadLeft])) {
     directionmask |= mask_dpad_left;
   }
@@ -22,7 +21,6 @@ void Keyboard::update(const sf::Event& in_event) {
   }
   if (sf::Keyboard::isKeyPressed(keymap[Buttons::Button1])) {
     buttonmask |= mask_a;
-    events[InputEvent::FireDown] = 1;
   }
 }
 }  // namespace Engine
