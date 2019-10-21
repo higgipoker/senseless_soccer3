@@ -7,12 +7,13 @@
 #include "Ball/BallSprite.hpp"
 #include "Engine/Folder.hpp"
 #include "Engine/GameEngine.hpp"
+#include "Engine/ProgressBar.hpp"
+#include "Engine/Types.hpp"
 #include "Match/Match.hpp"
 #include "Pitch/Pitch.hpp"
 #include "Player/Player.hpp"
 #include "Player/PlayerFactory.hpp"
 #include "Player/PlayerSprite.hpp"
-#include "Engine/Types.hpp"
 
 using namespace Engine;
 //
@@ -74,8 +75,7 @@ int main() {
   //
   // ball
   //
-  UnqPtr<Sprite> ballsprite =
-      std::make_unique<BallSprite>(tex_playerandball);
+  UnqPtr<Sprite> ballsprite = std::make_unique<BallSprite>(tex_playerandball);
   auto ball =
       std::make_unique<Ball>(std::move(ballsprite), std::move(ball_shadow));
   // ball.attachInput(engine.getDefaultKeyboard());
@@ -84,7 +84,12 @@ int main() {
   match.getBall().movable.setPosition({200, 200, 0});
   engine.addEntity(match.getBall(), sprite_layer_id);
 
-  //players[0]->getBrain().changeState(brain_state::Retrieve);
+  // test
+  Engine::ProgressBar bar;
+  players.back()->power_bar = &bar;
+  engine.addSprite(bar, sprite_layer_id);
+
+  // players[0]->getBrain().changeState(brain_state::Retrieve);
   while (engine.isRunning()) {
     engine.step();
   }

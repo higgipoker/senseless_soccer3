@@ -6,6 +6,7 @@
 
 #include "Brain/Brain.hpp"
 #include "Engine/Entity.hpp"
+#include "Engine/ProgressBar.hpp"
 #include "Engine/Types.hpp"
 
 #include <SFML/Graphics/CircleShape.hpp>
@@ -115,6 +116,8 @@ class Player : public Engine::Entity {
   //
   void onEvent(const Engine::InputEvent in_event,
                const std::vector<int> &in_params) override;
+  // test
+  Engine::ProgressBar *power_bar = nullptr;
 
  protected:
   //

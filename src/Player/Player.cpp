@@ -72,6 +72,11 @@ void Player::handleInput() {  // Entity::handleInput();
 void Player::update() {
   Entity::update();
 
+  if (power_bar) {
+    power_bar->setPosition(movable.getPosition().x, movable.getPosition().y);
+    power_bar->update();
+  }
+
   // either ai brain or controller (human brain)
   if (!input) {
     brain.update();
