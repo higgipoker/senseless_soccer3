@@ -16,6 +16,17 @@ void Gamepad::update(const sf::Event &in_event) {
 
   // check for a fire event
 
+  // if there was a cached tap, see if enough time has elapsed to make it a tap
+  // now and not a possible double tap
+  if (fire_params.cached_tap) {
+    if (++fire_params.ticks_since_tap > fire_params.fire_double_tap_length) {
+      // time up -> this is a tap and not a double tap
+      fire_params.cached_tap = false;
+      fire_params.ticks_since_tap = 0;
+      std::cout << "tap" << std::endl;
+    }
+  }
+
   // fire was up and is now down
   if ((buttonmask & mask_a) && (old_buttonmask & mask_a) == 0) {
     events[InputEvent::FireDown] = 1;
@@ -33,9 +44,15 @@ void Gamepad::update(const sf::Event &in_event) {
     fire_params.FireLengthCached = fire_params.fire_ticks;
     fire_params.FireLength = 0;
     if (fire_params.fire_ticks < fire_params.fire_tap_length) {
-      // cache the tap to detect a double tap
-      fire_params.cached_tap = true;
-      fire_params.fire_ticks = 0;
+      // was there a tap cached?
+      if (fire_params.cached_tap) {
+        // so thisis a double tap
+        fire_params.cached_tap = false;
+        fire_params.ticks_since_tap = 0;
+        std::cout << "double tap" << std::endl;
+      } else {
+        fire_params.cached_tap = true;
+      }
     } else {
       std::cout << "up" << std::endl;
     }
