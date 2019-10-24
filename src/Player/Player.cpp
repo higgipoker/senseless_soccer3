@@ -45,24 +45,26 @@ void Player::setTeamData(TeamData in_data) { team_data = in_data; }
 //
 //
 void Player::handleInput() {  // Entity::handleInput();
-  if (!input) return;
+  if (input) {
+    // no momentum system for player movement, just set velocity
 
-  // no momentum system for player movement, just set velocity
-
-  Vector3 movement_vector;
-  if (input->up()) {
-    movement_vector.y = -1;
+    Vector3 movement_vector;
+    if (input->up()) {
+      movement_vector.y = -1;
+    }
+    if (input->down()) {
+      movement_vector.y = 1;
+    }
+    if (input->left()) {
+      movement_vector.x = -1;
+    }
+    if (input->right()) {
+      movement_vector.x = 1;
+    }
+    run(movement_vector);
+  } else {
+    brain.update();
   }
-  if (input->down()) {
-    movement_vector.y = 1;
-  }
-  if (input->left()) {
-    movement_vector.x = -1;
-  }
-  if (input->right()) {
-    movement_vector.x = 1;
-  }
-  run(movement_vector);
 }
 //
 //
@@ -81,11 +83,6 @@ void Player::update(const float in_dt) {
         movable.getPosition().x - power_bar->getWidth() / 2,
         movable.getPosition().y - player_sprite.getGlobalBounds().height);
     power_bar->update();
-  }
-
-  // either ai brain or controller (human brain)
-  if (!input) {
-    brain.update();
   }
 
   // state machine
@@ -218,12 +215,14 @@ void Player::onEvent(const InputEvent in_event,
       }
       break;
     case InputEvent::FireUp: {
-      std::cout << in_params.at(0) << std::endl;
-      float p = in_params.at(0) * 0.6F;
-      power_bar->reset();
-      Vector3 f{facing.toVector()};
-      f *= (p);
-      match->getBall().kick(f);
+      if (ballInControlRange()) {
+        std::cout << in_params.at(0) << std::endl;
+        float p = in_params.at(0) * 0.6F;
+        power_bar->reset();
+        Vector3 f{facing.toVector()};
+        f *= (p);
+        match->getBall().kick(f);
+      }
     } break;
 
     case InputEvent::DoubleTap:
