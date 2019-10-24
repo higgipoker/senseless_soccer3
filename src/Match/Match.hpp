@@ -15,7 +15,7 @@ class Match {
   //
   //
   //
-  void setBall(UnqPtr<Ball> in_ball);
+  void setBall(UniquePtr<Ball> in_ball);
   //
   //
   //
@@ -25,5 +25,5 @@ class Match {
   //
  protected:
   /// match has a ball
-  UnqPtr<Ball> ball;
+  UniquePtr<Ball> ball;
 };

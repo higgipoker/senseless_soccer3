@@ -8,7 +8,7 @@ using namespace Engine;
 //
 //
 //
-Ball::Ball(UnqPtr<Sprite> in_sprite, UnqPtr<Sprite> in_shadow)
+Ball::Ball(UniquePtr<Sprite> in_sprite, UniquePtr<Sprite> in_shadow)
     : Entity(std::move(in_sprite), std::move(in_shadow)) {
   // todo ball radius
   collidable.setRadius(radius);
@@ -24,8 +24,8 @@ void Ball::handleInput() { Entity::handleInput(); }
 //
 //
 //
-void Ball::update() {
-  Entity::update();
+void Ball::update(const float in_dt) {
+  Entity::update(in_dt);
 
   // update collidable object
   collidable.setCenter(movable.getX(), movable.getY());
@@ -33,7 +33,7 @@ void Ball::update() {
   // sprite only animates if moving
   if (Math::greater_than(movable.getVelocityMag(), 0)) {
     // sprite rotates in direction of movement (unless spin...later!!)
-    constexpr float offset = 180;  // according to the spritesheet image
+    const float offset = 180;  // according to the spritesheet image
     sprite->setRotation(movable.getVelocity().angle() + offset);
     sprite->startAnimating();
   } else {

@@ -12,14 +12,14 @@ static const int BALL_ANIM_FRAME_TIME = 6;
 //
 // spritesheet layout defines
 //
-inline constexpr int BALL_FRAME_WIDTH = 32;
-inline constexpr int BALL_FRAME_HEIGHT = 32;
-inline constexpr int BALL_FRAMES = 7;
-inline constexpr int BALL_START_ROW = 6;
-inline constexpr int BALL_START_COL = 0;
-inline constexpr int BALL_COLS = 24;
-inline constexpr int BALL_SHADOW_FRAMES = 1;
-inline constexpr int BALL_SHADOW_START_COL = 7;
+inline const int BALL_FRAME_WIDTH = 32;
+inline const int BALL_FRAME_HEIGHT = 32;
+inline const int BALL_FRAMES = 7;
+inline const int BALL_START_ROW = 6;
+inline const int BALL_START_COL = 0;
+inline const int BALL_COLS = 24;
+inline const int BALL_SHADOW_FRAMES = 1;
+inline const int BALL_SHADOW_START_COL = 7;
 //
 // rolling animation
 //

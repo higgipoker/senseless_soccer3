@@ -5,7 +5,7 @@ namespace Engine {
 //
 //
 //
-void Gamepad::update(const sf::Event &in_event) {
+void Gamepad::update() {
   directionmask = mask_zero;
   buttonmask = mask_zero;
 
@@ -151,6 +151,7 @@ void Gamepad::check_event() {
       }
     } else {
       ////////////////////////////////////////////////////////////
+      params.push_back(fire_params.FireLengthCached);
       notify(InputEvent::FireUp, params);
       ////////////////////////////////////////////////////////////
     }

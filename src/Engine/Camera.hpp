@@ -21,7 +21,7 @@ class Camera : public Entity {
   //
   //
   //
-  void update() override;
+  void update(const float in_dt) override;
   //
   //
   //

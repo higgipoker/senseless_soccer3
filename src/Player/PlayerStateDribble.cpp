@@ -65,7 +65,7 @@ void PlayerStateDribble::step() {
     }
   }
 
-  player.player_sprite.setAnimation(PlayerAnimationType::Run,
+  player.player_sprite.setPlayerAnimation(PlayerAnimationType::Run,
                                     player.facing.direction);
 }
 //

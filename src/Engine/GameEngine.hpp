@@ -105,7 +105,6 @@ class GameEngine {
   std::vector<Entity *> entities;
   Debug debug_gui;
   float dt = 0.01F;
-  const int framerate = 60;
   bool running = true;
   layer_id background_layer = RenderLayer::INVALID_LAYER;
   layer_id shadow_layer = RenderLayer::INVALID_LAYER;
@@ -129,5 +128,9 @@ class GameEngine {
   //
   //
   void toggle_debg(bool in_keep_on = false);
+  //
+  //
+  //
+  void poll_input_devices();
 };
 }  // namespace Engine

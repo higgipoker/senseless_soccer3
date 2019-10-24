@@ -40,11 +40,6 @@ GameEngine::~GameEngine() { window.close(); }
 //
 //
 void GameEngine::step() {
-  if (gamepad1.isButtonPressed(mask_l1)) {
-    if (!Debug::showHud()) toggle_debg(true);
-  } else {
-    if (Debug::showHud()) toggle_debg(false);
-  }
   handle_input();
   update_entities();
   render();
@@ -91,9 +86,116 @@ void GameEngine::addEntity(Entity &in_entity, layer_id in_layer_id) {
 //
 //
 void GameEngine::handle_input() {
+  poll_input_devices();
+  for (const auto &entity : entities) {
+    entity->handleInput();
+  }
+}
+//
+//
+//
+bool GameEngine::isRunning() const { return running; }
+//
+//
+//
+void GameEngine::sort_drawables() {
+  for (auto &layer : render_layers) {
+    if (layer.second.sortable) {
+      std::sort(layer.second.sprite_list.begin(),
+                layer.second.sprite_list.end(), sort_drawable);
+    }
+  }
+}
+//
+//
+//
+sf::RenderTarget &GameEngine::getRenderTarget() { return window; }
+//
+//
+//
+Camera &GameEngine::getMainCamera() { return camera; }
+//
+//
+//
+void GameEngine::update_entities() {
+  // entities
+  for (const auto &entity : entities) {
+    entity->update(dt);
+  }
+}
+//
+//
+//
+void GameEngine::render() {
+  window.clear(sf::Color::Blue);
+  //
+  //
+  //
+  {  // render entities
+    window.setView(camera.getview());
+    sort_drawables();
+    for (const auto &layer : render_layers) {
+      for (const auto &drawable : layer.second.sprite_list) {
+        drawable->perspectivize(camera.getHeight());
+        window.draw(*drawable);
+      }
+    }
+  }
+  //
+  //
+  //
+  {  // render hud
+    window.setView(hud_view);
+    for (const auto &drawable : hud_layer.sprite_list) {
+      window.draw(*drawable);
+    }
+  }
+  //
+  //
+  //
+  {  // render debug
+    if (Debug::showHud()) {
+      window.setView(hud_view);
+      debug_gui.update();
+    }
+  }
+  window.display();
+  window.setView(camera.getview());
+}
+//
+//
+//
+layer_id GameEngine::getBackgroundLayer() const { return background_layer; }
+//
+//
+//
+layer_id GameEngine::getShadowLayer() const { return shadow_layer; }
+//
+//
+//
+Keyboard &GameEngine::getDefaultKeyboard() { return default_keyboard; }
+//
+//
+//
+Gamepad &GameEngine::getDefaultGamepad() { return gamepad1; }
+//
+//
+//
+void GameEngine::toggle_debg(bool in_keep_on) {
+#ifndef NDEBUG
+  if (in_keep_on) {
+    Debug::show();
+  } else {
+    Debug::toggle();
+  }
+#endif
+}
+//
+//
+//
+void GameEngine::poll_input_devices() {
   static sf::Event event;
   while (window.pollEvent(event)) {
-    default_keyboard.update(event);
     if (Debug::showHud()) {
       debug_gui.handleInput(event);
     }
@@ -163,107 +265,7 @@ void GameEngine::handle_input() {
         break;
     }
   }
-  gamepad1.update(event);
-}
-//
-//
-//
-bool GameEngine::isRunning() const { return running; }
-//
-//
-//
-void GameEngine::sort_drawables() {
-  for (auto &layer : render_layers) {
-    if (layer.second.sortable) {
-      std::sort(layer.second.sprite_list.begin(),
-                layer.second.sprite_list.end(), sort_drawable);
-    }
-  }
-}
-//
-//
-//
-sf::RenderTarget &GameEngine::getRenderTarget() { return window; }
-//
-//
-//
-Camera &GameEngine::getMainCamera() { return camera; }
-//
-//
-//
-void GameEngine::update_entities() {
-  // entities
-  for (const auto &entity : entities) {
-    entity->handleInput();
-    entity->update();
-    entity->movable.step(dt);
-  }
-}
-//
-//
-//
-void GameEngine::render() {
-  window.clear(sf::Color::Blue);
-  //
-  //
-  //
-  {  // render entities
-    window.setView(camera.getview());
-    sort_drawables();
-    for (const auto &layer : render_layers) {
-      for (const auto &drawable : layer.second.sprite_list) {
-        drawable->perspectivize(camera.getHeight());
-        window.draw(*drawable);
-      }
-    }
-  }
-  //
-  //
-  //
-  {  // render hud
-    window.setView(hud_view);
-    for (const auto &drawable : hud_layer.sprite_list) {
-      window.draw(*drawable);
-    }
-  }
-  //
-  //
-  //
-  {  // render debug
-    if (Debug::showHud()) {
-      window.setView(hud_view);
-      debug_gui.update();
-    }
-  }
-  window.display();
-  window.setView(camera.getview());
-}
-//
-//
-//
-layer_id GameEngine::getBackgroundLayer() const { return background_layer; }
-//
-//
-//
-layer_id GameEngine::getShadowLayer() const { return shadow_layer; }
-//
-//
-//
-Keyboard &GameEngine::getDefaultKeyboard() { return default_keyboard; }
-//
-//
-//
-Gamepad &GameEngine::getDefaultGamepad() { return gamepad1; }
-//
-//
-//
-void GameEngine::toggle_debg(bool in_keep_on) {
-#ifndef NDEBUG
-  if (in_keep_on) {
-    Debug::show();
-  } else {
-    Debug::toggle();
-  }
-#endif
+  default_keyboard.update();
+  gamepad1.update();
 }
 }  // namespace Engine

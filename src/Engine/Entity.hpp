@@ -21,7 +21,7 @@ class Entity : public InputListener{
   //
   //
   //
-  Entity(UnqPtr<Sprite> in_sprite, UnqPtr<Sprite> in_shadow);
+  Entity(UniquePtr<Sprite> in_sprite, UniquePtr<Sprite> in_shadow);
   //
   //
   //
@@ -29,7 +29,7 @@ class Entity : public InputListener{
   //
   //
   //
-  virtual void update();
+  virtual void update(const float in_dt);
   //
   //
   //
@@ -67,8 +67,8 @@ class Entity : public InputListener{
                        const std::vector<int> &in_params) override{};
 
  protected:
-  UnqPtr<Sprite> sprite;
-  UnqPtr<Sprite> shadow;
+  UniquePtr<Sprite> sprite;
+  UniquePtr<Sprite> shadow;
   int shadow_offset = 2;
   float speed = 1.F;
   InputDevice *input = nullptr;

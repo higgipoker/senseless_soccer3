@@ -85,7 +85,7 @@ class Pitch : public Engine::Sprite {
   /// pitch sprite
   sf::Sprite pitch;
   /// a texture to render the grass and lines to
-  UnqPtr<sf::RenderTexture> pitch_texture =
+  UniquePtr<sf::RenderTexture> pitch_texture =
       std::make_unique<sf::RenderTexture>();
   /// pitch dimensions
   PitchDimensions dimensions;

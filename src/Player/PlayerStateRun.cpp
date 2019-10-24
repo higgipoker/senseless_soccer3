@@ -24,7 +24,7 @@ void PlayerStateRun::step() {
   PlayerState::step();
 
   Compass direction(player.movable.getVelocity());
-  player.player_sprite.setAnimation(PlayerAnimationType::Run,
+  player.player_sprite.setPlayerAnimation(PlayerAnimationType::Run,
                                     direction.direction);
 }
 //

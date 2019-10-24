@@ -29,7 +29,7 @@ bool InputDevice::right() {
 //
 //
 //
-bool InputDevice::fire_down() { return buttonmask & mask_a; }
+bool InputDevice::fireDown() { return buttonmask & mask_a; }
 //
 //
 //

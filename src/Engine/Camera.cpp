@@ -10,31 +10,40 @@ Camera::Camera()
     : Entity(std::make_unique<Sprite>(), std::make_unique<Sprite>()) {
   movable.toggleGravity(false);
   movable.co_friction = 0.01F;
+  speed = 2;
 }
 //
 //
 //
-void Camera::handleInput() { Entity::handleInput(); }
+void Camera::handleInput() {
+  Entity::handleInput();
+
+}
 //
 //
 //
-void Camera::update() {
+void Camera::update(const float in_dt) {
+  movable.step(in_dt);
   {  // constrain in world
     const int bounce = 6;
     if ((movable.getX() - (view.getSize().x / 2)) < world.left) {
       movable.setX(world.left + view.getSize().x / 2);
+      movable.resetForces();
       movable.applyForce({bounce, 0});
     }
     if ((movable.getX() + (view.getSize().x / 2)) > world.left + world.width) {
       movable.setX(world.left + world.width - view.getSize().x / 2);
+      movable.resetForces();
       movable.applyForce({-bounce, 0});
     }
     if ((movable.getY() - (view.getSize().y / 2)) < world.top) {
       movable.setY(world.top + view.getSize().y / 2);
+      movable.resetForces();
       movable.applyForce({0, bounce});
     }
     if ((movable.getY() + (view.getSize().y / 2)) > world.top + world.height) {
       movable.setY(world.top + world.height - view.getSize().y / 2);
+      movable.resetForces();
       movable.applyForce({0, -bounce});
     }
   }

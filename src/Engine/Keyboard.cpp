@@ -4,7 +4,7 @@ namespace Engine {
 //
 //
 //
-void Keyboard::update(const sf::Event& in_event) {
+void Keyboard::update() {
   directionmask = mask_zero;
   buttonmask = mask_zero;
   if (sf::Keyboard::isKeyPressed(keymap[Buttons::DPadLeft])) {

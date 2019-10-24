@@ -21,7 +21,7 @@ PlayerSprite::PlayerSprite(SharedPtr<sf::Texture> in_texture,
 //
 //
 //
-void PlayerSprite::setAnimation(PlayerAnimationType in_type,
+void PlayerSprite::setPlayerAnimation(PlayerAnimationType in_type,
                                 Direction in_direction) {
   switch (in_type) {
     case PlayerAnimationType::Run:

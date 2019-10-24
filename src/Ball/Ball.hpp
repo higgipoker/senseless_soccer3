@@ -12,7 +12,7 @@ class Ball : public Engine::Entity {
   //
   //
   //
-  Ball(UnqPtr<Engine::Sprite> in_sprite, UnqPtr<Engine::Sprite> in_shadow);
+  Ball(UniquePtr<Engine::Sprite> in_sprite, UniquePtr<Engine::Sprite> in_shadow);
   //
   //
   //
@@ -20,7 +20,7 @@ class Ball : public Engine::Entity {
   //
   //
   //
-  void update() override;
+  void update(const float in_dt) override;
   //
   //
   //

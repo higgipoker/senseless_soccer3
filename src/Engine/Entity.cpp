@@ -8,8 +8,8 @@ namespace Engine {
 //
 //
 //
-Entity::Entity(UnqPtr<Sprite> in_sprite,
-               UnqPtr<Sprite> in_shadow)
+Entity::Entity(UniquePtr<Sprite> in_sprite,
+               UniquePtr<Sprite> in_shadow)
     : sprite(std::move(in_sprite)), shadow(std::move(in_shadow)) {
   sprite->shadow = shadow.get();
 }
@@ -31,14 +31,15 @@ void Entity::handleInput() {
   if (input->right()) {
     movable.applyForce({speed, 0});
   }
-  if (input->fire_down()) {
+  if (input->fireDown()) {
     movable.applyForce({0.F, 0.F, speed * 1.F});
   }
 }
 //
 //
 //
-void Entity::update() {
+void Entity::update(const float in_dt) {
+  movable.step(in_dt);
   sprite->setPosition(movable.getX(), movable.getY());
   shadow->setPosition({sprite->getPosition().x + shadow_offset,
                        sprite->getPosition().y + shadow_offset});

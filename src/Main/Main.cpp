@@ -19,9 +19,22 @@ using namespace Engine;
 //
 //
 //
-int main() {
+int main(int argc, char **args) {
   //
-  // resources
+  // args
+  //
+  if (argc > 1) {
+    std::cout << argc - 1 << " args: ";
+    for (int i = 1; i < argc; ++i) {
+      std::cout << args[i];
+      if (i != argc - 1) {
+        std::cout << ", ";
+      }
+    }
+    std::cout << std::endl;
+  }
+  //
+  // game resources
   //
   WorkingFolder working_folder;
   Folder graphics_folder(working_folder.getPath() + "/gfx");
@@ -51,7 +64,7 @@ int main() {
   // players
   //
   Player::connectMatch(match);
-  std::vector<UnqPtr<Player>> players;
+  std::vector<UniquePtr<Player>> players;
   for (auto i = 0; i < 10; ++i) {
     players.push_back(PlayerFactory::makePlayer(tex_playerandball));
     TeamData td;
@@ -68,14 +81,15 @@ int main() {
   //
   sf::IntRect world{0, 0, 2000, 3000};
   engine.getMainCamera().setWorldRect(world);
-  UnqPtr<Sprite> pitch = std::make_unique<Pitch>(tex_grass, world);
+  UniquePtr<Sprite> pitch = std::make_unique<Pitch>(tex_grass, world);
   engine.addSprite(*pitch.get(), engine.getBackgroundLayer());
-  UnqPtr<Sprite> ball_shadow =
+  UniquePtr<Sprite> ball_shadow =
       std::make_unique<BallShadowSprite>(tex_playerandball);
   //
   // ball
   //
-  UnqPtr<Sprite> ballsprite = std::make_unique<BallSprite>(tex_playerandball);
+  UniquePtr<Sprite> ballsprite =
+      std::make_unique<BallSprite>(tex_playerandball);
   auto ball =
       std::make_unique<Ball>(std::move(ballsprite), std::move(ball_shadow));
   // ball.attachInput(engine.getDefaultKeyboard());
@@ -85,7 +99,7 @@ int main() {
   engine.addEntity(match.getBall(), sprite_layer_id);
 
   // test
-  Engine::ProgressBar bar;
+  Engine::ProgressBar bar(40, 3, 25);
   players.back()->power_bar = &bar;
   engine.addSprite(bar, sprite_layer_id);
 
@@ -94,5 +108,6 @@ int main() {
     engine.step();
   }
 
+  std::cout << args[0] << " exited normally" << std::endl;
   return 0;
 }

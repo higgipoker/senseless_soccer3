@@ -14,7 +14,7 @@ class Gamepad : public InputDevice {
   //
   //
   //
-  void update(const sf::Event &in_event) override;
+  void update() override;
 
  protected:
   int sf_joystick_index = 0;

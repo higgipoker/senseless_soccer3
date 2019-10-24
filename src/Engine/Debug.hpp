@@ -9,21 +9,21 @@ namespace Engine {
  */
 class Debug {
  public:
-  /**
-   * @brief Debug
-   */
+  //
+  //
+  //
   Debug(sf::RenderWindow &in_window);
-  /**
-   */
+  //
+  //
+  //
   ~Debug();
-  /**
-   * @brief update
-   */
+  //
+  //
+  //
   void update();
-  /**
-   * @brief pollEvent
-   * @param in_event
-   */
+  //
+  //
+  //
   void handleInput(sf::Event &in_event);
   //
   //

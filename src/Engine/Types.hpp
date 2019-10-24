@@ -4,7 +4,7 @@
 //
 //
 template <typename T>
-using UnqPtr = std::unique_ptr<T>;
+using UniquePtr = std::unique_ptr<T>;
 //
 //
 //
@@ -16,5 +16,5 @@ using SharedPtr = std::shared_ptr<T>;
 class Percent {
  public:
  private:
-  int n;
+
 };

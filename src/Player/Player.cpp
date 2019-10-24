@@ -10,13 +10,11 @@
 
 using namespace Engine;
 Match *Player::match = nullptr;
-
-const int SHADOW_OFFSET_X = 1;
-const int SHADOW_OFFSET_Y = 4;
 //
 //
 //
-Player::Player(UnqPtr<PlayerSprite> in_sprite, UnqPtr<PlayerSprite> in_shadow)
+Player::Player(UniquePtr<PlayerSprite> in_sprite,
+               UniquePtr<PlayerSprite> in_shadow)
     : Entity(std::move(in_sprite), std::move(in_shadow)),
       brain(*this),
       state_stand(*this),
@@ -69,11 +67,19 @@ void Player::handleInput() {  // Entity::handleInput();
 //
 //
 //
-void Player::update() {
-  Entity::update();
+void Player::update(const float in_dt) {
+  Entity::update(in_dt);
 
   if (power_bar) {
-    power_bar->setPosition(movable.getPosition().x, movable.getPosition().y);
+    if (input) {
+      if (!input->fireDown()) {
+        power_bar->reset();
+        power_bar->stop();
+      }
+    }
+    power_bar->setPosition(
+        movable.getPosition().x - power_bar->getWidth() / 2,
+        movable.getPosition().y - player_sprite.getGlobalBounds().height);
     power_bar->update();
   }
 
@@ -203,13 +209,28 @@ void Player::pass(Player &in_receiver) {
 //
 void Player::onEvent(const InputEvent in_event,
                      const std::vector<int> &in_params) {
+  std::cout << InputListener::toString(in_event) << std::endl;
   switch (in_event) {
     case InputEvent::FireDown:
+      if (power_bar) {
+        power_bar->reset();
+        power_bar->start();
+      }
       break;
-    case InputEvent::FireUp:
+    case InputEvent::FireUp: {
+      std::cout << in_params.at(0) << std::endl;
+      float p = in_params.at(0) * 0.6F;
+      power_bar->reset();
+      Vector3 f{facing.toVector()};
+      f *= (p);
+      match->getBall().kick(f);
+    } break;
+
     case InputEvent::DoubleTap:
+      power_bar->reset();
+      break;
     case InputEvent::SingleTap:
-      std::cout << InputListener::toString(in_event) << std::endl;
+      power_bar->reset();
       break;
   }
 }

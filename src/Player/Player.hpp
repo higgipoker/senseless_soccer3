@@ -58,7 +58,7 @@ class Player : public Engine::Entity {
   //
   //
   //
-  Player(UnqPtr<PlayerSprite> in_sprite, UnqPtr<PlayerSprite> in_shadow);
+  Player(UniquePtr<PlayerSprite> in_sprite, UniquePtr<PlayerSprite> in_shadow);
   //
   //
   //
@@ -66,7 +66,7 @@ class Player : public Engine::Entity {
   //
   //
   //
-  void update() override;
+  void update(const float in_dt) override;
   //
   //
   //

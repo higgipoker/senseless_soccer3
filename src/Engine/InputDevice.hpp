@@ -10,26 +10,26 @@ namespace Engine {
 //
 //
 //
-constexpr unsigned char mask_zero{0};        // 0000 0001
-constexpr unsigned char mask_a{1 << 0};      // 0000 0001
-constexpr unsigned char mask_b{1 << 1};      // 0000 0010
-constexpr unsigned char mask_x{1 << 2};      // 0000 0100
-constexpr unsigned char mask_y{1 << 3};      // 0000 1000
-constexpr unsigned char mask_l1{1 << 4};     // 0001 0000
-constexpr unsigned char mask_r1{1 << 5};     // 0010 0000
-constexpr unsigned char mask_back{1 << 6};   // 0100 0000
-constexpr unsigned char mask_start{1 << 7};  // 1000 0000
+const unsigned char mask_zero{0};        // 0000 0001
+const unsigned char mask_a{1 << 0};      // 0000 0001
+const unsigned char mask_b{1 << 1};      // 0000 0010
+const unsigned char mask_x{1 << 2};      // 0000 0100
+const unsigned char mask_y{1 << 3};      // 0000 1000
+const unsigned char mask_l1{1 << 4};     // 0001 0000
+const unsigned char mask_r1{1 << 5};     // 0010 0000
+const unsigned char mask_back{1 << 6};   // 0100 0000
+const unsigned char mask_start{1 << 7};  // 1000 0000
 //
 //
 //
-constexpr unsigned char mask_dpad_up{1 << 0};      // 0000 0001
-constexpr unsigned char mask_dpad_right{1 << 1};   // 0000 0010
-constexpr unsigned char mask_dpad_down{1 << 2};    // 0000 0100
-constexpr unsigned char mask_dpad_left{1 << 3};    // 0000 1000
-constexpr unsigned char mask_stick_up{1 << 4};     // 0001 0000
-constexpr unsigned char mask_stick_right{1 << 5};  // 0010 0000
-constexpr unsigned char mask_stick_down{1 << 6};   // 0100 0000
-constexpr unsigned char mask_stick_left{1 << 7};   // 1000 0000
+const unsigned char mask_dpad_up{1 << 0};      // 0000 0001
+const unsigned char mask_dpad_right{1 << 1};   // 0000 0010
+const unsigned char mask_dpad_down{1 << 2};    // 0000 0100
+const unsigned char mask_dpad_left{1 << 3};    // 0000 1000
+const unsigned char mask_stick_up{1 << 4};     // 0001 0000
+const unsigned char mask_stick_right{1 << 5};  // 0010 0000
+const unsigned char mask_stick_down{1 << 6};   // 0100 0000
+const unsigned char mask_stick_left{1 << 7};   // 1000 0000
 //
 //
 //
@@ -55,12 +55,7 @@ enum class Buttons {
 //
 //
 //
-enum class InputEvent {
-  FireDown = 0,
-  FireUp,
-  SingleTap,
-  DoubleTap
-};
+enum class InputEvent { FireDown = 0, FireUp, SingleTap, DoubleTap };
 static std::map<InputEvent, std::string> event_to_string{
     {InputEvent::FireDown, "FireDown"},
     {InputEvent::FireUp, "FireUp"},
@@ -88,7 +83,6 @@ class InputListener {
     return event_to_string.at(in_event);
   }
 };
-
 //
 //
 //
@@ -108,7 +102,7 @@ class InputDevice {
   //
   //
   //
-  virtual void update(const sf::Event &in_event) = 0;
+  virtual void update() = 0;
   //
   //
   //
@@ -128,7 +122,7 @@ class InputDevice {
   //
   //
   //
-  bool fire_down();
+  bool fireDown();
   //
   //
   //
@@ -149,13 +143,15 @@ class InputDevice {
     int ticks_since_tap = 0;
     bool cached_tap = false;
 
-    const int fire_tap_length = 8;
+    const int fire_tap_length = 6;
     const int fire_double_tap_length = 12;
   } fire_params;
+  //
+  //
+  //
   unsigned char buttonmask{0x0};
   unsigned char directionmask{0x0};
-
-  unsigned char old_buttonmask{0x00};
+  unsigned char old_buttonmask{0x0};
   //
   //
   //

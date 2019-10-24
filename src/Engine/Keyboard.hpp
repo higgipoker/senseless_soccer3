@@ -32,6 +32,6 @@ class Keyboard : public InputDevice {
   //
   //
   //
-  void update(const sf::Event &in_event) override;
+  void update() override;
 };
 }  // namespace Engine

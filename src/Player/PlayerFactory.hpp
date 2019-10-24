@@ -9,5 +9,5 @@
 //
 class PlayerFactory {
  public:
-  static UnqPtr<Player> makePlayer(SharedPtr<sf::Texture> in_spritesheet);
+  static UniquePtr<Player> makePlayer(SharedPtr<sf::Texture> in_spritesheet);
 };
