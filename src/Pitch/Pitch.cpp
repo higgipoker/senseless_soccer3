@@ -234,8 +234,7 @@ void Pitch::init_south_arc() {
 //
 //
 void Pitch::init_halfway_line() {
-  dimensions.halfway_line.setSize(
-      sf::Vector2f(dimensions.bounds.getSize().x, 2));
+  dimensions.halfway_line.setSize({dimensions.bounds.getSize().x, 2});
 
   dimensions.halfway_line.setPosition(
       dimensions.bounds.getPosition().x,

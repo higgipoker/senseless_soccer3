@@ -9,6 +9,7 @@ using namespace Engine;
 PlayerSprite::PlayerSprite(SharedPtr<sf::Texture> in_texture,
                            const SpriteSetDefinition in_def)
     : Sprite(in_texture) {
+  perspectivizable = true;
   init(in_def);
 
   populateStandAnimations(stand_animations);
@@ -22,7 +23,7 @@ PlayerSprite::PlayerSprite(SharedPtr<sf::Texture> in_texture,
 //
 //
 void PlayerSprite::setPlayerAnimation(PlayerAnimationType in_type,
-                                Direction in_direction) {
+                                      Direction in_direction) {
   switch (in_type) {
     case PlayerAnimationType::Run:
       Sprite::setAnimation(&(run_animations.at(in_direction)));
@@ -40,4 +41,4 @@ void PlayerSprite::setPlayerAnimation(PlayerAnimationType in_type,
 //
 PlayerShadowSprite::PlayerShadowSprite(SharedPtr<sf::Texture> in_texture,
                                        const SpriteSetDefinition in_def)
-    : PlayerSprite(in_texture, in_def) {}
+    : PlayerSprite(in_texture, in_def) {perspectivizable = false;}

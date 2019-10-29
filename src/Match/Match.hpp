@@ -2,6 +2,9 @@
 #include "Ball/Ball.hpp"
 
 #include "Engine/Types.hpp"
+#include "Team/Team.hpp"
+
+#include <cassert>
 //
 //
 //
@@ -19,11 +22,22 @@ class Match {
   //
   //
   //
-  Ball &getBall();
+  Ball& getBall();
   //
   //
   //
+  void addTeams(UniquePtr<Team> in_home_team, UniquePtr<Team> in_away_team);
+  //
+  //
+  //
+  inline Team& getHomeTeam() { assert(home_team.get());return *home_team; }
+  //
+  //
+  //
+  inline Team& getAwayTeam() { assert(away_team.get());return *away_team; }
+
  protected:
-  /// match has a ball
   UniquePtr<Ball> ball;
+  UniquePtr<Team> home_team;
+  UniquePtr<Team> away_team;
 };

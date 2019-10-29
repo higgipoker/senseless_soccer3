@@ -24,7 +24,7 @@ PlayerStateDribble::PlayerStateDribble(Player &in_player)
 void PlayerStateDribble::start() {
   player.ball_under_control = true;
   already_kicked = false;
-  player.movable.speed = dribble_speeds[player.speed];
+  player.current_speed = dribble_speeds[player.speed];
 }
 //
 //
@@ -49,7 +49,7 @@ void PlayerStateDribble::step() {
 
   // check for changed direction (close control)
   Compass old_direction = player.facing;
-  Vector3 dir = player.movable.getVelocity();
+  Vector3 dir = player.movable.velocity;
   player.facing.fromVector(dir);
   if (old_direction.direction != player.facing.direction) {
     close_control();
@@ -66,7 +66,7 @@ void PlayerStateDribble::step() {
   }
 
   player.player_sprite.setPlayerAnimation(PlayerAnimationType::Run,
-                                    player.facing.direction);
+                                          player.facing.direction);
 }
 //
 //
@@ -83,7 +83,7 @@ bool PlayerStateDribble::stateOver() {
     return true;
   }
   // or if we stopped moving
-  if (Math::equal(player.movable.getVelocityMag(true), 0)) {
+  if (Math::equal(player.movable.velocity.magnitude2d(), 0)) {
     next_state = player_state::Stand;
     return true;
   }
@@ -96,7 +96,7 @@ bool PlayerStateDribble::stateOver() {
 void PlayerStateDribble::kick() {
   already_kicked = true;
   float force = kick_mods[static_cast<RunningSpeed>(player.speed)];
-  auto f= player.movable.getVelocityMag(true);
+  auto f = player.movable.velocity.magnitude2d();
   f++;
   Vector3 kick_force = Compass(player.facing).toVector();
   kick_force.normalise2d();

@@ -2,6 +2,7 @@
 #include <SFML/Window/Event.hpp>
 
 #include <map>
+#include <set>
 #include <vector>
 //
 //
@@ -74,8 +75,8 @@ class InputListener {
   //
   //
   //
-  virtual void onEvent(const InputEvent in_event,
-                       const std::vector<int> &in_params) = 0;
+  virtual void onInputEvent(const InputEvent in_event,
+                            const std::vector<int> &in_params) = 0;
   //
   //
   //
@@ -130,7 +131,11 @@ class InputDevice {
   //
   //
   //
-  void setListener(InputListener &in_listener);
+  void attachListener(InputListener &in_listener);
+  //
+  //
+  //
+  void detatchListener(InputListener &in_listener);
 
   //////////////////////////////////////////////////////////////////////
   /// Protected
@@ -143,8 +148,8 @@ class InputDevice {
     int ticks_since_tap = 0;
     bool cached_tap = false;
 
-    const int fire_tap_length = 6;
-    const int fire_double_tap_length = 12;
+    int fire_tap_length = 6;
+    int fire_double_tap_length = 12;
   } fire_params;
   //
   //
@@ -156,8 +161,8 @@ class InputDevice {
   //
   //
   void notify(const InputEvent in_event, const std::vector<int> &in_params);
-  /// for now, only one listener per input device
-  InputListener *listener = nullptr;
+  ///
+  std::set<InputListener *> listeners;
 };
 
 }  // namespace Engine

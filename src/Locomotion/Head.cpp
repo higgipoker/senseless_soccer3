@@ -21,7 +21,7 @@ void Head::step() {}
 //
 //
 //
-void Head::stop() { player.movable.setVelocity(Vector3{}); }
+void Head::stop() { player.movable.resetVelocity(); }
 //
 //
 //

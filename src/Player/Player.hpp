@@ -48,7 +48,9 @@ inline std::map<RunningSpeed, float> kick_mods = {
     {RunningSpeed::Normal, 1.4F},   {RunningSpeed::Fast, 2.1F},
     {RunningSpeed::VeryFast, 3.0F},
 };
-
+//
+//
+//
 class Match;
 //
 //
@@ -67,6 +69,11 @@ class Player : public Engine::Entity {
   //
   //
   void update(const float in_dt) override;
+  //
+  //
+  //
+  void onInputEvent(const Engine::InputEvent in_event,
+                    const std::vector<int> &in_params) override;
   //
   //
   //
@@ -111,11 +118,6 @@ class Player : public Engine::Entity {
   //
   //
   bool ballInControlRange();
-  //
-  // inputlistener interface implementation
-  //
-  void onEvent(const Engine::InputEvent in_event,
-               const std::vector<int> &in_params) override;
   // test
   Engine::ProgressBar *power_bar = nullptr;
 
@@ -127,27 +129,19 @@ class Player : public Engine::Entity {
   static Match *match;
   // a player has a brain (well, most do)
   Brain brain;
-  // track if the ball is under control
   bool ball_under_control = false;
-  // currently facing direction
   Engine::Compass facing;
-  // represents the players feet for collisions
   sf::CircleShape feet;
-  // represents an area where the ball is under control for dribbling
   sf::CircleShape control;
-  // state machine
   PlayerStateStand state_stand;
   PlayerStateRun state_run;
   PlayerStateDribble state_dribble;
-  PlayerState *state;
-  // convenience to avoid casting everywhere
+  PlayerState *state = nullptr;
   PlayerSprite &player_sprite;
   PlayerSprite &player_shadow;
-  // speed attrib
   RunningSpeed speed = RunningSpeed::Normal;
-  // team stuff
+  float current_speed=0;
   TeamData team_data;
-  // playing attributes
   Attributes attribs;
   //
   //

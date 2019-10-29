@@ -24,12 +24,15 @@ Player::Player(UniquePtr<PlayerSprite> in_sprite,
       player_sprite(static_cast<PlayerSprite &>(*sprite.get())),
       player_shadow(static_cast<PlayerSprite &>(*shadow.get())) {
   // make sure there is always a valid match when creating players
-  assert(match);
+  assert(match && "match was not initied before constructing a player");
+
+  std::cout << "player constructor" << std::endl;
 
   feet.setRadius(1.0F);
   control.setRadius(12);
 
   speed = RunningSpeed::Fast;
+  current_speed = run_speeds[speed];
 
   // debug
   feet.setFillColor(Debug::defaultDiagnosticsColor());
@@ -44,10 +47,9 @@ void Player::setTeamData(TeamData in_data) { team_data = in_data; }
 //
 //
 //
-void Player::handleInput() {  // Entity::handleInput();
+void Player::handleInput() {
   if (input) {
     // no momentum system for player movement, just set velocity
-
     Vector3 movement_vector;
     if (input->up()) {
       movement_vector.y = -1;
@@ -80,8 +82,8 @@ void Player::update(const float in_dt) {
       }
     }
     power_bar->setPosition(
-        movable.getPosition().x - power_bar->getWidth() / 2,
-        movable.getPosition().y - player_sprite.getGlobalBounds().height);
+        movable.position.x - power_bar->getWidth() / 2,
+        movable.position.y - player_sprite.getGlobalBounds().height);
     power_bar->update();
   }
 
@@ -94,7 +96,7 @@ void Player::update(const float in_dt) {
     std::cout << "Player::update> " << state->name << std::endl;
   }
 
-  feet.setCenter(movable.getX(), movable.getY() - feet.getRadius());
+  feet.setCenter(movable.position.x, movable.position.y - feet.getRadius());
   control.setCenter(feet.getCenter());
   shadow->setFrame(sprite->getFrame());
 
@@ -108,6 +110,7 @@ void Player::update(const float in_dt) {
 void Player::face_ball() {
   auto direction = directionTo(getMatch().getBall());
   direction.roundAngle(45);
+  direction.normalizeToUnits();
   Compass to_ball(direction);
   facing.direction = to_ball.direction;
 }
@@ -166,6 +169,18 @@ void Player::debug() {
   sprite->debug_shapes.clear();
   sprite->debug_shapes.push_back(&feet);
   sprite->debug_shapes.push_back(&control);
+
+  if (DRAW_RAYS) {
+    xray.setSize({10000, 1});
+    xray.setPosition(0, feet.getCenter().y);
+    xray.setFillColor(sf::Color::Magenta);
+    sprite->debug_shapes.push_back(&xray);
+
+    yray.setSize({1, 10000});
+    yray.setPosition(feet.getCenter().x, 0);
+    yray.setFillColor(sf::Color::Magenta);
+    sprite->debug_shapes.push_back(&yray);
+  }
 }
 //
 //
@@ -173,16 +188,16 @@ void Player::debug() {
 void Player::run(Engine::Compass in_direction) {
   Vector3 v = in_direction.toVector();
   v.normalise2d();
-  v *= movable.speed;
-  movable.setVelocity(v);
+  v *= current_speed;
+  movable.velocity = v;
 }
 //
 //
 //
 void Player::run(Engine::Vector3 in_direction) {
   in_direction.normalise2d();
-  in_direction *= movable.speed;
-  movable.setVelocity(in_direction);
+  in_direction *= current_speed;
+  movable.velocity = in_direction;
 }
 //
 //
@@ -204,8 +219,8 @@ void Player::pass(Player &in_receiver) {
 //
 //
 //
-void Player::onEvent(const InputEvent in_event,
-                     const std::vector<int> &in_params) {
+void Player::onInputEvent(const InputEvent in_event,
+                          const std::vector<int> &in_params) {
   std::cout << InputListener::toString(in_event) << std::endl;
   switch (in_event) {
     case InputEvent::FireDown:
@@ -214,22 +229,40 @@ void Player::onEvent(const InputEvent in_event,
         power_bar->start();
       }
       break;
+
     case InputEvent::FireUp: {
       if (ballInControlRange()) {
         std::cout << in_params.at(0) << std::endl;
-        float p = in_params.at(0) * 0.6F;
+        float p = in_params.at(0) * 0.3F;
         power_bar->reset();
         Vector3 f{facing.toVector()};
         f *= (p);
+        f.z = p * 0.2F;
         match->getBall().kick(f);
+
+        Vector3 spin = facing.toVector();
+        spin.rotate(90);
+        spin.normalise();
+        spin *= 0.2F;
+        //match->getBall().applySideSpin(spin);
+        match->getBall().applyTopSpin(0.1F);
       }
     } break;
 
     case InputEvent::DoubleTap:
       power_bar->reset();
       break;
+
     case InputEvent::SingleTap:
-      power_bar->reset();
+      if (ball_under_control) {
+        power_bar->reset();
+        float p = 3;
+        power_bar->reset();
+        Vector3 f{facing.toVector()};
+        f.normalise2d();
+        f *= (p);
+        match->getBall().kick(f);
+      }
       break;
   }
 }

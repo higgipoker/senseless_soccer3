@@ -14,6 +14,7 @@
 #include "Player/Player.hpp"
 #include "Player/PlayerFactory.hpp"
 #include "Player/PlayerSprite.hpp"
+#include "Team/Team.hpp"
 
 using namespace Engine;
 //
@@ -42,40 +43,44 @@ int main(int argc, char **args) {
   //
   // gfx
   //
-  // grass texture
-  auto tex_grass = std::make_shared<sf::Texture>();
+  SharedPtr<sf::Texture> tex_grass = std::make_shared<sf::Texture>();
   tex_grass->loadFromFile(graphics_folder.getPath(true) + "grass_checked.png");
-  // player and ball texture
-  auto tex_playerandball = std::make_shared<sf::Texture>();
+  SharedPtr<sf::Texture> tex_playerandball = std::make_shared<sf::Texture>();
   tex_playerandball->loadFromFile(graphics_folder.getPath(true) +
                                   "playerandball.png");
   //
   // engine
   //
-  sf::IntRect wnd_size{0, 0, 800, 600};
+  sf::IntRect wnd_size{0, 0, 1280, 730};
   GameEngine engine("senseless soccer", wnd_size.width, wnd_size.height);
-  // sprite layer (sortable)
   int sprite_layer_id = engine.addLayer(true);
+  //
+  // teams
+  //
+  UniquePtr<Team> team1 = std::make_unique<Team>();
+  UniquePtr<Team> team2 = std::make_unique<Team>();
   //
   // match
   //
   Match match;
+  match.addTeams(std::move(team1), std::move(team2));
+
   //
   // players
   //
   Player::connectMatch(match);
-  std::vector<UniquePtr<Player>> players;
-  for (auto i = 0; i < 10; ++i) {
-    players.push_back(PlayerFactory::makePlayer(tex_playerandball));
+  for (auto i = 0; i < 1; ++i) {
+    UniquePtr<Player> player = PlayerFactory::makePlayer(tex_playerandball);
     TeamData td;
     td.shirt_number = i + 1;
-    players.back()->setTeamData(td);
-    players.back()->movable.setPosition(i * 10, 120);
-    engine.addEntity(*players.back(), sprite_layer_id);
+    player->setTeamData(td);
+    player->movable.setPosition(i * 10, 120);
+    engine.addEntity(*player, sprite_layer_id);
+    match.getHomeTeam().addPlayer(std::move(player));
   }
-  engine.getDefaultGamepad().setListener(*players.back().get());
-  players.back()->attachInput(engine.getDefaultGamepad());
-
+  if (match.getHomeTeam().hasPlayers()) {
+    match.getHomeTeam().getPlayer().attachInput(engine.getDefaultGamepad());
+  }
   //
   // pitch
   //
@@ -90,20 +95,19 @@ int main(int argc, char **args) {
   //
   UniquePtr<Sprite> ballsprite =
       std::make_unique<BallSprite>(tex_playerandball);
+  ballsprite->setPerspectivizable(true);
   auto ball =
       std::make_unique<Ball>(std::move(ballsprite), std::move(ball_shadow));
-  // ball.attachInput(engine.getDefaultKeyboard());
-  // match owns the ball
   match.setBall(std::move(ball));
-  match.getBall().movable.setPosition({200, 200, 0});
+  match.getBall().movable.position = {200, 200, 0};
   engine.addEntity(match.getBall(), sprite_layer_id);
+  engine.getMainCamera().follow(match.getBall());
 
   // test
-  Engine::ProgressBar bar(40, 3, 25);
-  players.back()->power_bar = &bar;
+  ProgressBar bar(40, 3, 25);
+  match.getHomeTeam().getPlayer().power_bar = &bar;
   engine.addSprite(bar, sprite_layer_id);
 
-  // players[0]->getBrain().changeState(brain_state::Retrieve);
   while (engine.isRunning()) {
     engine.step();
   }

@@ -79,7 +79,10 @@ class Sprite : public sf::Sprite {
   //
   //
   virtual void perspectivize(const float in_camera_height);
-
+  //
+  //
+  //
+  inline void setPerspectivizable(bool in_status){perspectivizable = in_status;}
   /// a list of shapes for debug drawing
   std::vector<sf::Shape*> debug_shapes;
   /// for perspective
@@ -98,7 +101,7 @@ class Sprite : public sf::Sprite {
   /// animation controller
   bool animating = false;
   /// scale according to distance from camera?
-  bool perspectivizable = true;
+  bool perspectivizable = false;
   /// desired width of sprite unprespectervized
   float perspective_width = 0;
   /**

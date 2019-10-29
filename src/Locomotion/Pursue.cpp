@@ -20,11 +20,11 @@ void Pursue::start() {}
 //
 void Pursue::step() {
   // change direction when we stop getting closer to the target
-  float distance = (target->getPosition() - player.movable.getPosition()).magnitude();
+  float distance = (target->position - player.movable.position).magnitude();
   if (Math::greater_than(distance, last_distance)) {
-    Vector3 pos2d = target->getPosition();
+    Vector3 pos2d = target->position;
     pos2d.to2d();
-    Vector3 heading = pos2d - player.movable.getPosition();
+    Vector3 heading = pos2d - player.movable.position;
     player.run(heading);
 
     // todo: witha pathfinding algorithm, cpu controlled players should

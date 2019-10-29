@@ -158,6 +158,7 @@ void Vector3::normalise2d() {
   if (Math::less_than(fabsf(this->y), 0)) {
     this->y = 0;
   }
+  this->z = 0;
 }
 //
 //

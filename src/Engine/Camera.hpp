@@ -2,6 +2,7 @@
 
 #include "Entity.hpp"
 
+#include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/View.hpp>
 
 namespace Engine {
@@ -13,7 +14,11 @@ class Camera : public Entity {
   //
   //
   //
-  Camera();
+  Camera(float in_viewport_width, float in_viewport_height);
+  //
+  //
+  //
+  void follow(Entity &in_entity);
   //
   //
   //
@@ -40,8 +45,10 @@ class Camera : public Entity {
   void setWorldRect(sf::IntRect in_rect);
 
  private:
-  sf::View view{sf::FloatRect{0, 0, 800, 600}};
+  sf::View view;
   sf::IntRect world;
+  sf::CircleShape collider;
+  Entity *following = nullptr;
 };
 
 }  // namespace Engine

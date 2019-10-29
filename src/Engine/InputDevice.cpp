@@ -33,16 +33,25 @@ bool InputDevice::fireDown() { return buttonmask & mask_a; }
 //
 //
 //
-void InputDevice::setListener(InputListener &in_listener) {
-  listener = &in_listener;
+void InputDevice::attachListener(InputListener &in_listener) {
+  listeners.insert(&in_listener);
+}
+//
+//
+//
+void InputDevice::detatchListener(InputListener &in_listener) {
+  auto it = listeners.find(&in_listener);
+  if (it != listeners.end()) {
+    listeners.erase(it);
+  }
 }
 //
 //
 //
 void InputDevice::notify(const InputEvent in_event,
                          const std::vector<int> &in_params) {
-  if (listener) {
-    listener->onEvent(in_event, in_params);
+  for (auto &listener : listeners) {
+    listener->onInputEvent(in_event, in_params);
   }
 }
 //

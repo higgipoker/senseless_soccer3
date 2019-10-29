@@ -11,26 +11,19 @@ namespace Engine {
 //
 //
 //
-inline struct {
-  bool operator()(const sf::Drawable *d1, const sf::Drawable *d2) const {
-    return d1->z <= d2->z;
-  }
-} sort_drawable;
-//
-//
-//
 GameEngine::GameEngine(const std::string &in_window_title, int in_window_width,
                        int in_window_height, int in_flags, bool in_fullscreen)
     : window(in_window_title, in_window_width, in_window_height, in_flags,
              in_fullscreen),
+      camera(in_window_width, in_window_height),
       debug_gui(window) {
-  camera.movable.setPosition({static_cast<float>(in_window_width) / 2,
-                              static_cast<float>(in_window_height) / 2});
+  camera.movable.position = {static_cast<float>(in_window_width) / 2,
+                             static_cast<float>(in_window_height) / 2};
   background_layer = addLayer(false);
   shadow_layer = addLayer(false);
   camera.setHeight(50);
   camera.attachInput(default_keyboard);
-  entities.push_back(&camera);
+  addEntity(camera);
 }
 //
 //
@@ -40,9 +33,53 @@ GameEngine::~GameEngine() { window.close(); }
 //
 //
 void GameEngine::step() {
-  handle_input();
-  update_entities();
-  render();
+  // handle input
+  poll_input_devices();
+  for (const auto &entity : entities) {
+    entity->handleInput();
+  }
+
+  // update entities
+  for (const auto &entity : entities) {
+    entity->update(dt);
+  }
+
+  {  // sort renderables
+    for (auto &layer : render_layers) {
+      if (layer.second.sortable) {
+        std::sort(layer.second.sprite_list.begin(),
+                  layer.second.sprite_list.end(),
+                  [](const sf::Drawable *d1, const sf::Drawable *d2) -> bool {
+                    return d1->z <= d2->z;
+                  });
+      }
+    }
+  }
+  // render
+  window.clear(sf::Color::Blue);
+  window.setView(camera.getview());
+  {  // render entities
+    for (const auto &layer : render_layers) {
+      for (const auto &drawable : layer.second.sprite_list) {
+        drawable->perspectivize(camera.getHeight());
+        window.draw(*drawable);
+      }
+    }
+  }
+  {  // render hud
+    window.setView(hud_view);
+    for (const auto &drawable : hud_layer.sprite_list) {
+      window.draw(*drawable);
+    }
+  }
+  {  // render debug
+    if (Debug::showHud()) {
+      window.setView(hud_view);
+      debug_gui.update();
+    }
+  }
+  window.display();
+  window.setView(camera.getview());
 }
 //
 //
@@ -85,27 +122,7 @@ void GameEngine::addEntity(Entity &in_entity, layer_id in_layer_id) {
 //
 //
 //
-void GameEngine::handle_input() {
-  poll_input_devices();
-  for (const auto &entity : entities) {
-    entity->handleInput();
-  }
-}
-//
-//
-//
 bool GameEngine::isRunning() const { return running; }
-//
-//
-//
-void GameEngine::sort_drawables() {
-  for (auto &layer : render_layers) {
-    if (layer.second.sortable) {
-      std::sort(layer.second.sprite_list.begin(),
-                layer.second.sprite_list.end(), sort_drawable);
-    }
-  }
-}
 //
 //
 //
@@ -114,54 +131,6 @@ sf::RenderTarget &GameEngine::getRenderTarget() { return window; }
 //
 //
 Camera &GameEngine::getMainCamera() { return camera; }
-//
-//
-//
-void GameEngine::update_entities() {
-  // entities
-  for (const auto &entity : entities) {
-    entity->update(dt);
-  }
-}
-//
-//
-//
-void GameEngine::render() {
-  window.clear(sf::Color::Blue);
-  //
-  //
-  //
-  {  // render entities
-    window.setView(camera.getview());
-    sort_drawables();
-    for (const auto &layer : render_layers) {
-      for (const auto &drawable : layer.second.sprite_list) {
-        drawable->perspectivize(camera.getHeight());
-        window.draw(*drawable);
-      }
-    }
-  }
-  //
-  //
-  //
-  {  // render hud
-    window.setView(hud_view);
-    for (const auto &drawable : hud_layer.sprite_list) {
-      window.draw(*drawable);
-    }
-  }
-  //
-  //
-  //
-  {  // render debug
-    if (Debug::showHud()) {
-      window.setView(hud_view);
-      debug_gui.update();
-    }
-  }
-  window.display();
-  window.setView(camera.getview());
-}
 //
 //
 //

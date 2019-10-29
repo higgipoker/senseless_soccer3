@@ -14,7 +14,7 @@ void Seek::init(Vector3 in_target) { target = in_target; }
 //
 //
 void Seek::start() {
-  player.run(Compass(target - player.movable.getPosition()));
+  player.run(Compass(target - player.movable.position));
 }
 //
 //
@@ -28,5 +28,5 @@ void Seek::stop() { player.stopRunning(); }
 //
 //
 bool Seek::finished() {
-  return Math::equal((target - player.movable.getPosition()).magnitude(), 0);
+  return Math::equal((target - player.movable.position).magnitude(), 0);
 }

@@ -111,22 +111,6 @@ class GameEngine {
   //
   //
   //
-  void handle_input();
-  //
-  //
-  //
-  void sort_drawables();
-  //
-  //
-  //
-  void update_entities();
-  //
-  //
-  //
-  void render();
-  //
-  //
-  //
   void toggle_debg(bool in_keep_on = false);
   //
   //

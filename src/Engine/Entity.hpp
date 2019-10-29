@@ -4,6 +4,8 @@
 #include "Movable.hpp"
 #include "Sprite.hpp"
 #include "Types.hpp"
+
+#include <SFML/Graphics/RectangleShape.hpp>
 //
 //
 //
@@ -33,7 +35,7 @@ class Entity : public InputListener{
   //
   //
   //
-  Vector3 directionTo(const Entity &in_entity) const;
+  Vector3 directionTo(const Entity &in_entity, bool in_2d =false) const;
   //
   //
   //
@@ -63,7 +65,7 @@ class Entity : public InputListener{
   //
   // inputlistener interface implementation
   //
-  void onEvent(const InputEvent in_event,
+  void onInputEvent(const InputEvent in_event,
                        const std::vector<int> &in_params) override{};
 
  protected:
@@ -72,6 +74,11 @@ class Entity : public InputListener{
   int shadow_offset = 2;
   float speed = 1.F;
   InputDevice *input = nullptr;
+
+  // some debug stuff
+  static const bool DRAW_RAYS = true;
+  sf::RectangleShape xray;
+  sf::RectangleShape yray;
 };
 
 }  // namespace Engine

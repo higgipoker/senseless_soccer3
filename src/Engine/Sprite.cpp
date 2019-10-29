@@ -128,17 +128,6 @@ void Sprite::stopAnimating() { animating = false; }
 //
 //
 void Sprite::perspectivize(const float in_camera_height) {
-  //  float dist_from_camera = in_camera_height - entity_height -
-  //  default_height; dist_from_camera = -dist_from_camera;
-  //  if(dist_from_camera){
-  //  float desired_width = getLocalBounds().width/(1-dist_from_camera);
-  //  float desired_height = getLocalBounds().height/(1-dist_from_camera);
-  //  float scale_factor_x = desired_width / getLocalBounds().width;
-  //  float scale_factor_y = desired_height / getLocalBounds().height;
-  //  setScale(scale_factor_x, scale_factor_y);
-  //  }
-
-  //  return;
   if (perspectivizable) {
     // size depending on distance from camera
     float dimensions = perspective_width;
@@ -154,11 +143,10 @@ void Sprite::perspectivize(const float in_camera_height) {
     float angular_diameter = 2 * (atanf(dimensions / (2 * dist_from_camera)));
     float degs = Degrees(angular_diameter);
     float sprite_scale_factor = degs / dimensions;
-    float tmp = getLocalBounds().width;
-    tmp++;
     float sprite_ratio = dimensions / getLocalBounds().width;
     sprite_scale_factor *= sprite_ratio;
     setScale(sprite_scale_factor, sprite_scale_factor);
+
     if (shadow) shadow->setScale(sprite_scale_factor, sprite_scale_factor);
 
     // y offset due to height

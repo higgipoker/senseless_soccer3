@@ -8,8 +8,7 @@ namespace Engine {
 //
 //
 //
-Entity::Entity(UniquePtr<Sprite> in_sprite,
-               UniquePtr<Sprite> in_shadow)
+Entity::Entity(UniquePtr<Sprite> in_sprite, UniquePtr<Sprite> in_shadow)
     : sprite(std::move(in_sprite)), shadow(std::move(in_shadow)) {
   sprite->shadow = shadow.get();
 }
@@ -40,23 +39,30 @@ void Entity::handleInput() {
 //
 void Entity::update(const float in_dt) {
   movable.step(in_dt);
-  sprite->setPosition(movable.getX(), movable.getY());
+  sprite->setPosition(movable.position.x, movable.position.y);
   shadow->setPosition({sprite->getPosition().x + shadow_offset,
                        sprite->getPosition().y + shadow_offset});
   sprite->animate();
-  sprite->entity_height = movable.getZ();
-  sprite->z = movable.getPosition().y;
+  sprite->entity_height = movable.position.z;
+  sprite->z = movable.position.y;
 }
 //
 //
 //
-Vector3 Entity::directionTo(const Entity &in_entity) const {
-  return in_entity.movable.getPosition() - movable.getPosition();
+Vector3 Entity::directionTo(const Entity &in_entity, bool in_2d) const {
+  auto ret = in_entity.movable.position - movable.position;
+  if (in_2d) {
+    ret.z = 0;
+  }
+  return ret;
 }
 //
 //
 //
-void Entity::attachInput(InputDevice &in_device) { input = &in_device; }
+void Entity::attachInput(InputDevice &in_device) {
+  input = &in_device;
+  in_device.attachListener(*this);
+}
 //
 //
 //

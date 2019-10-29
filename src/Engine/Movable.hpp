@@ -3,43 +3,39 @@
 #include "Vector.hpp"
 
 namespace Engine {
-  //
-  //
-  //
+//
+//
+//
 class Movable {
  public:
   //
   //
   //
-  Movable();
-  //
-  //
-  //
-  const Vector3 getPosition() const;
-  void setPosition(const Vector3 &in_position);
   void setPosition(const float in_x, const float in_y, const float in_z);
+  //
+  //
+  //
   void setPosition(const float in_x, const float in_y);
+  //
+  //
+  //
   void setPosition(const int in_x, const int in_y);
-  void move(float in_dx, float in_dy);
-  float getX()const;
-  float getY()const;
-  float getZ()const;
-  void setX(float in_x);
-  void setY(float in_y);
-  void setZ(float in_z);
+  //
+  //
+  //
+  void move(const float in_dx, const float in_dy);
+  //
+  //
+  //
   void resetVelocity();
-  void place(Vector3 in_position);
   //
   //
   //
-  const Vector3 getVelocity()const;
-  float getVelocityMag(bool in_2d = false);
-  void setVelocity(const Vector3 &in_velocity);
-  void normalizeVelocity(bool in_2d = false);
+  void place(const Vector3& in_position);
   //
   //
   //
-  void applyForce(Vector3 in_force);
+  void applyForce(const Vector3& in_force);
   //
   //
   //
@@ -47,48 +43,52 @@ class Movable {
   //
   //
   //
-  void step(float in_dt);
+  void step(const float in_dt);
   //
   //
   //
-  void toggleGravity(bool in_status);
+  void toggleGravity(const bool in_status);
 
-  /// environment elements TODO struct
-  float co_friction = 0;
-  float co_air_resistance = 0;
-  float co_bounciness = 0;
-  float mass = 1;
-  float speed = 1;
+  /// object physical properties
+  struct {
+    float mass = 1;
+    float co_bounciness = 0;
+    float co_friction = 0;
+    float co_air_resistance = 0;
+    float co_spin_decay = 0.8F;
+    float cross_section = 0;
+  } properties;
 
- protected:
+  /// environment elements
+  struct {
+    float air_density = 1.0F;
+  } environment;
+
+  // outside influences
+  struct {
+    Vector3 sidespin;
+    Vector3 topspin;
+    Vector3 force;
+
+    void reset() { force.reset(); }
+  } forces;
+
   /// movable components
   Vector3 position;
   Vector3 velocity;
-  Vector3 force;
-  /**
-   * @brief integrate
-   * @param in_dt
-   */
-  void integrate_improved_euler(const float in_dt);
-  /**
-   * @brief integrate
-   * @param in_dt
-   */
-  Vector3 integrate(const float in_dt);
-  /**
-   * @brief bounce
-   */
-  void bounce();
-  /**
-   * @brief damp_bounce
-   */
-  void damp_bounce();
-  /**
-   * @brief damp_velocity
-   */
-  void damp_velocity();
 
-  // tmp hack
+ private:
+  //
+  //
+  //
+  void integrate_improved_euler(const float in_dt);
+  //
+  //
+  //
+  Vector3 integrate(const float in_dt);
+  //
+  //
+  //
   bool affected_by_gravity = true;
 };
 }  // namespace Engine

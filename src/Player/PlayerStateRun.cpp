@@ -16,16 +16,18 @@ PlayerStateRun::PlayerStateRun(Player &in_player) : PlayerState(in_player) {
 //
 //
 //
-void PlayerStateRun::start() {player.movable.speed =  run_speeds[player.speed];}
+void PlayerStateRun::start() {
+  player.current_speed = run_speeds[player.speed];
+}
 //
 //
 //
 void PlayerStateRun::step() {
   PlayerState::step();
 
-  Compass direction(player.movable.getVelocity());
+  Compass direction(player.movable.velocity);
   player.player_sprite.setPlayerAnimation(PlayerAnimationType::Run,
-                                    direction.direction);
+                                          direction.direction);
 }
 //
 //
@@ -41,7 +43,7 @@ bool PlayerStateRun::stateOver() {
     return true;
   }
   // go to stand
-  if (Math::equal(player.movable.getVelocityMag(true), 0)) {
+  if (Math::equal(player.movable.velocity.magnitude2d(), 0)) {
     next_state = player_state::Stand;
     return true;
   }

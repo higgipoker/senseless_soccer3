@@ -30,7 +30,6 @@ endif (WIN32)
 if (UNIX)
     add_definitions(-std=c++17)
 endif (UNIX)
-#add_definitions(-fsanitize=address)
 
 # --------------------------------------------------
 # linker flags
@@ -49,7 +48,6 @@ add_executable(senseless_soccer3
     src/Engine/GameEngine.cpp
     src/Engine/Sprite.cpp
     src/Engine/SpriteAnimation.cpp
-    src/Engine/Drawable.cpp
     src/Engine/Camera.cpp
     src/Engine/Compass.cpp
     src/Engine/Vector.cpp
@@ -83,11 +81,13 @@ add_executable(senseless_soccer3
     src/Ball/Ball.cpp
     src/Ball/BallSprite.cpp
     src/Match/Match.cpp
+    src/Team/Team.cpp
     src/imgui/imgui.cpp
     src/imgui/imgui_draw.cpp
     src/imgui/imgui_widgets.cpp
     src/imgui/imgui_demo.cpp
     src/imgui/imgui-SFML.cpp
+
 )
 
 target_compile_options(senseless_soccer3 PRIVATE
@@ -102,6 +102,7 @@ target_compile_options(senseless_soccer3 PRIVATE
 # link libs
 # --------------------------------------------------
 find_package(OpenGL)
+target_link_libraries (senseless_soccer3 -fsanitize=address)
 target_link_libraries (senseless_soccer3 ${OPENGL_gl_LIBRARY})
 target_link_libraries (senseless_soccer3 sfml-graphics-d)
 target_link_libraries (senseless_soccer3 sfml-window-d)

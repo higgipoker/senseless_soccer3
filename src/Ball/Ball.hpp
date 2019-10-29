@@ -3,6 +3,7 @@
 #include "Engine/Entity.hpp"
 
 #include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 
 /**
  * @brief The Ball class
@@ -25,6 +26,18 @@ class Ball : public Engine::Entity {
   //
   //
   void kick(Engine::Vector3 in_force);
+  //
+  //
+  //
+  void applyTopSpin(float in_factor);
+  //
+  //
+  //
+  void applyBackSpin(float in_factor);
+  //
+  //
+  //
+  void applySideSpin(Engine::Vector3 in_spin);
   //
   //
   //

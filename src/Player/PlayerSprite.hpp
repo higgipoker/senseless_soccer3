@@ -26,7 +26,7 @@ class PlayerSprite : public Engine::Sprite {
   //
   //
   //
-  PlayerSprite() = default;
+  PlayerSprite() { perspectivizable = true; };
   //
   //
   //
@@ -38,7 +38,7 @@ class PlayerSprite : public Engine::Sprite {
   //
   //
   void setPlayerAnimation(PlayerAnimationType in_type,
-                    Engine::Direction in_direction);
+                          Engine::Direction in_direction);
   //
   //
   //

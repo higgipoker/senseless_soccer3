@@ -29,5 +29,5 @@ void PlayerStateStand::stop() {}
 //
 //
 bool PlayerStateStand::stateOver() {
-  return Math::greater_than(player.movable.getVelocityMag(true), 0);
+  return Math::greater_than(player.movable.velocity.magnitude2d(), 0);
 }

@@ -1,53 +1,77 @@
 #include "Camera.hpp"
 
+#include "Engine/Collider.hpp"
+
 #include <iostream>
 
 namespace Engine {
 //
 //
 //
-Camera::Camera()
-    : Entity(std::make_unique<Sprite>(), std::make_unique<Sprite>()) {
+Camera::Camera(float in_viewport_width, float in_viewport_height)
+    : Entity(std::make_unique<Sprite>(), std::make_unique<Sprite>()),
+      view{{0, 0, in_viewport_width, in_viewport_height}},
+      collider(in_viewport_width / 6) {
   movable.toggleGravity(false);
-  movable.co_friction = 0.01F;
-  speed = 2;
+  movable.properties.co_friction = 0.01F;
+  speed = 1;
+  collider.setOutlineColor(sf::Color::Blue);
+  collider.setOutlineThickness(3);
+  collider.setFillColor(sf::Color(0, 0, 0, 0));
 }
 //
 //
 //
-void Camera::handleInput() {
-  Entity::handleInput();
-
+void Camera::follow(Entity &in_entity) {
+  movable.position.x = in_entity.movable.position.x;
+  movable.position.y = in_entity.movable.position.y;
+  view.setCenter(movable.position.x, movable.position.y);
+  following = &in_entity;
 }
+//
+//
+//
+void Camera::handleInput() { Entity::handleInput(); }
 //
 //
 //
 void Camera::update(const float in_dt) {
   movable.step(in_dt);
-  {  // constrain in world
-    const int bounce = 6;
-    if ((movable.getX() - (view.getSize().x / 2)) < world.left) {
-      movable.setX(world.left + view.getSize().x / 2);
-      movable.resetForces();
-      movable.applyForce({bounce, 0});
-    }
-    if ((movable.getX() + (view.getSize().x / 2)) > world.left + world.width) {
-      movable.setX(world.left + world.width - view.getSize().x / 2);
-      movable.resetForces();
-      movable.applyForce({-bounce, 0});
-    }
-    if ((movable.getY() - (view.getSize().y / 2)) < world.top) {
-      movable.setY(world.top + view.getSize().y / 2);
-      movable.resetForces();
-      movable.applyForce({0, bounce});
-    }
-    if ((movable.getY() + (view.getSize().y / 2)) > world.top + world.height) {
-      movable.setY(world.top + world.height - view.getSize().y / 2);
-      movable.resetForces();
-      movable.applyForce({0, -bounce});
+  view.setCenter(movable.position.x, movable.position.y);
+  collider.setCenter(movable.position.x, movable.position.y);
+
+  if (following) {
+    if (!Collider::contains(collider, following->movable.position)) {
+      Vector3 force = directionTo(*following);
+      force.normalise2d();
+      force *= speed * following->movable.velocity.magnitude2d();
+      movable.applyForce(force);
     }
   }
-  view.setCenter(movable.getX(), movable.getY());
+
+  //  {  // constrain in world
+  //    if ((movable.position.x - (view.getSize().x / 2)) < world.left) {
+  //      movable.velocity.x = 0;
+  //      movable.force.x = 0;
+  //    }
+  //    if ((movable.position.x + (view.getSize().x / 2)) > world.left +
+  //    world.width) {
+  //      movable.velocity.x = 0;
+  //      movable.force.x = 0;
+  //    }
+  //    if ((movable.position.y - (view.getSize().y / 2)) < world.top) {
+  //      movable.velocity.y = 0;
+  //      movable.force.y = 0;
+  //    }
+  //    if ((movable.position.y + (view.getSize().y / 2)) > world.top +
+  //    world.height) {
+  //      movable.velocity.y = 0;
+  //      movable.force.y = 0;
+  //    }
+  //  }
+
+  sprite->debug_shapes.clear();
+  sprite->debug_shapes.push_back(&collider);
 }
 //
 //
@@ -56,11 +80,13 @@ sf::View &Camera::getview() { return view; }
 //
 //
 //
-float Camera::getHeight() { return movable.getZ(); }
+float Camera::getHeight() { return movable.position.z; }
 //
 //
 //
-void Camera::setHeight(const float in_height) { movable.setZ(in_height); }
+void Camera::setHeight(const float in_height) {
+  movable.position.z = in_height;
+}
 //
 //
 //

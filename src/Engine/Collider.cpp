@@ -26,7 +26,6 @@ bool Collider::collides(const sf::CircleShape &c1, const sf::CircleShape &c2) {
 //
 bool Collider::contains(const sf::CircleShape &big,
                         const sf::CircleShape &small) {
-
   // distance
   int dist_sq = sqrt(((small.getCenter().x - big.getCenter().x) *
                       (small.getCenter().x - big.getCenter().x)) +
@@ -38,5 +37,16 @@ bool Collider::contains(const sf::CircleShape &big,
   }
 
   return false;
+}
+bool Collider::contains(const sf::CircleShape &circle, const Vector3 &point) {
+  // Compare radius of circle with distance
+  // of its center from given point
+  if ((point.x - circle.getCenter().x) * (point.x - circle.getCenter().x) +
+          (point.y - circle.getCenter().y) *
+              (point.y - circle.getCenter().y) <=
+      circle.getRadius() * circle.getRadius())
+    return true;
+  else
+    return false;
 }
 }  // namespace Engine
