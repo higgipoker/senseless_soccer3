@@ -1,7 +1,7 @@
 #include "Team.hpp"
 //
 #include "Match/Match.hpp"
-Match* Team::match = nullptr;
+Match *Team::match = nullptr;
 //
 //
 //
@@ -12,7 +12,7 @@ Team::Team() {}
 void Team::update() {
   set_key_players();
 
-  for(auto &p : players){
+  for (auto &p : players) {
     p->update();
   }
 }
@@ -26,29 +26,29 @@ void Team::addPlayer(UniquePtr<Player> in_player) {
 //
 //
 //
-Player& Team::getPlayer() { return *players.back(); }
+Player &Team::getPlayer() { return *players.back(); }
 //
 //
 //
 void Team::set_key_players() {
-  if(!players.size())return;
+  if (!players.size()) return;
   key_players.clear();
 
   // sort in order of closest to ball
-  std::sort(
-      players.begin(), players.end(), [](const auto &p1, const auto &p2) -> bool {
-        return p1.get()->distance_from_ball < p2.get()->distance_from_ball;
-      });
+  std::sort(players.begin(), players.end(),
+            [](const auto &p1, const auto &p2) -> bool {
+              return p1.get()->distance_from_ball <
+                     p2.get()->distance_from_ball;
+            });
 
   // closest player to ball
   auto it = players.begin();
-  auto player = (*it).get();
 
   // but not the player in possession, or goalkeeper
-  while (player == match->player_in_possession) {
+  while (it->get() == match->player_in_possession) {
     ++it;
   }
-  player = (*it).get();
+  auto player = (*it).get();
   key_players.closest_to_ball = player;
 
   // ==================================================

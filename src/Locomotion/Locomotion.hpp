@@ -36,4 +36,8 @@ class Locomotion {
  protected:
   /// entity to manipulate
   Player &player;
+  //
+  //
+  //
+  void stay_in_pitch();
 };

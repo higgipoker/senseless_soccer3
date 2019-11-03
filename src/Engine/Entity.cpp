@@ -36,6 +36,13 @@ Vector3 Entity::directionTo(const Entity &in_entity, bool in_2d) const {
 //
 //
 //
+float Entity::distanceTo(const Entity &in_entity) const {
+  auto ret = (in_entity.movable.position - movable.position).magnitude();
+  return ret;
+}
+//
+//
+//
 Sprite &Entity::getSprite() { return *sprite.get(); }
 //
 //

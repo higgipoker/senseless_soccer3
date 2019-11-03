@@ -65,12 +65,21 @@ int main(int argc, char **args) {
   ballsprite->setPerspectivizable(true);
   auto ball =
       std::make_unique<Ball>(std::move(ballsprite), std::move(ball_shadow));
+
+  //
+  // pitch
+  //
+  engine.getMainCamera().setWorldRect(world);
+  UniquePtr<Sprite> pitch = std::make_unique<Pitch>(tex_grass, world);
+  engine.addSprite(*pitch.get(), engine.getBackgroundLayer());
   //
   // match and teams
   //
   Match match;
+  match.setPitch(std::move(pitch));
   match.setBall(std::move(ball));
-  match.getBall().movable.position = {200, 200, 0};
+  match.getBall().movable.setPosition(
+      match.getPitch().dimensions.center_spot.getCenter());
   engine.addEntity(match.getBall(), sprite_layer_id);
   engine.getMainCamera().follow(match.getBall());
   UniquePtr<Team> team1 = std::make_unique<Team>();
@@ -82,31 +91,30 @@ int main(int argc, char **args) {
   // players
   //
   Player::connectMatch(match);
-  for (auto i = 0; i < 2; ++i) {
+  for (auto i = 0; i < 10; ++i) {
     UniquePtr<Player> player = PlayerFactory::makePlayer(tex_playerandball);
     TeamData td;
     td.shirt_number = i + 1;
     player->setTeamData(td);
-    player->movable.setPosition(i * 10, 120);
+    player->movable.setPosition(
+        match.getPitch().dimensions.center_spot.getCenter().x + (i * 10),
+        match.getPitch().dimensions.center_spot.getCenter().y-50);
+    player->support_type = i;
     engine.addEntity(*player, sprite_layer_id);
     engine.addControllable(*player);
+    player->getBrain().changeState(brain_state::Support);
     match.getHomeTeam().addPlayer(std::move(player));
   }
   if (match.getHomeTeam().hasPlayers()) {
     match.getHomeTeam().getPlayer().attachInput(engine.getDefaultGamepad());
   }
-  //
-  // pitch
-  //
-  engine.getMainCamera().setWorldRect(world);
-  UniquePtr<Sprite> pitch = std::make_unique<Pitch>(tex_grass, world);
-  engine.addSprite(*pitch.get(), engine.getBackgroundLayer());
 
   // test
   ProgressBar bar(40, 3, 50);
   match.getHomeTeam().getPlayer().power_bar = &bar;
   engine.addSprite(bar, sprite_layer_id);
 
+  srand(time(NULL));
   while (engine.isRunning()) {
     engine.step();
     match.getHomeTeam().update();

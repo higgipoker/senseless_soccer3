@@ -68,10 +68,14 @@ add_executable(senseless_soccer3
     src/Locomotion/Seek.cpp
     src/Locomotion/Head.cpp
     src/Locomotion/Pursue.cpp
+    src/Locomotion/Stand.cpp
     src/Brain/Brain.cpp
     src/Brain/BrainState.cpp
     src/Brain/BrainRetrieve.cpp
     src/Brain/BrainDribble.cpp
+    src/Brain/BrainPass.cpp
+    src/Brain/BrainSupport.cpp
+    src/Brain/BrainWait.cpp
     src/Player/PlayerFactory.cpp
     src/Player/Player.cpp
     src/Player/PlayerSprite.cpp

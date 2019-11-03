@@ -1,7 +1,9 @@
 #pragma once
 #include "Ball/Ball.hpp"
 
+#include "Engine/Sprite.hpp"
 #include "Engine/Types.hpp"
+#include "Pitch/Pitch.hpp"
 #include "Team/Team.hpp"
 
 #include <cassert>
@@ -19,6 +21,10 @@ class Match {
   //
   //
   void update();
+  //
+  //
+  //
+  void setPitch(UniquePtr<Engine::Sprite> in_pitch);
   //
   //
   //
@@ -45,9 +51,17 @@ class Match {
     assert(away_team.get());
     return *away_team;
   }
+  //
+  //
+  //
+  inline Pitch& getPitch(){
+    return static_cast<Pitch&>(*pitch.get());
+  };
   Player* player_in_possession = nullptr;
 
+
  protected:
+  UniquePtr<Engine::Sprite> pitch;
   UniquePtr<Ball> ball;
   UniquePtr<Team> home_team;
   UniquePtr<Team> away_team;

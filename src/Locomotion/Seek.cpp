@@ -19,7 +19,7 @@ void Seek::start() {
 //
 //
 //
-void Seek::step() {}
+void Seek::step() {stay_in_pitch();}
 //
 //
 //

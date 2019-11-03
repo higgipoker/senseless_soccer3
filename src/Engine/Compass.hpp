@@ -76,6 +76,10 @@ class Compass {
   //
   //
   //
+  static Compass getRandomDirection();
+  //
+  //
+  //
   inline std::string print() { return direction_to_string[direction]; }
 };
 }  // namespace Engine

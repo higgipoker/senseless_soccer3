@@ -26,6 +26,12 @@ void Movable::setPosition(const int in_x, const int in_y) {
 //
 //
 //
+void Movable::setPosition(const sf::Vector2f in_point) {
+  position = {in_point.x, in_point.y, 0.0F};
+}
+//
+//
+//
 void Movable::move(const float in_dx, const float in_dy) {
   position.x += in_dx;
   position.y += in_dy;

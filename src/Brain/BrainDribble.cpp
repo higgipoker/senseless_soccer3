@@ -4,25 +4,31 @@
 #include "Brain.hpp"
 #include "Match/Match.hpp"
 #include "Player/Player.hpp"
+static const int DRIBBLE_TIME = 100;
 //
 //
 //
 BrainDribble::BrainDribble(Brain& in_brain)
     : BrainState(in_brain), pattern(&pattern_random) {
   name = "Dribble";
-  next_state = brain_state::Idle;
+  next_state = brain_state::Wait;
 }
 //
 //
 //
 void BrainDribble::start() {
+  std::cout << "start " << name << std::endl;
+  brain.player.current_speed = dribble_speeds[brain.player.speed];
+  dribble_ticks = 0;
   brain.locomotion.head(brain.player.getDirection().toVector());
 }
 //
 //
 //
 void BrainDribble::step() {
-  if (pattern->changeDirection()) {
+  if (++dribble_ticks > DRIBBLE_TIME) {
+    brain.changeState(brain_state::Pass);
+  } else if (pattern->changeDirection()) {
     brain.locomotion.head(
         pattern->nextDirection(brain.player.getDirection()).toVector());
   }
@@ -30,8 +36,11 @@ void BrainDribble::step() {
 //
 //
 //
-void BrainDribble::stop() {}
+void BrainDribble::stop() {std::cout << "stop " << name << std::endl;}
 //
 //
 //
-bool BrainDribble::stateOver() { return !brain.player.ballInControlRange(); }
+bool BrainDribble::stateOver() {
+  if (brain.player.ballInControlRange()) return false;
+  return true;
+}

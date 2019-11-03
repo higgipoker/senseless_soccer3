@@ -42,7 +42,7 @@ class DribblePatternRandom : public DribblePattern {
   //
   //
   bool changeDirection() override {
-    return (++counter > ((rand() % 50) + 100));
+    return (++counter > ((rand() % 50) + 500));
   }
 };
 //
@@ -75,4 +75,6 @@ class BrainDribble : public BrainState {
  protected:
   DribblePatternRandom pattern_random;
   DribblePattern *pattern = nullptr;
+  int dribble_ticks = 0;
+  bool first_touch = true;
 };

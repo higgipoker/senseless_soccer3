@@ -23,6 +23,10 @@ class Movable {
   //
   //
   //
+  void setPosition(const sf::Vector2f in_point);
+  //
+  //
+  //
   void move(const float in_dx, const float in_dy);
   //
   //

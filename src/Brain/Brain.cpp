@@ -12,6 +12,9 @@ Brain::Brain(Player &in_player)
       idle_state(*this),
       retrieve_state(*this),
       dribble_state(*this),
+      pass_state(*this),
+      support_state(*this),
+      wait_state(*this),
       current_state(&idle_state) {}
 //
 //
@@ -41,7 +44,15 @@ void Brain::changeState(const brain_state in_state) {
     case brain_state::Dribble:
       current_state = &dribble_state;
       break;
+    case brain_state::Pass:
+      current_state = &pass_state;
+      break;
+    case brain_state::Support:
+      current_state = &support_state;
+      break;
+    case brain_state::Wait:
+      current_state = &wait_state;
+      break;
   }
   current_state->start();
-  std::cout << "Brain::changeState> " << current_state->name << std::endl;
 }

@@ -1,8 +1,10 @@
 #pragma once
 
-#include "BrainState.hpp"
-#include "BrainRetrieve.hpp"
+#include "BrainPass.hpp"
 #include "BrainDribble.hpp"
+#include "BrainRetrieve.hpp"
+#include "BrainSupport.hpp"
+#include "BrainState.hpp"
 #include "Locomotion/LocomotionManager.hpp"
 
 class Player;
@@ -36,12 +38,18 @@ class Brain {
   BrainIdle idle_state;
   BrainRetrieve retrieve_state;
   BrainDribble dribble_state;
+  BrainPass pass_state;
+  BrainSupport support_state;
+  BrainSupport wait_state;
   BrainState *current_state = nullptr;
-
 
  public:
   // for sm pattern
   friend class BrainState;
   friend class BrainRetrieve;
   friend class BrainDribble;
+  friend class BrainPass;
+  friend class BrainSupport;
+  friend class BrainWait;
 };
+

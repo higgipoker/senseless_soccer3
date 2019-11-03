@@ -60,8 +60,7 @@ class Pitch : public Engine::Sprite {
   //
   //
   //
-  Pitch(SharedPtr<sf::Texture> in_texture,
-        const sf::FloatRect in_world_bounds);
+  Pitch(SharedPtr<sf::Texture> in_texture, const sf::FloatRect in_world_bounds);
   //
   //
   //
@@ -79,6 +78,10 @@ class Pitch : public Engine::Sprite {
   //
   virtual void perspectivize(const float in_camera_height) override;
 
+  // todo move this out to an pitch entity?
+  /// pitch dimensions
+  PitchDimensions dimensions;
+
  protected:
   /// the repeatig grass sprite
   sf::Sprite grass;
@@ -87,8 +90,6 @@ class Pitch : public Engine::Sprite {
   /// a texture to render the grass and lines to
   UniquePtr<sf::RenderTexture> pitch_texture =
       std::make_unique<sf::RenderTexture>();
-  /// pitch dimensions
-  PitchDimensions dimensions;
 
  private:
   /**

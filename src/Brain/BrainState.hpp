@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-enum class brain_state { Idle, Retrieve, Dribble };
+enum class brain_state { Idle, Support, Retrieve, Dribble, Pass, Wait };
 
 class Brain;
 /**

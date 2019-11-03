@@ -33,6 +33,7 @@ void Pursue::step() {
     // entity.velocity.normalizeToUnits();
   }
   last_distance = distance;
+  stay_in_pitch();
 }
 //
 //

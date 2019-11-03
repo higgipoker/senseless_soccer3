@@ -119,6 +119,7 @@ class Player : public Engine::Entity, public Engine::Controllable {
   Engine::ProgressBar *power_bar = nullptr;
   Team *my_team = nullptr;
   float distance_from_ball = 0;
+  int support_type=0;
 
  protected:
   //
@@ -156,6 +157,8 @@ class Player : public Engine::Entity, public Engine::Controllable {
   //
   void debug();
 
+
+
  public:
   // state machine pattern
   friend class PlayerState;
@@ -164,4 +167,5 @@ class Player : public Engine::Entity, public Engine::Controllable {
   friend class PlayerStateDribble;
   friend class BrainDribble;
   friend class BrainRetrieve;
+  friend class Locomotion;
 };

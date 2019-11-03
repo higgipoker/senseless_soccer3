@@ -94,4 +94,10 @@ void Compass::fromVector(const Vector3 &v) {
   else if (Math::less_than(v.x, 0) && Math::less_than(v.y, 0))
     direction = Direction::NORTH_WEST;
 }
+//
+//
+//
+Compass Compass::getRandomDirection() {
+  return {(static_cast<Direction>(rand() % 7))};
+}
 }  // namespace Engine

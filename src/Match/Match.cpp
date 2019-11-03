@@ -1,4 +1,6 @@
 #include "Match.hpp"
+
+using namespace Engine;
 //
 //
 //
@@ -10,6 +12,10 @@ void Match::update() {
   home_team->update();
   away_team->update();
 }
+//
+//
+//
+void Match::setPitch(UniquePtr<Sprite> in_pitch) { pitch = std::move(in_pitch); }
 //
 //
 //

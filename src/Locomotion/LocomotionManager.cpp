@@ -11,7 +11,8 @@ using namespace Engine;
 LocomotionManager::LocomotionManager(Player &in_player)
     : seek_locomotion(in_player),
       head_locomotion(in_player),
-      pursue_locomotion(in_player) {}
+      pursue_locomotion(in_player),
+      stand_locomotion(in_player) {}
 
 //
 //
@@ -44,6 +45,16 @@ void LocomotionManager::pursue(Movable &in_target) {
   }
   pursue_locomotion.init(in_target);
   current_locomotion = &pursue_locomotion;
+  current_locomotion->start();
+}
+//
+//
+//
+void LocomotionManager::stand() {
+  if (current_locomotion) {
+    current_locomotion->stop();
+  }
+  current_locomotion = &stand_locomotion;
   current_locomotion->start();
 }
 //

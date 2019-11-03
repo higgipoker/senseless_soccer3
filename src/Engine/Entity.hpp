@@ -30,7 +30,11 @@ class Entity {
   //
   //
   //
-  Vector3 directionTo(const Entity &in_entity, bool in_2d =false) const;
+  Vector3 directionTo(const Entity &in_entity, bool in_2d = false) const;
+  //
+  //
+  //
+  float distanceTo(const Entity &in_entity) const;
   //
   //
   //

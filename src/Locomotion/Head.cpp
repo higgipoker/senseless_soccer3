@@ -17,7 +17,7 @@ void Head::start() { player.run(Compass(direction)); }
 //
 //
 //
-void Head::step() {}
+void Head::step() {stay_in_pitch();}
 //
 //
 //

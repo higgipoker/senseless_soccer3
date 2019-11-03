@@ -79,12 +79,12 @@ void Player::update() {
     state->stop();
     change_state(state->nextState());
     state->start();
-    std::cout << "Player::update> " << state->name << std::endl;
   }
 
   feet.setCenter(movable.position.x, movable.position.y - feet.getRadius());
   control.setCenter(feet.getCenter());
   shadow->setFrame(sprite->getFrame());
+  distance_from_ball = distanceTo(match->getBall());
 
   if (power_bar) {
     power_bar->setCenter(
@@ -180,11 +180,12 @@ void Player::kick(const float in_force) {
 //
 void Player::shortPass(Player &in_receiver) {
   float p = 7;
-  Vector3 f{facing.toVector()};
+  Vector3 f{directionTo(*my_team->key_players.closest_to_ball)};
   f.normalise2d();
   f *= p;
-  f.rotate(rand() % 10 - rand() % 20);
   ball->kick(f);
+
+  my_team->key_players.closest_to_ball->brain.changeState(brain_state::Retrieve);
 }
 //
 //
