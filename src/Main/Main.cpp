@@ -9,6 +9,7 @@
 #include "Engine/GameEngine.hpp"
 #include "Engine/ProgressBar.hpp"
 #include "Engine/Types.hpp"
+#include "Game/Game.hpp"
 #include "Match/Match.hpp"
 #include "Pitch/Pitch.hpp"
 #include "Player/Player.hpp"
@@ -55,27 +56,40 @@ int main(int argc, char **args) {
   GameEngine engine("senseless soccer", wnd_size.width, wnd_size.height);
   int sprite_layer_id = engine.addLayer(true);
   //
-  // teams
+  // ball
   //
-  UniquePtr<Team> team1 = std::make_unique<Team>();
-  UniquePtr<Team> team2 = std::make_unique<Team>();
+  UniquePtr<Sprite> ballsprite =
+      std::make_unique<BallSprite>(tex_playerandball);
+  UniquePtr<Sprite> ball_shadow =
+      std::make_unique<BallShadowSprite>(tex_playerandball);
+  ballsprite->setPerspectivizable(true);
+  auto ball =
+      std::make_unique<Ball>(std::move(ballsprite), std::move(ball_shadow));
   //
-  // match
+  // match and teams
   //
   Match match;
+  match.setBall(std::move(ball));
+  match.getBall().movable.position = {200, 200, 0};
+  engine.addEntity(match.getBall(), sprite_layer_id);
+  engine.getMainCamera().follow(match.getBall());
+  UniquePtr<Team> team1 = std::make_unique<Team>();
+  UniquePtr<Team> team2 = std::make_unique<Team>();
+  Team::match = &match;
   match.addTeams(std::move(team1), std::move(team2));
 
   //
   // players
   //
   Player::connectMatch(match);
-  for (auto i = 0; i < 1; ++i) {
+  for (auto i = 0; i < 2; ++i) {
     UniquePtr<Player> player = PlayerFactory::makePlayer(tex_playerandball);
     TeamData td;
     td.shirt_number = i + 1;
     player->setTeamData(td);
     player->movable.setPosition(i * 10, 120);
     engine.addEntity(*player, sprite_layer_id);
+    engine.addControllable(*player);
     match.getHomeTeam().addPlayer(std::move(player));
   }
   if (match.getHomeTeam().hasPlayers()) {
@@ -84,32 +98,20 @@ int main(int argc, char **args) {
   //
   // pitch
   //
-  sf::IntRect world{0, 0, 2000, 3000};
   engine.getMainCamera().setWorldRect(world);
   UniquePtr<Sprite> pitch = std::make_unique<Pitch>(tex_grass, world);
   engine.addSprite(*pitch.get(), engine.getBackgroundLayer());
-  UniquePtr<Sprite> ball_shadow =
-      std::make_unique<BallShadowSprite>(tex_playerandball);
-  //
-  // ball
-  //
-  UniquePtr<Sprite> ballsprite =
-      std::make_unique<BallSprite>(tex_playerandball);
-  ballsprite->setPerspectivizable(true);
-  auto ball =
-      std::make_unique<Ball>(std::move(ballsprite), std::move(ball_shadow));
-  match.setBall(std::move(ball));
-  match.getBall().movable.position = {200, 200, 0};
-  engine.addEntity(match.getBall(), sprite_layer_id);
-  engine.getMainCamera().follow(match.getBall());
 
   // test
-  ProgressBar bar(40, 3, 25);
+  ProgressBar bar(40, 3, 50);
   match.getHomeTeam().getPlayer().power_bar = &bar;
   engine.addSprite(bar, sprite_layer_id);
 
   while (engine.isRunning()) {
     engine.step();
+    match.getHomeTeam().update();
+    match.getAwayTeam().update();
+    match.getBall().update();
   }
 
   std::cout << args[0] << " exited normally" << std::endl;

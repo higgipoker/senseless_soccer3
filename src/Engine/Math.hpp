@@ -2,7 +2,7 @@
 #include <cmath>
 namespace Engine {
 
-const float TOL = 0.1F;
+const float TOL = 0.01F;
 const float PI = 3.14159265359F;
 static float Radians(float a) {
   return a * (PI / 180.0F);

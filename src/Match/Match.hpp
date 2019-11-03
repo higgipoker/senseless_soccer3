@@ -18,6 +18,10 @@ class Match {
   //
   //
   //
+  void update();
+  //
+  //
+  //
   void setBall(UniquePtr<Ball> in_ball);
   //
   //
@@ -30,11 +34,18 @@ class Match {
   //
   //
   //
-  inline Team& getHomeTeam() { assert(home_team.get());return *home_team; }
+  inline Team& getHomeTeam() {
+    assert(home_team.get());
+    return *home_team;
+  }
   //
   //
   //
-  inline Team& getAwayTeam() { assert(away_team.get());return *away_team; }
+  inline Team& getAwayTeam() {
+    assert(away_team.get());
+    return *away_team;
+  }
+  Player* player_in_possession = nullptr;
 
  protected:
   UniquePtr<Ball> ball;

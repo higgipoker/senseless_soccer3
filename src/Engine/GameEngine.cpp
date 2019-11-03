@@ -22,7 +22,6 @@ GameEngine::GameEngine(const std::string &in_window_title, int in_window_width,
   background_layer = addLayer(false);
   shadow_layer = addLayer(false);
   camera.setHeight(50);
-  camera.attachInput(default_keyboard);
   addEntity(camera);
 }
 //
@@ -35,49 +34,51 @@ GameEngine::~GameEngine() { window.close(); }
 void GameEngine::step() {
   // handle input
   poll_input_devices();
-  for (const auto &entity : entities) {
-    entity->handleInput();
+  for (const auto &controllable : controllables) {
+    controllable->handleInput();
   }
 
   // update entities
-  for (const auto &entity : entities) {
-    entity->update(dt);
+  for (const auto &movable : movables) {
+    movable->step(dt);
   }
 
-  {  // sort renderables
-    for (auto &layer : render_layers) {
-      if (layer.second.sortable) {
-        std::sort(layer.second.sprite_list.begin(),
-                  layer.second.sprite_list.end(),
-                  [](const sf::Drawable *d1, const sf::Drawable *d2) -> bool {
-                    return d1->z <= d2->z;
-                  });
-      }
+  // sort renderables
+  for (auto &layer : render_layers) {
+    if (layer.second.sortable) {
+      std::sort(layer.second.sprite_list.begin(),
+                layer.second.sprite_list.end(),
+                [](const sf::Drawable *d1, const sf::Drawable *d2) -> bool {
+                  return d1->z <= d2->z;
+                });
     }
   }
+
   // render
   window.clear(sf::Color::Blue);
+  getMainCamera().update();
   window.setView(camera.getview());
-  {  // render entities
-    for (const auto &layer : render_layers) {
-      for (const auto &drawable : layer.second.sprite_list) {
-        drawable->perspectivize(camera.getHeight());
-        window.draw(*drawable);
-      }
-    }
-  }
-  {  // render hud
-    window.setView(hud_view);
-    for (const auto &drawable : hud_layer.sprite_list) {
+
+  // render entities
+  for (const auto &layer : render_layers) {
+    for (const auto &drawable : layer.second.sprite_list) {
+      drawable->perspectivize(camera.getHeight());
       window.draw(*drawable);
     }
   }
-  {  // render debug
-    if (Debug::showHud()) {
-      window.setView(hud_view);
-      debug_gui.update();
-    }
+
+  // render hud
+  window.setView(hud_view);
+  for (const auto &drawable : hud_layer.sprite_list) {
+    window.draw(*drawable);
   }
+
+  // render debug
+  if (Debug::showHud()) {
+    window.setView(hud_view);
+    debug_gui.update();
+  }
+
   window.display();
   window.setView(camera.getview());
 }
@@ -114,10 +115,16 @@ void GameEngine::addSprite(Sprite &in_sprite, layer_id in_layer_id) {
 //
 //
 //
+void GameEngine::addControllable(Controllable &in_controllable) {
+  controllables.insert(&in_controllable);
+}
+//
+//
+//
 void GameEngine::addEntity(Entity &in_entity, layer_id in_layer_id) {
   addSprite(in_entity.getSprite(), in_layer_id);
   addSprite(in_entity.getShadow(), shadow_layer);
-  entities.push_back(&in_entity);
+  movables.insert(&in_entity.movable);
 }
 //
 //

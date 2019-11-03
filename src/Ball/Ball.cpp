@@ -2,6 +2,7 @@
 
 #include "Engine/Debug.hpp"
 #include "Engine/Types.hpp"
+#include "Game/Game.hpp"
 
 #include <iostream>
 using namespace Engine;
@@ -12,7 +13,7 @@ Ball::Ball(UniquePtr<Sprite> in_sprite, UniquePtr<Sprite> in_shadow)
     : Entity(std::move(in_sprite), std::move(in_shadow)) {
   collidable.setRadius(radius);
   movable.properties.co_friction = 0.01F;
-  movable.properties.co_bounciness = 0.85f;
+  movable.properties.co_bounciness = 0.8f;
   movable.properties.cross_section = radius * 2;
   sprite->setBasePerspectiveWidth(radius * 2);
   shadow->setBasePerspectiveWidth(radius * 2);
@@ -20,12 +21,8 @@ Ball::Ball(UniquePtr<Sprite> in_sprite, UniquePtr<Sprite> in_shadow)
 //
 //
 //
-void Ball::handleInput() { Entity::handleInput(); }
-//
-//
-//
-void Ball::update(const float in_dt) {
-  Entity::update(in_dt);
+void Ball::update() {
+  Entity::update();
 
   // update collidable object
   collidable.setCenter(movable.position.x, movable.position.y);
@@ -55,12 +52,12 @@ void Ball::debug() {
   sprite->debug_shapes.push_back(&collidable);
 
   if (DRAW_RAYS) {
-    xray.setSize({10000, 1});
+    xray.setSize({world.width, 1});
     xray.setPosition(0, collidable.getCenter().y);
     xray.setFillColor(sf::Color::Magenta);
     sprite->debug_shapes.push_back(&xray);
 
-    yray.setSize({1, 10000});
+    yray.setSize({1, world.height});
     yray.setPosition(collidable.getCenter().x, 0);
     yray.setFillColor(sf::Color::Magenta);
     sprite->debug_shapes.push_back(&yray);

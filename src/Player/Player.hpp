@@ -4,7 +4,9 @@
 #include "PlayerStateRun.hpp"
 #include "PlayerStateStand.hpp"
 
+#include "Ball/Ball.hpp"
 #include "Brain/Brain.hpp"
+#include "Engine/Controllable.hpp"
 #include "Engine/Entity.hpp"
 #include "Engine/ProgressBar.hpp"
 #include "Engine/Types.hpp"
@@ -12,20 +14,14 @@
 #include <SFML/Graphics/CircleShape.hpp>
 
 #include <map>
-//
-//
-//
+
 struct TeamData {
   int shirt_number = 0;
 };
 struct Attributes {};
-
-//
-//
-//
 enum class RunningSpeed { VerySlow, Slow, Normal, Fast, VeryFast };
 //
-// running speeds
+//
 //
 inline std::map<RunningSpeed, float> run_speeds = {
     {RunningSpeed::VerySlow, 0.75F}, {RunningSpeed::Slow, 1.0F},
@@ -33,7 +29,7 @@ inline std::map<RunningSpeed, float> run_speeds = {
     {RunningSpeed::VeryFast, 2.5F},
 };
 //
-// dribbling speeds
+//
 //
 inline std::map<RunningSpeed, float> dribble_speeds = {
     {RunningSpeed::VerySlow, 0.25F}, {RunningSpeed::Slow, 0.5F},
@@ -41,7 +37,7 @@ inline std::map<RunningSpeed, float> dribble_speeds = {
     {RunningSpeed::VeryFast, 2.0F},
 };
 //
-// dribble knock on forces
+//
 //
 inline std::map<RunningSpeed, float> kick_mods = {
     {RunningSpeed::VerySlow, 0.8F}, {RunningSpeed::Slow, 1.2F},
@@ -52,10 +48,11 @@ inline std::map<RunningSpeed, float> kick_mods = {
 //
 //
 class Match;
+class Team;
 //
 //
 //
-class Player : public Engine::Entity {
+class Player : public Engine::Entity, public Engine::Controllable {
  public:
   //
   //
@@ -64,11 +61,11 @@ class Player : public Engine::Entity {
   //
   //
   //
+  void update() override;
+  //
+  //
+  //
   void handleInput() override;
-  //
-  //
-  //
-  void update(const float in_dt) override;
   //
   //
   //
@@ -81,11 +78,11 @@ class Player : public Engine::Entity {
   //
   //
   //
-  void pass(Engine::Vector3 in_force);
+  void kick(const float in_force);
   //
   //
   //
-  void pass(Player &in_receiver);
+  void shortPass(Player &in_receiver);
   //
   //
   //
@@ -120,6 +117,8 @@ class Player : public Engine::Entity {
   bool ballInControlRange();
   // test
   Engine::ProgressBar *power_bar = nullptr;
+  Team *my_team = nullptr;
+  float distance_from_ball = 0;
 
  protected:
   //
@@ -140,9 +139,10 @@ class Player : public Engine::Entity {
   PlayerSprite &player_sprite;
   PlayerSprite &player_shadow;
   RunningSpeed speed = RunningSpeed::Normal;
-  float current_speed=0;
+  float current_speed = 0;
   TeamData team_data;
   Attributes attribs;
+  Ball *ball = nullptr;
   //
   //
   //

@@ -2,7 +2,7 @@
 //
 namespace Engine {
 //
-static const float CLAMP_TO_GROUND = 0.04F;
+static const float CLAMP_TO_GROUND = 0.01F;
 static const float GRAVITATIONAL_CONSTANT = 9.8F;
 //
 //

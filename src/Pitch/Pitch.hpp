@@ -61,7 +61,7 @@ class Pitch : public Engine::Sprite {
   //
   //
   Pitch(SharedPtr<sf::Texture> in_texture,
-        const sf::IntRect in_world_bounds);
+        const sf::FloatRect in_world_bounds);
   //
   //
   //

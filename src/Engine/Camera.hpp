@@ -22,11 +22,7 @@ class Camera : public Entity {
   //
   //
   //
-  void handleInput() override;
-  //
-  //
-  //
-  void update(const float in_dt) override;
+  void update() override;
   //
   //
   //
@@ -42,12 +38,11 @@ class Camera : public Entity {
   //
   //
   //
-  void setWorldRect(sf::IntRect in_rect);
+  void setWorldRect(sf::FloatRect in_rect);
 
  private:
   sf::View view;
-  sf::IntRect world;
-  sf::CircleShape collider;
+  sf::FloatRect world;
   Entity *following = nullptr;
 };
 

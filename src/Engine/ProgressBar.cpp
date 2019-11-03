@@ -26,13 +26,7 @@ void ProgressBar::update() {
   if (updating) {
     val += resolution;
     if (val >= width) {
-      val = width;
-      updating = false;
-      bar.setFillColor(sf::Color::Red);
-      maxed_ticks = 40;
-    }else if((val/width)*100 > sweet_spot){
-      bar.setFillColor(sf::Color::Yellow);
-      maxed_ticks = 15;
+      val = 0;
     }
   }
   bar.setSize({val, height});
@@ -48,9 +42,15 @@ void ProgressBar::draw(sf::RenderTarget& target,
 //
 //
 //
-void ProgressBar::setPosition(float in_x, float in_y) {
+void ProgressBar::setPosition(const float in_x, const float in_y) {
   x = in_x;
   y = in_y;
+}
+//
+//
+//
+void ProgressBar::setCenter(const float in_x, const float in_y){
+  setPosition(in_x - this->width/2, in_y-this->height/2);
 }
 //
 //
@@ -63,13 +63,8 @@ void ProgressBar::stop() { updating = false; }
 //
 //
 //
-void ProgressBar::reset() {
-  if (--maxed_ticks == 0) {
-    maxed_ticks = 1;
-    val = 0;
-    updating = false;
-    bar.setFillColor(sf::Color::Green);
-  }
+void ProgressBar::reset(){
+  val = 0;
 }
 //
 //
@@ -79,10 +74,4 @@ float ProgressBar::getWidth() { return width; }
 //
 //
 float ProgressBar::getHeight() { return height; }
-//
-//
-//
-void ProgressBar::setSweetSpot(int in_percent){
-  sweet_spot = in_percent;
-}
 }  // namespace Engine

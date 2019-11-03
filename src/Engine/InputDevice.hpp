@@ -148,7 +148,7 @@ class InputDevice {
     int ticks_since_tap = 0;
     bool cached_tap = false;
 
-    int fire_tap_length = 6;
+    int fire_tap_length = 4;
     int fire_double_tap_length = 12;
   } fire_params;
   //

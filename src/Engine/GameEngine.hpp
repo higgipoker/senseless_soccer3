@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Camera.hpp"
+#include "Controllable.hpp"
 #include "Debug.hpp"
 #include "Entity.hpp"
 #include "Gamepad.hpp"
@@ -63,6 +64,10 @@ class GameEngine {
   //
   //
   //
+  void addControllable(Controllable &in_controllable);
+  //
+  //
+  //
   void addEntity(Entity &in_entity,
                  layer_id in_layer_id = RenderLayer::INVALID_LAYER);
   //
@@ -102,7 +107,8 @@ class GameEngine {
   sf::View hud_view{sf::FloatRect{0, 0, 800, 600}};
   std::map<int, RenderLayer> render_layers;
   RenderLayer hud_layer;
-  std::vector<Entity *> entities;
+  std::set<Movable *> movables;
+  std::set<Controllable *> controllables;
   Debug debug_gui;
   float dt = 0.01F;
   bool running = true;

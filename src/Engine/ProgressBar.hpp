@@ -43,7 +43,11 @@ class ProgressBar : public Widget {
   //
   //
   //
-  void setPosition(float in_x, float in_y);
+  void setPosition(const float in_x, const float in_y);
+  //
+  //
+  //
+  void setCenter(const float in_x, const float in_y);
   //
   //
   //
@@ -52,10 +56,6 @@ class ProgressBar : public Widget {
   //
   //
   float getHeight();
-  //
-  //
-  //
-  void setSweetSpot(int in_percent);
 
  private:
   float x = 20;
@@ -66,8 +66,6 @@ class ProgressBar : public Widget {
   float frames = 0;
   float resolution = 0;
   bool updating = true;
-  float maxed_ticks = 1;
-  int sweet_spot = 90;
   // Orientation orientation = Orientation::Horizontal;
   sf::RectangleShape bar{{width, height}};
   sf::RectangleShape outline{{width, height}};

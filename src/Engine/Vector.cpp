@@ -175,15 +175,15 @@ void Vector3::reflect(Vector3 &normal) {
 //
 //
 //
-float Vector3::projectionOn(const Vector3 &from, Vector3 &line) {
+float Vector3::projectionOn(Vector3 &line) {
   line.normalise();
-  return dotProduct(from, line);
+  return dotProduct(line);
 }
 //
 //
 //
-float Vector3::dotProduct(const Vector3 &lhs, const Vector3 &rhs) {
-  return (lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z);
+float Vector3::dotProduct(const Vector3 &rhs) {
+  return (x * rhs.x + y * rhs.y + z * rhs.z);
 }
 //
 //
@@ -270,16 +270,15 @@ void Vector3::roundAngle(int nearest_angle) {
 //
 //
 //
-float Vector3::perpProduct(const Vector3 &lhs, const Vector3 &rhs,
-                           bool right_normal) {
+float Vector3::perpProduct(const Vector3 &rhs, bool right_normal) {
   float y_component, x_component;
 
   if (right_normal) {
-    x_component = lhs.y * rhs.x;
-    y_component = -1 * lhs.x * rhs.y;
+    x_component = y * rhs.x;
+    y_component = -1 * x * rhs.y;
   } else {
-    x_component = -1 * lhs.y * rhs.x;
-    y_component = lhs.x * rhs.y;
+    x_component = -1 * y * rhs.x;
+    y_component = x * rhs.y;
   }
   return x_component + y_component;
 }
@@ -354,10 +353,10 @@ void Vector3::normalizeToUnits() {
 //
 //
 //
-bool Vector3::isMovingTowards(Vector3 testPoint, Vector3 objectPosition,
-                              Vector3 objectVelocity) {
-  Vector3 toPoint = testPoint - objectPosition;
-  float dot = dotProduct(toPoint, objectVelocity);
+bool Vector3::isMovingTowards(Vector3 testPoint, Vector3 objectVelocity) {
+  Vector3 tmp{x, y};
+  Vector3 toPoint = testPoint - tmp;
+  float dot = toPoint.dotProduct(objectVelocity);
   return dot > 0;
 }
 //
@@ -371,12 +370,6 @@ void Vector3::fromSfVector(const sf::Vector2f &from) {
 //
 //
 sf::Vector2f Vector3::toSfVector() { return sf::Vector2f{x, y}; }
-//
-//
-//
-sf::Vector2f Vector3::toSfVector(const Vector3 &v) {
-  return sf::Vector2f{v.x, v.y};
-}
 //
 //
 //

@@ -1,6 +1,5 @@
 #pragma once
 #include "Compass.hpp"
-#include "InputDevice.hpp"
 #include "Movable.hpp"
 #include "Sprite.hpp"
 #include "Types.hpp"
@@ -14,7 +13,7 @@ namespace Engine {
 /**
  * @brief The Entity class
  */
-class Entity : public InputListener{
+class Entity {
  public:
   //
   // constructs an enitty without a graphical aspect (default movable)
@@ -27,23 +26,11 @@ class Entity : public InputListener{
   //
   //
   //
-  virtual void handleInput();
-  //
-  //
-  //
-  virtual void update(const float in_dt);
+  virtual void update();
   //
   //
   //
   Vector3 directionTo(const Entity &in_entity, bool in_2d =false) const;
-  //
-  //
-  //
-  void attachInput(InputDevice &in_device);
-  //
-  //
-  //
-  void detachInput();
   //
   //
   //
@@ -52,28 +39,15 @@ class Entity : public InputListener{
   //
   //
   Sprite &getShadow();
-  //
-  //
-  //
-  bool isInputAttached();
-  //
-  //
-  //
-  InputDevice & getInputDevice() const;
+
   // has a movable aspect, instead of inheritance
   Movable movable;
-  //
-  // inputlistener interface implementation
-  //
-  void onInputEvent(const InputEvent in_event,
-                       const std::vector<int> &in_params) override{};
 
  protected:
   UniquePtr<Sprite> sprite;
   UniquePtr<Sprite> shadow;
   int shadow_offset = 2;
   float speed = 1.F;
-  InputDevice *input = nullptr;
 
   // some debug stuff
   static const bool DRAW_RAYS = true;

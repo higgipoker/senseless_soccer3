@@ -61,6 +61,8 @@ add_executable(senseless_soccer3
     src/Engine/Gamepad.cpp
     src/Engine/Widget.cpp
     src/Engine/ProgressBar.cpp
+    src/Engine/Controllable.cpp
+    src/Game/Game.cpp
     src/Locomotion/LocomotionManager.cpp
     src/Locomotion/Locomotion.cpp
     src/Locomotion/Seek.cpp

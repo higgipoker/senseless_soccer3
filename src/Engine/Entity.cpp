@@ -15,30 +15,7 @@ Entity::Entity(UniquePtr<Sprite> in_sprite, UniquePtr<Sprite> in_shadow)
 //
 //
 //
-void Entity::handleInput() {
-  if (!input) return;
-
-  if (input->up()) {
-    movable.applyForce({0, -speed});
-  }
-  if (input->down()) {
-    movable.applyForce({0, speed});
-  }
-  if (input->left()) {
-    movable.applyForce({-speed, 0});
-  }
-  if (input->right()) {
-    movable.applyForce({speed, 0});
-  }
-  if (input->fireDown()) {
-    movable.applyForce({0.F, 0.F, speed * 1.F});
-  }
-}
-//
-//
-//
-void Entity::update(const float in_dt) {
-  movable.step(in_dt);
+void Entity::update() {
   sprite->setPosition(movable.position.x, movable.position.y);
   shadow->setPosition({sprite->getPosition().x + shadow_offset,
                        sprite->getPosition().y + shadow_offset});
@@ -56,34 +33,6 @@ Vector3 Entity::directionTo(const Entity &in_entity, bool in_2d) const {
   }
   return ret;
 }
-//
-//
-//
-void Entity::attachInput(InputDevice &in_device) {
-  input = &in_device;
-  in_device.attachListener(*this);
-}
-//
-//
-//
-void Entity::detachInput() {
-  assert("input is null" && input);
-  input = nullptr;
-}
-//
-//
-//
-InputDevice &Entity::getInputDevice() const {
-  assert(
-      "No input device is attached to this entity, call isInputAttached "
-      "first." &&
-      input);
-  return *input;
-}
-//
-//
-//
-bool Entity::isInputAttached() { return input != nullptr; }
 //
 //
 //

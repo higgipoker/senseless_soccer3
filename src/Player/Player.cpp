@@ -3,6 +3,7 @@
 #include "Engine/Collider.hpp"
 #include "Engine/Compass.hpp"
 #include "Engine/Debug.hpp"
+#include "Game/Game.hpp"
 #include "Match/Match.hpp"
 
 #include <cassert>
@@ -23,11 +24,8 @@ Player::Player(UniquePtr<PlayerSprite> in_sprite,
       state(&state_stand),
       player_sprite(static_cast<PlayerSprite &>(*sprite.get())),
       player_shadow(static_cast<PlayerSprite &>(*shadow.get())) {
-  // make sure there is always a valid match when creating players
-  assert(match && "match was not initied before constructing a player");
-
-  std::cout << "player constructor" << std::endl;
-
+  ball = &match->getBall();
+  assert(ball);
   feet.setRadius(1.0F);
   control.setRadius(12);
 
@@ -48,6 +46,7 @@ void Player::setTeamData(TeamData in_data) { team_data = in_data; }
 //
 //
 void Player::handleInput() {
+  // input or brain
   if (input) {
     // no momentum system for player movement, just set velocity
     Vector3 movement_vector;
@@ -71,21 +70,8 @@ void Player::handleInput() {
 //
 //
 //
-void Player::update(const float in_dt) {
-  Entity::update(in_dt);
-
-  if (power_bar) {
-    if (input) {
-      if (!input->fireDown()) {
-        power_bar->reset();
-        power_bar->stop();
-      }
-    }
-    power_bar->setPosition(
-        movable.position.x - power_bar->getWidth() / 2,
-        movable.position.y - player_sprite.getGlobalBounds().height);
-    power_bar->update();
-  }
+void Player::update() {
+  Entity::update();
 
   // state machine
   state->step();
@@ -99,6 +85,13 @@ void Player::update(const float in_dt) {
   feet.setCenter(movable.position.x, movable.position.y - feet.getRadius());
   control.setCenter(feet.getCenter());
   shadow->setFrame(sprite->getFrame());
+
+  if (power_bar) {
+    power_bar->setCenter(
+        sprite->getPosition().x,
+        sprite->getPosition().y - sprite->getLocalBounds().height);
+    power_bar->update();
+  }
 
 #ifndef NDEBUG
   debug();
@@ -155,36 +148,6 @@ Match &Player::getMatch() { return *match; }
 //
 //
 //
-void Player::debug() {
-  // change color if ball under control
-  if (ball_under_control) {
-    control.setOutlineColor(sf::Color::Red);
-  }
-
-  // change color if ball touching feet
-  if (Collider::collides(feet, getMatch().getBall().collidable)) {
-    feet.setFillColor(sf::Color::Red);
-  }
-
-  sprite->debug_shapes.clear();
-  sprite->debug_shapes.push_back(&feet);
-  sprite->debug_shapes.push_back(&control);
-
-  if (DRAW_RAYS) {
-    xray.setSize({10000, 1});
-    xray.setPosition(0, feet.getCenter().y);
-    xray.setFillColor(sf::Color::Magenta);
-    sprite->debug_shapes.push_back(&xray);
-
-    yray.setSize({1, 10000});
-    yray.setPosition(feet.getCenter().x, 0);
-    yray.setFillColor(sf::Color::Magenta);
-    sprite->debug_shapes.push_back(&yray);
-  }
-}
-//
-//
-//
 void Player::run(Engine::Compass in_direction) {
   Vector3 v = in_direction.toVector();
   v.normalise2d();
@@ -206,15 +169,22 @@ void Player::stopRunning() { movable.resetVelocity(); }
 //
 //
 //
-void Player::pass(Engine::Vector3 in_force) { match->getBall().kick(in_force); }
+void Player::kick(const float in_force) {
+  Vector3 force = facing.toVector();
+  force *= in_force;
+  force.z = force.magnitude2d() * 0.2;
+  ball->kick(force);
+}
 //
 //
 //
-void Player::pass(Player &in_receiver) {
-  Vector3 force = directionTo(in_receiver);
-  int force_needed = 10;
-  force *= force_needed;
-  match->getBall().kick(force);
+void Player::shortPass(Player &in_receiver) {
+  float p = 7;
+  Vector3 f{facing.toVector()};
+  f.normalise2d();
+  f *= p;
+  f.rotate(rand() % 10 - rand() % 20);
+  ball->kick(f);
 }
 //
 //
@@ -225,44 +195,68 @@ void Player::onInputEvent(const InputEvent in_event,
   switch (in_event) {
     case InputEvent::FireDown:
       if (power_bar) {
-        power_bar->reset();
         power_bar->start();
       }
       break;
 
     case InputEvent::FireUp: {
       if (ballInControlRange()) {
-        std::cout << in_params.at(0) << std::endl;
-        float p = in_params.at(0) * 0.3F;
+        assert(in_params.size());
+        kick(fire_length_to_force(in_params[0]));
+      }
+      if (power_bar) {
+        power_bar->stop();
         power_bar->reset();
-        Vector3 f{facing.toVector()};
-        f *= (p);
-        f.z = p * 0.2F;
-        match->getBall().kick(f);
-
-        Vector3 spin = facing.toVector();
-        spin.rotate(90);
-        spin.normalise();
-        spin *= 0.2F;
-        //match->getBall().applySideSpin(spin);
-        match->getBall().applyTopSpin(0.1F);
       }
     } break;
 
     case InputEvent::DoubleTap:
-      power_bar->reset();
+      if (power_bar) {
+        power_bar->stop();
+        power_bar->reset();
+      }
       break;
 
     case InputEvent::SingleTap:
       if (ball_under_control) {
+        shortPass(*this);
+      }
+      if (power_bar) {
+        power_bar->stop();
         power_bar->reset();
-        float p = 3;
-        power_bar->reset();
-        Vector3 f{facing.toVector()};
-        f.normalise2d();
-        f *= (p);
-        match->getBall().kick(f);
       }
       break;
+  }
+}
+//
+//
+//
+void Player::debug() {
+  // change color if ball under control
+  if (ballInControlRange()) {
+    control.setOutlineColor(sf::Color::Green);
+  } else {
+    control.setOutlineColor(sf::Color::Red);
+  }
+
+  // change color if ball touching feet
+  if (Collider::collides(feet, getMatch().getBall().collidable)) {
+    feet.setFillColor(sf::Color::Red);
+  }
+
+  sprite->debug_shapes.clear();
+  sprite->debug_shapes.push_back(&feet);
+  sprite->debug_shapes.push_back(&control);
+
+  if (DRAW_RAYS) {
+    xray.setSize({world.width, 1});
+    xray.setPosition(0, feet.getCenter().y);
+    xray.setFillColor(sf::Color::Magenta);
+    sprite->debug_shapes.push_back(&xray);
+
+    yray.setSize({1, world.height});
+    yray.setPosition(feet.getCenter().x, 0);
+    yray.setFillColor(sf::Color::Magenta);
+    sprite->debug_shapes.push_back(&yray);
   }
 }

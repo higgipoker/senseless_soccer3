@@ -10,7 +10,7 @@ using namespace Engine;
 //
 //
 Pitch::Pitch(SharedPtr<sf::Texture> in_texture,
-             const sf::IntRect in_world_bounds) {
+             const sf::FloatRect in_world_bounds) {
   // set up the repeating grass texture
   in_texture->setRepeated(true);
   grass.setTexture(*in_texture);

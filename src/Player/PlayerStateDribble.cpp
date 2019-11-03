@@ -22,6 +22,7 @@ PlayerStateDribble::PlayerStateDribble(Player &in_player)
 //
 //
 void PlayerStateDribble::start() {
+  player.my_team->match->player_in_possession = &player;
   player.ball_under_control = true;
   already_kicked = false;
   player.current_speed = dribble_speeds[player.speed];
@@ -71,7 +72,11 @@ void PlayerStateDribble::step() {
 //
 //
 //
-void PlayerStateDribble::stop() {}
+void PlayerStateDribble::stop() {
+  if(player.my_team->match->player_in_possession == &player){
+    player.my_team->match->player_in_possession = nullptr;
+  }
+}
 //
 //
 //

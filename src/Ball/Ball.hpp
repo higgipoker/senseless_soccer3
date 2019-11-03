@@ -17,11 +17,7 @@ class Ball : public Engine::Entity {
   //
   //
   //
-  void handleInput() override;
-  //
-  //
-  //
-  void update(const float in_dt) override;
+  void update() override;
   //
   //
   //

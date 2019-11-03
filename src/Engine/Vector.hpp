@@ -93,15 +93,13 @@ class Vector3 {
   float angle(void) const;
 
   // -------------------------------------------------------------------------
-  // static vector ops
+  // other vector ops
   // -------------------------------------------------------------------------
-  static sf::Vector2f toSfVector(const Vector3 &v);
-  static float projectionOn(const Vector3 &from, Vector3 &line);
-  static float dotProduct(const Vector3 &lhs, const Vector3 &rhs);
-  static float perpProduct(const Vector3 &lhs, const Vector3 &v,
-                           bool right_normal = true);
-  static bool isMovingTowards(Vector3 testPoint, Vector3 objectPosition,
-                              Vector3 objectVelocity);
+  sf::Vector2f toSfVector();
+  float projectionOn(Vector3 &line);
+  float dotProduct(const Vector3 &rhs);
+  float perpProduct(const Vector3 &rhs, bool right_normal = true);
+  bool isMovingTowards(Vector3 testPoint, Vector3 objectVelocity);
 
   // -------------------------------------------------------------------------
   // comparison operations
@@ -113,6 +111,5 @@ class Vector3 {
   // conversions
   // -------------------------------------------------------------------------
   void fromSfVector(const sf::Vector2f &from);
-  sf::Vector2f toSfVector();
 };
 }  // namespace Engine
