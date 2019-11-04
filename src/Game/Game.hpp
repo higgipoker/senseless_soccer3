@@ -1,10 +1,11 @@
 #pragma once
 #include <SFML/Graphics/Rect.hpp>
+
+#include <set>
 //
 //
 //
 const sf::FloatRect world{0, 0, 2000, 3000};
-//
-//
-//
-float fire_length_to_force(const float in_length);
+/// maps distance <value> to force needed <key>
+const static std::set<float> pass_distance = {80,  130, 180, 230, 280, 330,
+                                 380, 430, 480, 530, 580};

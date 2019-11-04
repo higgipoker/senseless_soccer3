@@ -15,7 +15,6 @@ BrainRetrieve::BrainRetrieve(Brain& in_brain) : BrainState(in_brain) {
 //
 //
 void BrainRetrieve::start() {
-  std::cout << "start " << name << std::endl;
   brain.locomotion.pursue(brain.player.getMatch().getBall().movable);
 }
 //
@@ -25,7 +24,7 @@ void BrainRetrieve::step() {}
 //
 //
 //
-void BrainRetrieve::stop() {std::cout << "stop " << name << std::endl;}
+void BrainRetrieve::stop() {}
 //
 //
 //

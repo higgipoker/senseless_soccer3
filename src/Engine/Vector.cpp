@@ -293,9 +293,10 @@ void Vector3::polar(float mag, float radians) {
 //
 //
 //
-void Vector3::setMagnitude(float mag) {
-  float ang_current = angle();
-  polar(mag, ang_current);
+void Vector3::setMagnitude(float in_mag) {
+  float mag = magnitude2d();
+  x = x * in_mag / mag;
+  y = y * in_mag / mag;
 }
 //
 //

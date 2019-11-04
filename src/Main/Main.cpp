@@ -17,6 +17,8 @@
 #include "Player/PlayerSprite.hpp"
 #include "Team/Team.hpp"
 
+#include <sstream>
+
 using namespace Engine;
 //
 //
@@ -91,18 +93,21 @@ int main(int argc, char **args) {
   // players
   //
   Player::connectMatch(match);
-  for (auto i = 0; i < 10; ++i) {
+  for (auto i = 0; i < 3; ++i) {
     UniquePtr<Player> player = PlayerFactory::makePlayer(tex_playerandball);
     TeamData td;
     td.shirt_number = i + 1;
     player->setTeamData(td);
     player->movable.setPosition(
         match.getPitch().dimensions.center_spot.getCenter().x + (i * 10),
-        match.getPitch().dimensions.center_spot.getCenter().y-50);
+        match.getPitch().dimensions.center_spot.getCenter().y - 50);
     player->support_type = i;
     engine.addEntity(*player, sprite_layer_id);
     engine.addControllable(*player);
     player->getBrain().changeState(brain_state::Support);
+    std::stringstream ss;
+    ss << "player" << i + 1;
+    player->name = ss.str();
     match.getHomeTeam().addPlayer(std::move(player));
   }
   if (match.getHomeTeam().hasPlayers()) {
@@ -117,9 +122,7 @@ int main(int argc, char **args) {
   srand(time(NULL));
   while (engine.isRunning()) {
     engine.step();
-    match.getHomeTeam().update();
-    match.getAwayTeam().update();
-    match.getBall().update();
+    match.update();
   }
 
   std::cout << args[0] << " exited normally" << std::endl;

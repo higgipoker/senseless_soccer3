@@ -23,7 +23,18 @@ Ball::Ball(UniquePtr<Sprite> in_sprite, UniquePtr<Sprite> in_shadow)
 //
 void Ball::update() {
   Entity::update();
-
+  if (recording_distance) {
+    distance = (movable.position - initial_position).magnitude();
+    float diff = (movable.position - last_position).magnitude();
+    //std::cout << "diff: " << diff << std::endl;
+    if (Math::equal(movable.velocity.magnitude2d(), 0.F) ||
+        Math::less_than(diff, 2.5F)) {
+      recording_distance = false;
+      std::cout << "distance: " << distance;
+      std::cout << " force: " << last_force << std::endl;
+    }
+    last_position = movable.position;
+  }
   // update collidable object
   collidable.setCenter(movable.position.x, movable.position.y);
 
@@ -70,6 +81,7 @@ void Ball::kick(Vector3 in_force) {
   movable.resetForces();
   movable.resetVelocity();
   movable.applyForce(in_force);
+  last_force = in_force.magnitude();
 }
 //
 //
@@ -87,5 +99,5 @@ void Ball::applyBackSpin(float in_factor) {}
 //
 void Ball::applySideSpin(Engine::Vector3 in_spin) {
   // todo can't be spinning in opposite dirs at once
-  movable.forces.sidespin+=in_spin;
+  movable.forces.sidespin += in_spin;
 }

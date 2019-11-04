@@ -17,7 +17,6 @@ BrainDribble::BrainDribble(Brain& in_brain)
 //
 //
 void BrainDribble::start() {
-  std::cout << "start " << name << std::endl;
   brain.player.current_speed = dribble_speeds[brain.player.speed];
   dribble_ticks = 0;
   brain.locomotion.head(brain.player.getDirection().toVector());
@@ -36,7 +35,7 @@ void BrainDribble::step() {
 //
 //
 //
-void BrainDribble::stop() {std::cout << "stop " << name << std::endl;}
+void BrainDribble::stop() {brain.locomotion.stand();}
 //
 //
 //

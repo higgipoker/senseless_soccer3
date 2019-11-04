@@ -75,7 +75,7 @@ class Vector3 {
   void reflect(Vector3 &normal);
   void perpendicular();
   void polar(float mag, float radians);
-  void setMagnitude(float mag);
+  void setMagnitude(float in_mag);
   void unit(Vector3 v);
   void reverse(void);
   void normalizeToUnits();

@@ -13,7 +13,8 @@ class Ball : public Engine::Entity {
   //
   //
   //
-  Ball(UniquePtr<Engine::Sprite> in_sprite, UniquePtr<Engine::Sprite> in_shadow);
+  Ball(UniquePtr<Engine::Sprite> in_sprite,
+       UniquePtr<Engine::Sprite> in_shadow);
   //
   //
   //
@@ -38,6 +39,19 @@ class Ball : public Engine::Entity {
   //
   //
   sf::CircleShape collidable;
+
+  // tmp diagnostics
+  void start_recording_distance() {
+    distance = 0;
+    recording_distance = true;
+    initial_position = movable.position;
+  }
+  void stop_recording_distance() { recording_distance = false; }
+  bool recording_distance = false;
+  float distance;
+  Engine::Vector3 initial_position;
+  Engine::Vector3 last_position;
+  float last_force=0;
 
  protected:
   float radius = 3;

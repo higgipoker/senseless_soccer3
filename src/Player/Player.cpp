@@ -174,25 +174,34 @@ void Player::kick(const float in_force) {
   force *= in_force;
   force.z = force.magnitude2d() * 0.2;
   ball->kick(force);
+  ball->start_recording_distance();
 }
 //
 //
 //
+inline float MIN_KICK_FORCE = 3;
+inline float MAX_KICK_FORCE = 100;
 void Player::shortPass(Player &in_receiver) {
-  float p = 7;
-  Vector3 f{directionTo(*my_team->key_players.closest_to_ball)};
-  f.normalise2d();
-  f *= p;
-  ball->kick(f);
+  float distance = distanceTo(in_receiver);
+  float force_needed = 2;
 
-  my_team->key_players.closest_to_ball->brain.changeState(brain_state::Retrieve);
+  auto it = pass_distance.begin();
+  while (*it < distance && force_needed <= 13) {
+    ++it;
+    ++force_needed;
+  }
+
+  Vector3 force = directionTo(in_receiver);
+  force.setMagnitude(force_needed)  ;
+  ball->kick(force);
+  in_receiver.brain.changeState(brain_state::Retrieve);
+  ball->start_recording_distance();
 }
 //
 //
 //
 void Player::onInputEvent(const InputEvent in_event,
                           const std::vector<int> &in_params) {
-  std::cout << InputListener::toString(in_event) << std::endl;
   switch (in_event) {
     case InputEvent::FireDown:
       if (power_bar) {
@@ -203,7 +212,7 @@ void Player::onInputEvent(const InputEvent in_event,
     case InputEvent::FireUp: {
       if (ballInControlRange()) {
         assert(in_params.size());
-        kick(fire_length_to_force(in_params[0]));
+        kick(in_params[0]);
       }
       if (power_bar) {
         power_bar->stop();
@@ -220,7 +229,7 @@ void Player::onInputEvent(const InputEvent in_event,
 
     case InputEvent::SingleTap:
       if (ball_under_control) {
-        shortPass(*this);
+        shortPass(*my_team->key_players.closest_to_ball);
       }
       if (power_bar) {
         power_bar->stop();

@@ -120,6 +120,7 @@ class Player : public Engine::Entity, public Engine::Controllable {
   Team *my_team = nullptr;
   float distance_from_ball = 0;
   int support_type=0;
+  std::string name;
 
  protected:
   //
@@ -167,5 +168,6 @@ class Player : public Engine::Entity, public Engine::Controllable {
   friend class PlayerStateDribble;
   friend class BrainDribble;
   friend class BrainRetrieve;
+  friend class BrainSupport;
   friend class Locomotion;
 };

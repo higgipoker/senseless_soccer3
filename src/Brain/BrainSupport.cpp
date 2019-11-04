@@ -18,7 +18,6 @@ BrainSupport::BrainSupport(Brain& in_brain) : BrainState(in_brain) {
 //
 //
 void BrainSupport::start() {
-  std::cout << "start " << name << std::endl;
   // tmp just run around randomly until we get too far from the player in
   // possession
   //change_direction();
@@ -29,27 +28,17 @@ void BrainSupport::start() {
 //
 //
 void BrainSupport::step() {
-  // if no player is in possession, just freeze
-  bool player_was_null = !player_in_possession;
-  player_in_possession = brain.player.my_team->match->player_in_possession;
-  if (!player_in_possession) {
-    brain.locomotion.stand();
-    return;
-  }
 
   int CHANGE_TICKS = brain.player.support_type%2==0? 150:50;
-  if(player_was_null && player_in_possession){
-    ticks_since_change = CHANGE_TICKS;
-  }
 
-  auto pos = player_in_possession->movable.position.toSfVector();
+  auto pos = brain.player.match->getBall().movable.position.toSfVector();
   radius.setCenter(pos);
   radius.setRadius(300);
 
-  auto dist = brain.player.distanceTo(*player_in_possession);
+  auto dist = brain.player.distanceTo(brain.player.match->getBall());
   if (dist > radius.getRadius()) {
     ticks_since_change = 0;
-    Compass new_direction = brain.player.directionTo(*player_in_possession);
+    Compass new_direction = brain.player.directionTo(brain.player.match->getBall());
     brain.locomotion.head(new_direction.toVector());
   }
 
@@ -61,7 +50,7 @@ void BrainSupport::step() {
 //
 //
 //
-void BrainSupport::stop() {std::cout << "stop " << name << std::endl;}
+void BrainSupport::stop() {}
 //
 //
 //
