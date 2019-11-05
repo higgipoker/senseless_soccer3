@@ -21,7 +21,8 @@ class DribblePattern {
   virtual bool changeDirection() = 0;
 
  protected:
-  int counter = 0;
+  int count=0;
+
 };
 //
 //
@@ -32,7 +33,6 @@ class DribblePatternRandom : public DribblePattern {
   //
   //
   Engine::Compass nextDirection(Engine::Compass in_current_dir) override {
-    counter = 0;
     Engine::Vector3 v = in_current_dir.toVector();
     v.rotate(rand() % 2 == 1 ? 45 : -45);
     Engine::Compass dir(v);
@@ -42,7 +42,14 @@ class DribblePatternRandom : public DribblePattern {
   //
   //
   bool changeDirection() override {
-    return (++counter > ((rand() % 50) + 500));
+    static const int min = 60;
+    if(++count > min){
+      if(rand() % 100 > 45){
+        count = 0;
+        return true;
+      }
+    }
+    return false;
   }
 };
 //

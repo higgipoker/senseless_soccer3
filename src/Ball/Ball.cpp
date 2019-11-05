@@ -30,8 +30,8 @@ void Ball::update() {
     if (Math::equal(movable.velocity.magnitude2d(), 0.F) ||
         Math::less_than(diff, 2.5F)) {
       recording_distance = false;
-      std::cout << "distance: " << distance;
-      std::cout << " force: " << last_force << std::endl;
+//      std::cout << "distance: " << distance;
+//      std::cout << " force: " << last_force << std::endl;
     }
     last_position = movable.position;
   }

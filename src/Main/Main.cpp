@@ -93,7 +93,7 @@ int main(int argc, char **args) {
   // players
   //
   Player::connectMatch(match);
-  for (auto i = 0; i < 3; ++i) {
+  for (auto i = 0; i < 10; ++i) {
     UniquePtr<Player> player = PlayerFactory::makePlayer(tex_playerandball);
     TeamData td;
     td.shirt_number = i + 1;
@@ -111,8 +111,9 @@ int main(int argc, char **args) {
     match.getHomeTeam().addPlayer(std::move(player));
   }
   if (match.getHomeTeam().hasPlayers()) {
-    match.getHomeTeam().getPlayer().attachInput(engine.getDefaultGamepad());
+    //match.getHomeTeam().getPlayer().attachInput(engine.getDefaultGamepad());
   }
+  match.getHomeTeam().getPlayer().getBrain().changeState(brain_state::Retrieve);
 
   // test
   ProgressBar bar(40, 3, 50);
@@ -120,18 +121,18 @@ int main(int argc, char **args) {
   engine.addSprite(bar, sprite_layer_id);
 
   srand(time(NULL));
-  sf::Clock clock;
-  float lastTime = clock.getElapsedTime().asSeconds();
-  int frames = 0;
+  //  sf::Clock clock;
+  //  float lastTime = clock.getElapsedTime().asSeconds();
+  //  int frames = 0;
   while (engine.isRunning()) {
-    // Measure speed
-    float currentTime = clock.getElapsedTime().asSeconds();
-    frames++;
-    if (currentTime - lastTime >= 1.0) {
-      std::cout << 1000 / frames << " ms/frame" << std::endl;
-      frames = 0;
-      lastTime += 1.0;
-    }
+    // fps
+    //    float currentTime = clock.getElapsedTime().asSeconds();
+    //    frames++;
+    //    if (currentTime - lastTime >= 1.0) {
+    //      std::cout << 1000 / frames << " ms/frame" << std::endl;
+    //      frames = 0;
+    //      lastTime += 1.0;
+    //    }
 
     engine.step();
     match.update();

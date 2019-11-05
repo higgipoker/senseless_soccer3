@@ -17,7 +17,7 @@ BrainPass::BrainPass(Brain& in_brain) : BrainState(in_brain) {
 //
 void BrainPass::start() {
   ticks = 0;
-  receiver = brain.player.my_team->key_players.closest_to_ball;
+  receiver = brain.player.short_pass_candidates[0];
 }
 //
 //

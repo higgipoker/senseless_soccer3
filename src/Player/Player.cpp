@@ -73,6 +73,9 @@ void Player::handleInput() {
 void Player::update() {
   Entity::update();
 
+  short_pass_triangle.reset();
+  short_pass_triangle.setFillColor({0, 255, 0, 70});
+
   // state machine
   state->step();
   if (state->stateOver()) {
@@ -192,7 +195,7 @@ void Player::shortPass(Player &in_receiver) {
   }
 
   Vector3 force = directionTo(in_receiver);
-  force.setMagnitude(force_needed)  ;
+  force.setMagnitude(force_needed);
   ball->kick(force);
   in_receiver.brain.changeState(brain_state::Retrieve);
   ball->start_recording_distance();
@@ -229,13 +232,61 @@ void Player::onInputEvent(const InputEvent in_event,
 
     case InputEvent::SingleTap:
       if (ball_under_control) {
-        shortPass(*my_team->key_players.closest_to_ball);
+        if (!short_pass_candidates.empty()) {
+          shortPass(*short_pass_candidates[0]);
+        } else {
+          kick(3);
+        }
       }
       if (power_bar) {
         power_bar->stop();
         power_bar->reset();
       }
       break;
+  }
+}
+/* --------------------------------------------------
+       [PLAYER]
+
+          p1
+          /\
+         /  \
+        /    \
+       /      \
+     p2--------p3
+
+  calc_short_pass_recipients
+-------------------------------------------------- */
+void Player::calc_short_pass_candidates() {
+  // current position plus projected away from feet slightly
+  Vector3 t1 = movable.position + facing.toVector() * 10;
+
+  // rotate x degrees and project out
+  Vector3 temp1 = facing.toVector();
+  temp1.rotate(40, 0, 0);
+  temp1.normalise();
+  temp1 *= 450;
+  Vector3 t2 = movable.position + temp1;
+
+  // rotate minus x degrees and project out
+  Vector3 temp2 = facing.toVector();
+  temp2.rotate(-40, 0, 0);
+  temp2.normalise();
+  temp2 *= 450;
+  Vector3 t3 = movable.position + temp2;
+
+  // save 3 points to triangle
+  short_pass_triangle.setPoints({t1.x, t1.y}, {t2.x, t2.y}, {t3.x, t3.y});
+
+  // tmp
+  short_pass_candidates.clear();
+  // get a list of players in my short pass range
+  for (auto &player : my_team->players) {
+    // is in short pass range
+    if (Collider::collides(player->movable.position, short_pass_triangle)) {
+      short_pass_candidates.push_back(player.get());
+      short_pass_triangle.setFillColor({255, 0, 0, 70});
+    }
   }
 }
 //
@@ -269,4 +320,6 @@ void Player::debug() {
     yray.setFillColor(sf::Color::Magenta);
     sprite->debug_shapes.push_back(&yray);
   }
+
+  sprite->debug_shapes.push_back(&short_pass_triangle);
 }

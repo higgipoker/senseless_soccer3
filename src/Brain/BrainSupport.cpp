@@ -33,7 +33,7 @@ void BrainSupport::step() {
 
   auto pos = brain.player.match->getBall().movable.position.toSfVector();
   radius.setCenter(pos);
-  radius.setRadius(300);
+  radius.setRadius(1000);
 
   auto dist = brain.player.distanceTo(brain.player.match->getBall());
   if (dist > radius.getRadius()) {

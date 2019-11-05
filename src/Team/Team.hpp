@@ -54,10 +54,13 @@ class Team {
   //
   static Match* match;
 
- private:
+ protected:
   std::vector<UniquePtr<Player>> players;
   //
   //
   //
   void set_key_players();
+
+public:
+  friend class Player;
 };

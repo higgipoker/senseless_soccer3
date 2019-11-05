@@ -4,6 +4,7 @@
 #include "PlayerStateRun.hpp"
 #include "PlayerStateStand.hpp"
 
+#include "Engine/TriangleShape.hpp"
 #include "Ball/Ball.hpp"
 #include "Brain/Brain.hpp"
 #include "Engine/Controllable.hpp"
@@ -12,6 +13,7 @@
 #include "Engine/Types.hpp"
 
 #include <SFML/Graphics/CircleShape.hpp>
+
 
 #include <map>
 
@@ -121,6 +123,8 @@ class Player : public Engine::Entity, public Engine::Controllable {
   float distance_from_ball = 0;
   int support_type=0;
   std::string name;
+  sf::TriangleShape short_pass_triangle;
+  std::vector<Player *> short_pass_candidates;
 
  protected:
   //
@@ -153,6 +157,10 @@ class Player : public Engine::Entity, public Engine::Controllable {
   //
   //
   void change_state(const player_state in_state);
+  //
+  //
+  //
+  void calc_short_pass_candidates();
   //
   //
   //

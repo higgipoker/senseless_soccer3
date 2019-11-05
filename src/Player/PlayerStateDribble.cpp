@@ -22,8 +22,8 @@ PlayerStateDribble::PlayerStateDribble(Player &in_player)
 //
 //
 void PlayerStateDribble::start() {
-  player.my_team->match->player_in_possession = &player;
   player.ball_under_control = true;
+  player.my_team->match->player_in_possession = &player;
   already_kicked = false;
   player.current_speed = dribble_speeds[player.speed];
 }
@@ -68,6 +68,8 @@ void PlayerStateDribble::step() {
 
   player.player_sprite.setPlayerAnimation(PlayerAnimationType::Run,
                                           player.facing.direction);
+
+  player.calc_short_pass_candidates();
 }
 //
 //
@@ -76,6 +78,7 @@ void PlayerStateDribble::stop() {
   if(player.my_team->match->player_in_possession == &player){
     player.my_team->match->player_in_possession = nullptr;
   }
+  player.ball_under_control = false;
 }
 //
 //
@@ -84,7 +87,6 @@ bool PlayerStateDribble::stateOver() {
   // check if ball is outside control range
   if (!player.ballInControlRange()) {
     next_state = player_state::Run;
-    player.ball_under_control = false;
     return true;
   }
   // or if we stopped moving

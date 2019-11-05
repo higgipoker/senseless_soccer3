@@ -38,15 +38,44 @@ bool Collider::contains(const sf::CircleShape &big,
 
   return false;
 }
+//
+//
+//
 bool Collider::contains(const sf::CircleShape &circle, const Vector3 &point) {
   // Compare radius of circle with distance
   // of its center from given point
   if ((point.x - circle.getCenter().x) * (point.x - circle.getCenter().x) +
-          (point.y - circle.getCenter().y) *
-              (point.y - circle.getCenter().y) <=
+          (point.y - circle.getCenter().y) * (point.y - circle.getCenter().y) <=
       circle.getRadius() * circle.getRadius())
     return true;
   else
     return false;
+}
+// -----------------------------------------------------------------------------
+// point with triangle
+//
+// the Barycentric Technique using dot products to cleverly avoid roots...
+// see: http://www.blackpawn.com/texts/pointinpoly/default.html
+// -----------------------------------------------------------------------------
+bool Collider::collides(const Engine::Vector3 &point,
+                        const sf::TriangleShape &triangle) {
+  Vector3 v0 = Vector3(triangle.getPoint(2).x, triangle.getPoint(2).y) -
+               Vector3(triangle.getPoint(0).x, triangle.getPoint(0).y);
+  Vector3 v1 = Vector3(triangle.getPoint(1).x, triangle.getPoint(1).y) -
+               Vector3(triangle.getPoint(0).x, triangle.getPoint(0).y);
+  Vector3 v2 = Vector3(point.x, point.y) -
+               Vector3(triangle.getPoint(0).x, triangle.getPoint(0).y);
+
+  float dot00 = v0.dotProduct(v0);
+  float dot01 = v0.dotProduct(v1);
+  float dot02 = v0.dotProduct(v2);
+  float dot11 = v1.dotProduct(v1);
+  float dot12 = v1.dotProduct(v2);
+
+  float inv_denom = 1 / (dot00 * dot11 - dot01 * dot01);
+  float u = (dot11 * dot02 - dot01 * dot12) * inv_denom;
+  float v = (dot00 * dot12 - dot01 * dot02) * inv_denom;
+
+  return (u >= 0) && (v >= 0) && (u + v < 1);
 }
 }  // namespace Engine

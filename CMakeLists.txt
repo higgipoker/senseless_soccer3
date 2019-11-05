@@ -54,6 +54,7 @@ add_executable(senseless_soccer3
     src/Engine/Entity.cpp
     src/Engine/Metrics.cpp
     src/Engine/ArcShape.cpp
+    src/Engine/TriangleShape.cpp
     src/Engine/Debug.cpp
     src/Engine/Collider.cpp
     src/Engine/InputDevice.cpp
@@ -95,15 +96,15 @@ add_executable(senseless_soccer3
     src/imgui/imgui-SFML.cpp
 
 )
-if(CMAKE_COMPILER_IS_GNUCXX)	
-	target_compile_options(senseless_soccer3 PRIVATE
-	  -Werror
-	  -Wall
-	  -Wextra
-	  -Wno-unused-function
-	  -Wno-unused-parameter
-	  -Wno-implicit-fallthrough)
-  endif(CMAKE_COMPILER_IS_GNUCXX)
+if(CMAKE_COMPILER_IS_GNUCXX)
+  target_compile_options(senseless_soccer3 PRIVATE
+    -Werror
+    -Wall
+    -Wextra
+    -Wno-unused-function
+    -Wno-unused-parameter
+    -Wno-implicit-fallthrough)
+endif(CMAKE_COMPILER_IS_GNUCXX)
 
 # --------------------------------------------------
 # link libs

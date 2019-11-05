@@ -25,7 +25,8 @@ void BrainDribble::start() {
 //
 //
 void BrainDribble::step() {
-  if (++dribble_ticks > DRIBBLE_TIME) {
+  if (++dribble_ticks > DRIBBLE_TIME &&
+      !brain.player.short_pass_candidates.empty()) {
     brain.changeState(brain_state::Pass);
   } else if (pattern->changeDirection()) {
     brain.locomotion.head(
@@ -35,7 +36,7 @@ void BrainDribble::step() {
 //
 //
 //
-void BrainDribble::stop() {brain.locomotion.stand();}
+void BrainDribble::stop() { brain.locomotion.stand(); }
 //
 //
 //
