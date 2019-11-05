@@ -127,10 +127,7 @@ int main(int argc, char **args) {
     // Measure speed
     float currentTime = clock.getElapsedTime().asSeconds();
     frames++;
-    if (currentTime - lastTime >=
-        1.0) {  // If last prinf() was more than 1 sec ago
-      // printf and reset timer
-      // printf("%f ms/frame\n", 1000.0 / double(frames));
+    if (currentTime - lastTime >= 1.0) {
       std::cout << 1000 / frames << " ms/frame" << std::endl;
       frames = 0;
       lastTime += 1.0;
