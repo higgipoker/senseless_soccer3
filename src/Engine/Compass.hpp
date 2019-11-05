@@ -1,12 +1,12 @@
 #pragma once
-
 #include <map>
+#include <string>
 
 namespace Engine {
 //
 //
 //
-enum class Direction : int{
+enum class Direction : int {
   NORTH = 0,
   NORTH_EAST,
   EAST,

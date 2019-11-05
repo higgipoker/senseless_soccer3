@@ -3,6 +3,8 @@
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 #endif
 
+#include <sstream>
+
 #include "Ball/Ball.hpp"
 #include "Ball/BallSprite.hpp"
 #include "Engine/Folder.hpp"
@@ -16,8 +18,6 @@
 #include "Player/PlayerFactory.hpp"
 #include "Player/PlayerSprite.hpp"
 #include "Team/Team.hpp"
-
-#include <sstream>
 
 using namespace Engine;
 //
@@ -120,7 +120,22 @@ int main(int argc, char **args) {
   engine.addSprite(bar, sprite_layer_id);
 
   srand(time(NULL));
+  sf::Clock clock;
+  float lastTime = clock.getElapsedTime().asSeconds();
+  int frames = 0;
   while (engine.isRunning()) {
+    // Measure speed
+    float currentTime = clock.getElapsedTime().asSeconds();
+    frames++;
+    if (currentTime - lastTime >=
+        1.0) {  // If last prinf() was more than 1 sec ago
+      // printf and reset timer
+      // printf("%f ms/frame\n", 1000.0 / double(frames));
+      std::cout << 1000 / frames << " ms/frame" << std::endl;
+      frames = 0;
+      lastTime += 1.0;
+    }
+
     engine.step();
     match.update();
   }

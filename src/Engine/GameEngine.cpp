@@ -1,11 +1,10 @@
 #include "GameEngine.hpp"
 
-#include "Vector.hpp"
-
 #include <SFML/Window/Event.hpp>
-
 #include <cassert>
 #include <iostream>
+
+#include "Vector.hpp"
 
 namespace Engine {
 //
@@ -46,10 +45,10 @@ void GameEngine::step() {
   // sort renderables
   for (auto &layer : render_layers) {
     if (layer.second.sortable) {
-      std::sort(layer.second.sprite_list.begin(),
-                layer.second.sprite_list.end(),
-                [](const sf::Drawable *d1, const sf::Drawable *d2) -> bool {
-                  return d1->z <= d2->z;
+      std::sort(std::begin(layer.second.sprite_list),
+                std::end(layer.second.sprite_list),
+                [](sf::Drawable *d1, sf::Drawable *d2) -> bool {
+                  return d1->z < d2->z;
                 });
     }
   }
