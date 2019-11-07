@@ -7,6 +7,7 @@
 
 #include "Ball/Ball.hpp"
 #include "Ball/BallSprite.hpp"
+#include "Controls/Joysticker.hpp"
 #include "Engine/Folder.hpp"
 #include "Engine/GameEngine.hpp"
 #include "Engine/ProgressBar.hpp"
@@ -111,8 +112,9 @@ int main(int argc, char **args) {
     match.getHomeTeam().addPlayer(std::move(player));
   }
   if (match.getHomeTeam().hasPlayers()) {
-    //match.getHomeTeam().getPlayer().attachInput(engine.getDefaultGamepad());
+    // match.getHomeTeam().getPlayer().attachInput(engine.getDefaultGamepad());
   }
+  match.getHomeTeam().attachInputDevice(engine.getDefaultGamepad());
   match.getHomeTeam().getPlayer().getBrain().changeState(brain_state::Retrieve);
 
   // test
@@ -122,9 +124,15 @@ int main(int argc, char **args) {
 
   srand(time(NULL));
 
+  Joysticker joysticker;
+  joysticker.input = &engine.getDefaultGamepad();
+  joysticker.team = &match.getHomeTeam();
+  joysticker.power_bar = &bar;
+  engine.getDefaultGamepad().attachListener(joysticker);
   while (engine.isRunning()) {
     engine.step();
     match.update();
+    joysticker.update();
   }
 
   std::cout << args[0] << " exited normally" << std::endl;

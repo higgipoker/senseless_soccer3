@@ -58,7 +58,9 @@ void Team::set_key_players() {
   auto player = (*it).get();
   key_players.closest_to_ball = player;
 
-  if (match->player_in_possession || Engine::Math::greater_than(match->getBall().movable.velocity.magnitude2d(), 0)) {
+  if (match->player_in_possession ||
+      Engine::Math::greater_than(
+          match->getBall().movable.velocity.magnitude2d(), 0)) {
     loose_ball_ticks = 60;
   } else if (--loose_ball_ticks == 0) {
     loose_ball_ticks = 60;
@@ -72,7 +74,6 @@ void Team::set_key_players() {
     key_players.last_retriever = retriever;
     std::cout << "retrieve loose ball" << std::endl;
   }
-
 
   // ==================================================
   // pressers
@@ -92,4 +93,10 @@ void Team::set_key_players() {
     }
   }
   key_players.last_in_possession = match->player_in_possession;
+}
+//
+//
+//
+void Team::attachInputDevice(Engine::InputDevice &in_device) {
+  input = &in_device;
 }

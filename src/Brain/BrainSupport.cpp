@@ -22,7 +22,7 @@ void BrainSupport::start() {
   // possession
   //change_direction();
   auto r = Compass::getRandomDirection();
-  brain.player.run(r);
+  brain.locomotion.head(r.toVector());
 }
 //
 //
@@ -33,7 +33,7 @@ void BrainSupport::step() {
 
   auto pos = brain.player.match->getBall().movable.position.toSfVector();
   radius.setCenter(pos);
-  radius.setRadius(1000);
+  radius.setRadius(300);
 
   auto dist = brain.player.distanceTo(brain.player.match->getBall());
   if (dist > radius.getRadius()) {

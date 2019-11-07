@@ -17,7 +17,6 @@ void Controllable::attachInput(InputDevice &in_device) {
 //
 //
 void Controllable::detachInput() {
-  assert("input is null" && input);
   input = nullptr;
 }
 //

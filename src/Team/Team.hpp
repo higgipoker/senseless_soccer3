@@ -1,6 +1,8 @@
 #pragma once
 #include "Player/Player.hpp"
 
+#include "Engine/InputDevice.hpp"
+
 #include <memory>
 #include <vector>
 //
@@ -35,6 +37,10 @@ class Team {
   //
   //
   //
+  void attachInputDevice(Engine::InputDevice& in_device);
+  //
+  //
+  //
   struct {
     void clear() {
       short_pass_candidates.clear();
@@ -50,7 +56,7 @@ class Team {
     std::vector<Player*> press_list;
     Player* closest_to_ball = nullptr;
     Player* last_in_possession = nullptr;
-    Player *last_retriever = nullptr;
+    Player* last_retriever = nullptr;
   } key_players;
   //
   //
@@ -64,6 +70,7 @@ class Team {
   //
   void set_key_players();
   int loose_ball_ticks = 60;
+  Engine::InputDevice* input = nullptr;
 
  public:
   friend class Player;

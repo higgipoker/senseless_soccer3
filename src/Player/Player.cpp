@@ -89,12 +89,7 @@ void Player::update() {
   shadow->setFrame(sprite->getFrame());
   distance_from_ball = distanceTo(match->getBall());
 
-  if (power_bar) {
-    power_bar->setCenter(
-        sprite->getPosition().x,
-        sprite->getPosition().y - sprite->getLocalBounds().height);
-    power_bar->update();
-  }
+
 
 #ifndef NDEBUG
   debug();
@@ -207,9 +202,6 @@ void Player::onInputEvent(const InputEvent in_event,
                           const std::vector<int> &in_params) {
   switch (in_event) {
     case InputEvent::FireDown:
-      if (power_bar) {
-        power_bar->start();
-      }
       break;
 
     case InputEvent::FireUp: {
@@ -217,17 +209,9 @@ void Player::onInputEvent(const InputEvent in_event,
         assert(in_params.size());
         kick(in_params[0]);
       }
-      if (power_bar) {
-        power_bar->stop();
-        power_bar->reset();
-      }
     } break;
 
     case InputEvent::DoubleTap:
-      if (power_bar) {
-        power_bar->stop();
-        power_bar->reset();
-      }
       break;
 
     case InputEvent::SingleTap:
@@ -237,10 +221,6 @@ void Player::onInputEvent(const InputEvent in_event,
         } else {
           kick(3);
         }
-      }
-      if (power_bar) {
-        power_bar->stop();
-        power_bar->reset();
       }
       break;
   }

@@ -89,6 +89,7 @@ add_executable(senseless_soccer3
     src/Ball/BallSprite.cpp
     src/Match/Match.cpp
     src/Team/Team.cpp
+    src/Controls/Joysticker.cpp
     src/imgui/imgui.cpp
     src/imgui/imgui_draw.cpp
     src/imgui/imgui_widgets.cpp
