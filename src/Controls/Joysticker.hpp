@@ -31,5 +31,5 @@ class Joysticker : public Engine::InputListener {
   Team *team = nullptr;
 
  private:
-  JoystickerState state = JoystickerState::NotInPossession;
+  JoystickerState state = JoystickerState::InPossession;
 };

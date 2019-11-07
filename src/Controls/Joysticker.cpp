@@ -27,10 +27,14 @@ void Joysticker::update() {
     if (player) {
       player->attachInput(*input);
     }
-    if (power_bar && player) {
-      power_bar->setCenter(player->getSprite().getPosition().x,
-                           player->getSprite().getPosition().y -
-                               player->getSprite().getLocalBounds().height);
+    Player *p = team->key_players.pass_receiver
+                    ? team->key_players.pass_receiver
+                    : player;
+    if (power_bar && p) {
+
+      power_bar->setCenter(p->getSprite().getPosition().x,
+                           p->getSprite().getPosition().y -
+                               p->getSprite().getLocalBounds().height);
       power_bar->update();
     }
   }

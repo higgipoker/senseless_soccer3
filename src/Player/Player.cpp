@@ -89,8 +89,6 @@ void Player::update() {
   shadow->setFrame(sprite->getFrame());
   distance_from_ball = distanceTo(match->getBall());
 
-
-
 #ifndef NDEBUG
   debug();
 #endif
@@ -193,6 +191,7 @@ void Player::shortPass(Player &in_receiver) {
   force.setMagnitude(force_needed);
   ball->kick(force);
   in_receiver.brain.changeState(brain_state::Retrieve);
+  my_team->key_players.pass_receiver = &in_receiver;
   ball->start_recording_distance();
 }
 //

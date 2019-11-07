@@ -57,6 +57,7 @@ class Team {
     Player* closest_to_ball = nullptr;
     Player* last_in_possession = nullptr;
     Player* last_retriever = nullptr;
+    Player* pass_receiver = nullptr;
   } key_players;
   //
   //
