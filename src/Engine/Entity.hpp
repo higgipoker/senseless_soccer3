@@ -54,7 +54,7 @@ class Entity {
   float speed = 1.F;
 
   // some debug stuff
-  static const bool DRAW_RAYS = true;
+  static const bool DRAW_RAYS = false;
   sf::RectangleShape xray;
   sf::RectangleShape yray;
 };

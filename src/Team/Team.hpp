@@ -42,12 +42,15 @@ class Team {
       pressuring_players.clear();
       press_list.clear();
       closest_to_ball = nullptr;
+      last_in_possession = nullptr;
     }
     std::vector<Player*> short_pass_candidates;
     std::vector<Player*> long_pass_candidates;
     std::vector<Player*> pressuring_players;
     std::vector<Player*> press_list;
     Player* closest_to_ball = nullptr;
+    Player* last_in_possession = nullptr;
+    Player *last_retriever = nullptr;
   } key_players;
   //
   //
@@ -60,7 +63,8 @@ class Team {
   //
   //
   void set_key_players();
+  int loose_ball_ticks = 60;
 
-public:
+ public:
   friend class Player;
 };

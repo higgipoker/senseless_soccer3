@@ -26,10 +26,14 @@ Debug::~Debug() { ImGui::SFML::Shutdown(); }
 //
 //
 //
-void Debug::update() {
+void Debug::update(const int in_frames, const int in_frametime) {
   ImGui::SFML::Update(window, ui_clock.restart());
   ImGui::Begin("Debug");
 
+  // current frame
+  {ImGui::Text("Frame: %i", in_frames - in_frames%10);}
+  // frametime
+  {ImGui::Text("Frame time: %ims", in_frametime);}
   // draw bounds
   { ImGui::Checkbox("Draw Bounds", &flag_draw_bounds); }
   // draw diagnostics
@@ -52,15 +56,15 @@ void Debug::handleInput(sf::Event &in_event) {
       sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
       std::cout << "click at " << static_cast<int>(worldPos.x) << ", "
                 << static_cast<int>(worldPos.y) << std::endl;
-//      std::cout << "click at " << static_cast<int>(pixelPos.x) << ", "
-//                << static_cast<int>(pixelPos.y) << std::endl;
+      //      std::cout << "click at " << static_cast<int>(pixelPos.x) << ", "
+      //                << static_cast<int>(pixelPos.y) << std::endl;
     }
   }
 }
 //
 //
 //
-void Debug::show(){show_debug_hud = true;}
+void Debug::show() { show_debug_hud = true; }
 //
 //
 //

@@ -110,7 +110,7 @@ endif(CMAKE_COMPILER_IS_GNUCXX)
 # link libs
 # --------------------------------------------------
 find_package(OpenGL)
-target_link_libraries (senseless_soccer3 -fsanitize=address)
+#target_link_libraries (senseless_soccer3 -fsanitize=address)
 target_link_libraries (senseless_soccer3 ${OPENGL_gl_LIBRARY})
 target_link_libraries (senseless_soccer3 sfml-graphics-d)
 target_link_libraries (senseless_soccer3 sfml-window-d)

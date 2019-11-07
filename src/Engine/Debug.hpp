@@ -20,7 +20,7 @@ class Debug {
   //
   //
   //
-  void update();
+  void update(const int in_frames, const int in_frametime);
   //
   //
   //

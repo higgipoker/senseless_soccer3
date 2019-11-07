@@ -98,6 +98,8 @@ class GameEngine {
   //
   //
   Gamepad &getDefaultGamepad();
+  ///tmp
+  int frame_counter = 0;
 
  private:
   Window window;
@@ -122,5 +124,10 @@ class GameEngine {
   //
   //
   void poll_input_devices();
+
+  sf::Clock clock;
+  float last_time = 0;
+  float frames = 0;
+  int frametime = 0;
 };
 }  // namespace Engine

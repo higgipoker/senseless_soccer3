@@ -22,6 +22,8 @@ GameEngine::GameEngine(const std::string &in_window_title, int in_window_width,
   shadow_layer = addLayer(false);
   camera.setHeight(50);
   addEntity(camera);
+
+  last_time = clock.getElapsedTime().asSeconds();
 }
 //
 //
@@ -31,6 +33,19 @@ GameEngine::~GameEngine() { window.close(); }
 //
 //
 void GameEngine::step() {
+
+  ++frame_counter;
+
+  // fps
+  float current_time = clock.getElapsedTime().asSeconds();
+  frames++;
+  if (current_time - last_time >= 1.0) {
+    frametime =  1000 / frames;
+    frames = 0;
+    last_time += 1.0;
+  }
+
+
   // handle input
   poll_input_devices();
   for (const auto &controllable : controllables) {
@@ -75,7 +90,7 @@ void GameEngine::step() {
   // render debug
   if (Debug::showHud()) {
     window.setView(hud_view);
-    debug_gui.update();
+    debug_gui.update(frame_counter, frametime);
   }
 
   window.display();

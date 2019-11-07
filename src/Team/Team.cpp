@@ -1,5 +1,6 @@
 #include "Team.hpp"
 //
+#include "Engine/Math.hpp"
 #include "Match/Match.hpp"
 Match *Team::match = nullptr;
 //
@@ -32,6 +33,12 @@ Player &Team::getPlayer() { return *players.back(); }
 //
 void Team::set_key_players() {
   if (!players.size()) return;
+
+  // player in possession became null
+  if (key_players.last_in_possession && !match->player_in_possession) {
+    loose_ball_ticks = 60;
+  }
+
   key_players.clear();
 
   // sort in order of closest to ball
@@ -51,6 +58,22 @@ void Team::set_key_players() {
   auto player = (*it).get();
   key_players.closest_to_ball = player;
 
+  if (match->player_in_possession || Engine::Math::greater_than(match->getBall().movable.velocity.magnitude2d(), 0)) {
+    loose_ball_ticks = 60;
+  } else if (--loose_ball_ticks == 0) {
+    loose_ball_ticks = 60;
+    Player *retriever = key_players.closest_to_ball;
+
+    retriever->getBrain().changeState(brain_state::Retrieve);
+
+    if (key_players.last_retriever) {
+      key_players.last_retriever->getBrain().changeState(brain_state::Support);
+    }
+    key_players.last_retriever = retriever;
+    std::cout << "retrieve loose ball" << std::endl;
+  }
+
+
   // ==================================================
   // pressers
   // ==================================================
@@ -68,4 +91,5 @@ void Team::set_key_players() {
       }
     }
   }
+  key_players.last_in_possession = match->player_in_possession;
 }

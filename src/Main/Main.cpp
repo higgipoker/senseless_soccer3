@@ -121,19 +121,8 @@ int main(int argc, char **args) {
   engine.addSprite(bar, sprite_layer_id);
 
   srand(time(NULL));
-  //  sf::Clock clock;
-  //  float lastTime = clock.getElapsedTime().asSeconds();
-  //  int frames = 0;
-  while (engine.isRunning()) {
-    // fps
-    //    float currentTime = clock.getElapsedTime().asSeconds();
-    //    frames++;
-    //    if (currentTime - lastTime >= 1.0) {
-    //      std::cout << 1000 / frames << " ms/frame" << std::endl;
-    //      frames = 0;
-    //      lastTime += 1.0;
-    //    }
 
+  while (engine.isRunning()) {
     engine.step();
     match.update();
   }
