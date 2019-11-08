@@ -31,7 +31,6 @@ void Joysticker::update() {
                     ? team->key_players.pass_receiver
                     : player;
     if (power_bar && p) {
-
       power_bar->setCenter(p->getSprite().getPosition().x,
                            p->getSprite().getPosition().y -
                                p->getSprite().getLocalBounds().height);

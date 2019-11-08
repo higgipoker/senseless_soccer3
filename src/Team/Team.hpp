@@ -1,7 +1,13 @@
 #pragma once
 #include "Player/Player.hpp"
 
+#include "Player/PlayerFactory.hpp"
+#include "Team/KitFactory.hpp"
+
 #include "Engine/InputDevice.hpp"
+#include "Engine/Texture.hpp"
+
+#include <SFML/Graphics/Texture.hpp>
 
 #include <memory>
 #include <vector>
@@ -17,11 +23,23 @@ class Team {
   //
   //
   //
-  Team();
+  Team(const Kit& in_kit);
+  //
+  //
+  //
+  Engine::Texture& getSpriteTexture();
+  //
+  //
+  //
+  Engine::Texture& getShadowTexture();
   //
   //
   //
   void update();
+  //
+  //
+  //
+  void addDefaultPlayers();
   //
   //
   //
@@ -63,12 +81,22 @@ class Team {
   //
   //
   static Match* match;
+  //
+  //
+  //
+  Player& getPlayer(const size_t in_which);
+  //
+  //
+  //
+  size_t numberPlayers() { return players.size(); }
 
  protected:
+  Engine::Texture sprite_texture;
+  Engine::Texture shadow_texture;
+  PlayerFactory player_factory;
   std::vector<UniquePtr<Player>> players;
-  //
-  //
-  //
+  Kit kit;
+
   void set_key_players();
   int loose_ball_ticks = 60;
   Engine::InputDevice* input = nullptr;

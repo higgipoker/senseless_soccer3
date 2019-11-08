@@ -6,7 +6,7 @@ using namespace Engine;
 //
 //
 //
-PlayerSprite::PlayerSprite(SharedPtr<sf::Texture> in_texture,
+PlayerSprite::PlayerSprite(const sf::Texture& in_texture,
                            const SpriteSetDefinition in_def)
     : Sprite(in_texture) {
   perspectivizable = true;
@@ -39,6 +39,8 @@ void PlayerSprite::setPlayerAnimation(PlayerAnimationType in_type,
 //
 //
 //
-PlayerShadowSprite::PlayerShadowSprite(SharedPtr<sf::Texture> in_texture,
+PlayerShadowSprite::PlayerShadowSprite(const sf::Texture& in_texture,
                                        const SpriteSetDefinition in_def)
-    : PlayerSprite(in_texture, in_def) {perspectivizable = false;}
+    : PlayerSprite(in_texture, in_def) {
+  perspectivizable = false;
+}

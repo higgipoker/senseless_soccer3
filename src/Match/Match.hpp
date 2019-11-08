@@ -1,22 +1,31 @@
 #pragma once
 #include "Ball/Ball.hpp"
-
+//
+#include "Ball/BallFactory.hpp"
 #include "Engine/Sprite.hpp"
+#include "Engine/Texture.hpp"
 #include "Engine/Types.hpp"
+#include "Match/MatchFactory.hpp"
 #include "Pitch/Pitch.hpp"
 #include "Team/Team.hpp"
-
+//
+#include <SFML/Graphics/RenderTexture.hpp>
+//
 #include <cassert>
 //
 //
 //
-
 class Match {
  public:
   //
   //
   //
-  Match();
+  Match(UniquePtr<Team> in_home_team, UniquePtr<Team> in_away_team,
+        BallType in_ball_type = BallType::Standard);
+  //
+  //
+  //
+  const sf::Texture& getMatchTexture() { return factory.getMatchTexture(); }
   //
   //
   //
@@ -28,15 +37,7 @@ class Match {
   //
   //
   //
-  void setBall(UniquePtr<Ball> in_ball);
-  //
-  //
-  //
   Ball& getBall();
-  //
-  //
-  //
-  void addTeams(UniquePtr<Team> in_home_team, UniquePtr<Team> in_away_team);
   //
   //
   //
@@ -54,13 +55,19 @@ class Match {
   //
   //
   //
-  inline Pitch& getPitch(){
-    return static_cast<Pitch&>(*pitch.get());
-  };
+  inline Pitch& getPitch() { return static_cast<Pitch&>(*pitch.get()); };
+  //
+  //
+  //
+  void initMatchTexture(const Engine::Texture& team1_texture,
+                        const Engine::Texture& team2_texture,
+                        const Engine::Texture& ball_texture);
+
   Player* player_in_possession = nullptr;
 
-
  protected:
+  MatchFactory factory;
+  BallFactory ball_factory;
   UniquePtr<Engine::Sprite> pitch;
   UniquePtr<Ball> ball;
   UniquePtr<Team> home_team;

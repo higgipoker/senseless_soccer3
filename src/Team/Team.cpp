@@ -2,11 +2,27 @@
 //
 #include "Engine/Math.hpp"
 #include "Match/Match.hpp"
+//
+#include <sstream>
+//
 Match *Team::match = nullptr;
 //
 //
 //
-Team::Team() {}
+Team::Team(const Kit &in_kit) : kit(in_kit) {
+  sprite_texture.loadFromFile(player_factory.getSpriteSheeet(kit.type));
+  sprite_texture.swapColors(kit.palette);
+
+  shadow_texture.loadFromFile(player_factory.getShadowSheet());
+}
+//
+//
+//
+Engine::Texture &Team::getSpriteTexture() { return sprite_texture; }
+//
+//
+//
+Engine::Texture &Team::getShadowTexture() { return shadow_texture; }
 //
 //
 //
@@ -15,6 +31,28 @@ void Team::update() {
 
   for (auto &p : players) {
     p->update();
+  }
+}
+//
+//
+//
+void Team::addDefaultPlayers() {
+  Player::connectMatch(*match);
+  for (auto i = 0; i < 10; ++i) {
+    UniquePtr<Player> player =
+        player_factory.makePlayer(match->getMatchTexture());
+    TeamData td;
+    td.shirt_number = i + 1;
+    player->setTeamData(td);
+    player->movable.setPosition(
+        match->getPitch().dimensions.center_spot.getCenter().x + (i * 10),
+        match->getPitch().dimensions.center_spot.getCenter().y - 50);
+    player->support_type = i;
+    player->getBrain().changeState(brain_state::Support);
+    std::stringstream ss;
+    ss << "player" << i + 1;
+    player->name = ss.str();
+    addPlayer(std::move(player));
   }
 }
 //
@@ -99,4 +137,10 @@ void Team::set_key_players() {
 //
 void Team::attachInputDevice(Engine::InputDevice &in_device) {
   input = &in_device;
+}
+//
+//
+//
+Player &Team::getPlayer(const size_t in_which) {
+  return *players.at(in_which).get();
 }

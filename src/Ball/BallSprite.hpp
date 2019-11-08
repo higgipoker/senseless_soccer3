@@ -12,12 +12,13 @@ static const int BALL_ANIM_FRAME_TIME = 6;
 //
 // spritesheet layout defines
 //
+inline const int DEFAULT_VERTICAL_OFFSET = 288;
 inline const int BALL_FRAME_WIDTH = 32;
 inline const int BALL_FRAME_HEIGHT = 32;
 inline const int BALL_FRAMES = 7;
-inline const int BALL_START_ROW = 6;
+inline const int BALL_START_ROW = 0;
 inline const int BALL_START_COL = 0;
-inline const int BALL_COLS = 24;
+inline const int BALL_COLS = 8;
 inline const int BALL_SHADOW_FRAMES = 1;
 inline const int BALL_SHADOW_START_COL = 7;
 //
@@ -39,10 +40,10 @@ class BallSprite : public Engine::Sprite {
   //
   //
   BallSprite(
-      SharedPtr<sf::Texture> in_texture,
+      const sf::Texture& in_texture,
       const Engine::SpriteSetDefinition in_def = Engine::SpriteSetDefinition{
-          BALL_FRAME_WIDTH, BALL_FRAME_HEIGHT, BALL_FRAMES, BALL_START_ROW,
-          BALL_START_COL, BALL_COLS});
+          DEFAULT_VERTICAL_OFFSET, BALL_FRAME_WIDTH, BALL_FRAME_HEIGHT,
+          BALL_FRAMES, BALL_START_ROW, BALL_START_COL, BALL_COLS});
 
  protected:
   Engine::SpriteAnimation roll_animation{ID_ANIM_ROLL, BALL_ANIM_FRAME_TIME,
@@ -57,8 +58,9 @@ class BallShadowSprite : public BallSprite {
   //
   //
   BallShadowSprite(
-      SharedPtr<sf::Texture> in_texture,
+      const sf::Texture &in_texture,
       const Engine::SpriteSetDefinition in_def = Engine::SpriteSetDefinition{
-          BALL_FRAME_WIDTH, BALL_FRAME_HEIGHT, BALL_SHADOW_FRAMES,
-          BALL_START_ROW, BALL_SHADOW_START_COL, BALL_COLS});
+          DEFAULT_VERTICAL_OFFSET, BALL_FRAME_WIDTH, BALL_FRAME_HEIGHT,
+          BALL_SHADOW_FRAMES, BALL_START_ROW, BALL_SHADOW_START_COL,
+          BALL_COLS});
 };

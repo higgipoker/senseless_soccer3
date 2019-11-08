@@ -69,7 +69,7 @@ void GameEngine::step() {
   }
 
   // render
-  window.clear(sf::Color::Blue);
+  window.clear(sf::Color::Red);
   getMainCamera().update();
   window.setView(camera.getview());
 

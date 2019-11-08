@@ -15,19 +15,21 @@ namespace Engine {
 //
 //
 //
-Sprite::Sprite() {}
+Sprite::Sprite() {
+
+}
 //
 //
 //
-Sprite::Sprite(SharedPtr<sf::Texture> in_texture) : texture(in_texture) {
-  setTexture(*texture.get());
+Sprite::Sprite(SharedPtr<sf::Texture> in_texture)  {
+  setTexture(*in_texture.get());
 }
 //
 //
 //
 void Sprite::init(const SpriteSetDefinition &in_def) {
   int x = in_def.frame_width * in_def.start_col;
-  int y = in_def.frame_height * in_def.start_row;
+  int y = in_def.vertical_offset + in_def.frame_height * in_def.start_row;
   int col = in_def.start_col;
   int frame_count = in_def.spriteset_frames;
   while (--frame_count >= 0) {

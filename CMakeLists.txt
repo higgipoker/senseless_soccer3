@@ -63,6 +63,8 @@ add_executable(senseless_soccer3
     src/Engine/Widget.cpp
     src/Engine/ProgressBar.cpp
     src/Engine/Controllable.cpp
+    src/Engine/Texture.cpp
+    src/Engine/BaseFactory.cpp
     src/Game/Game.cpp
     src/Locomotion/LocomotionManager.cpp
     src/Locomotion/Locomotion.cpp
@@ -87,8 +89,12 @@ add_executable(senseless_soccer3
     src/Pitch/Pitch.cpp
     src/Ball/Ball.cpp
     src/Ball/BallSprite.cpp
+    src/Ball/BallFactory.cpp
     src/Match/Match.cpp
+    src/Match/MatchFactory.cpp
     src/Team/Team.cpp
+    src/Team/TeamFactory.cpp
+    src/Team/KitFactory.cpp
     src/Controls/Joysticker.cpp
     src/imgui/imgui.cpp
     src/imgui/imgui_draw.cpp

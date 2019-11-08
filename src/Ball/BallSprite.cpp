@@ -4,7 +4,7 @@ using namespace Engine;
 //
 //
 //
-BallSprite::BallSprite(SharedPtr<sf::Texture> in_texture,
+BallSprite::BallSprite(const sf::Texture &in_texture,
                        const SpriteSetDefinition in_def)
     : Sprite(in_texture) {
   init(in_def);
@@ -13,6 +13,6 @@ BallSprite::BallSprite(SharedPtr<sf::Texture> in_texture,
 //
 //
 //
-BallShadowSprite::BallShadowSprite(SharedPtr<sf::Texture> in_texture,
+BallShadowSprite::BallShadowSprite(const sf::Texture &in_texture,
                                    const SpriteSetDefinition in_def)
     : BallSprite(in_texture, in_def) {}

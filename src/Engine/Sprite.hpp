@@ -18,6 +18,7 @@ namespace Engine {
 //
 //
 struct SpriteSetDefinition {
+  int vertical_offset = 0;
   int frame_width = 0;
   int frame_height = 0;
   int spriteset_frames = 0;
@@ -34,6 +35,10 @@ class Sprite : public sf::Sprite {
   //
   //
   Sprite();
+  //
+  //
+  //
+  Sprite(const sf::Texture& texture) : sf::Sprite(texture) {}
   //
   //
   //
@@ -82,7 +87,9 @@ class Sprite : public sf::Sprite {
   //
   //
   //
-  inline void setPerspectivizable(bool in_status){perspectivizable = in_status;}
+  inline void setPerspectivizable(bool in_status) {
+    perspectivizable = in_status;
+  }
   /// a list of shapes for debug drawing
   std::vector<sf::Shape*> debug_shapes;
   /// for perspective
@@ -90,8 +97,6 @@ class Sprite : public sf::Sprite {
   Sprite* shadow = nullptr;
 
  protected:
-  /// managed texture
-  SharedPtr<sf::Texture> texture;
   /// frames
   std::vector<sf::IntRect> frames;
   /// track current frame
