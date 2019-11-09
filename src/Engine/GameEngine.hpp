@@ -89,6 +89,10 @@ class GameEngine {
   //
   //
   //
+  layer_id getDefaultLayer() const;
+  //
+  //
+  //
   layer_id getShadowLayer() const;
   //
   //
@@ -98,7 +102,7 @@ class GameEngine {
   //
   //
   Gamepad &getDefaultGamepad();
-  ///tmp
+  /// tmp
   int frame_counter = 0;
 
  private:
@@ -115,6 +119,7 @@ class GameEngine {
   float dt = 0.01F;
   bool running = true;
   layer_id background_layer = RenderLayer::INVALID_LAYER;
+  layer_id default_layer = RenderLayer::INVALID_LAYER;
   layer_id shadow_layer = RenderLayer::INVALID_LAYER;
   //
   //

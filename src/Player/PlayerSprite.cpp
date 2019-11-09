@@ -1,5 +1,7 @@
 #include "PlayerSprite.hpp"
 //
+#include "Team/Team.hpp"
+//
 //
 //
 using namespace Engine;
@@ -7,9 +9,15 @@ using namespace Engine;
 //
 //
 PlayerSprite::PlayerSprite(const sf::Texture& in_texture,
-                           const SpriteSetDefinition in_def)
+                           const TeamType in_team,
+                           SpriteSetDefinition in_def)
     : Sprite(in_texture) {
   perspectivizable = true;
+
+  if (in_team == TeamType::Away) {
+    in_def.vertical_offset = VERTICAL_OFFSET_TEAM2;
+  }
+
   init(in_def);
 
   populateStandAnimations(stand_animations);
@@ -41,6 +49,6 @@ void PlayerSprite::setPlayerAnimation(PlayerAnimationType in_type,
 //
 PlayerShadowSprite::PlayerShadowSprite(const sf::Texture& in_texture,
                                        const SpriteSetDefinition in_def)
-    : PlayerSprite(in_texture, in_def) {
+    : PlayerSprite(in_texture, TeamType::Home, in_def) {
   perspectivizable = false;
 }

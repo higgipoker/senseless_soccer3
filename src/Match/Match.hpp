@@ -25,6 +25,10 @@ class Match {
   //
   //
   //
+  ~Match() { std::cout << "Destruct Match" << std::endl; }
+  //
+  //
+  //
   const sf::Texture& getMatchTexture() { return factory.getMatchTexture(); }
   //
   //

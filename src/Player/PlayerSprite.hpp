@@ -7,8 +7,11 @@
 
 #include <map>
 
+enum class TeamType;
+
 // sprite frame constants
-inline const int VERTICAL_OFFSET = 0;
+inline const int VERTICAL_OFFSET_TEAM1 = 0;
+inline const int VERTICAL_OFFSET_TEAM2 = 96;
 inline const int SHADOW_VERTICAL_OFFSET = 192;
 inline const int FRAME_WIDTH = 32;
 inline const int FRAME_HEIGHT = 32;
@@ -32,11 +35,11 @@ class PlayerSprite : public Engine::Sprite {
   //
   //
   //
-  PlayerSprite(const sf::Texture &in_texture,
-               const Engine::SpriteSetDefinition in_def =
-                   Engine::SpriteSetDefinition{VERTICAL_OFFSET, FRAME_WIDTH,
-                                               FRAME_HEIGHT, FRAMES, START_ROW,
-                                               START_COL, COLS});
+  PlayerSprite(
+      const sf::Texture& in_texture, const TeamType in_team,
+      Engine::SpriteSetDefinition in_def = Engine::SpriteSetDefinition{
+          VERTICAL_OFFSET_TEAM1, FRAME_WIDTH, FRAME_HEIGHT, FRAMES, START_ROW,
+          START_COL, COLS});
   //
   //
   //

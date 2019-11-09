@@ -4,16 +4,15 @@
 #include "PlayerStateRun.hpp"
 #include "PlayerStateStand.hpp"
 
-#include "Engine/TriangleShape.hpp"
 #include "Ball/Ball.hpp"
 #include "Brain/Brain.hpp"
 #include "Engine/Controllable.hpp"
 #include "Engine/Entity.hpp"
 #include "Engine/ProgressBar.hpp"
+#include "Engine/TriangleShape.hpp"
 #include "Engine/Types.hpp"
 
 #include <SFML/Graphics/CircleShape.hpp>
-
 
 #include <map>
 
@@ -63,6 +62,10 @@ class Player : public Engine::Entity, public Engine::Controllable {
   //
   //
   //
+  ~Player() { std::cout << "Destruct Player" << std::endl; }
+  //
+  //
+  //
   void update() override;
   //
   //
@@ -108,10 +111,6 @@ class Player : public Engine::Entity, public Engine::Controllable {
   //
   //
   //
-  static void connectMatch(Match &in_match);
-  //
-  //
-  //
   static Match &getMatch();
   //
   //
@@ -121,7 +120,7 @@ class Player : public Engine::Entity, public Engine::Controllable {
   Engine::ProgressBar *power_bar = nullptr;
   Team *my_team = nullptr;
   float distance_from_ball = 0;
-  int support_type=0;
+  int support_type = 0;
   std::string name;
   sf::TriangleShape short_pass_triangle;
   std::vector<Player *> short_pass_candidates;
@@ -130,8 +129,6 @@ class Player : public Engine::Entity, public Engine::Controllable {
   //
   //
   //
-  // players know about the match, one match for all players
-  static Match *match;
   // a player has a brain (well, most do)
   Brain brain;
   bool ball_under_control = false;
@@ -148,7 +145,6 @@ class Player : public Engine::Entity, public Engine::Controllable {
   float current_speed = 0;
   TeamData team_data;
   Attributes attribs;
-  Ball *ball = nullptr;
   //
   //
   //
@@ -165,8 +161,6 @@ class Player : public Engine::Entity, public Engine::Controllable {
   //
   //
   void debug();
-
-
 
  public:
   // state machine pattern

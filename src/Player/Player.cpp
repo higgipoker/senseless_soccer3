@@ -10,7 +10,6 @@
 #include <iostream>
 
 using namespace Engine;
-Match *Player::match = nullptr;
 //
 //
 //
@@ -24,8 +23,6 @@ Player::Player(UniquePtr<PlayerSprite> in_sprite,
       state(&state_stand),
       player_sprite(static_cast<PlayerSprite &>(*sprite.get())),
       player_shadow(static_cast<PlayerSprite &>(*shadow.get())) {
-  ball = &match->getBall();
-  assert(ball);
   feet.setRadius(1.0F);
   control.setRadius(12);
 
@@ -74,7 +71,7 @@ void Player::update() {
   Entity::update();
 
   short_pass_triangle.reset();
-  short_pass_triangle.setFillColor({0, 255, 0, 70});
+  short_pass_triangle.setFillColor({255, 0, 0, 70});
 
   // state machine
   state->step();
@@ -87,7 +84,7 @@ void Player::update() {
   feet.setCenter(movable.position.x, movable.position.y - feet.getRadius());
   control.setCenter(feet.getCenter());
   shadow->setFrame(sprite->getFrame());
-  distance_from_ball = distanceTo(match->getBall());
+  distance_from_ball = distanceTo(my_team->match->getBall());
 
 #ifndef NDEBUG
   debug();
@@ -97,7 +94,7 @@ void Player::update() {
 //
 //
 void Player::face_ball() {
-  auto direction = directionTo(getMatch().getBall());
+  auto direction = directionTo(my_team->match->getBall());
   direction.roundAngle(45);
   direction.normalizeToUnits();
   Compass to_ball(direction);
@@ -123,7 +120,7 @@ void Player::change_state(const player_state in_state) {
 //
 //
 bool Player::ballInControlRange() {
-  return Collider::contains(control, getMatch().getBall().collidable);
+  return Collider::contains(control, my_team->match->getBall().collidable);
 }
 //
 //
@@ -133,14 +130,6 @@ Compass Player::getDirection() { return facing; }
 //
 //
 Brain &Player::getBrain() { return brain; }
-//
-//
-//
-void Player::connectMatch(Match &in_match) { match = &in_match; }
-//
-//
-//
-Match &Player::getMatch() { return *match; }
 //
 //
 //
@@ -169,8 +158,8 @@ void Player::kick(const float in_force) {
   Vector3 force = facing.toVector();
   force *= in_force;
   force.z = force.magnitude2d() * 0.2;
-  ball->kick(force);
-  ball->start_recording_distance();
+  my_team->match->getBall().kick(force);
+  my_team->match->getBall().start_recording_distance();
 }
 //
 //
@@ -189,10 +178,10 @@ void Player::shortPass(Player &in_receiver) {
 
   Vector3 force = directionTo(in_receiver);
   force.setMagnitude(force_needed);
-  ball->kick(force);
+  my_team->match->getBall().kick(force);
   in_receiver.brain.changeState(brain_state::Retrieve);
   my_team->key_players.pass_receiver = &in_receiver;
-  ball->start_recording_distance();
+  my_team->match->getBall().start_recording_distance();
 }
 //
 //
@@ -264,7 +253,7 @@ void Player::calc_short_pass_candidates() {
     // is in short pass range
     if (Collider::collides(player->movable.position, short_pass_triangle)) {
       short_pass_candidates.push_back(player.get());
-      short_pass_triangle.setFillColor({255, 0, 0, 70});
+      short_pass_triangle.setFillColor({0, 255, 0, 70});
     }
   }
 }
@@ -280,8 +269,8 @@ void Player::debug() {
   }
 
   // change color if ball touching feet
-  if (Collider::collides(feet, getMatch().getBall().collidable)) {
-    feet.setFillColor(sf::Color::Red);
+  if (Collider::collides(feet, my_team->match->getBall().collidable)) {
+    feet.setFillColor(sf::Color::Green);
   }
 
   sprite->debug_shapes.clear();

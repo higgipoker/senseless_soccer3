@@ -13,6 +13,7 @@ using namespace Engine;
 //
 BrainSupport::BrainSupport(Brain& in_brain) : BrainState(in_brain) {
   name = "Support";
+  radius.setRadius(300);
 }
 //
 //
@@ -31,14 +32,13 @@ void BrainSupport::step() {
 
   int CHANGE_TICKS = brain.player.support_type%2==0? 150:50;
 
-  auto pos = brain.player.match->getBall().movable.position.toSfVector();
+  auto pos = brain.player.my_team->match->getBall().movable.position.toSfVector();
   radius.setCenter(pos);
-  radius.setRadius(300);
 
-  auto dist = brain.player.distanceTo(brain.player.match->getBall());
+  auto dist = brain.player.distanceTo(brain.player.my_team->match->getBall());
   if (dist > radius.getRadius()) {
     ticks_since_change = 0;
-    Compass new_direction = brain.player.directionTo(brain.player.match->getBall());
+    Compass new_direction = brain.player.directionTo(brain.player.my_team->match->getBall());
     brain.locomotion.head(new_direction.toVector());
   }
 

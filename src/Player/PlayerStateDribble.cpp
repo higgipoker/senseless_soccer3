@@ -36,11 +36,11 @@ void PlayerStateDribble::close_control() {
   Vector3 ball_position{player.feet.getCenter()};
   Vector3 offset = player.facing.toVector() *
                    (player.feet.getRadius() +
-                    player.getMatch().getBall().collidable.getRadius());
+                    player.my_team->match->getBall().collidable.getRadius());
   ball_position += offset * 1.f;
 
   // put the ball there
-  player.getMatch().getBall().movable.place(ball_position);
+  player.my_team->match->getBall().movable.place(ball_position);
 }
 //
 //
@@ -57,7 +57,7 @@ void PlayerStateDribble::step() {
   } else {
     // check for collision with ball
     if (Collider::collides(player.feet,
-                           player.getMatch().getBall().collidable)) {
+                           player.my_team->match->getBall().collidable)) {
       if (!already_kicked) {
         kick();
       }
@@ -108,5 +108,5 @@ void PlayerStateDribble::kick() {
   Vector3 kick_force = Compass(player.facing).toVector();
   kick_force.normalise2d();
   kick_force *= force;
-  player.getMatch().getBall().kick(kick_force);
+  player.my_team->match->getBall().kick(kick_force);
 }

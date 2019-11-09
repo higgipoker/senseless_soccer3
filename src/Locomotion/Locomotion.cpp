@@ -10,7 +10,7 @@ Locomotion::Locomotion(Player& in_player) : player(in_player) {}
 //
 //
 void Locomotion::stay_in_pitch() {
-  auto pitchrect = player.match->getPitch().dimensions.bounds;
+  auto pitchrect = player.my_team->match->getPitch().dimensions.bounds;
 
   const int buffer = 10;
   if (player.movable.position.x < pitchrect.getPosition().x + buffer) {

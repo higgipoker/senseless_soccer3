@@ -20,6 +20,7 @@ GameEngine::GameEngine(const std::string &in_window_title, int in_window_width,
                              static_cast<float>(in_window_height) / 2};
   background_layer = addLayer(false);
   shadow_layer = addLayer(false);
+  default_layer = addLayer(false);
   camera.setHeight(50);
   addEntity(camera);
 
@@ -33,18 +34,16 @@ GameEngine::~GameEngine() { window.close(); }
 //
 //
 void GameEngine::step() {
-
   ++frame_counter;
 
   // fps
   float current_time = clock.getElapsedTime().asSeconds();
   frames++;
   if (current_time - last_time >= 1.0) {
-    frametime =  1000 / frames;
+    frametime = 1000 / frames;
     frames = 0;
     last_time += 1.0;
   }
-
 
   // handle input
   poll_input_devices();
@@ -113,9 +112,8 @@ void GameEngine::addSprite(Sprite &in_sprite, layer_id in_layer_id) {
     return;
   }
   if (in_layer_id == RenderLayer::INVALID_LAYER) {
-    // add to last layer
-    render_layers.at(render_layers.size() - 1)
-        .sprite_list.push_back(&in_sprite);
+    // add to default layer
+    render_layers.at(default_layer).sprite_list.push_back(&in_sprite);
   } else {
     // add to specified layer
     if (in_layer_id < render_layers.size()) {
@@ -156,6 +154,10 @@ Camera &GameEngine::getMainCamera() { return camera; }
 //
 //
 layer_id GameEngine::getBackgroundLayer() const { return background_layer; }
+//
+//
+//
+layer_id GameEngine::getDefaultLayer() const { return default_layer; }
 //
 //
 //

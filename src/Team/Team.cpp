@@ -9,20 +9,25 @@ Match *Team::match = nullptr;
 //
 //
 //
-Team::Team(const Kit &in_kit) : kit(in_kit) {
-  sprite_texture.loadFromFile(player_factory.getSpriteSheeet(kit.type));
-  sprite_texture.swapColors(kit.palette);
+Team::Team(const TeamType in_home_or_away, const Kit &in_kit)
+    : home_or_away(in_home_or_away), kit(in_kit) {
+  sprite_texture->loadFromFile(player_factory.getSpriteSheeet(kit.type));
+  sprite_texture->swapColors(kit.palette);
 
-  shadow_texture.loadFromFile(player_factory.getShadowSheet());
+  shadow_texture->loadFromFile(player_factory.getShadowSheet());
 }
 //
 //
 //
-Engine::Texture &Team::getSpriteTexture() { return sprite_texture; }
+UniquePtr<Engine::Texture> Team::getSpriteTexture() {
+  return std::move(sprite_texture);
+}
 //
 //
 //
-Engine::Texture &Team::getShadowTexture() { return shadow_texture; }
+UniquePtr<Engine::Texture> Team::getShadowTexture() {
+  return std::move(shadow_texture);
+}
 //
 //
 //
@@ -37,21 +42,21 @@ void Team::update() {
 //
 //
 void Team::addDefaultPlayers() {
-  Player::connectMatch(*match);
   for (auto i = 0; i < 10; ++i) {
     UniquePtr<Player> player =
-        player_factory.makePlayer(match->getMatchTexture());
+        player_factory.makePlayer(match->getMatchTexture(), home_or_away);
     TeamData td;
     td.shirt_number = i + 1;
     player->setTeamData(td);
     player->movable.setPosition(
-        match->getPitch().dimensions.center_spot.getCenter().x + (i * 10),
+        match->getPitch().dimensions.center_spot.getCenter().x - 50 + (i * 10),
         match->getPitch().dimensions.center_spot.getCenter().y - 50);
     player->support_type = i;
     player->getBrain().changeState(brain_state::Support);
     std::stringstream ss;
     ss << "player" << i + 1;
     player->name = ss.str();
+    player->my_team = this;
     addPlayer(std::move(player));
   }
 }
@@ -99,9 +104,9 @@ void Team::set_key_players() {
   if (match->player_in_possession ||
       Engine::Math::greater_than(
           match->getBall().movable.velocity.magnitude2d(), 0)) {
-    loose_ball_ticks = 60;
+    loose_ball_ticks = 300;
   } else if (--loose_ball_ticks == 0) {
-    loose_ball_ticks = 60;
+    loose_ball_ticks = 300;
     Player *retriever = key_players.closest_to_ball;
 
     retriever->getBrain().changeState(brain_state::Retrieve);

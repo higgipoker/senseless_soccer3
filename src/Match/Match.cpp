@@ -9,12 +9,12 @@ using namespace Engine;
 Match::Match(UniquePtr<Team> in_home_team, UniquePtr<Team> in_away_team,
              BallType in_ball_type)
     : home_team(std::move(in_home_team)), away_team(std::move(in_away_team)) {
-  Engine::Texture ball_texture;
-  ball_texture.loadFromFile(ball_factory.getSpriteSheeet(in_ball_type));
+  UniquePtr<Engine::Texture> ball_texture = std::make_unique<Engine::Texture>();
+  ball_texture->loadFromFile(ball_factory.getSpriteSheeet(in_ball_type));
 
-  factory.createMatchTexture(home_team->getSpriteTexture(),
-                             away_team->getSpriteTexture(),
-                             home_team->getShadowTexture(), ball_texture);
+  factory.createMatchTexture(
+      home_team->getSpriteTexture(), away_team->getSpriteTexture(),
+      home_team->getShadowTexture(), std::move(ball_texture));
 
   UniquePtr<Sprite> ballsprite =
       std::make_unique<BallSprite>(factory.getMatchTexture());

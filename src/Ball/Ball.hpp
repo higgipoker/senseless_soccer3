@@ -18,6 +18,10 @@ class Ball : public Engine::Entity {
   //
   //
   //
+  ~Ball() { std::cout << "Destruct Ball" << std::endl; }
+  //
+  //
+  //
   void update() override;
   //
   //
@@ -51,7 +55,7 @@ class Ball : public Engine::Entity {
   float distance;
   Engine::Vector3 initial_position;
   Engine::Vector3 last_position;
-  float last_force=0;
+  float last_force = 0;
 
  protected:
   float radius = 3;

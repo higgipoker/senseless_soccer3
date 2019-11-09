@@ -9,6 +9,7 @@
 #include "Engine/Types.hpp"
 //
 #include <SFML/Graphics/Texture.hpp>
+enum class TeamType;
 //
 //
 //
@@ -35,5 +36,6 @@ class PlayerFactory : public Engine::BaseFactory {
   //
   //
   //
-  UniquePtr<Player> makePlayer(const sf::Texture &in_spritesheet);
+  UniquePtr<Player> makePlayer(const sf::Texture &in_spritesheet,
+                               const TeamType in_strip);
 };

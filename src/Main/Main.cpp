@@ -47,83 +47,74 @@ int main(int argc, char** args) {
   Folder graphics_folder(working_folder.getPath() + "/gfx");
   Folder data_folder(working_folder.getPath() + "/data");
   //
-  // gfx
-  //
-  SharedPtr<Texture> tex_grass = std::make_shared<Texture>();
-  tex_grass->loadFromFile(graphics_folder.getPath(true) + "grass_checked.png");
-  SharedPtr<Texture> red_player_texture = std::make_shared<Texture>();
-  SharedPtr<Texture> blue_player_texture = std::make_shared<Texture>();
-  SharedPtr<Texture> ball_texture = std::make_shared<Texture>();
-  red_player_texture->loadFromFile(graphics_folder.getPath(true) +
-                                   "player.png");
-  blue_player_texture->loadFromFile(graphics_folder.getPath(true) +
-                                    "player.png");
-  ball_texture->loadFromFile(graphics_folder.getPath(true) + "ball.png");
-  //
   // engine
   //
   sf::IntRect wnd_size{0, 0, 1280, 730};
   GameEngine engine("senseless soccer", wnd_size.width, wnd_size.height);
-  int sprite_layer_id = engine.addLayer(true);
-
   //
   // pitch
   //
-  engine.getMainCamera().setWorldRect(world);
+  SharedPtr<Texture> tex_grass = std::make_shared<Texture>();
+  tex_grass->loadFromFile(graphics_folder.getPath(true) + "grass_checked.png");
   UniquePtr<Sprite> pitch = std::make_unique<Pitch>(tex_grass, world);
   engine.addSprite(*pitch.get(), engine.getBackgroundLayer());
   //
-  // match and teams
+  // teams
   //
   TeamFactory team_factory;
   UniquePtr<Team> team1 = team_factory.makeDefaultHomeTeam();
   UniquePtr<Team> team2 = team_factory.makeDefaultAwayTeam();
-  Match match(std::move(team1), std::move(team2));
-  match.setPitch(std::move(pitch));
-  match.getHomeTeam().addDefaultPlayers();
-  match.getAwayTeam().addDefaultPlayers();
-
-  for(size_t i = 0 ; i<match.getHomeTeam().numberPlayers(); ++i){
-    engine.addEntity(match.getHomeTeam().getPlayer(i));
-  }
-
-  match.getBall().movable.setPosition(
-      match.getPitch().dimensions.center_spot.getCenter().x,
-      match.getPitch().dimensions.center_spot.getCenter().y );
-
-  engine.addEntity(match.getBall(), sprite_layer_id);
-  engine.getMainCamera().follow(match.getBall());
-
-  Team::match = &match;
-
   //
-  // players
+  // match
   //
+  {
+    Match match(std::move(team1), std::move(team2));
+    match.setPitch(std::move(pitch));
+    match.getHomeTeam().addDefaultPlayers();
+    match.getAwayTeam().addDefaultPlayers();
 
+    for (size_t i = 0; i < match.getHomeTeam().numberPlayers(); ++i) {
+      engine.addEntity(match.getHomeTeam().getPlayer(i));
+      engine.addControllable(match.getHomeTeam().getPlayer(i));
+    }
+    for (size_t i = 0; i < match.getAwayTeam().numberPlayers(); ++i) {
+      engine.addEntity(match.getAwayTeam().getPlayer(i));
+      engine.addControllable(match.getAwayTeam().getPlayer(i));
+    }
+    //  if (match.getHomeTeam().hasPlayers()) {
+    //    match.getHomeTeam().getPlayer().attachInput(engine.getDefaultGamepad());
+    //  }
 
-  if (match.getHomeTeam().hasPlayers()) {
-    match.getHomeTeam().getPlayer().attachInput(engine.getDefaultGamepad());
-  }
-  match.getHomeTeam().attachInputDevice(engine.getDefaultGamepad());
-  match.getHomeTeam().getPlayer().getBrain().changeState(brain_state::Retrieve);
+    match.getBall().movable.setPosition(
+        match.getPitch().dimensions.center_spot.getCenter().x,
+        match.getPitch().dimensions.center_spot.getCenter().y);
 
-  // test
-  ProgressBar bar(40, 3, 50);
-  match.getHomeTeam().getPlayer().power_bar = &bar;
-  engine.addSprite(bar, sprite_layer_id);
+    engine.addEntity(match.getBall(), engine.getDefaultLayer());
+    engine.getMainCamera().follow(match.getBall());
 
-  srand(time(NULL));
+    match.getHomeTeam().attachInputDevice(engine.getDefaultGamepad());
+    match.getHomeTeam().getPlayer().getBrain().changeState(
+        brain_state::Retrieve);
 
-  Joysticker joysticker;
-  joysticker.input = &engine.getDefaultGamepad();
-  joysticker.team = &match.getHomeTeam();
-  joysticker.power_bar = &bar;
-  engine.getDefaultGamepad().attachListener(joysticker);
+    // test
+    ProgressBar bar(40, 3, 50);
+    match.getHomeTeam().getPlayer().power_bar = &bar;
+    engine.addSprite(bar, engine.getDefaultLayer());
 
-  while (engine.isRunning()) {
-    engine.step();
-    match.update();
-    joysticker.update();
+    srand(time(NULL));
+
+    Joysticker joysticker;
+    joysticker.input = &engine.getDefaultGamepad();
+    joysticker.team = &match.getHomeTeam();
+    joysticker.power_bar = &bar;
+    engine.getDefaultGamepad().attachListener(joysticker);
+
+    engine.getMainCamera().setWorldRect(world);
+    while (engine.isRunning()) {
+      engine.step();
+      match.update();
+      // joysticker.update();
+    }
   }
 
   std::cout << args[0] << " exited normally" << std::endl;

@@ -57,10 +57,6 @@ Pitch::Pitch(SharedPtr<sf::Texture> in_texture,
 //
 //
 //
-Pitch::~Pitch() {}
-//
-//
-//
 void Pitch::draw(sf::RenderTarget& target, sf::RenderStates states) const {
   pitch_texture->clear();
   pitch_texture->draw(grass);

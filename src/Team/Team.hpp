@@ -6,11 +6,17 @@
 
 #include "Engine/InputDevice.hpp"
 #include "Engine/Texture.hpp"
+#include "Engine/Types.hpp"
 
 #include <SFML/Graphics/Texture.hpp>
 
 #include <memory>
 #include <vector>
+//
+//
+//
+enum class TeamType { Home, Away };
+
 //
 //
 //
@@ -23,15 +29,19 @@ class Team {
   //
   //
   //
-  Team(const Kit& in_kit);
+  Team(const TeamType in_home_or_away, const Kit& in_kit);
   //
   //
   //
-  Engine::Texture& getSpriteTexture();
+  ~Team() { std::cout << "Destruct Team" << std::endl; }
   //
   //
   //
-  Engine::Texture& getShadowTexture();
+  UniquePtr<Engine::Texture> getSpriteTexture();
+  //
+  //
+  //
+  UniquePtr<Engine::Texture> getShadowTexture();
   //
   //
   //
@@ -89,17 +99,24 @@ class Team {
   //
   //
   size_t numberPlayers() { return players.size(); }
+  //
+  //
+  //
+  TeamType getTeamType() { return home_or_away; }
 
  protected:
-  Engine::Texture sprite_texture;
-  Engine::Texture shadow_texture;
+  UniquePtr<Engine::Texture> sprite_texture =
+      std::make_unique<Engine::Texture>();
+  UniquePtr<Engine::Texture> shadow_texture =
+      std::make_unique<Engine::Texture>();
   PlayerFactory player_factory;
   std::vector<UniquePtr<Player>> players;
-  Kit kit;
 
   void set_key_players();
   int loose_ball_ticks = 60;
   Engine::InputDevice* input = nullptr;
+  TeamType home_or_away;
+  Kit kit;
 
  public:
   friend class Player;
