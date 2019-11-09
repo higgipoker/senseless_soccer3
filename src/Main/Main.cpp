@@ -58,63 +58,60 @@ int main(int argc, char** args) {
   tex_grass->loadFromFile(graphics_folder.getPath(true) + "grass_checked.png");
   UniquePtr<Sprite> pitch = std::make_unique<Pitch>(tex_grass, world);
   engine.addSprite(*pitch.get(), engine.getBackgroundLayer());
-  //
-  // teams
-  //
-  TeamFactory team_factory;
-  UniquePtr<Team> team1 = team_factory.makeDefaultHomeTeam();
-  UniquePtr<Team> team2 = team_factory.makeDefaultAwayTeam();
+
   //
   // match
   //
-  {
-    Match match(std::move(team1), std::move(team2));
-    match.setPitch(std::move(pitch));
-    match.getHomeTeam().addDefaultPlayers();
-    match.getAwayTeam().addDefaultPlayers();
 
-    for (size_t i = 0; i < match.getHomeTeam().numberPlayers(); ++i) {
-      engine.addEntity(match.getHomeTeam().getPlayer(i));
-      engine.addControllable(match.getHomeTeam().getPlayer(i));
-    }
-    for (size_t i = 0; i < match.getAwayTeam().numberPlayers(); ++i) {
-      engine.addEntity(match.getAwayTeam().getPlayer(i));
-      engine.addControllable(match.getAwayTeam().getPlayer(i));
-    }
-    //  if (match.getHomeTeam().hasPlayers()) {
-    //    match.getHomeTeam().getPlayer().attachInput(engine.getDefaultGamepad());
-    //  }
+  TeamFactory team_factory;
+  Team team1 = team_factory.makeDefaultHomeTeam();
+  Team team2 = team_factory.makeDefaultAwayTeam();
 
-    match.getBall().movable.setPosition(
-        match.getPitch().dimensions.center_spot.getCenter().x,
-        match.getPitch().dimensions.center_spot.getCenter().y);
+  Match match(team1, team2);
+  match.setPitch(std::move(pitch));
+  match.getHomeTeam().addDefaultPlayers();
+  match.getAwayTeam().addDefaultPlayers();
 
-    engine.addEntity(match.getBall(), engine.getDefaultLayer());
-    engine.getMainCamera().follow(match.getBall());
+  for (size_t i = 0; i < match.getHomeTeam().numberPlayers(); ++i) {
+    engine.addEntity(match.getHomeTeam().getPlayer(i));
+    engine.addControllable(match.getHomeTeam().getPlayer(i));
+  }
+  for (size_t i = 0; i < match.getAwayTeam().numberPlayers(); ++i) {
+    engine.addEntity(match.getAwayTeam().getPlayer(i));
+    engine.addControllable(match.getAwayTeam().getPlayer(i));
+  }
+  //  if (match.getHomeTeam().hasPlayers()) {
+  //    match.getHomeTeam().getPlayer().attachInput(engine.getDefaultGamepad());
+  //  }
 
-    match.getHomeTeam().attachInputDevice(engine.getDefaultGamepad());
-    match.getHomeTeam().getPlayer().getBrain().changeState(
-        brain_state::Retrieve);
+  match.getBall().movable.setPosition(
+      match.getPitch().dimensions.center_spot.getCenter().x,
+      match.getPitch().dimensions.center_spot.getCenter().y);
 
-    // test
-    ProgressBar bar(40, 3, 50);
-    match.getHomeTeam().getPlayer().power_bar = &bar;
-    engine.addSprite(bar, engine.getDefaultLayer());
+  engine.addEntity(match.getBall(), engine.getDefaultLayer());
+  engine.getMainCamera().follow(match.getBall());
 
-    srand(time(NULL));
+  match.getHomeTeam().attachInputDevice(engine.getDefaultGamepad());
+  match.getHomeTeam().getPlayer().getBrain().changeState(brain_state::Retrieve);
 
-    Joysticker joysticker;
-    joysticker.input = &engine.getDefaultGamepad();
-    joysticker.team = &match.getHomeTeam();
-    joysticker.power_bar = &bar;
-    engine.getDefaultGamepad().attachListener(joysticker);
+  // test
+  ProgressBar bar(40, 3, 50);
+  match.getHomeTeam().getPlayer().power_bar = &bar;
+  engine.addSprite(bar, engine.getDefaultLayer());
 
-    engine.getMainCamera().setWorldRect(world);
-    while (engine.isRunning()) {
-      engine.step();
-      match.update();
-      // joysticker.update();
-    }
+  srand(time(NULL));
+
+  Joysticker joysticker;
+  joysticker.input = &engine.getDefaultGamepad();
+  joysticker.team = &match.getHomeTeam();
+  joysticker.power_bar = &bar;
+  engine.getDefaultGamepad().attachListener(joysticker);
+
+  engine.getMainCamera().setWorldRect(world);
+  while (engine.isRunning()) {
+    engine.step();
+    match.update();
+    // joysticker.update();
   }
 
   std::cout << args[0] << " exited normally" << std::endl;

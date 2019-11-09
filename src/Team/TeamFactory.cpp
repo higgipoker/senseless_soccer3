@@ -2,16 +2,14 @@
 //
 //
 //
-UniquePtr<Team> TeamFactory::makeDefaultHomeTeam() {
+Team TeamFactory::makeDefaultHomeTeam() {
   auto kit = kit_factory.makeDefaultRedKit();
-  auto team = std::make_unique<Team>(TeamType::Home, kit);
-  return team;
+  return Team(TeamType::Home, kit);
 }
 //
 //
 //
-UniquePtr<Team> TeamFactory::makeDefaultAwayTeam() {
+Team TeamFactory::makeDefaultAwayTeam() {
   auto kit = kit_factory.makeDefaultBlueKit();
-  auto team = std::make_unique<Team>(TeamType::Away, kit);
-  return team;
+  return Team(TeamType::Away, kit);
 }

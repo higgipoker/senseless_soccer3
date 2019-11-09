@@ -20,7 +20,7 @@ class Match {
   //
   //
   //
-  Match(UniquePtr<Team> in_home_team, UniquePtr<Team> in_away_team,
+  Match(Team &in_home_team, Team &in_away_team,
         BallType in_ball_type = BallType::Standard);
   //
   //
@@ -46,15 +46,13 @@ class Match {
   //
   //
   inline Team& getHomeTeam() {
-    assert(home_team.get());
-    return *home_team;
+    return home_team;
   }
   //
   //
   //
   inline Team& getAwayTeam() {
-    assert(away_team.get());
-    return *away_team;
+    return away_team;
   }
   //
   //
@@ -74,6 +72,6 @@ class Match {
   BallFactory ball_factory;
   UniquePtr<Engine::Sprite> pitch;
   UniquePtr<Ball> ball;
-  UniquePtr<Team> home_team;
-  UniquePtr<Team> away_team;
+  Team &home_team;
+  Team &away_team;
 };

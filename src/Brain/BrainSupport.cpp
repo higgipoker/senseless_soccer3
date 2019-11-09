@@ -13,7 +13,7 @@ using namespace Engine;
 //
 BrainSupport::BrainSupport(Brain& in_brain) : BrainState(in_brain) {
   name = "Support";
-  radius.setRadius(300);
+  radius.setRadius(800);
 }
 //
 //

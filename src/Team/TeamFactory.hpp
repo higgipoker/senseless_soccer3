@@ -12,11 +12,11 @@ class TeamFactory : public Engine::BaseFactory {
   //
   //
   //
-  UniquePtr<Team> makeDefaultHomeTeam();
+  Team makeDefaultHomeTeam();
   //
   //
   //
-  UniquePtr<Team> makeDefaultAwayTeam();
+  Team makeDefaultAwayTeam();
   //
   //
   //

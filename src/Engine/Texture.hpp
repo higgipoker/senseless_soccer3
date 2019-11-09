@@ -9,11 +9,13 @@ namespace Engine {
 //
 class Texture : public sf::Texture {
  public:
+  Texture() { std::cout << ++ref << " textures created " << std::endl; }
   //
   //
   //
-  ~Texture() {
+  virtual ~Texture() {
     std::cout << "Destruct Texture (" << loaded_file << ")" << std::endl;
+    std::cout << --ref << " textures remaining" << std::endl;
   }
   //
   //
@@ -28,5 +30,6 @@ class Texture : public sf::Texture {
 
  private:
   std::string loaded_file;
+  static int ref;
 };
 }  // namespace Engine

@@ -1,5 +1,6 @@
 #include "Texture.hpp"
 namespace Engine {
+  int Texture::ref = 0;
 //
 //
 //
