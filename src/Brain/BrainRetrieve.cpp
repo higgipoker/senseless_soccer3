@@ -15,7 +15,7 @@ BrainRetrieve::BrainRetrieve(Brain& in_brain) : BrainState(in_brain) {
 //
 //
 void BrainRetrieve::start() {
-  brain.locomotion.pursue(brain.player.my_team->match->getBall().movable);
+  brain.locomotion.pursue(brain.player.match.getBall().movable);
 }
 //
 //

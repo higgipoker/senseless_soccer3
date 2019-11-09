@@ -36,6 +36,7 @@ GameEngine::~GameEngine() { window.close(); }
 void GameEngine::step() {
   ++frame_counter;
 
+
   // fps
   float current_time = clock.getElapsedTime().asSeconds();
   frames++;

@@ -13,7 +13,7 @@ class MatchFactory : public Engine::BaseFactory {
   //
   //
   //
-  void createMatchTexture(UniquePtr<Engine::Texture> team1_texture,
+  bool createMatchTexture(UniquePtr<Engine::Texture> team1_texture,
                           UniquePtr<Engine::Texture> team2_texture,
                           UniquePtr<Engine::Texture> shadow_texture1,
                           UniquePtr<Engine::Texture> shadow_texture2,

@@ -4,7 +4,7 @@
 //
 //
 //
-void MatchFactory::createMatchTexture(
+bool MatchFactory::createMatchTexture(
     UniquePtr<Engine::Texture> team1_texture,
     UniquePtr<Engine::Texture> team2_texture,
     UniquePtr<Engine::Texture> shadow_texture1,
@@ -18,6 +18,12 @@ void MatchFactory::createMatchTexture(
   auto height = team1_texture->getSize().y + team2_texture->getSize().y +
                 shadow_texture1->getSize().y + ball_texture->getSize().y;
 
+  if (!match_texture.create(width, height)) {
+    std::cout << "Could not create tecture with dimensions " << width << "x"
+              << height << std::endl;
+    return false;
+  }
+
   sf::Sprite s1(*team1_texture.get());
   sf::Sprite s2(*team2_texture.get());
   sf::Sprite s3(*shadow_texture1.get());
@@ -26,7 +32,6 @@ void MatchFactory::createMatchTexture(
   s3.move(0, s2.getGlobalBounds().top + s2.getLocalBounds().height);
   s4.move(0, s3.getGlobalBounds().top + s3.getLocalBounds().height);
 
-  match_texture.create(width, height);
   match_texture.clear({0, 0, 0, 0});
   match_texture.draw(s1);
   match_texture.draw(s2);
@@ -40,6 +45,7 @@ void MatchFactory::createMatchTexture(
   team2_texture.reset();
   shadow_texture1.reset();
   shadow_texture2.reset();
+  return true;
 }
 //
 //

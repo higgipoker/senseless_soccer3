@@ -64,10 +64,6 @@ class Pitch : public Engine::Sprite {
   //
   //
   //
-  ~Pitch() { std::cout << "Destruct Pitch" << std::endl; }
-  //
-  //
-  //
   void create();
   //
   //

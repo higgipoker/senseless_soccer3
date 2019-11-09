@@ -25,10 +25,6 @@ class Match {
   //
   //
   //
-  ~Match() { std::cout << "Destruct Match" << std::endl; }
-  //
-  //
-  //
   const sf::Texture& getMatchTexture() { return factory.getMatchTexture(); }
   //
   //
@@ -64,9 +60,6 @@ class Match {
   void initMatchTexture(const Engine::Texture& team1_texture,
                         const Engine::Texture& team2_texture,
                         const Engine::Texture& ball_texture);
-
-  Player* player_in_possession = nullptr;
-
  protected:
   MatchFactory factory;
   BallFactory ball_factory;

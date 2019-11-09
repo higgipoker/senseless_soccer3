@@ -16,7 +16,7 @@
 //
 //
 enum class TeamType { Home, Away };
-
+enum class AttackingState { Attacking, Defending };
 //
 //
 //
@@ -25,99 +25,73 @@ class Match;
 //
 //
 class Team {
- public:
-  //
-  //
-  //
-  Team(const TeamType in_home_or_away, const Kit& in_kit);
-  //
-  //
-  //
-  ~Team() { std::cout << "Destruct Team" << std::endl; }
-  //
-  //
-  //
-  UniquePtr<Engine::Texture> getSpriteTexture();
-  //
-  //
-  //
-  UniquePtr<Engine::Texture> getShadowTexture();
-  //
-  //
-  //
-  void update();
-  //
-  //
-  //
-  void addDefaultPlayers();
-  //
-  //
-  //
-  void addPlayer(UniquePtr<Player> in_player);
-  //
-  //
-  //
-  Player& getPlayer();
-  //
-  //
-  //
-  inline bool hasPlayers() { return !players.empty(); }
-  //
-  //
-  //
-  void attachInputDevice(Engine::InputDevice& in_device);
-  //
-  //
-  //
-  struct {
-    void clear() {
-      short_pass_candidates.clear();
-      long_pass_candidates.clear();
-      pressuring_players.clear();
-      press_list.clear();
-      closest_to_ball = nullptr;
-      last_in_possession = nullptr;
+   public:
+    //
+    //
+    //
+    Team(const TeamType in_home_or_away, const Kit& in_kit);
+    //
+    //
+    //
+    void update();
+    //
+    //
+    //
+    void addDefaultPlayers();
+    //
+    //
+    //
+    void addPlayer(UniquePtr<Player> in_player);
+    //
+    //
+    //
+    Player& getPlayer();
+    //
+    //
+    //
+    inline bool hasPlayers() {
+        return !players.empty();
     }
-    std::vector<Player*> short_pass_candidates;
-    std::vector<Player*> long_pass_candidates;
-    std::vector<Player*> pressuring_players;
-    std::vector<Player*> press_list;
-    Player* closest_to_ball = nullptr;
-    Player* last_in_possession = nullptr;
-    Player* last_retriever = nullptr;
-    Player* pass_receiver = nullptr;
-  } key_players;
-  //
-  //
-  //
-  static Match* match;
-  //
-  //
-  //
-  Player& getPlayer(const size_t in_which);
-  //
-  //
-  //
-  size_t numberPlayers() { return players.size(); }
-  //
-  //
-  //
-  TeamType getTeamType() { return home_or_away; }
+    //
+    //
+    //
+    Player& getPlayer(const size_t in_which);
+    //
+    //
+    //
+    size_t numberPlayers() {
+        return players.size();
+    }
+    //
+    //
+    //
+    TeamType getTeamType() {
+        return home_or_away;
+    }
+    //
+    //
+    //
+    void setMatch(Match& in_match);
+    //
+    //
+    //
+    UniquePtr<Engine::Texture> getSpriteTexture();
+    //
+    //
+    //
+    UniquePtr<Engine::Texture> getShadowTexture();
 
- protected:
-  UniquePtr<Engine::Texture> sprite_texture =
-      std::make_unique<Engine::Texture>();
-  UniquePtr<Engine::Texture> shadow_texture =
-      std::make_unique<Engine::Texture>();
-  PlayerFactory player_factory;
-  std::vector<UniquePtr<Player>> players;
+   protected:
+    Match* match = nullptr;
+    AttackingState attacking_state = AttackingState::Attacking;
+    TeamType home_or_away = TeamType::Home;
+    Kit kit;
+    std::vector<UniquePtr<Player>> players;
+    int loose_ball_ticks = 60;
+    PlayerFactory player_factory;
+    UniquePtr<Engine::Texture> sprite_texture = std::make_unique<Engine::Texture>();
+    UniquePtr<Engine::Texture> shadow_texture = std::make_unique<Engine::Texture>();
 
-  void set_key_players();
-  int loose_ball_ticks = 60;
-  Engine::InputDevice* input = nullptr;
-  TeamType home_or_away;
-  Kit kit;
-
- public:
-  friend class Player;
+   public:
+    friend class Player;
 };

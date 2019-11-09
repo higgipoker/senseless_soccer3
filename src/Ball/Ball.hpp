@@ -18,10 +18,6 @@ class Ball : public Engine::Entity {
   //
   //
   //
-  ~Ball() { std::cout << "Destruct Ball" << std::endl; }
-  //
-  //
-  //
   void update() override;
   //
   //
