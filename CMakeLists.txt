@@ -65,6 +65,7 @@ add_executable(senseless_soccer3
     src/Engine/Controllable.cpp
     src/Engine/Texture.cpp
     src/Engine/BaseFactory.cpp
+    src/Engine/Picker.cpp
     src/Game/Game.cpp
     src/Locomotion/LocomotionManager.cpp
     src/Locomotion/Locomotion.cpp

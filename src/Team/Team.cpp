@@ -48,6 +48,7 @@ void Team::addDefaultPlayers() {
         std::stringstream ss;
         ss << "player" << i + 1;
         player->name = ss.str();
+        player->movable.name = ss.str();
         player->movable.setPosition(match->getPitch().dimensions.center_spot.getCenter().x - 50 + (i * 10),
                                     match->getPitch().dimensions.center_spot.getCenter().y - 50);
 

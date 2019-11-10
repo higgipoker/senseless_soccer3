@@ -17,6 +17,7 @@ Match::Match(Team &in_home_team, Team &in_away_team, BallType in_ball_type)
         ball = std::make_unique<Ball>(std::move(std::make_unique<BallSprite>(factory.getMatchTexture())),
                                       std::move(std::make_unique<BallShadowSprite>(factory.getMatchTexture())));
         ball->getSprite().setPerspectivizable(true);
+        ball->movable.name = "Ball";
     } else {
         std::cout << "create match texture failed" << std::endl;
     }

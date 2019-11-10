@@ -22,6 +22,8 @@ void Entity::update() {
   sprite->animate();
   sprite->entity_height = movable.position.z;
   sprite->z = movable.position.y;
+
+  movable.setBounds(sprite->getGlobalBounds());
 }
 //
 //

@@ -9,6 +9,7 @@
 #include "Movable.hpp"
 #include "Sprite.hpp"
 #include "Window.hpp"
+#include "Picker.hpp"
 
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -110,12 +111,13 @@ class GameEngine {
   Keyboard default_keyboard;
   Gamepad gamepad1;
   Camera camera;
+  Debug debug_gui;
+  Picker picker;
   sf::View hud_view{sf::FloatRect{0, 0, 800, 600}};
   std::map<int, RenderLayer> render_layers;
   RenderLayer hud_layer;
   std::set<Movable *> movables;
   std::set<Controllable *> controllables;
-  Debug debug_gui;
   float dt = 0.01F;
   bool running = true;
   layer_id background_layer = RenderLayer::INVALID_LAYER;

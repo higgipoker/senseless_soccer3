@@ -138,4 +138,16 @@ void Movable::place(const Vector3 &in_position) {
   resetForces();
   position = in_position;
 }
+//
+//
+//
+void Movable::setBounds(sf::FloatRect in_bounds){
+    bounds = in_bounds;
+}
+//
+//
+//
+sf::FloatRect Movable::getBounds(){
+    return bounds;
+}
 }  // namespace Engine
