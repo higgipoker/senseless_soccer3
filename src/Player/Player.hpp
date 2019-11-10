@@ -3,9 +3,11 @@
 #include "PlayerStateDribble.hpp"
 #include "PlayerStateRun.hpp"
 #include "PlayerStateStand.hpp"
-
+//
 #include "Ball/Ball.hpp"
 #include "Brain/Brain.hpp"
+#include "Team/PlayingPosition.hpp"
+//
 #include "Engine/Controllable.hpp"
 #include "Engine/Entity.hpp"
 #include "Engine/ProgressBar.hpp"
@@ -106,6 +108,10 @@ class Player : public Engine::Entity, public Engine::Controllable {
     //
     //
     bool ballInControlRange();
+    //
+    //
+    //
+    void setPlayingPosition(UniquePtr<PlayingPosition> in_position);
     // test
     Engine::ProgressBar *power_bar = nullptr;
     float distance_from_ball = 0;
@@ -135,6 +141,7 @@ class Player : public Engine::Entity, public Engine::Controllable {
     float current_speed = 0;
     TeamData team_data;
     Attributes attribs;
+    UniquePtr<PlayingPosition> playing_position;
     //
     //
     //
@@ -161,5 +168,6 @@ class Player : public Engine::Entity, public Engine::Controllable {
     friend class BrainDribble;
     friend class BrainRetrieve;
     friend class BrainSupport;
+    friend class BrainCover;
     friend class Locomotion;
 };

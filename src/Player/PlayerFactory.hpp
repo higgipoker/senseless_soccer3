@@ -9,6 +9,10 @@
 #include "Engine/Types.hpp"
 //
 #include <SFML/Graphics/Texture.hpp>
+//
+class Match;
+class Team;
+enum class KitType;
 enum class TeamType;
 //
 //

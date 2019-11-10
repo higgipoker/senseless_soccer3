@@ -1,7 +1,11 @@
 #include "Team.hpp"
 //
-#include "Engine/Math.hpp"
+#include "PositionCenterBack.hpp"
+//
 #include "Match/Match.hpp"
+#include "Player/Player.hpp"
+//
+#include "Engine/Math.hpp"
 //
 #include <sstream>
 //
@@ -28,17 +32,33 @@ UniquePtr<Engine::Texture> Team::getShadowTexture() {
 //
 //
 //
-void Team::update() {
-    // update players
-    for (auto &p : players) {
-        p->update();
+void Team::setAttackingGoal(Engine::Direction in_dir) {
+    attacking_goal = in_dir;
+    if (attacking_goal == Engine::Direction::NORTH) {
+        defending_goal = Engine::Direction::SOUTH;
+    } else {
+        defending_goal = Engine::Direction::NORTH;
     }
 }
 //
 //
 //
+void Team::update() {
+    // update players
+    for (auto &p : players) {
+        p->update();
+    }
+
+    defensive_line.setPosition(match->getPitch().dimensions.bounds.getPosition().x,
+                               gameplan.getDefensiveLine(match->getPitch(), match->getBall(), attacking_goal));
+    sprite.debug_shapes.clear();
+    sprite.debug_shapes.push_back(&defensive_line);
+}
+//
+//
+//
 void Team::addDefaultPlayers() {
-    for (auto i = 0; i < 10; ++i) {
+    for (auto i = 0; i < 1; ++i) {
         UniquePtr<Player> player = player_factory.makePlayer(*match, *this, home_or_away);
         TeamData td;
         td.shirt_number = i + 1;
@@ -51,6 +71,10 @@ void Team::addDefaultPlayers() {
         player->movable.name = ss.str();
         player->movable.setPosition(match->getPitch().dimensions.center_spot.getCenter().x - 50 + (i * 10),
                                     match->getPitch().dimensions.center_spot.getCenter().y - 50);
+
+        UniquePtr<PlayingPosition> position = std::make_unique<PositionCenterBack>();
+        player->setPlayingPosition(std::move(position));
+        player->getBrain().changeState(brain_state::Cover);
 
         addPlayer(std::move(player));
     }
@@ -78,4 +102,21 @@ Player &Team::getPlayer(const size_t in_which) {
 //
 void Team::setMatch(Match &in_match) {
     match = &in_match;
+
+    // debugs
+    defensive_line.setSize({match->getPitch().dimensions.bounds.getSize().x, 6});
+    defensive_line.setFillColor({255,0,0,50});
+}
+//
+//
+//
+Engine::Direction Team::getAttackingGoal()const{
+    return attacking_goal;
+}
+//
+//
+//
+
+Engine::Direction Team::getDefendingGoal()const{
+    return defending_goal;
 }

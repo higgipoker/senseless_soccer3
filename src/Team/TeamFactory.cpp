@@ -1,5 +1,7 @@
 #include "TeamFactory.hpp"
 //
+#include "Team.hpp"
+//
 //
 //
 Team TeamFactory::makeDefaultHomeTeam() {

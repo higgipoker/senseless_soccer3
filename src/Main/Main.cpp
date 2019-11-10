@@ -16,7 +16,6 @@
 #include "Match/Match.hpp"
 #include "Pitch/Pitch.hpp"
 #include "Player/Player.hpp"
-#include "Player/PlayerFactory.hpp"
 #include "Player/PlayerSprite.hpp"
 #include "Team/Team.hpp"
 #include "Team/TeamFactory.hpp"
@@ -68,10 +67,10 @@ int main(int argc, char** args) {
     //
     // match
     //
-    Match match(team1, team2);
-    match.setPitch(std::move(pitch));
+    Match match(std::move(pitch), team1, team2);
+
     match.getHomeTeam().addDefaultPlayers();
-    match.getAwayTeam().addDefaultPlayers();
+    //match.getAwayTeam().addDefaultPlayers();
 
     for (size_t i = 0; i < match.getHomeTeam().numberPlayers(); ++i) {
         engine.addEntity(match.getHomeTeam().getPlayer(i));
@@ -91,7 +90,9 @@ int main(int argc, char** args) {
     engine.addEntity(match.getBall(), engine.getDefaultLayer());
     engine.getMainCamera().follow(match.getBall());
 
-    match.getHomeTeam().getPlayer().getBrain().changeState(brain_state::Retrieve);
+    //match.getHomeTeam().getPlayer().getBrain().changeState(brain_state::Retrieve);
+    engine.addSprite(match.getHomeTeam().sprite);
+    engine.addSprite(match.getAwayTeam().sprite);
 
     // test
     ProgressBar bar(40, 3, 50);

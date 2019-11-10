@@ -1,13 +1,16 @@
 #include "Match.hpp"
-#include <algorithm>
+//
 #include "Ball/BallSprite.hpp"
+#include "Team/Team.hpp"
+//
+#include <algorithm>
 
 using namespace Engine;
 //
 //
 //
-Match::Match(Team &in_home_team, Team &in_away_team, BallType in_ball_type)
-    : home_team(in_home_team), away_team(in_away_team) {
+Match::Match(UniquePtr<Sprite> in_pitch, Team &in_home_team, Team &in_away_team, BallType in_ball_type)
+    : pitch(std::move(in_pitch)), home_team(in_home_team), away_team(in_away_team) {
     auto ball_texture = std::make_unique<Engine::Texture>();
     ball_texture->loadFromFile(ball_factory.getSpriteSheeet(in_ball_type));
 
@@ -24,6 +27,12 @@ Match::Match(Team &in_home_team, Team &in_away_team, BallType in_ball_type)
 
     home_team.setMatch(*this);
     away_team.setMatch(*this);
+
+    home_team.setAttackingGoal(Engine::Direction::NORTH);
+    away_team.setAttackingGoal(Engine::Direction::SOUTH);
+
+    home_team.gameplan.defensive_line = DefensiveLine::High;
+    away_team.gameplan.defensive_line = DefensiveLine::Deep;
 }
 //
 //
@@ -49,12 +58,6 @@ void Match::update() {
     if (ball->movable.position.y > pitchrect.getPosition().y + pitchrect.getSize().y) {
         ball->movable.velocity.y = -ball->movable.velocity.y;
     }
-}
-//
-//
-//
-void Match::setPitch(UniquePtr<Sprite> in_pitch) {
-    pitch = std::move(in_pitch);
 }
 //
 //

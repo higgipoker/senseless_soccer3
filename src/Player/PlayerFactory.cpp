@@ -2,6 +2,7 @@
 //
 #include "Match/Match.hpp"
 #include "PlayerSprite.hpp"
+#include "Team/KitFactory.hpp"
 #include "Team/Team.hpp"
 //
 using namespace Engine;

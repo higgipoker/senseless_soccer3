@@ -229,6 +229,13 @@ void Pitch::init_halfway_line() {
 //
 //
 //
+float Pitch::mirrorY(const float in_y) const{
+    float dist_from_byeline = in_y - dimensions.bounds.getPosition().y;
+    return (dimensions.bounds.getPosition().y + dimensions.bounds.getSize().y) - dist_from_byeline;
+}
+//
+//
+//
 void Pitch::perspectivize(const float in_camera_height) {
     //  float dist_from_camera = in_camera_height - entity_height - 50;
     //  dist_from_camera = -dist_from_camera;

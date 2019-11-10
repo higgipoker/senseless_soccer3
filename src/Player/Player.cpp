@@ -1,12 +1,13 @@
 #include "Player.hpp"
-
+//
+#include "Game/Game.hpp"
+#include "Match/Match.hpp"
+#include "Team/Team.hpp"
+//
 #include "Engine/Collider.hpp"
 #include "Engine/Compass.hpp"
 #include "Engine/Debug.hpp"
-#include "Game/Game.hpp"
-#include "Match/Match.hpp"
-
-#include <cassert>
+//
 #include <iostream>
 
 using namespace Engine;
@@ -201,7 +202,6 @@ void Player::onInputEvent(const InputEvent in_event, const std::vector<int> &in_
 
         case InputEvent::FireUp: {
             if (ballInControlRange()) {
-                assert(in_params.size());
                 kick(in_params[0]);
             }
         } break;
@@ -297,4 +297,10 @@ void Player::debug() {
     }
 
     sprite->debug_shapes.push_back(&short_pass_triangle);
+}
+//
+//
+//
+void Player::setPlayingPosition(UniquePtr<PlayingPosition> in_position) {
+    playing_position = std::move(in_position);
 }

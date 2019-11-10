@@ -80,6 +80,7 @@ add_executable(senseless_soccer3
     src/Brain/BrainPass.cpp
     src/Brain/BrainSupport.cpp
     src/Brain/BrainWait.cpp
+    src/Brain/BrainCover.cpp
     src/Player/PlayerFactory.cpp
     src/Player/Player.cpp
     src/Player/PlayerSprite.cpp
@@ -94,6 +95,10 @@ add_executable(senseless_soccer3
     src/Match/Match.cpp
     src/Match/MatchFactory.cpp
     src/Team/Team.cpp
+    src/Team/PlayingPosition.cpp
+    src/Team/PositionDefender.cpp
+    src/Team/PositionCenterBack.cpp
+    src/Team/Gameplan.cpp
     src/Team/TeamFactory.cpp
     src/Team/KitFactory.cpp
     src/Controls/Joysticker.cpp

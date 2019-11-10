@@ -4,6 +4,8 @@
 #include "BrainDribble.hpp"
 #include "BrainRetrieve.hpp"
 #include "BrainSupport.hpp"
+#include "BrainCover.hpp"
+#include "BrainWait.hpp"
 #include "BrainState.hpp"
 #include "Locomotion/LocomotionManager.hpp"
 
@@ -36,11 +38,12 @@ class Brain {
 
   /// state machine
   BrainIdle idle_state;
+  BrainCover cover_state;
   BrainRetrieve retrieve_state;
   BrainDribble dribble_state;
   BrainPass pass_state;
   BrainSupport support_state;
-  BrainSupport wait_state;
+  BrainWait wait_state;
   BrainState *current_state = nullptr;
 
  public:
@@ -50,6 +53,7 @@ class Brain {
   friend class BrainDribble;
   friend class BrainPass;
   friend class BrainSupport;
+  friend class BrainCover;
   friend class BrainWait;
 };
 
