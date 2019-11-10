@@ -229,9 +229,32 @@ void Pitch::init_halfway_line() {
 //
 //
 //
-float Pitch::mirrorY(const float in_y) const{
-    float dist_from_byeline = in_y - dimensions.bounds.getPosition().y;
-    return (dimensions.bounds.getPosition().y + dimensions.bounds.getSize().y) - dist_from_byeline;
+float Pitch::mirrorX(const float in_x) const {
+    float out_x = 0;
+    float middle = dimensions.bounds.getPosition().x + dimensions.bounds.getSize().x / 2;
+    float dist_from_middle = fabs(in_x - middle);
+    if (in_x < middle) {
+        out_x = in_x + dist_from_middle * 2;
+    } else {
+        out_x = in_x - dist_from_middle * 2;
+    }
+
+    return out_x;
+}
+//
+//
+//
+float Pitch::mirrorY(const float in_y) const {
+    float out_y = 0;
+    float middle = dimensions.bounds.getPosition().y + dimensions.bounds.getSize().y / 2;
+    float dist_from_middle = fabs(in_y - middle);
+    if (in_y < middle) {
+        out_y = in_y + dist_from_middle * 2;
+    } else {
+        out_y = in_y - dist_from_middle * 2;
+    }
+
+    return out_y;
 }
 //
 //

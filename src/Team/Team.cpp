@@ -9,6 +9,8 @@
 //
 #include <sstream>
 //
+using namespace Engine;
+//
 //
 //
 Team::Team(const TeamType in_home_or_away, const Kit &in_kit) : home_or_away(in_home_or_away), kit(in_kit) {
@@ -20,24 +22,24 @@ Team::Team(const TeamType in_home_or_away, const Kit &in_kit) : home_or_away(in_
 //
 //
 //
-UniquePtr<Engine::Texture> Team::getSpriteTexture() {
+UniquePtr<Texture> Team::getSpriteTexture() {
     return std::move(sprite_texture);
 }
 //
 //
 //
-UniquePtr<Engine::Texture> Team::getShadowTexture() {
+UniquePtr<Texture> Team::getShadowTexture() {
     return std::move(shadow_texture);
 }
 //
 //
 //
-void Team::setAttackingGoal(Engine::Direction in_dir) {
+void Team::setAttackingGoal(Direction in_dir) {
     attacking_goal = in_dir;
-    if (attacking_goal == Engine::Direction::NORTH) {
-        defending_goal = Engine::Direction::SOUTH;
+    if (attacking_goal == Direction::North) {
+        defending_goal = Direction::South;
     } else {
-        defending_goal = Engine::Direction::NORTH;
+        defending_goal = Direction::North;
     }
 }
 //
@@ -49,8 +51,13 @@ void Team::update() {
         p->update();
     }
 
-    defensive_line.setPosition(match->getPitch().dimensions.bounds.getPosition().x,
-                               gameplan.getDefensiveLine(match->getPitch(), match->getBall(), attacking_goal));
+    auto dist = (last_ball_position.magnitude2d() - match->getBall().movable.position.magnitude2d());
+    if (Math::greater_than(fabs(dist), 50)) {
+        gameplan.updateDefensiveLine(match->getPitch(), match->getBall(), attacking_goal);
+        last_ball_position = match->getBall().movable.position;
+    }
+
+    defensive_line.setPosition(match->getPitch().dimensions.bounds.getPosition().x, gameplan.getDefensiveLine());
     sprite.debug_shapes.clear();
     sprite.debug_shapes.push_back(&defensive_line);
 }
@@ -72,7 +79,9 @@ void Team::addDefaultPlayers() {
         player->movable.setPosition(match->getPitch().dimensions.center_spot.getCenter().x - 50 + (i * 10),
                                     match->getPitch().dimensions.center_spot.getCenter().y - 50);
 
+        // make a left center back
         UniquePtr<PlayingPosition> position = std::make_unique<PositionCenterBack>();
+        position->applyModifier(PositionModifier::Right);
         player->setPlayingPosition(std::move(position));
         player->getBrain().changeState(brain_state::Cover);
 
@@ -105,18 +114,18 @@ void Team::setMatch(Match &in_match) {
 
     // debugs
     defensive_line.setSize({match->getPitch().dimensions.bounds.getSize().x, 6});
-    defensive_line.setFillColor({255,0,0,50});
+    defensive_line.setFillColor({255, 0, 0, 50});
 }
 //
 //
 //
-Engine::Direction Team::getAttackingGoal()const{
+Direction Team::getAttackingGoal() const {
     return attacking_goal;
 }
 //
 //
 //
 
-Engine::Direction Team::getDefendingGoal()const{
+Direction Team::getDefendingGoal() const {
     return defending_goal;
 }

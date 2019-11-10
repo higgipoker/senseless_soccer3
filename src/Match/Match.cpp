@@ -28,11 +28,14 @@ Match::Match(UniquePtr<Sprite> in_pitch, Team &in_home_team, Team &in_away_team,
     home_team.setMatch(*this);
     away_team.setMatch(*this);
 
-    home_team.setAttackingGoal(Engine::Direction::NORTH);
-    away_team.setAttackingGoal(Engine::Direction::SOUTH);
+    home_team.setAttackingGoal(Engine::Direction::North);
+    away_team.setAttackingGoal(Engine::Direction::South);
 
-    home_team.gameplan.defensive_line = DefensiveLine::High;
-    away_team.gameplan.defensive_line = DefensiveLine::Deep;
+    home_team.gameplan.defensive_line_height = DefensiveLineType::High;
+    away_team.gameplan.defensive_line_height = DefensiveLineType::Deep;
+
+    home_team.gameplan.defensive_width_type = DefensivewidthType::Narrow;
+    away_team.gameplan.defensive_width_type = DefensivewidthType::Narrow;
 }
 //
 //

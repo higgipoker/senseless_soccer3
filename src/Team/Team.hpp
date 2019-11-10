@@ -109,9 +109,10 @@ class Team {
     Kit kit;
     std::vector<UniquePtr<Player>> players;
     int loose_ball_ticks = 60;
+    Engine::Vector3 last_ball_position;
     PlayerFactory player_factory;
-    Engine::Direction attacking_goal = Engine::Direction::SOUTH;
-    Engine::Direction defending_goal = Engine::Direction::NORTH;
+    Engine::Direction attacking_goal = Engine::Direction::South;
+    Engine::Direction defending_goal = Engine::Direction::North;
     UniquePtr<Engine::Texture> sprite_texture = std::make_unique<Engine::Texture>();
     UniquePtr<Engine::Texture> shadow_texture = std::make_unique<Engine::Texture>();
 

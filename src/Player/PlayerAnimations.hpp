@@ -82,35 +82,35 @@ enum {
 //
 inline void populateStandAnimations(AnimMap &out_stand_animations) {
   out_stand_animations.insert(
-      {Engine::Direction::EAST,
+      {Engine::Direction::East,
        Engine::SpriteAnimation(ID_ANIM_STAND_EAST, PLAYER_ANIM_FRAME_TIME,
                                stand_east)});
   out_stand_animations.insert(
-      {Engine::Direction::WEST,
+      {Engine::Direction::West,
        Engine::SpriteAnimation(ID_ANIM_STAND_WEST, PLAYER_ANIM_FRAME_TIME,
                                stand_west)});
   out_stand_animations.insert(
-      {Engine::Direction::NORTH,
+      {Engine::Direction::North,
        Engine::SpriteAnimation(ID_ANIM_STAND_NORTH, PLAYER_ANIM_FRAME_TIME,
                                stand_north)});
   out_stand_animations.insert(
-      {Engine::Direction::SOUTH,
+      {Engine::Direction::South,
        Engine::SpriteAnimation(ID_ANIM_STAND_SOUTH, PLAYER_ANIM_FRAME_TIME,
                                stand_south)});
   out_stand_animations.insert(
-      {Engine::Direction::NORTH_EAST,
+      {Engine::Direction::NorthEast,
        Engine::SpriteAnimation(ID_ANIM_STAND_NORTH_EAST, PLAYER_ANIM_FRAME_TIME,
                                stand_northeast)});
   out_stand_animations.insert(
-      {Engine::Direction::NORTH_WEST,
+      {Engine::Direction::NorthWest,
        Engine::SpriteAnimation(ID_ANIM_STAND_NORTH_WEST, PLAYER_ANIM_FRAME_TIME,
                                stand_northwest)});
   out_stand_animations.insert(
-      {Engine::Direction::SOUTH_EAST,
+      {Engine::Direction::SouthEast,
        Engine::SpriteAnimation(ID_ANIM_STAND_SOUTH_EAST, PLAYER_ANIM_FRAME_TIME,
                                stand_southeast)});
   out_stand_animations.insert(
-      {Engine::Direction::SOUTH_WEST,
+      {Engine::Direction::SouthWest,
        Engine::SpriteAnimation(ID_ANIM_STAND_SOUTH_WEST, PLAYER_ANIM_FRAME_TIME,
                                stand_southwest)});
 }
@@ -119,35 +119,35 @@ inline void populateStandAnimations(AnimMap &out_stand_animations) {
 //
 inline void populateRunAnimations(AnimMap &out_run_animations) {
   out_run_animations.insert(
-      {Engine::Direction::EAST,
+      {Engine::Direction::East,
        Engine::SpriteAnimation(ID_ANIM_RUN_EAST, PLAYER_ANIM_FRAME_TIME,
                                run_east)});
   out_run_animations.insert(
-      {Engine::Direction::WEST,
+      {Engine::Direction::West,
        Engine::SpriteAnimation(ID_ANIM_RUN_EAST, PLAYER_ANIM_FRAME_TIME,
                                run_west)});
   out_run_animations.insert(
-      {Engine::Direction::NORTH,
+      {Engine::Direction::North,
        Engine::SpriteAnimation(ID_ANIM_RUN_EAST, PLAYER_ANIM_FRAME_TIME,
                                run_north)});
   out_run_animations.insert(
-      {Engine::Direction::SOUTH,
+      {Engine::Direction::South,
        Engine::SpriteAnimation(ID_ANIM_RUN_EAST, PLAYER_ANIM_FRAME_TIME,
                                run_south)});
   out_run_animations.insert(
-      {Engine::Direction::NORTH_EAST,
+      {Engine::Direction::NorthEast,
        Engine::SpriteAnimation(ID_ANIM_RUN_EAST, PLAYER_ANIM_FRAME_TIME,
                                run_northeast)});
   out_run_animations.insert(
-      {Engine::Direction::NORTH_WEST,
+      {Engine::Direction::NorthWest,
        Engine::SpriteAnimation(ID_ANIM_RUN_EAST, PLAYER_ANIM_FRAME_TIME,
                                run_northwest)});
   out_run_animations.insert(
-      {Engine::Direction::SOUTH_EAST,
+      {Engine::Direction::SouthEast,
        Engine::SpriteAnimation(ID_ANIM_RUN_EAST, PLAYER_ANIM_FRAME_TIME,
                                run_southeast)});
   out_run_animations.insert(
-      {Engine::Direction::SOUTH_WEST,
+      {Engine::Direction::SouthWest,
        Engine::SpriteAnimation(ID_ANIM_RUN_EAST, PLAYER_ANIM_FRAME_TIME,
                                run_southwest)});
 }
@@ -156,35 +156,35 @@ inline void populateRunAnimations(AnimMap &out_run_animations) {
 //
 inline void populateSlideAnimations(AnimMap &out_slide_animations) {
   out_slide_animations.insert(
-      {Engine::Direction::EAST,
+      {Engine::Direction::East,
        Engine::SpriteAnimation(ID_ANIM_SLIDE_EAST, PLAYER_ANIM_FRAME_TIME,
                                slide_east)});
   out_slide_animations.insert(
-      {Engine::Direction::WEST,
+      {Engine::Direction::West,
        Engine::SpriteAnimation(ID_ANIM_SLIDE_EAST, PLAYER_ANIM_FRAME_TIME,
                                slide_west)});
   out_slide_animations.insert(
-      {Engine::Direction::NORTH,
+      {Engine::Direction::North,
        Engine::SpriteAnimation(ID_ANIM_SLIDE_EAST, PLAYER_ANIM_FRAME_TIME,
                                slide_north)});
   out_slide_animations.insert(
-      {Engine::Direction::SOUTH,
+      {Engine::Direction::South,
        Engine::SpriteAnimation(ID_ANIM_SLIDE_EAST, PLAYER_ANIM_FRAME_TIME,
                                slide_south)});
   out_slide_animations.insert(
-      {Engine::Direction::NORTH_EAST,
+      {Engine::Direction::NorthEast,
        Engine::SpriteAnimation(ID_ANIM_SLIDE_EAST, PLAYER_ANIM_FRAME_TIME,
                                slide_northeast)});
   out_slide_animations.insert(
-      {Engine::Direction::NORTH_WEST,
+      {Engine::Direction::NorthWest,
        Engine::SpriteAnimation(ID_ANIM_SLIDE_EAST, PLAYER_ANIM_FRAME_TIME,
                                slide_northwest)});
   out_slide_animations.insert(
-      {Engine::Direction::SOUTH_EAST,
+      {Engine::Direction::SouthEast,
        Engine::SpriteAnimation(ID_ANIM_SLIDE_EAST, PLAYER_ANIM_FRAME_TIME,
                                slide_southeast)});
   out_slide_animations.insert(
-      {Engine::Direction::SOUTH_WEST,
+      {Engine::Direction::SouthWest,
        Engine::SpriteAnimation(ID_ANIM_SLIDE_EAST, PLAYER_ANIM_FRAME_TIME,
                                slide_southwest)});
 }

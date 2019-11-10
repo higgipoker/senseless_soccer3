@@ -39,4 +39,5 @@ class Seek : public Locomotion{
 
 private:
    Engine::Vector3 target;
+   float distance= 0;
 };

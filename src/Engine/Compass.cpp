@@ -23,42 +23,42 @@ Vector3 Compass::toVector() {
   Vector3 v;
 
   switch (direction) {
-    case Direction::NORTH:
+    case Direction::North:
       v.x = 0;
       v.y = -1;
       break;
 
-    case Direction::NORTH_EAST:
+    case Direction::NorthEast:
       v.x = 1;
       v.y = -1;
       break;
 
-    case Direction::EAST:
+    case Direction::East:
       v.x = 1;
       v.y = 0;
       break;
 
-    case Direction::SOUTH_EAST:
+    case Direction::SouthEast:
       v.x = 1;
       v.y = 1;
       break;
 
-    case Direction::SOUTH:
+    case Direction::South:
       v.x = 0;
       v.y = 1;
       break;
 
-    case Direction::SOUTH_WEST:
+    case Direction::SouthWest:
       v.x = -1;
       v.y = 1;
       break;
 
-    case Direction::WEST:
+    case Direction::West:
       v.x = -1;
       v.y = 0;
       break;
 
-    case Direction::NORTH_WEST:
+    case Direction::NorthWest:
       v.x = -1;
       v.y = -1;
       break;
@@ -71,28 +71,28 @@ Vector3 Compass::toVector() {
 //
 void Compass::fromVector(const Vector3 &v) {
   if (Math::equal(v.x, 0) && Math::less_than(v.y, 0))
-    direction = Direction::NORTH;
+    direction = Direction::North;
 
   else if (Math::greater_than(v.x, 0) && Math::less_than(v.y, 0))
-    direction = Direction::NORTH_EAST;
+    direction = Direction::NorthEast;
 
   else if (Math::greater_than(v.x, 0) && Math::equal(v.y, 0))
-    direction = Direction::EAST;
+    direction = Direction::East;
 
   else if (Math::greater_than(v.x, 0) && Math::greater_than(v.y, 0))
-    direction = Direction::SOUTH_EAST;
+    direction = Direction::SouthEast;
 
   else if (Math::equal(v.x, 0) && Math::greater_than(v.y, 0))
-    direction = Direction::SOUTH;
+    direction = Direction::South;
 
   else if (Math::less_than(v.x, 0) && Math::greater_than(v.y, 0))
-    direction = Direction::SOUTH_WEST;
+    direction = Direction::SouthWest;
 
   else if (Math::less_than(v.x, 0) && Math::equal(v.y, 0))
-    direction = Direction::WEST;
+    direction = Direction::West;
 
   else if (Math::less_than(v.x, 0) && Math::less_than(v.y, 0))
-    direction = Direction::NORTH_WEST;
+    direction = Direction::NorthWest;
 }
 //
 //

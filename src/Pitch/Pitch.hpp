@@ -76,6 +76,10 @@ class Pitch : public Engine::Sprite {
     //
     //
     //
+    float mirrorX(const float in_x) const;
+    //
+    //
+    //
     float mirrorY(const float in_y) const;
 
     // todo move this out to an pitch entity?

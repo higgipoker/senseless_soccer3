@@ -5,17 +5,16 @@
 //
 //
 Gameplan::Gameplan() {
-
 }
 //
 //
 //
-float Gameplan::getDefensiveLine(const Pitch &in_pitch, const Ball &in_ball, const Engine::Direction in_attacking_direction) const{
-    float line = 0;
+void Gameplan::updateDefensiveLine(const Pitch &in_pitch, const Ball &in_ball,
+                                 const Engine::Direction in_attacking_direction)  {
 
     int ball_y = in_ball.movable.position.y;
 
-    if(in_attacking_direction == Engine::Direction::NORTH){
+    if (in_attacking_direction == Engine::Direction::North) {
         ball_y = in_pitch.mirrorY(ball_y);
     }
 
@@ -23,20 +22,25 @@ float Gameplan::getDefensiveLine(const Pitch &in_pitch, const Ball &in_ball, con
     int max = in_pitch.dimensions.halfway_line.getPosition().y;
     int goal_to_ball = ball_y - min;
 
-    switch (defensive_line) {
-        case DefensiveLine::Deep:
-            line = std::clamp(min + (static_cast<int>(goal_to_ball * 0.4F)), min, max);
+    switch (defensive_line_height) {
+        case DefensiveLineType::Deep:
+            defensive_line = std::clamp(min + (static_cast<int>(goal_to_ball * 0.4F)), min, max);
             break;
-        case DefensiveLine::Normal: {
-            line = std::clamp(min + (static_cast<int>(goal_to_ball * 0.6F)), min, max);
+        case DefensiveLineType::Normal: {
+            defensive_line = std::clamp(min + (static_cast<int>(goal_to_ball * 0.6F)), min, max);
         } break;
-        case DefensiveLine::High:
-            line = std::clamp(min + (static_cast<int>(goal_to_ball * 0.8F)), min, max);
+        case DefensiveLineType::High:
+            defensive_line = std::clamp(min + (static_cast<int>(goal_to_ball * 0.8F)), min, max);
             break;
     }
 
-    if(in_attacking_direction == Engine::Direction::NORTH){
-        line = in_pitch.mirrorY(line);
+    if (in_attacking_direction == Engine::Direction::North) {
+        defensive_line = in_pitch.mirrorY(defensive_line);
     }
-    return line;
+}
+//
+//
+//
+float Gameplan::getDefensiveLine() const{
+    return defensive_line;
 }
