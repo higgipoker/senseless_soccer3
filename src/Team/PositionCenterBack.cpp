@@ -9,11 +9,12 @@ using namespace Engine;
 Engine::Vector3 PositionCenterBack::getTargetPosition(const Pitch &in_pitch, const Team &in_my_team,
                                                       const Team &in_other_team, const Ball &in_ball) {
     float out_x = 0;
-    float ball_x = in_ball.movable.position.x;
-    float middle = in_pitch.dimensions.center_spot.getPosition().x;
-    float ball_to_middle = ball_x - middle;
+    float middle = in_pitch.dimensions.bounds.getSize().x / 2;
     float min = 0;
     float max = 0;
+
+    Vector3 ball = in_pitch.toPitchSpace(in_ball.movable.position);
+    float ball_to_middle = ball.x - middle;
 
     if (modifier_mask & modifier_center) {
         // within 20% of the middle of the pitch
@@ -41,5 +42,11 @@ Engine::Vector3 PositionCenterBack::getTargetPosition(const Pitch &in_pitch, con
     }
     out_x = std::clamp(out_x, min, max);
 
-    return {out_x, in_my_team.gameplan.getDefensiveLine()};
+    Vector3 result{out_x, in_my_team.gameplan.getDefensiveLine()};
+    if (in_my_team.getAttackingGoal() == Direction::North) {
+        result.rotate(180, in_pitch.dimensions.center_spot.getPosition().x,
+                      in_pitch.dimensions.center_spot.getPosition().y);
+    }
+
+    return result;
 }

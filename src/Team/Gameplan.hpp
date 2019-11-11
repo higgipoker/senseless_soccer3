@@ -34,7 +34,7 @@ class Gameplan {
     //
     //
     //
-    float defensive_line = 0;
+    Engine::Vector3 defensive_line;
 
    public:
     friend class Team;

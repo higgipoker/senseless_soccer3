@@ -32,7 +32,7 @@ Match::Match(UniquePtr<Sprite> in_pitch, Team &in_home_team, Team &in_away_team,
     away_team.setAttackingGoal(Engine::Direction::South);
 
     home_team.gameplan.defensive_line_height = DefensiveLineType::High;
-    away_team.gameplan.defensive_line_height = DefensiveLineType::Deep;
+    away_team.gameplan.defensive_line_height = DefensiveLineType::High;
 
     home_team.gameplan.defensive_width_type = DefensivewidthType::Narrow;
     away_team.gameplan.defensive_width_type = DefensivewidthType::Narrow;

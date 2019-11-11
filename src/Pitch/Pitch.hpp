@@ -3,6 +3,7 @@
 #include "Engine/ArcShape.hpp"
 #include "Engine/Sprite.hpp"
 #include "Engine/Types.hpp"
+#include "Engine/Vector.hpp"
 
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
@@ -11,29 +12,22 @@
 
 #include <memory>
 #include <vector>
-//
-//
-//
-namespace sf {
-inline Color ChalkWhite{255, 255, 255, 200};
-}
 /**
  * @brief The PitchDimensions struct
  */
 struct PitchDimensions {
+    // origin in screen space
+    Engine::Vector3 origin;
     // pitch lines
     sf::RectangleShape bounds;
+    sf::RectangleShape draw_bounds;
     sf::RectangleShape north_6;
     sf::RectangleShape north_18;
-    sf::RectangleShape south_6;
-    sf::RectangleShape south_18;
     sf::RectangleShape halfway_line;
     sf::CircleShape center_circle;
     sf::CircleShape center_spot;
     sf::CircleShape north_penalty_spot;
-    sf::CircleShape south_penalty_spot;
     sf::ArcShape north_arc;
-    sf::ArcShape south_arc;
 
     std::vector<sf::Shape *> all_lines;
 
@@ -41,15 +35,11 @@ struct PitchDimensions {
         all_lines.push_back(&bounds);
         all_lines.push_back(&north_6);
         all_lines.push_back(&north_18);
-        all_lines.push_back(&south_6);
-        all_lines.push_back(&south_18);
         all_lines.push_back(&halfway_line);
         all_lines.push_back(&center_circle);
         all_lines.push_back(&center_spot);
         all_lines.push_back(&north_penalty_spot);
-        all_lines.push_back(&south_penalty_spot);
         all_lines.push_back(&north_arc);
-        all_lines.push_back(&south_arc);
     }
 };
 /**
@@ -72,15 +62,15 @@ class Pitch : public Engine::Sprite {
     //
     //
     //
+    Engine::Vector3 toScreenSpace(const Engine::Vector3 &in_vector)const;
+    //
+    //
+    //
+    Engine::Vector3 toPitchSpace(const Engine::Vector3 &in_vector) const;
+    //
+    //
+    //
     virtual void perspectivize(const float in_camera_height) override;
-    //
-    //
-    //
-    float mirrorX(const float in_x) const;
-    //
-    //
-    //
-    float mirrorY(const float in_y) const;
 
     // todo move this out to an pitch entity?
     /// pitch dimensions
@@ -131,13 +121,10 @@ class Pitch : public Engine::Sprite {
      */
     void init_north_arc();
     /**
-     * @brief init_south_arc
-     * @param pitch
-     */
-    void init_south_arc();
-    /**
      * @brief init_halfway_line
      * @param pitch
      */
     void init_halfway_line();
+    // to flip shapes
+    sf::Transform flip;
 };
