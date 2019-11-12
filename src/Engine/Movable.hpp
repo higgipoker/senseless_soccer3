@@ -3,6 +3,8 @@
 #include "Vector.hpp"
 //
 #include <SFML/Graphics/Rect.hpp>
+//
+#include <string>
 
 namespace Engine {
 //

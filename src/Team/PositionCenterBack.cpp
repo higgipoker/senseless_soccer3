@@ -18,13 +18,13 @@ Engine::Vector3 PositionCenterBack::getTargetPosition(const Pitch &in_pitch, con
 
     if (modifier_mask & modifier_center) {
         // within 20% of the middle of the pitch
-        float sec_20 = in_pitch.dimensions.bounds.getSize().x / 10;
+        float sec_20 = in_pitch.dimensions.bounds.getSize().x * 0.1F;
         min = middle - sec_20;
         max = middle + sec_20;
 
     } else if (modifier_mask & modifier_right) {
         // within inner left 2 fifths
-        float sec_20 = in_pitch.dimensions.bounds.getSize().x / 5;
+        float sec_20 = in_pitch.dimensions.bounds.getSize().x * 0.2F;
         min = middle - sec_20;
         max = middle;
     }
