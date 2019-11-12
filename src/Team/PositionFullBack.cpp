@@ -44,7 +44,6 @@ Engine::Vector3 PositionFullBack::getTargetPosition(const Pitch &in_pitch, const
         max = in_pitch.dimensions.bounds.getSize().x;
     }
     out_x = std::clamp(out_x, min, max);
-
     Vector3 result{out_x, in_my_team.gameplan.getDefensiveLine().y};
 
     // rotate for other side?
