@@ -60,7 +60,33 @@ Pitch::Pitch(SharedPtr<sf::Texture> in_texture, const sf::FloatRect in_world_bou
     init_north_arc();
 
     // flips
-    flip.rotate(180, dimensions.center_spot.getCenter());
+    translate.translate({dimensions.origin.toSfVector()});
+    flip.rotate(180, {dimensions.bounds.getSize().x / 2, dimensions.bounds.getSize().y / 2});
+    translate_and_flip.translate({dimensions.origin.toSfVector()});
+    translate_and_flip.rotate(180, {dimensions.bounds.getSize().x / 2, dimensions.bounds.getSize().y / 2});
+
+    pitch_texture->clear();
+    pitch_texture->draw(grass);
+    pitch_texture->draw(dimensions.draw_bounds, translate);
+    pitch_texture->draw(dimensions.draw_bounds, translate_and_flip);
+    pitch_texture->draw(dimensions.south_6, translate);
+    pitch_texture->draw(dimensions.south_6, translate_and_flip);
+    pitch_texture->draw(dimensions.south_18, translate);
+    pitch_texture->draw(dimensions.south_18, translate_and_flip);
+    pitch_texture->draw(dimensions.center_circle, translate);
+    pitch_texture->draw(dimensions.center_spot, translate);
+    pitch_texture->draw(dimensions.south_penalty_spot, translate);
+    pitch_texture->draw(dimensions.south_penalty_spot, translate_and_flip);
+    pitch_texture->draw(dimensions.south_arc, translate);
+    pitch_texture->draw(dimensions.south_arc, translate_and_flip);
+    //    pitch_texture->draw(dimensions.halfway_line, translate);
+    pitch_texture->display();
+}
+//
+//
+//
+void Pitch::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+    target.draw(pitch);
 }
 //
 //
@@ -79,30 +105,8 @@ Vector3 Pitch::toPitchSpace(const Vector3& in_vector) const {
 //
 //
 //
-void Pitch::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-    pitch_texture->clear();
-    pitch_texture->draw(grass);
-    pitch_texture->draw(dimensions.draw_bounds);
-    pitch_texture->draw(dimensions.draw_bounds, flip);
-    pitch_texture->draw(dimensions.north_6);
-    pitch_texture->draw(dimensions.north_6, flip);
-    pitch_texture->draw(dimensions.north_18);
-    pitch_texture->draw(dimensions.north_18, flip);
-    pitch_texture->draw(dimensions.center_circle);
-    pitch_texture->draw(dimensions.center_spot);
-    pitch_texture->draw(dimensions.north_penalty_spot);
-    pitch_texture->draw(dimensions.north_penalty_spot, flip);
-    pitch_texture->draw(dimensions.north_arc);
-    pitch_texture->draw(dimensions.north_arc, flip);
-    pitch_texture->draw(dimensions.halfway_line);
-    pitch_texture->display();
-    target.draw(pitch);
-}
-//
-//
-//
 void Pitch::init_bounds() {
-    dimensions.bounds.setPosition({dimensions.origin.toSfVector()});
+    dimensions.bounds.setPosition(0, 0);
     dimensions.bounds.setSize(sf::Vector2f(static_cast<float>(Metrics::MetersToPixels(69)),
                                            static_cast<float>(Metrics::MetersToPixels(105))));
     dimensions.bounds.setFillColor(sf::Color::Transparent);
@@ -118,17 +122,17 @@ void Pitch::init_bounds() {
 void Pitch::init_6_yard_boxes() {
     float w = static_cast<float>(Metrics::MetersToPixels(18.32f));
     float h = static_cast<float>(Metrics::MetersToPixels(5.5f));
-    dimensions.north_6.setSize(sf::Vector2f(w, h));
-    dimensions.north_6.setFillColor(sf::Color::Transparent);
-    dimensions.north_6.setOutlineColor(sf::ChalkWhite);
-    dimensions.north_6.setOutlineThickness(StandardLineThickness);
+    dimensions.south_6.setSize(sf::Vector2f(w, h));
+    dimensions.south_6.setFillColor(sf::Color::Transparent);
+    dimensions.south_6.setOutlineColor(sf::ChalkWhite);
+    dimensions.south_6.setOutlineThickness(StandardLineThickness);
 
-    float x = (dimensions.bounds.getSize().x / 2) - (dimensions.north_6.getSize().x / 2);
-    float y = dimensions.bounds.getSize().y;
+    float x = (dimensions.bounds.getSize().x / 2) - (dimensions.south_6.getSize().x / 2);
+    float y = dimensions.bounds.getSize().y - dimensions.south_6.getSize().y;
 
-    Vector3 tmp = toScreenSpace({x, y});
-    x = tmp.x, y = tmp.y;
-    dimensions.north_6.setPosition(sf::Vector2f(x, y));
+    //    Vector3 tmp = toScreenSpace({x, y});
+    //    x = tmp.x, y = tmp.y;
+    dimensions.south_6.setPosition(sf::Vector2f(x, y));
 }
 //
 //
@@ -136,17 +140,17 @@ void Pitch::init_6_yard_boxes() {
 void Pitch::init_18_yard_boxes() {
     float w = static_cast<float>(Metrics::MetersToPixels(40.32f));
     float h = static_cast<float>(Metrics::MetersToPixels(16.5f));
-    dimensions.north_18.setSize(sf::Vector2f(w, h));
-    dimensions.north_18.setFillColor(sf::Color::Transparent);
-    dimensions.north_18.setOutlineColor(sf::ChalkWhite);
-    dimensions.north_18.setOutlineThickness(StandardLineThickness);
+    dimensions.south_18.setSize(sf::Vector2f(w, h));
+    dimensions.south_18.setFillColor(sf::Color::Transparent);
+    dimensions.south_18.setOutlineColor(sf::ChalkWhite);
+    dimensions.south_18.setOutlineThickness(StandardLineThickness);
 
-    float x = (dimensions.bounds.getSize().x / 2) - (dimensions.north_18.getSize().x / 2);
-    float y = dimensions.north_18.getSize().y;
+    float x = (dimensions.bounds.getSize().x / 2) - (dimensions.south_18.getSize().x / 2);
+    float y = dimensions.south_18.getSize().y - dimensions.south_18.getSize().y;
 
-    Vector3 tmp = toScreenSpace({x, y});
-    x = tmp.x, y = tmp.y;
-    dimensions.north_18.setPosition(sf::Vector2f(x, y));
+    //    Vector3 tmp = toScreenSpace({x, y});
+    //    x = tmp.x, y = tmp.y;
+    dimensions.south_18.setPosition(sf::Vector2f(x, y));
 }
 //
 //
@@ -159,10 +163,10 @@ void Pitch::init_center_circle() {
     dimensions.center_circle.setOutlineThickness(StandardLineThickness);
 
     float x = (dimensions.bounds.getSize().x / 2) - dimensions.center_circle.getRadius();
-    float y = (dimensions.bounds.getSize().y / 2) + dimensions.center_circle.getRadius();
+    float y = (dimensions.bounds.getSize().y / 2) - dimensions.center_circle.getRadius();
 
-    Vector3 tmp = toScreenSpace({x, y});
-    x = tmp.x, y = tmp.y;
+    //    Vector3 tmp = toScreenSpace({x, y});
+    //    x = tmp.x, y = tmp.y;
     dimensions.center_circle.setPosition(sf::Vector2f(x, y));
 }
 //
@@ -173,44 +177,44 @@ void Pitch::init_center_spot() {
     dimensions.center_spot.setFillColor(sf::ChalkWhite);
 
     float x = (dimensions.bounds.getSize().x / 2) - dimensions.center_spot.getRadius();
-    float y = (dimensions.bounds.getSize().y / 2) + dimensions.center_spot.getRadius();
+    float y = (dimensions.bounds.getSize().y / 2) - dimensions.center_spot.getRadius();
 
-    Vector3 tmp = toScreenSpace({x, y});
-    x = tmp.x, y = tmp.y;
+    //    Vector3 tmp = toScreenSpace({x, y});
+    //    x = tmp.x, y = tmp.y;
     dimensions.center_spot.setPosition(sf::Vector2f(x, y));
 }
 //
 //
 //
 void Pitch::init_penalty_spots() {
-    dimensions.north_penalty_spot.setRadius(Metrics::MetersToPixels(0.2f));
-    dimensions.north_penalty_spot.setFillColor(sf::ChalkWhite);
+    dimensions.south_penalty_spot.setRadius(Metrics::MetersToPixels(0.2f));
+    dimensions.south_penalty_spot.setFillColor(sf::ChalkWhite);
 
     float x = dimensions.bounds.getSize().x / 2;
     float y = dimensions.bounds.getSize().y - Metrics::MetersToPixels(10.9f);
 
-    Vector3 tmp = toScreenSpace({x, y});
-    x = tmp.x, y = tmp.y;
-    dimensions.north_penalty_spot.setPosition(sf::Vector2f(x, y));
+    //    Vector3 tmp = toScreenSpace({x, y});
+    //    x = tmp.x, y = tmp.y;
+    dimensions.south_penalty_spot.setPosition(sf::Vector2f(x, y));
 }
 //
 //
 //
 void Pitch::init_north_arc() {
-    dimensions.north_arc.setPointCount(60);
-    dimensions.north_arc.setRadius(Metrics::MetersToPixels(7.f));
-    dimensions.north_arc.setFillColor(sf::Color::Transparent);
-    dimensions.north_arc.setOutlineColor(sf::ChalkWhite);
-    dimensions.north_arc.setOutlineThickness(StandardLineThickness);
-    dimensions.north_arc.setOrigin(sf::Vector2f(dimensions.north_arc.getRadius(), dimensions.north_arc.getRadius()));
-    dimensions.north_arc.setRotation(90);
+    dimensions.south_arc.setPointCount(60);
+    dimensions.south_arc.setRadius(Metrics::MetersToPixels(7.f));
+    dimensions.south_arc.setFillColor(sf::Color::Transparent);
+    dimensions.south_arc.setOutlineColor(sf::ChalkWhite);
+    dimensions.south_arc.setOutlineThickness(StandardLineThickness);
+    dimensions.south_arc.setOrigin(sf::Vector2f(dimensions.south_arc.getRadius(), dimensions.south_arc.getRadius()));
+    dimensions.south_arc.setRotation(-90);
 
     float x = dimensions.bounds.getSize().x / 2;
-    float y = dimensions.bounds.getSize().y - dimensions.north_18.getSize().y - 2;
+    float y = dimensions.bounds.getSize().y - dimensions.south_18.getSize().y - 2;
 
-    Vector3 tmp = toScreenSpace({x, y});
-    x = tmp.x, y = tmp.y;
-    dimensions.north_arc.setPosition(sf::Vector2f(x, y));
+    //    Vector3 tmp = toScreenSpace({x, y});
+    //    x = tmp.x, y = tmp.y;
+    dimensions.south_arc.setPosition(sf::Vector2f(x, y));
 }
 //
 //

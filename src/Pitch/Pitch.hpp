@@ -21,25 +21,25 @@ struct PitchDimensions {
     // pitch lines
     sf::RectangleShape bounds;
     sf::RectangleShape draw_bounds;
-    sf::RectangleShape north_6;
-    sf::RectangleShape north_18;
+    sf::RectangleShape south_6;
+    sf::RectangleShape south_18;
     sf::RectangleShape halfway_line;
     sf::CircleShape center_circle;
     sf::CircleShape center_spot;
-    sf::CircleShape north_penalty_spot;
-    sf::ArcShape north_arc;
+    sf::CircleShape south_penalty_spot;
+    sf::ArcShape south_arc;
 
     std::vector<sf::Shape *> all_lines;
 
     PitchDimensions() {
         all_lines.push_back(&bounds);
-        all_lines.push_back(&north_6);
-        all_lines.push_back(&north_18);
+        all_lines.push_back(&south_6);
+        all_lines.push_back(&south_18);
         all_lines.push_back(&halfway_line);
         all_lines.push_back(&center_circle);
         all_lines.push_back(&center_spot);
-        all_lines.push_back(&north_penalty_spot);
-        all_lines.push_back(&north_arc);
+        all_lines.push_back(&south_penalty_spot);
+        all_lines.push_back(&south_arc);
     }
 };
 /**
@@ -62,7 +62,7 @@ class Pitch : public Engine::Sprite {
     //
     //
     //
-    Engine::Vector3 toScreenSpace(const Engine::Vector3 &in_vector)const;
+    Engine::Vector3 toScreenSpace(const Engine::Vector3 &in_vector) const;
     //
     //
     //
@@ -126,5 +126,7 @@ class Pitch : public Engine::Sprite {
      */
     void init_halfway_line();
     // to flip shapes
+    sf::Transform translate;
     sf::Transform flip;
+    sf::Transform translate_and_flip;
 };
