@@ -1,6 +1,7 @@
 #include "Team.hpp"
 //
 #include "PositionCenterBack.hpp"
+#include "PositionFullBack.hpp"
 //
 #include "Match/Match.hpp"
 #include "Player/Player.hpp"
@@ -65,7 +66,25 @@ void Team::update() {
 //
 //
 void Team::addDefaultPlayers() {
-    for (auto i = 0; i < 1; ++i) {
+    std::vector<UniquePtr<PlayingPosition>> positions;
+
+    UniquePtr<PlayingPosition> right_center_back = std::make_unique<PositionCenterBack>();
+    right_center_back->applyModifier(PositionModifier::Right);
+    positions.emplace_back(std::move(right_center_back));
+
+    UniquePtr<PlayingPosition> left_center_back = std::make_unique<PositionCenterBack>();
+    left_center_back->applyModifier(PositionModifier::Left);
+    positions.emplace_back(std::move(left_center_back));
+
+    UniquePtr<PlayingPosition> right_back = std::make_unique<PositionFullBack>();
+    right_back->applyModifier(PositionModifier::Right);
+    positions.emplace_back(std::move(right_back));
+
+    UniquePtr<PlayingPosition> left_back = std::make_unique<PositionFullBack>();
+    left_back->applyModifier(PositionModifier::Left);
+    positions.emplace_back(std::move(left_back));
+
+    for (auto i = 0; i < 4; ++i) {
         UniquePtr<Player> player = player_factory.makePlayer(*match, *this, home_or_away);
         TeamData td;
         td.shirt_number = i + 1;
@@ -79,10 +98,7 @@ void Team::addDefaultPlayers() {
         player->movable.setPosition(match->getPitch().dimensions.center_spot.getCenter().x - 50 + (i * 10),
                                     match->getPitch().dimensions.center_spot.getCenter().y - 50);
 
-        // make a left center back
-        UniquePtr<PlayingPosition> position = std::make_unique<PositionCenterBack>();
-        position->applyModifier(PositionModifier::Right);
-        player->setPlayingPosition(std::move(position));
+        player->setPlayingPosition(std::move(positions[i]));
         player->getBrain().changeState(brain_state::Cover);
 
         addPlayer(std::move(player));
