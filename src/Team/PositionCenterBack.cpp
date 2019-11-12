@@ -29,12 +29,12 @@ Engine::Vector3 PositionCenterBack::getTargetPosition(const Pitch &in_pitch, con
         // within left left 2 fifths
         sec_20 = in_pitch.dimensions.bounds.getSize().x * 0.2F;
         min = middle - sec_20;
-        max = middle;
+        max = middle - sec_20/3;
     }
     if (modifier_mask & modifier_right) {
         // within right left 2 fifths
         sec_20 = in_pitch.dimensions.bounds.getSize().x * 0.2F;
-        min = middle;
+        min = middle+sec_20/3;
         max = middle + sec_20;
     }
 

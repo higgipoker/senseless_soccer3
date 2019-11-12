@@ -38,7 +38,6 @@ void Gameplan::updateDefensiveLine(const Pitch &in_pitch, const Ball &in_ball,
     // rotate for attacking south
     if (in_attacking_direction == Direction::South) {
         defensive_line.y = in_pitch.dimensions.bounds.getSize().y - defensive_line.y;
-        std::cout << defensive_line.y << std::endl;
     }
 }
 //
