@@ -57,7 +57,7 @@ void Team::update() {
         last_ball_position = match->getBall().movable.position;
     }
 
-    defensive_line.setPosition(match->getPitch().dimensions.bounds.getPosition().x, gameplan.getDefensiveLine());
+    defensive_line.setPosition(match->getPitch().toScreenSpace(gameplan.getDefensiveLine()).toSfVector());
     sprite.debug_shapes.clear();
     sprite.debug_shapes.push_back(&defensive_line);
 }

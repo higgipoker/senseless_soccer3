@@ -25,12 +25,12 @@ Pitch::Pitch(SharedPtr<sf::Texture> in_texture, const sf::FloatRect in_world_bou
     grass.setTexture(*in_texture);
 
     // make a texture for drawing the lines on
-    pitch_texture->create(in_world_bounds.width, in_world_bounds.height);
-    pitch.setTexture(pitch_texture->getTexture());
+    pitch_texture.create(in_world_bounds.width, in_world_bounds.height);
+    pitch.setTexture(pitch_texture.getTexture());
 
     // size of the target rect for grass tile
     grass.setTextureRect(
-        sf::IntRect{0, 0, static_cast<int>(pitch_texture->getSize().x), static_cast<int>(pitch_texture->getSize().y)});
+        sf::IntRect{0, 0, static_cast<int>(pitch_texture.getSize().x), static_cast<int>(pitch_texture.getSize().y)});
 
     // abs width of texture when at default distance from camera
     perspective_width = in_world_bounds.width;
@@ -65,22 +65,23 @@ Pitch::Pitch(SharedPtr<sf::Texture> in_texture, const sf::FloatRect in_world_bou
     translate_and_flip.translate({dimensions.origin.toSfVector()});
     translate_and_flip.rotate(180, {dimensions.bounds.getSize().x / 2, dimensions.bounds.getSize().y / 2});
 
-    pitch_texture->clear();
-    pitch_texture->draw(grass);
-    pitch_texture->draw(dimensions.draw_bounds, translate);
-    pitch_texture->draw(dimensions.draw_bounds, translate_and_flip);
-    pitch_texture->draw(dimensions.south_6, translate);
-    pitch_texture->draw(dimensions.south_6, translate_and_flip);
-    pitch_texture->draw(dimensions.south_18, translate);
-    pitch_texture->draw(dimensions.south_18, translate_and_flip);
-    pitch_texture->draw(dimensions.center_circle, translate);
-    pitch_texture->draw(dimensions.center_spot, translate);
-    pitch_texture->draw(dimensions.south_penalty_spot, translate);
-    pitch_texture->draw(dimensions.south_penalty_spot, translate_and_flip);
-    pitch_texture->draw(dimensions.south_arc, translate);
-    pitch_texture->draw(dimensions.south_arc, translate_and_flip);
-    //    pitch_texture->draw(dimensions.halfway_line, translate);
-    pitch_texture->display();
+    // draw grass and lines to the texture
+    pitch_texture.clear();
+    pitch_texture.draw(grass);
+    pitch_texture.draw(dimensions.draw_bounds, translate);
+    pitch_texture.draw(dimensions.draw_bounds, translate_and_flip);
+    pitch_texture.draw(dimensions.south_6, translate);
+    pitch_texture.draw(dimensions.south_6, translate_and_flip);
+    pitch_texture.draw(dimensions.south_18, translate);
+    pitch_texture.draw(dimensions.south_18, translate_and_flip);
+    pitch_texture.draw(dimensions.center_circle, translate);
+    pitch_texture.draw(dimensions.center_spot, translate);
+    pitch_texture.draw(dimensions.south_penalty_spot, translate);
+    pitch_texture.draw(dimensions.south_penalty_spot, translate_and_flip);
+    pitch_texture.draw(dimensions.south_arc, translate);
+    pitch_texture.draw(dimensions.south_arc, translate_and_flip);
+    //    pitch_texture.draw(dimensions.halfway_line, translate);
+    pitch_texture.display();
 }
 //
 //
@@ -237,8 +238,8 @@ void Pitch::perspectivize(const float in_camera_height) {
     //  float dist_from_camera = in_camera_height - entity_height - 50;
     //  dist_from_camera = -dist_from_camera;
     //  if(dist_from_camera){
-    //  float desired_width = pitch_texture->getSize().x /(1-dist_from_camera);
-    //  float desired_height = pitch_texture->getSize().y /(1-dist_from_camera);
+    //  float desired_width = pitch_texture.getSize().x /(1-dist_from_camera);
+    //  float desired_height = pitch_texture.getSize().y /(1-dist_from_camera);
     //  float scale_factor_x = desired_width / pitch.getLocalBounds().width;
     //  float scale_factor_y = desired_height / pitch.getLocalBounds().height;
     //  pitch.setScale(scale_factor_x, scale_factor_y);

@@ -23,8 +23,6 @@ void BrainCover::start() {
 //
 //
 void BrainCover::step() {
-    std::cout << "position: " << brain.player.movable.position.x << ", " << brain.player.movable.position.y
-              << std::endl;
     if (auto position = brain.player.playing_position.get()) {
         auto target = position->getTargetPosition(brain.player.match.getPitch(), brain.player.team, brain.player.team,
                                                   brain.player.match.getBall());
@@ -33,7 +31,6 @@ void BrainCover::step() {
         if (Math::greater_than(dist, 1) && Math::greater_than((target - last_target).magnitude2d(), 1)) {
             brain.locomotion.seek(target);
             last_target = target;
-            std::cout << "target: " << target.x << ", " << target.y << std::endl;
         }
     }
 }

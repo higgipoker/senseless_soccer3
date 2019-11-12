@@ -11,6 +11,7 @@ namespace Engine {
 bool Debug::show_debug_hud = false;
 bool Debug::flag_draw_bounds = false;
 bool Debug::flag_draw_diagnostics = true;
+Pitch *Debug::pitch = nullptr;
 sf::Color Debug::bounds_color = sf::Color::Magenta;
 sf::Color Debug::disgnostics_color = sf::Color::Green;
 //
@@ -36,6 +37,13 @@ void Debug::update(const int in_frames, const int in_frametime) {
     { ImGui::Text("Frame: %i", in_frames - in_frames % 10); }
     // frametime
     { ImGui::Text("Frame time: %ims", in_frametime); }
+    // mouse position
+    { ImGui::Text("Mouse: %i, %i", static_cast<int>(mouse_x), static_cast<int>(mouse_y)); }
+    // mouse pitch position
+    if (pitch) {
+        auto p = pitch->toPitchSpace({mouse_x, mouse_y});
+        ImGui::Text("Pitch: %i, %i", static_cast<int>(p.x), static_cast<int>(p.y));
+    }
     // draw bounds
     { ImGui::Checkbox("Draw Bounds", &flag_draw_bounds); }
     // draw diagnostics
@@ -49,17 +57,27 @@ void Debug::update(const int in_frames, const int in_frametime) {
 //
 void Debug::handleInput(sf::Event &in_event) {
     ImGui::SFML::ProcessEvent(in_event);
+
+    if (in_event.type == sf::Event::MouseMoved) {
+        sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+        sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
+        mouse_x = worldPos.x;
+        mouse_y = worldPos.y;
+    }
     // handle mouse clicks
     if (in_event.type == sf::Event::MouseButtonPressed) {
         if (in_event.mouseButton.button == sf::Mouse::Left) {
-            // get the current mouse position in the window
-//            sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
-            // convert it to world coordinates
-//            sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
-//            std::cout << "click at " << static_cast<int>(worldPos.x) << ", " << static_cast<int>(worldPos.y)
-//                      << std::endl;
-            //      std::cout << "click at " << static_cast<int>(pixelPos.x) << ", "
-            //                << static_cast<int>(pixelPos.y) << std::endl;
+            if (in_event.mouseButton.button == sf::Mouse::Left) {
+                // get the current mouse position in the window
+                //            sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
+                // convert it to world coordinates
+                //            sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
+                //            std::cout << "click at " << static_cast<int>(worldPos.x) << ", " <<
+                //            static_cast<int>(worldPos.y)
+                //                      << std::endl;
+                //      std::cout << "click at " << static_cast<int>(pixelPos.x) << ", "
+                //                << static_cast<int>(pixelPos.y) << std::endl;
+            }
         }
     }
 }

@@ -18,7 +18,7 @@ class Gameplan {
     //
     //
     //
-    float getDefensiveLine() const;
+    Engine::Vector3  getDefensiveLine() const;
     //
     //
     //

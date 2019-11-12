@@ -95,7 +95,7 @@ class Vector3 {
   // -------------------------------------------------------------------------
   // other vector ops
   // -------------------------------------------------------------------------
-  sf::Vector2f toSfVector();
+  sf::Vector2f toSfVector()const;
   float projectionOn(Vector3 &line);
   float dotProduct(const Vector3 &rhs);
   float perpProduct(const Vector3 &rhs, bool right_normal = true);

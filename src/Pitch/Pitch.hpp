@@ -75,14 +75,16 @@ class Pitch : public Engine::Sprite {
     // todo move this out to an pitch entity?
     /// pitch dimensions
     PitchDimensions dimensions;
-
+    //
+    //
+    //
    protected:
     /// the repeatig grass sprite
     sf::Sprite grass;
     /// pitch sprite
     sf::Sprite pitch;
     /// a texture to render the grass and lines to
-    UniquePtr<sf::RenderTexture> pitch_texture = std::make_unique<sf::RenderTexture>();
+    sf::RenderTexture pitch_texture;
 
    private:
     /**

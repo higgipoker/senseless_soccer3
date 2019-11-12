@@ -56,6 +56,7 @@ int main(int argc, char** args) {
     tex_grass->loadFromFile(graphics_folder.getPath(true) + "grass_checked.png");
     UniquePtr<Sprite> pitch = std::make_unique<Pitch>(tex_grass, world);
     engine.addSprite(*pitch.get(), engine.getBackgroundLayer());
+    engine.getDebugUI().providePitch(static_cast<Pitch&>(*pitch.get()));
 
     //
     // teams
@@ -90,7 +91,7 @@ int main(int argc, char** args) {
     engine.addEntity(match.getBall(), engine.getDefaultLayer());
     engine.getMainCamera().follow(match.getBall());
 
-    //match.getHomeTeam().getPlayer().getBrain().changeState(brain_state::Retrieve);
+    // match.getHomeTeam().getPlayer().getBrain().changeState(brain_state::Retrieve);
     engine.addSprite(match.getHomeTeam().sprite);
     engine.addSprite(match.getAwayTeam().sprite);
 

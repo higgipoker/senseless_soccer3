@@ -370,7 +370,7 @@ void Vector3::fromSfVector(const sf::Vector2f &from) {
 //
 //
 //
-sf::Vector2f Vector3::toSfVector() { return sf::Vector2f{x, y}; }
+sf::Vector2f Vector3::toSfVector() const { return sf::Vector2f{x, y}; }
 //
 //
 //
