@@ -98,6 +98,12 @@ add_executable(senseless_soccer3
     src/Team/PlayingPosition.cpp
     src/Team/PositionDefender.cpp
     src/Team/PositionCenterBack.cpp
+    src/Team/PositionFullBack.cpp
+    src/Team/PositionMidfielder.cpp
+    src/Team/PositionCenterMidfielder.cpp
+    src/Team/PositionWideMidfielder.cpp
+    src/Team/PositionForward.cpp
+    src/Team/PositionCenterForward.cpp
     src/Team/Gameplan.cpp
     src/Team/TeamFactory.cpp
     src/Team/KitFactory.cpp

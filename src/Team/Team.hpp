@@ -44,7 +44,7 @@ class Team {
     //
     //
     //
-    void addDefaultPlayers();
+    void addDefaultPlayers(const Team & in_other_team);
     //
     //
     //

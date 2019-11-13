@@ -70,8 +70,8 @@ int main(int argc, char** args) {
     //
     Match match(std::move(pitch), team1, team2);
 
-    match.getHomeTeam().addDefaultPlayers();
-    match.getAwayTeam().addDefaultPlayers();
+    match.getHomeTeam().addDefaultPlayers(match.getAwayTeam());
+//    match.getAwayTeam().addDefaultPlayers(match.getHomeTeam());
 
     for (size_t i = 0; i < match.getHomeTeam().numberPlayers(); ++i) {
         engine.addEntity(match.getHomeTeam().getPlayer(i));

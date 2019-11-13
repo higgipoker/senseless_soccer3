@@ -1,7 +1,10 @@
 #include "Team.hpp"
 //
 #include "PositionCenterBack.hpp"
+#include "PositionCenterMidfielder.hpp"
 #include "PositionFullBack.hpp"
+#include "PositionWideMidfielder.hpp"
+#include "PositionCenterForward.hpp"
 //
 #include "Match/Match.hpp"
 #include "Player/Player.hpp"
@@ -65,27 +68,51 @@ void Team::update() {
 //
 //
 //
-void Team::addDefaultPlayers() {
+void Team::addDefaultPlayers(const Team &in_other_team) {
     std::vector<UniquePtr<PlayingPosition>> positions;
-
-    UniquePtr<PlayingPosition> right_center_back = std::make_unique<PositionCenterBack>();
-    right_center_back->applyModifier(PositionModifier::Right);
-    positions.emplace_back(std::move(right_center_back));
 
     UniquePtr<PlayingPosition> left_center_back = std::make_unique<PositionCenterBack>();
     left_center_back->applyModifier(PositionModifier::Left);
     positions.emplace_back(std::move(left_center_back));
 
-    UniquePtr<PlayingPosition> right_back = std::make_unique<PositionFullBack>();
-    right_back->applyModifier(PositionModifier::Right);
-    positions.emplace_back(std::move(right_back));
+    UniquePtr<PlayingPosition> right_center_back = std::make_unique<PositionCenterBack>();
+    right_center_back->applyModifier(PositionModifier::Right);
+    positions.emplace_back(std::move(right_center_back));
 
     UniquePtr<PlayingPosition> left_back = std::make_unique<PositionFullBack>();
     left_back->applyModifier(PositionModifier::Left);
     positions.emplace_back(std::move(left_back));
 
-    for (auto i = 0; i < 4; ++i) {
-        UniquePtr<Player> player = player_factory.makePlayer(*match, *this, home_or_away);
+    UniquePtr<PlayingPosition> right_back = std::make_unique<PositionFullBack>();
+    right_back->applyModifier(PositionModifier::Right);
+    positions.emplace_back(std::move(right_back));
+
+    UniquePtr<PlayingPosition> left_center_mid = std::make_unique<PositionCenterMidfielder>();
+    left_center_mid->applyModifier(PositionModifier::Left);
+    positions.emplace_back(std::move(left_center_mid));
+
+    UniquePtr<PlayingPosition> right_center_mid = std::make_unique<PositionCenterMidfielder>();
+    right_center_mid->applyModifier(PositionModifier::Right);
+    positions.emplace_back(std::move(right_center_mid));
+
+    UniquePtr<PlayingPosition> left_midfielder = std::make_unique<PositionWideMidfielder>();
+    left_midfielder->applyModifier(PositionModifier::Left);
+    positions.emplace_back(std::move(left_midfielder));
+
+    UniquePtr<PlayingPosition> right_midfielder = std::make_unique<PositionWideMidfielder>();
+    right_midfielder->applyModifier(PositionModifier::Right);
+    positions.emplace_back(std::move(right_midfielder));
+
+    UniquePtr<PlayingPosition> left_center_forward = std::make_unique<PositionCenterForward>();
+    left_center_forward->applyModifier(PositionModifier::Left);
+    positions.emplace_back(std::move(left_center_forward));
+
+    UniquePtr<PlayingPosition> right_mcenter_forward = std::make_unique<PositionCenterForward>();
+    right_mcenter_forward->applyModifier(PositionModifier::Right);
+    positions.emplace_back(std::move(right_mcenter_forward));
+
+    for (auto i = 0; i < 10; ++i) {
+        UniquePtr<Player> player = player_factory.makePlayer(*match, *this, in_other_team, home_or_away);
         TeamData td;
         td.shirt_number = i + 1;
         player->setTeamData(td);

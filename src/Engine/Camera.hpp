@@ -44,6 +44,7 @@ class Camera : public Entity {
     sf::View view;
     sf::FloatRect world;
     Entity *following = nullptr;
+    sf::CircleShape collider;
 };
 
 }  // namespace Engine

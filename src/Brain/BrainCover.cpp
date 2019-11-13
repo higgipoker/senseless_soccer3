@@ -24,7 +24,7 @@ void BrainCover::start() {
 //
 void BrainCover::step() {
     if (auto position = brain.player.playing_position.get()) {
-        auto target = position->getTargetPosition(brain.player.match.getPitch(), brain.player.team, brain.player.team,
+        auto target = position->getTargetPosition(brain.player.match.getPitch(), brain.player.my_team, brain.player.other_team,
                                                   brain.player.match.getBall());
 
         auto dist = (brain.player.movable.position - target).magnitude2d();

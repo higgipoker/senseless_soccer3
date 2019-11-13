@@ -14,7 +14,8 @@ Camera::Camera(float in_viewport_width, float in_viewport_height)
       view{{0, 0, in_viewport_width, in_viewport_height}} {
     movable.toggleGravity(false);
     movable.properties.co_friction = 0.01F;
-    speed = 10;
+    speed = 2;
+    collider.setRadius(100);
 }
 //
 //
@@ -32,7 +33,8 @@ void Camera::update() {
     if (following) {
         Vector3 direction = following->movable.position - movable.position;
         float distance = direction.magnitude2d();
-        if (Math::greater_than(distance, 100)) {
+//        if (Math::greater_than(distance, 100)) {
+        if(!Collider::contains(collider, following->movable.position)){
             direction.normalise();
             static const float speed_factor = 0.05F;
             static const float min_speed = 0;
@@ -59,6 +61,7 @@ void Camera::update() {
     }
 
     view.setCenter(movable.position.x, movable.position.y);
+    collider.setCenter(view.getCenter());
 }
 //
 //
