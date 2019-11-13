@@ -50,7 +50,7 @@ class Pitch : public Engine::Sprite {
     //
     //
     //
-    Pitch(SharedPtr<sf::Texture> in_texture, const sf::FloatRect in_world_bounds);
+    Pitch(const std::string &in_grass_texture, const sf::FloatRect in_world_bounds);
     //
     //
     //
@@ -79,8 +79,6 @@ class Pitch : public Engine::Sprite {
     //
     //
    protected:
-    /// the repeatig grass sprite
-    sf::Sprite grass;
     /// pitch sprite
     sf::Sprite pitch;
     /// a texture to render the grass and lines to

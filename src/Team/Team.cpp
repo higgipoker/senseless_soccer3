@@ -1,16 +1,17 @@
 #include "Team.hpp"
 //
 #include "PositionCenterBack.hpp"
+#include "PositionCenterForward.hpp"
 #include "PositionCenterMidfielder.hpp"
 #include "PositionFullBack.hpp"
 #include "PositionWideMidfielder.hpp"
-#include "PositionCenterForward.hpp"
 //
 #include "Match/Match.hpp"
 #include "Player/Player.hpp"
 //
 #include "Engine/Math.hpp"
 //
+#include <cassert>
 #include <sstream>
 //
 using namespace Engine;
@@ -107,9 +108,9 @@ void Team::addDefaultPlayers(const Team &in_other_team) {
     left_center_forward->applyModifier(PositionModifier::Left);
     positions.emplace_back(std::move(left_center_forward));
 
-    UniquePtr<PlayingPosition> right_mcenter_forward = std::make_unique<PositionCenterForward>();
-    right_mcenter_forward->applyModifier(PositionModifier::Right);
-    positions.emplace_back(std::move(right_mcenter_forward));
+    UniquePtr<PlayingPosition> right_center_forward = std::make_unique<PositionCenterForward>();
+    right_center_forward->applyModifier(PositionModifier::Right);
+    positions.emplace_back(std::move(right_center_forward));
 
     for (auto i = 0; i < 10; ++i) {
         UniquePtr<Player> player = player_factory.makePlayer(*match, *this, in_other_team, home_or_away);
@@ -140,13 +141,8 @@ void Team::addPlayer(UniquePtr<Player> in_player) {
 //
 //
 //
-Player &Team::getPlayer() {
-    return *players.back();
-}
-//
-//
-//
 Player &Team::getPlayer(const size_t in_which) {
+    assert(in_which < players.size());
     return *players.at(in_which).get();
 }
 //

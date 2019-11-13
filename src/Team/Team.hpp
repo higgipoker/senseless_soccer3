@@ -52,10 +52,6 @@ class Team {
     //
     //
     //
-    Player& getPlayer();
-    //
-    //
-    //
     inline bool hasPlayers() {
         return !players.empty();
     }

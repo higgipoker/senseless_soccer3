@@ -52,9 +52,7 @@ int main(int argc, char** args) {
     //
     // pitch
     //
-    SharedPtr<Texture> tex_grass = std::make_shared<Texture>();
-    tex_grass->loadFromFile(graphics_folder.getPath(true) + "grass_checked.png");
-    UniquePtr<Sprite> pitch = std::make_unique<Pitch>(tex_grass, world);
+    UniquePtr<Sprite> pitch = std::make_unique<Pitch>(graphics_folder.getPath(true) + "grass_checked.png", world);
     engine.addSprite(*pitch.get(), engine.getBackgroundLayer());
     engine.getDebugUI().providePitch(static_cast<Pitch&>(*pitch.get()));
 
@@ -71,7 +69,7 @@ int main(int argc, char** args) {
     Match match(std::move(pitch), team1, team2);
 
     match.getHomeTeam().addDefaultPlayers(match.getAwayTeam());
-//    match.getAwayTeam().addDefaultPlayers(match.getHomeTeam());
+    //    match.getAwayTeam().addDefaultPlayers(match.getHomeTeam());
 
     for (size_t i = 0; i < match.getHomeTeam().numberPlayers(); ++i) {
         engine.addEntity(match.getHomeTeam().getPlayer(i));
@@ -97,7 +95,7 @@ int main(int argc, char** args) {
 
     // test
     ProgressBar bar(40, 3, 50);
-    match.getHomeTeam().getPlayer().power_bar = &bar;
+    match.getHomeTeam().getPlayer(0).power_bar = &bar;
     engine.addSprite(bar, engine.getDefaultLayer());
 
     srand(time(NULL));
@@ -115,6 +113,9 @@ int main(int argc, char** args) {
         // joysticker.update();
     }
 
+    fclose(stdout);
+    fclose(stdin);
+    fclose(stderr);
     std::cout << args[0] << " exited normally" << std::endl;
     return 0;
 }

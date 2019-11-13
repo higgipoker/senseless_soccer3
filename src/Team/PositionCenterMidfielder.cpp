@@ -44,6 +44,8 @@ Engine::Vector3 PositionCenterMidfielder::getTargetPosition(const Pitch &in_pitc
         max = middle + constraint_width;
     }
     out_x = std::clamp(out_x, min, max);
+    float out_y = ball.y - 100;
+    out_y = std::clamp(out_y, in_my_team.gameplan.getDefensiveLine().y, in_pitch.dimensions.bounds.getSize().y);
     Vector3 result{out_x, ball.y - 100};
 
     // rotate for other side?
@@ -56,7 +58,7 @@ Engine::Vector3 PositionCenterMidfielder::getTargetPosition(const Pitch &in_pitc
 
         {  // rotate on y
             Vector3 tmp{0, result.y};
-            tmp.rotate(180, 0, in_pitch.dimensions.bounds.getSize().y/2);
+            tmp.rotate(180, 0, in_pitch.dimensions.bounds.getSize().y / 2);
             result.y = tmp.y;
         }
     }

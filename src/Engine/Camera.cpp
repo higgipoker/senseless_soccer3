@@ -1,7 +1,7 @@
 #include "Camera.hpp"
-
+//
 #include "Engine/Collider.hpp"
-
+//
 #include <algorithm>
 #include <iostream>
 
@@ -15,7 +15,7 @@ Camera::Camera(float in_viewport_width, float in_viewport_height)
     movable.toggleGravity(false);
     movable.properties.co_friction = 0.01F;
     speed = 2;
-    collider.setRadius(100);
+    collider.setRadius(200);
 }
 //
 //
@@ -33,8 +33,8 @@ void Camera::update() {
     if (following) {
         Vector3 direction = following->movable.position - movable.position;
         float distance = direction.magnitude2d();
-//        if (Math::greater_than(distance, 100)) {
-        if(!Collider::contains(collider, following->movable.position)){
+        //        if (Math::greater_than(distance, 100)) {
+        if (!Collider::contains(collider, following->movable.position)) {
             direction.normalise();
             static const float speed_factor = 0.05F;
             static const float min_speed = 0;

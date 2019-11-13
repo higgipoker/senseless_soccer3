@@ -1,6 +1,7 @@
 ﻿#include "Pitch.hpp"
 
 #include "Engine/Metrics.hpp"
+#include "Engine/Texture.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Texture.hpp>
@@ -17,12 +18,15 @@ using namespace Engine;
 //
 //
 //
-Pitch::Pitch(SharedPtr<sf::Texture> in_texture, const sf::FloatRect in_world_bounds) {
+Pitch::Pitch(const std::string& in_grass_texture, const sf::FloatRect in_world_bounds) {
     // tmp test
     dimensions.origin = {200, 200};
     // set up the repeating grass texture
-    in_texture->setRepeated(true);
-    grass.setTexture(*in_texture);
+    Texture tex_grass;
+    tex_grass.loadFromFile(in_grass_texture);
+    sf::Sprite grass;
+    tex_grass.setRepeated(true);
+    grass.setTexture(tex_grass);
 
     // make a texture for drawing the lines on
     pitch_texture.create(in_world_bounds.width, in_world_bounds.height);
