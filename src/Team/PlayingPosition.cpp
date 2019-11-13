@@ -1,5 +1,7 @@
 #include "PlayingPosition.hpp"
 //
+int PlayingPosition::instances = 0;
+//
 //
 //
 void PlayingPosition::applyModifier(const PositionModifier in_mod) {

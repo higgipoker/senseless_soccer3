@@ -31,6 +31,20 @@ class PlayingPosition {
     //
     //
     //
+    PlayingPosition() {
+        ++instances;
+        std::cout << instances << " positions" << std::endl;
+    }
+    //
+    //
+    //
+    ~PlayingPosition() {
+        --instances;
+        std::cout << instances << " positions" << std::endl;
+    }
+    //
+    //
+    //
     virtual Engine::Vector3 getTargetPosition(const Pitch &in_pitch, const Team &in_my_team, const Team &in_other_team,
                                               const Ball &in_ball) = 0;
     //
@@ -40,4 +54,5 @@ class PlayingPosition {
 
    protected:
     unsigned char modifier_mask{modifier_none};
+    static int instances;
 };

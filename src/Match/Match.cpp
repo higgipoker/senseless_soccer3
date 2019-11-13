@@ -7,6 +7,8 @@
 
 using namespace Engine;
 //
+int Match::instances = 0;
+//
 //
 //
 Match::Match(UniquePtr<Sprite> in_pitch, Team &in_home_team, Team &in_away_team, BallType in_ball_type)
@@ -36,6 +38,16 @@ Match::Match(UniquePtr<Sprite> in_pitch, Team &in_home_team, Team &in_away_team,
 
     home_team.gameplan.defensive_width_type = DefensivewidthType::Normal;
     away_team.gameplan.defensive_width_type = DefensivewidthType::Normal;
+
+    ++instances;
+    std::cout << instances << " matches" << std::endl;
+}
+//
+//
+//
+Match::~Match(){
+    --instances;
+    std::cout << instances << " matches" << std::endl;
 }
 //
 //

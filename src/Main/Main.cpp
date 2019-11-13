@@ -113,9 +113,6 @@ int main(int argc, char** args) {
         // joysticker.update();
     }
 
-    fclose(stdout);
-    fclose(stdin);
-    fclose(stderr);
     std::cout << args[0] << " exited normally" << std::endl;
     return 0;
 }

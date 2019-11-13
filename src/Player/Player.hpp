@@ -26,6 +26,7 @@ class Team;
 //
 //
 struct TeamData {
+    std::string shirt_name;
     int shirt_number = 0;
 };
 struct Attributes {};
@@ -60,6 +61,10 @@ class Player : public Engine::Entity, public Engine::Controllable {
     //
     //
     Player(Match &in_match, const Team &in_my_team, const Team & in_other_team, UniquePtr<PlayerSprite> in_sprite, UniquePtr<PlayerSprite> in_shadow);
+    //
+    //
+    //
+    ~Player();
     //
     //
     //
@@ -116,7 +121,6 @@ class Player : public Engine::Entity, public Engine::Controllable {
     Engine::ProgressBar *power_bar = nullptr;
     float distance_from_ball = 0;
     int support_type = 0;
-    std::string name;
     sf::TriangleShape short_pass_triangle;
     std::vector<Player *> short_pass_candidates;
 
@@ -160,6 +164,7 @@ class Player : public Engine::Entity, public Engine::Controllable {
     //
     void debug();
 
+    static int instances;
    public:
     // state machine pattern
     friend class PlayerState;

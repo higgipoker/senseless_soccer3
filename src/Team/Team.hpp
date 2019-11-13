@@ -36,6 +36,10 @@ class Team {
     //
     //
     //
+    ~Team();
+    //
+    //
+    //
     void setAttackingGoal(Engine::Direction in_dir);
     //
     //
@@ -114,6 +118,8 @@ class Team {
 
     // debugs
     sf::RectangleShape defensive_line;
+
+    static int instances;
 
    public:
     friend class Player;

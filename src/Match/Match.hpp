@@ -25,6 +25,10 @@ class Match {
     //
     //
     //
+    ~Match();
+    //
+    //
+    //
     const sf::Texture& getMatchTexture() {
         return factory.getMatchTexture();
     }
@@ -67,4 +71,6 @@ class Match {
     UniquePtr<Ball> ball;
     Team& home_team;
     Team& away_team;
+
+    static int instances;
 };

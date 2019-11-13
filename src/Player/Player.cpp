@@ -10,6 +10,7 @@
 //
 #include <iostream>
 
+int Player::instances = 0;
 using namespace Engine;
 //
 //
@@ -37,6 +38,16 @@ Player::Player(Match &in_match, const Team &in_my_team, const Team &in_other_tea
     control.setFillColor(sf::Color::Transparent);
     control.setOutlineThickness(1);
     control.setOutlineColor(Debug::defaultDiagnosticsColor());
+
+    ++instances;
+    std::cout << instances << " players" << std::endl;
+}
+//
+//
+//
+Player::~Player(){
+    --instances;
+    std::cout << instances << " players" << std::endl;
 }
 //
 //

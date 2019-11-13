@@ -18,11 +18,23 @@ using namespace Engine;
 //
 //
 //
+int Team::instances = 0;
+//
 Team::Team(const TeamType in_home_or_away, const Kit &in_kit) : home_or_away(in_home_or_away), kit(in_kit) {
     sprite_texture->loadFromFile(player_factory.getSpriteSheeet(kit.type));
     sprite_texture->swapColors(kit.palette);
 
     shadow_texture->loadFromFile(player_factory.getShadowSheet());
+
+    ++instances;
+    std::cout << instances << " teams" << std::endl;
+}
+//
+//
+//
+Team::~Team() {
+    --instances;
+    std::cout << instances << " teams" << std::endl;
 }
 //
 //
@@ -112,25 +124,22 @@ void Team::addDefaultPlayers(const Team &in_other_team) {
     right_center_forward->applyModifier(PositionModifier::Right);
     positions.emplace_back(std::move(right_center_forward));
 
-    for (auto i = 0; i < 10; ++i) {
-        UniquePtr<Player> player = player_factory.makePlayer(*match, *this, in_other_team, home_or_away);
+    for (size_t i = 0; i < positions.size(); ++i) {
+        UniquePtr<Player> player = std::move(player_factory.makePlayer(*match, *this, in_other_team, home_or_away));
         TeamData td;
         td.shirt_number = i + 1;
+        std::stringstream ss;
+        ss << "player" << i + 1;
+        td.shirt_name = player->movable.name = ss.str();
+        player->movable.name = ss.str();
         player->setTeamData(td);
         player->support_type = i;
         player->getBrain().changeState(brain_state::Support);
-        std::stringstream ss;
-        ss << "player" << i + 1;
-        player->name = ss.str();
-        player->movable.name = ss.str();
-        player->movable.setPosition(match->getPitch().dimensions.center_spot.getCenter().x - 50 + (i * 10),
-                                    match->getPitch().dimensions.center_spot.getCenter().y - 50);
-
         player->setPlayingPosition(std::move(positions[i]));
         player->getBrain().changeState(brain_state::Cover);
-
         addPlayer(std::move(player));
     }
+    positions.clear();
 }
 //
 //
