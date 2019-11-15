@@ -123,4 +123,5 @@ sf::Color Debug::defaultBoundsColor() {
 sf::Color Debug::defaultDiagnosticsColor() {
     return disgnostics_color;
 }
+
 }  // namespace Engine

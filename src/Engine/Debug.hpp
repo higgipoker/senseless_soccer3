@@ -59,8 +59,8 @@ class Debug {
     //
     //
     //
-    static void providePitch(Pitch &in_pitch) {
-        pitch = &in_pitch;
+    static void providePitch(Pitch *in_pitch) {
+        pitch = in_pitch;
     };
 
    private:

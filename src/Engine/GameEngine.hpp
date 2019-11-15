@@ -33,6 +33,7 @@ struct RenderLayer {
     std::vector<Sprite *> sprite_list;
     bool sortable = false;
     static const layer_id INVALID_LAYER = 999;
+    static const layer_id HUD_LAYER = 998;
 };
 
 /**
@@ -84,6 +85,10 @@ class GameEngine {
     //
     //
     //
+    layer_id getHudLayer() const;
+    //
+    //
+    //
     layer_id getBackgroundLayer() const;
     //
     //
@@ -117,9 +122,9 @@ class GameEngine {
     Camera camera;
     Debug debug_gui;
     Picker picker;
-    sf::View hud_view{sf::FloatRect{0, 0, 800, 600}};
+    sf::View hud_view;
     std::map<int, RenderLayer> render_layers;
-    RenderLayer hud_layer;
+    RenderLayer hud;
     std::set<Movable *> movables;
     std::set<Controllable *> controllables;
     float dt = 0.01F;
@@ -127,6 +132,7 @@ class GameEngine {
     layer_id background_layer = RenderLayer::INVALID_LAYER;
     layer_id default_layer = RenderLayer::INVALID_LAYER;
     layer_id shadow_layer = RenderLayer::INVALID_LAYER;
+    layer_id hud_layer = RenderLayer::HUD_LAYER;
     //
     //
     //

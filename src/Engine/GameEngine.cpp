@@ -16,6 +16,10 @@ GameEngine::GameEngine(const std::string &in_window_title, int in_window_width, 
       camera(in_window_width, in_window_height),
       debug_gui(window),
       picker(window, movables) {
+
+    hud_view.setSize(in_window_width, in_window_height);
+    hud_view.setCenter(in_window_width/2, in_window_height/2);
+
     camera.movable.position = {static_cast<float>(in_window_width) / 2, static_cast<float>(in_window_height) / 2};
     background_layer = addLayer(false);
     shadow_layer = addLayer(false);
@@ -80,7 +84,7 @@ void GameEngine::step() {
 
     // render hud
     window.setView(hud_view);
-    for (const auto &drawable : hud_layer.sprite_list) {
+    for (const auto &drawable : hud.sprite_list) {
         window.draw(*drawable);
     }
 
@@ -106,6 +110,11 @@ int GameEngine::addLayer(bool in_sortable) {
 //
 //
 void GameEngine::addSprite(Sprite &in_sprite, layer_id in_layer_id) {
+    if (in_layer_id == RenderLayer::HUD_LAYER) {
+        hud.sprite_list.push_back(&in_sprite);
+        return;
+    }
+
     if (render_layers.empty()) {
         std::cout << "Engine::addDrawable> no layers" << std::endl;
         return;
@@ -153,6 +162,12 @@ sf::RenderTarget &GameEngine::getRenderTarget() {
 //
 Camera &GameEngine::getMainCamera() {
     return camera;
+}
+//
+//
+//
+layer_id GameEngine::getHudLayer() const {
+    return hud_layer;
 }
 //
 //

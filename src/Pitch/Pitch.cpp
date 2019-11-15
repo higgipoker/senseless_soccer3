@@ -1,10 +1,9 @@
 ﻿#include "Pitch.hpp"
-
+//
 #include "Engine/Metrics.hpp"
-#include "Engine/Texture.hpp"
-
-#include <SFML/Graphics/RenderTarget.hpp>
-#include <SFML/Graphics/Texture.hpp>
+#include "Engine/Vector.hpp"
+//
+using namespace Engine;
 //
 //
 //
@@ -13,31 +12,13 @@ inline Color ChalkWhite{210, 210, 210, 255};
 }
 //
 const int StandardLineThickness = 2;
-
-using namespace Engine;
+const int BorderLineThickness = 1;
 //
 //
 //
-Pitch::Pitch(const std::string& in_grass_texture, const sf::FloatRect in_world_bounds) {
+Pitch::Pitch(const std::string& in_grass_texture, const sf::FloatRect in_bounds) {
     // tmp test
     dimensions.origin = {200, 200};
-    // set up the repeating grass texture
-    Texture tex_grass;
-    tex_grass.loadFromFile(in_grass_texture);
-    sf::Sprite grass;
-    tex_grass.setRepeated(true);
-    grass.setTexture(tex_grass);
-
-    // make a texture for drawing the lines on
-    pitch_texture.create(in_world_bounds.width, in_world_bounds.height);
-    pitch.setTexture(pitch_texture.getTexture());
-
-    // size of the target rect for grass tile
-    grass.setTextureRect(
-        sf::IntRect{0, 0, static_cast<int>(pitch_texture.getSize().x), static_cast<int>(pitch_texture.getSize().y)});
-
-    // abs width of texture when at default distance from camera
-    perspective_width = in_world_bounds.width;
 
     // pitch bounds
     init_bounds();
@@ -63,35 +44,23 @@ Pitch::Pitch(const std::string& in_grass_texture, const sf::FloatRect in_world_b
     // north arc
     init_north_arc();
 
-    // flips
-    translate.translate({dimensions.origin.toSfVector()});
-    flip.rotate(180, {dimensions.bounds.getSize().x / 2, dimensions.bounds.getSize().y / 2});
-    translate_and_flip.translate({dimensions.origin.toSfVector()});
-    translate_and_flip.rotate(180, {dimensions.bounds.getSize().x / 2, dimensions.bounds.getSize().y / 2});
+    // the sprite
+    sprite.init(in_bounds, dimensions, in_grass_texture);
 
-    // draw grass and lines to the texture
-    pitch_texture.clear();
-    pitch_texture.draw(grass);
-    pitch_texture.draw(dimensions.draw_bounds, translate);
-    pitch_texture.draw(dimensions.draw_bounds, translate_and_flip);
-    pitch_texture.draw(dimensions.south_6, translate);
-    pitch_texture.draw(dimensions.south_6, translate_and_flip);
-    pitch_texture.draw(dimensions.south_18, translate);
-    pitch_texture.draw(dimensions.south_18, translate_and_flip);
-    pitch_texture.draw(dimensions.center_circle, translate);
-    pitch_texture.draw(dimensions.center_spot, translate);
-    pitch_texture.draw(dimensions.south_penalty_spot, translate);
-    pitch_texture.draw(dimensions.south_penalty_spot, translate_and_flip);
-    pitch_texture.draw(dimensions.south_arc, translate);
-    pitch_texture.draw(dimensions.south_arc, translate_and_flip);
-    //    pitch_texture.draw(dimensions.halfway_line, translate);
-    pitch_texture.display();
+    // minimap is a pitch sprite with no grass texture
+    minimap.init(in_bounds, dimensions);
 }
 //
 //
 //
-void Pitch::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-    target.draw(pitch);
+Engine::Sprite& Pitch::getSprite() {
+    return sprite;
+}
+//
+//
+//
+Engine::Sprite& Pitch::getMiniMap() {
+    return minimap;
 }
 //
 //
@@ -111,15 +80,28 @@ Vector3 Pitch::toPitchSpace(const Vector3& in_vector) const {
 //
 //
 void Pitch::init_bounds() {
-    dimensions.bounds.setPosition(0, 0);
-    dimensions.bounds.setSize(sf::Vector2f(static_cast<float>(Metrics::MetersToPixels(69)),
-                                           static_cast<float>(Metrics::MetersToPixels(105))));
     dimensions.bounds.setFillColor(sf::Color::Transparent);
     dimensions.bounds.setOutlineColor(sf::ChalkWhite);
-    dimensions.bounds.setOutlineThickness(2);
+    dimensions.bounds.setOutlineThickness(BorderLineThickness);
+    dimensions.bounds.setSize(sf::Vector2f(static_cast<float>(Metrics::MetersToPixels(69)),
+                                           static_cast<float>(Metrics::MetersToPixels(105))));
+    dimensions.bounds.setPosition(BorderLineThickness, BorderLineThickness);
 
-    dimensions.draw_bounds = dimensions.bounds;
-    dimensions.draw_bounds.setSize({dimensions.bounds.getSize().x, dimensions.bounds.getSize().y / 2});
+    dimensions.draw_bounds_north.setFillColor(sf::Color::Transparent);
+    dimensions.draw_bounds_north.setOutlineColor(sf::ChalkWhite);
+    dimensions.draw_bounds_north.setOutlineThickness(BorderLineThickness);
+    dimensions.draw_bounds_north.setSize(sf::Vector2f(static_cast<float>(Metrics::MetersToPixels(69)),
+                                           static_cast<float>(Metrics::MetersToPixels(105))));
+    dimensions.draw_bounds_north.setPosition(BorderLineThickness, BorderLineThickness);
+    dimensions.draw_bounds_north.setSize({dimensions.draw_bounds_north.getSize().x, dimensions.draw_bounds_north.getSize().y/2});
+
+    dimensions.draw_bounds_south.setFillColor(sf::Color::Transparent);
+    dimensions.draw_bounds_south.setOutlineColor(sf::ChalkWhite);
+    dimensions.draw_bounds_south.setOutlineThickness(BorderLineThickness);
+    dimensions.draw_bounds_south.setSize(sf::Vector2f(static_cast<float>(Metrics::MetersToPixels(69)),
+                                           static_cast<float>(Metrics::MetersToPixels(105))));
+    dimensions.draw_bounds_south.setPosition(-BorderLineThickness, -BorderLineThickness);
+    dimensions.draw_bounds_south.setSize({dimensions.draw_bounds_south.getSize().x, dimensions.draw_bounds_south.getSize().y/2});
 }
 //
 //
@@ -135,8 +117,6 @@ void Pitch::init_6_yard_boxes() {
     float x = (dimensions.bounds.getSize().x / 2) - (dimensions.south_6.getSize().x / 2);
     float y = dimensions.bounds.getSize().y - dimensions.south_6.getSize().y;
 
-    //    Vector3 tmp = toScreenSpace({x, y});
-    //    x = tmp.x, y = tmp.y;
     dimensions.south_6.setPosition(sf::Vector2f(x, y));
 }
 //
@@ -151,7 +131,7 @@ void Pitch::init_18_yard_boxes() {
     dimensions.south_18.setOutlineThickness(StandardLineThickness);
 
     float x = (dimensions.bounds.getSize().x / 2) - (dimensions.south_18.getSize().x / 2);
-    float y = dimensions.south_18.getSize().y - dimensions.south_18.getSize().y;
+    float y = dimensions.bounds.getSize().y - dimensions.south_18.getSize().y;
 
     //    Vector3 tmp = toScreenSpace({x, y});
     //    x = tmp.x, y = tmp.y;
@@ -170,8 +150,6 @@ void Pitch::init_center_circle() {
     float x = (dimensions.bounds.getSize().x / 2) - dimensions.center_circle.getRadius();
     float y = (dimensions.bounds.getSize().y / 2) - dimensions.center_circle.getRadius();
 
-    //    Vector3 tmp = toScreenSpace({x, y});
-    //    x = tmp.x, y = tmp.y;
     dimensions.center_circle.setPosition(sf::Vector2f(x, y));
 }
 //
@@ -234,36 +212,4 @@ void Pitch::init_halfway_line() {
     Vector3 tmp = toScreenSpace({x, y});
     x = tmp.x, y = tmp.y;
     dimensions.halfway_line.setPosition(sf::Vector2f(x, y));
-}
-//
-//
-//
-void Pitch::perspectivize(const float in_camera_height) {
-    //  float dist_from_camera = in_camera_height - entity_height - 50;
-    //  dist_from_camera = -dist_from_camera;
-    //  if(dist_from_camera){
-    //  float desired_width = pitch_texture.getSize().x /(1-dist_from_camera);
-    //  float desired_height = pitch_texture.getSize().y /(1-dist_from_camera);
-    //  float scale_factor_x = desired_width / pitch.getLocalBounds().width;
-    //  float scale_factor_y = desired_height / pitch.getLocalBounds().height;
-    //  pitch.setScale(scale_factor_x, scale_factor_y);
-    //  }
-    if (perspectivizable) {
-        // size depending on distance from camera
-        //    float dimensions = perspective_width;
-        //    float dist_from_camera = in_camera_height - entity_height;
-
-        //    // other side of camera, don't perspectivize!
-        //    if (dist_from_camera <= 0) {
-        //      setScale({0.f, 0.f});
-        //      return;
-        //    }
-
-        //    float angular_diameter = 2 * (atanf(dimensions / (2 *
-        //    dist_from_camera))); float degs = Degrees(angular_diameter); float
-        //    sprite_scale_factor = degs / dimensions; float sprite_ratio =
-        //    dimensions / getLocalBounds().width; sprite_scale_factor *=
-        //    sprite_ratio; pitch.setScale(sprite_scale_factor,
-        //    sprite_scale_factor);
-    }
 }

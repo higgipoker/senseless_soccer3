@@ -89,6 +89,8 @@ add_executable(senseless_soccer3
     src/Player/PlayerStateRun.cpp
     src/Player/PlayerStateDribble.cpp
     src/Pitch/Pitch.cpp
+    src/Pitch/PitchSprite.cpp
+    src/Pitch/MiniMap.cpp
     src/Ball/Ball.cpp
     src/Ball/BallSprite.cpp
     src/Ball/BallFactory.cpp

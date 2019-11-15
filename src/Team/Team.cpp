@@ -161,7 +161,7 @@ void Team::setMatch(Match &in_match) {
     match = &in_match;
 
     // debugs
-    defensive_line.setSize({match->getPitch().dimensions.bounds.getSize().x, 6});
+    defensive_line.setSize({match->getPitch().getDimensions().bounds.getSize().x, 6});
     defensive_line.setFillColor({255, 0, 0, 50});
 }
 //

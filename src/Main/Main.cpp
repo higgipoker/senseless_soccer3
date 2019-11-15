@@ -52,9 +52,10 @@ int main(int argc, char** args) {
     //
     // pitch
     //
-    UniquePtr<Sprite> pitch = std::make_unique<Pitch>(graphics_folder.getPath(true) + "grass_checked.png", world);
-    engine.addSprite(*pitch.get(), engine.getBackgroundLayer());
-    engine.getDebugUI().providePitch(static_cast<Pitch&>(*pitch.get()));
+    UniquePtr<Pitch> pitch = std::make_unique<Pitch>(graphics_folder.getPath(true) + "grass_checked.png", world);
+    engine.addSprite(pitch->getSprite(), engine.getBackgroundLayer());
+    engine.addSprite(pitch->getMiniMap(), engine.getHudLayer());
+    engine.getDebugUI().providePitch(pitch.get());
 
     //
     // teams
@@ -83,8 +84,8 @@ int main(int argc, char** args) {
     //    match.getHomeTeam().getPlayer().attachInput(engine.getDefaultGamepad());
     //  }
 
-    match.getBall().movable.setPosition(match.getPitch().dimensions.center_spot.getCenter().x,
-                                        match.getPitch().dimensions.center_spot.getCenter().y);
+    match.getBall().movable.setPosition(match.getPitch().getDimensions().center_spot.getCenter().x,
+                                        match.getPitch().getDimensions().center_spot.getCenter().y);
 
     engine.addEntity(match.getBall(), engine.getDefaultLayer());
     engine.getMainCamera().follow(match.getBall());
@@ -98,7 +99,7 @@ int main(int argc, char** args) {
     match.getHomeTeam().getPlayer(0).power_bar = &bar;
     engine.addSprite(bar, engine.getDefaultLayer());
 
-    srand(time(NULL));
+    srand(time(nullptr));
 
     Joysticker joysticker;
     joysticker.input = &engine.getDefaultGamepad();

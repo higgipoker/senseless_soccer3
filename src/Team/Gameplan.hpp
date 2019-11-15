@@ -29,7 +29,7 @@ class Gameplan {
     //
     //
     //
-    void updateDefensiveLine(const Pitch& in_pitch, const Ball& in_ball,
+    void updateDefensiveLine(const Pitch & in_pitch, const Ball& in_ball,
                              const Engine::Direction in_attacking_direction);
     //
     //

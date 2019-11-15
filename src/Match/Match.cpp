@@ -11,7 +11,7 @@ int Match::instances = 0;
 //
 //
 //
-Match::Match(UniquePtr<Sprite> in_pitch, Team &in_home_team, Team &in_away_team, BallType in_ball_type)
+Match::Match(UniquePtr<Pitch> in_pitch, Team &in_home_team, Team &in_away_team, BallType in_ball_type)
     : pitch(std::move(in_pitch)), home_team(in_home_team), away_team(in_away_team) {
     auto ball_texture = std::make_unique<Engine::Texture>();
     ball_texture->loadFromFile(ball_factory.getSpriteSheeet(in_ball_type));
@@ -58,7 +58,7 @@ void Match::update() {
     away_team.update();
 
     // keep the ball in the pitch
-    auto pitchrect = static_cast<Pitch *>(pitch.get())->dimensions.bounds;
+    auto pitchrect = pitch->getDimensions().bounds;
 
     if (ball->movable.position.x < pitchrect.getPosition().x) {
         ball->movable.velocity.x = -ball->movable.velocity.x;
