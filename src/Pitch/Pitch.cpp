@@ -16,7 +16,7 @@ const int BorderLineThickness = 1;
 //
 //
 //
-Pitch::Pitch(const std::string& in_grass_texture, const sf::FloatRect in_bounds) {
+Pitch::Pitch(const std::string& in_grass_texture, const sf::FloatRect in_bounds) : minimap_entity(std::move(minimap)) {
     // tmp test
     dimensions.origin = {200, 200};
 
@@ -48,7 +48,10 @@ Pitch::Pitch(const std::string& in_grass_texture, const sf::FloatRect in_bounds)
     sprite.init(in_bounds, dimensions, in_grass_texture);
 
     // minimap is a pitch sprite with no grass texture
-    minimap.init(in_bounds, dimensions);
+    static_cast<MiniMap*>(&minimap_entity.getSprite())->init(in_bounds, dimensions);
+    minimap_entity.movable.name = "mini map";
+
+    movable.position = dimensions.origin;
 }
 //
 //
@@ -60,7 +63,7 @@ Engine::Sprite& Pitch::getSprite() {
 //
 //
 Engine::Sprite& Pitch::getMiniMap() {
-    return minimap;
+    return minimap_entity.getSprite();
 }
 //
 //
@@ -91,17 +94,19 @@ void Pitch::init_bounds() {
     dimensions.draw_bounds_north.setOutlineColor(sf::ChalkWhite);
     dimensions.draw_bounds_north.setOutlineThickness(BorderLineThickness);
     dimensions.draw_bounds_north.setSize(sf::Vector2f(static_cast<float>(Metrics::MetersToPixels(69)),
-                                           static_cast<float>(Metrics::MetersToPixels(105))));
+                                                      static_cast<float>(Metrics::MetersToPixels(105))));
     dimensions.draw_bounds_north.setPosition(BorderLineThickness, BorderLineThickness);
-    dimensions.draw_bounds_north.setSize({dimensions.draw_bounds_north.getSize().x, dimensions.draw_bounds_north.getSize().y/2});
+    dimensions.draw_bounds_north.setSize(
+        {dimensions.draw_bounds_north.getSize().x, dimensions.draw_bounds_north.getSize().y / 2});
 
     dimensions.draw_bounds_south.setFillColor(sf::Color::Transparent);
     dimensions.draw_bounds_south.setOutlineColor(sf::ChalkWhite);
     dimensions.draw_bounds_south.setOutlineThickness(BorderLineThickness);
     dimensions.draw_bounds_south.setSize(sf::Vector2f(static_cast<float>(Metrics::MetersToPixels(69)),
-                                           static_cast<float>(Metrics::MetersToPixels(105))));
+                                                      static_cast<float>(Metrics::MetersToPixels(105))));
     dimensions.draw_bounds_south.setPosition(-BorderLineThickness, -BorderLineThickness);
-    dimensions.draw_bounds_south.setSize({dimensions.draw_bounds_south.getSize().x, dimensions.draw_bounds_south.getSize().y/2});
+    dimensions.draw_bounds_south.setSize(
+        {dimensions.draw_bounds_south.getSize().x, dimensions.draw_bounds_south.getSize().y / 2});
 }
 //
 //
@@ -212,4 +217,11 @@ void Pitch::init_halfway_line() {
     Vector3 tmp = toScreenSpace({x, y});
     x = tmp.x, y = tmp.y;
     dimensions.halfway_line.setPosition(sf::Vector2f(x, y));
+}
+//
+//
+//
+void Pitch::update() {
+    sprite.setPosition(movable.position.x, movable.position.y);
+    minimap_entity.update();
 }

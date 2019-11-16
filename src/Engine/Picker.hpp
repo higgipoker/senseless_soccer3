@@ -30,6 +30,8 @@ private:
     bool dragging = false;
     Movable* grabbed = nullptr;
     sf::Vector2f last_dragged_position;
+    bool hud_grabbed = false;
+    sf::Vector2f grab_offset;
 };
 
 }  // namespace Engine

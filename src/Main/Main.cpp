@@ -54,8 +54,10 @@ int main(int argc, char** args) {
     //
     UniquePtr<Pitch> pitch = std::make_unique<Pitch>(graphics_folder.getPath(true) + "grass_checked.png", world);
     engine.addSprite(pitch->getSprite(), engine.getBackgroundLayer());
-    engine.addSprite(pitch->getMiniMap(), engine.getHudLayer());
+    // engine.addSprite(pitch->getMiniMap(), engine.getHudLayer());
     engine.getDebugUI().providePitch(pitch.get());
+    engine.addEntity(pitch->getMiniMapEntity(), engine.getHudLayer());
+    pitch->getMiniMapEntity().movable.position = {100, 100};
 
     //
     // teams
@@ -70,7 +72,7 @@ int main(int argc, char** args) {
     Match match(std::move(pitch), team1, team2);
 
     match.getHomeTeam().addDefaultPlayers(match.getAwayTeam());
-    //    match.getAwayTeam().addDefaultPlayers(match.getHomeTeam());
+    match.getAwayTeam().addDefaultPlayers(match.getHomeTeam());
 
     for (size_t i = 0; i < match.getHomeTeam().numberPlayers(); ++i) {
         engine.addEntity(match.getHomeTeam().getPlayer(i));
@@ -110,6 +112,16 @@ int main(int argc, char** args) {
     engine.getMainCamera().setWorldRect(world);
     while (engine.isRunning()) {
         engine.step();
+        auto v1 = match.getHomeTeam().getPlayerPositions();
+        auto v2 = match.getAwayTeam().getPlayerPositions();
+        std::vector<Engine::Vector3> v3;
+        for(auto &i:v1){
+            v3.push_back(i);
+        }
+        for(auto &i:v2){
+            v3.push_back(i);
+        }
+        static_cast<MiniMap*>(&match.getPitch().getMiniMap())->updatePlayerPositions(v3);
         match.update();
         // joysticker.update();
     }

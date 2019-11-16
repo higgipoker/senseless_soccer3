@@ -98,6 +98,10 @@ class Movable {
     // for debug picking
     std::string name;
 
+
+    // tmp todo
+    bool is_hud = false;
+
    private:
     //
     //

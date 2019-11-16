@@ -17,6 +17,12 @@ void Picker::update() {
     if (dragging && grabbed) {
         sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
         sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
+        if (hud_grabbed) {
+            worldPos.x = static_cast<float>(pixelPos.x);
+            worldPos.y = static_cast<float>(pixelPos.y);
+        }
+        worldPos.x -= grab_offset.x;
+        worldPos.y -= grab_offset.y;
         grabbed->setPosition(worldPos);
         last_dragged_position = worldPos;
     }
@@ -32,11 +38,26 @@ void Picker::handleInput(const sf::Event &in_event) {
             sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
             // convert it to world coordinates
             sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
+
             for (auto &entity : movables) {
-                if (Collider::contains(entity->getBounds(), worldPos)) {
-                    std::cout << "Picked " << entity->name << std::endl;
-                    dragging = true;
-                    grabbed = entity;
+                if (entity->is_hud) {
+                    if (Collider::contains(entity->getBounds(), pixelPos)) {
+                        std::cout << "Picked " << entity->name << std::endl;
+                        hud_grabbed = true;
+                        dragging = true;
+                        grabbed = entity;
+                        grab_offset.x = pixelPos.x - entity->getBounds().left;
+                        grab_offset.y = pixelPos.y - entity->getBounds().top;
+                    }
+                } else {
+                    if (Collider::contains(entity->getBounds(), worldPos)) {
+                        hud_grabbed = false;
+                        std::cout << "Picked " << entity->name << std::endl;
+                        dragging = true;
+                        grabbed = entity;
+                        grab_offset.x = 0;
+                        grab_offset.y = 0;
+                    }
                 }
             }
         }

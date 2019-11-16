@@ -173,7 +173,16 @@ Direction Team::getAttackingGoal() const {
 //
 //
 //
-
 Direction Team::getDefendingGoal() const {
     return defending_goal;
+}
+//
+//
+//
+std::vector<Vector3> Team::getPlayerPositions() {
+    std::vector<Vector3> positions;
+    for (auto &p : players) {
+        positions.push_back((p->movable.position - match->getPitch().getDimensions().origin));
+    }
+    return positions;
 }

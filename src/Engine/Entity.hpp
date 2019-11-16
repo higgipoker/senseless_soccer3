@@ -16,9 +16,13 @@ namespace Engine {
 class Entity {
  public:
   //
-  // constructs an enitty without a graphical aspect (default movable)
+  //
   //
   Entity();
+  //
+  //
+  //
+  Entity(UniquePtr<Sprite> in_sprite);
   //
   //
   //
@@ -43,6 +47,12 @@ class Entity {
   //
   //
   Sprite &getShadow();
+  //
+  //
+  //
+  bool hasShadow(){
+      return has_shadow;
+  }
 
   // has a movable aspect, instead of inheritance
   Movable movable;
@@ -50,6 +60,7 @@ class Entity {
  protected:
   UniquePtr<Sprite> sprite;
   UniquePtr<Sprite> shadow;
+  bool has_shadow = false;
   int shadow_offset = 2;
   float speed = 1.F;
 

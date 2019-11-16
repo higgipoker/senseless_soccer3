@@ -53,6 +53,7 @@ Match::~Match(){
 //
 //
 void Match::update() {
+    pitch->update();
     ball->update();
     home_team.update();
     away_team.update();

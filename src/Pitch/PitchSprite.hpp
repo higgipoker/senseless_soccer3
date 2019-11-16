@@ -33,4 +33,5 @@ class PitchSprite : public Engine::Sprite {
 
     // to flip shapes
     sf::Transform flip;
+
 };

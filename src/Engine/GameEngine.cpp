@@ -16,9 +16,8 @@ GameEngine::GameEngine(const std::string &in_window_title, int in_window_width, 
       camera(in_window_width, in_window_height),
       debug_gui(window),
       picker(window, movables) {
-
     hud_view.setSize(in_window_width, in_window_height);
-    hud_view.setCenter(in_window_width/2, in_window_height/2);
+    hud_view.setCenter(in_window_width / 2, in_window_height / 2);
 
     camera.movable.position = {static_cast<float>(in_window_width) / 2, static_cast<float>(in_window_height) / 2};
     background_layer = addLayer(false);
@@ -70,7 +69,7 @@ void GameEngine::step() {
     }
 
     // render
-    window.clear(sf::Color::Red);
+    window.clear({20, 120, 0});
     getMainCamera().update();
     window.setView(camera.getview());
 
@@ -141,8 +140,15 @@ void GameEngine::addControllable(Controllable &in_controllable) {
 //
 //
 void GameEngine::addEntity(Entity &in_entity, layer_id in_layer_id) {
+    // tmp todo
+    if (in_layer_id == getHudLayer()) {
+        in_entity.movable.is_hud = true;
+    }
+
     addSprite(in_entity.getSprite(), in_layer_id);
-    addSprite(in_entity.getShadow(), shadow_layer);
+    if (in_entity.hasShadow()) {
+        addSprite(in_entity.getShadow(), shadow_layer);
+    }
     movables.insert(&in_entity.movable);
 }
 //

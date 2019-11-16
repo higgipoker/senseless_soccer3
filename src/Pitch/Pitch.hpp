@@ -3,14 +3,20 @@
 #include "PitchSprite.hpp"
 #include "PitchTypes.hpp"
 //
+#include "Engine/Entity.hpp"
 //
 //
-class Pitch {
+//
+class Pitch : public Engine::Entity {
    public:
     //
     //
     //
     Pitch(const std::string &in_grass_texture, const sf::FloatRect in_bounds);
+    //
+    //
+    //
+    void update();
     //
     //
     //
@@ -33,11 +39,18 @@ class Pitch {
     const PitchDimensions &getDimensions() const {
         return dimensions;
     }
+    //
+    //
+    //
+    Engine::Entity &getMiniMapEntity(){
+        return minimap_entity;
+    }
 
    private:
     PitchDimensions dimensions;
     PitchSprite sprite;
-    MiniMap minimap;
+    UniquePtr<Engine::Sprite> minimap {std::make_unique<MiniMap>()};
+    Engine::Entity minimap_entity;
     //
     //
     //

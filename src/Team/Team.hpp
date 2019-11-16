@@ -98,6 +98,10 @@ class Team {
     //
     //
     //
+    std::vector<Engine::Vector3> getPlayerPositions();
+    //
+    //
+    //
     Gameplan gameplan;
     // a team has its own sprite for rendering debug primitives etc
     Engine::Sprite sprite;

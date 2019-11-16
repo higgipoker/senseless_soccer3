@@ -14,7 +14,7 @@ void PitchSprite::init(const sf::FloatRect in_bounds, const PitchDimensions& in_
                        const std::string& in_grass_texture) {
     // make a texture for drawing the lines on
     // pitch_texture.create(in_bounds.width, in_bounds.height);
-    pitch_texture.create(in_dimensions.bounds.getSize().x+4, in_dimensions.bounds.getSize().y+4);
+    pitch_texture.create(in_dimensions.bounds.getSize().x + 4, in_dimensions.bounds.getSize().y + 4);
     sprite.setTexture(pitch_texture.getTexture());
 
     // set up the repeating grass texture
@@ -49,10 +49,13 @@ void PitchSprite::init(const sf::FloatRect in_bounds, const PitchDimensions& in_
     pitch_texture.draw(in_dimensions.south_arc, flip);
     pitch_texture.display();
 
+    // translate.translate(in_dimensions.origin.x, in_dimensions.origin.y);
 }
 //
 //
 //
 void PitchSprite::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-    target.draw(sprite);
+    sf::Transform translate;
+    translate.translate(getPosition());
+    target.draw(sprite, translate);
 }
