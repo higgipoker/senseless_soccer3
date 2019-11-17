@@ -25,6 +25,7 @@ GameEngine::GameEngine(const std::string &in_window_title, int in_window_width, 
     default_layer = addLayer(false);
     camera.setHeight(50);
     addEntity(camera);
+    addControllable(camera);
 
     last_time = clock.getElapsedTime().asSeconds();
 }

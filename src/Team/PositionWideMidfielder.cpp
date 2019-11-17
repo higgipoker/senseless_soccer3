@@ -8,21 +8,21 @@ using namespace Engine;
 //
 void PositionWideMidfielder::init() {
     {  // kick off positions
-        Vector3 def{0, pitch.getDimensions().halfway_line.getPosition().y * 0.65F};
-        Vector3 att{0, pitch.getDimensions().halfway_line.getPosition().y * 0.75F};
+        Vector3 def{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y * 0.65F};
+        Vector3 att{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y * 0.85F};
         if (modifier_mask & modifier_left) {
-            def.x = att.x = pitch.getDimensions().bounds.getSize().x * 0.16F;
+            def.x = att.x = pitch.getPointOfInterest(PitchPointsOfInterest::SideWest).x + 200;
 
         } else if (modifier_mask & modifier_right) {
-            def.x = att.x = pitch.getDimensions().bounds.getSize().x * 0.83F;
+            def.x = att.x = pitch.getPointOfInterest(PitchPointsOfInterest::SideEast).x - 200;
         }
         set_piece_positions_defending[Situation::KickOff] = {{def}, {def}};
         set_piece_positions_attacking[Situation::KickOff] = {{att}, {att}};
     }
 
     {  // goal kick positions
-        Vector3 def{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway).y*0.6F};
-        Vector3 att{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway).y*0.6F};
+        Vector3 def{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway).y * 0.6F};
+        Vector3 att{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway).y * 0.6F};
         if (modifier_mask & modifier_left) {
             def.x = att.x = pitch.getPointOfInterest(PitchPointsOfInterest::SideWest).x + 100;
 

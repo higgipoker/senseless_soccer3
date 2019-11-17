@@ -2,6 +2,8 @@
 
 #include "Entity.hpp"
 
+#include "Engine/Controllable.hpp"
+
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/View.hpp>
 
@@ -9,12 +11,16 @@ namespace Engine {
 //
 //
 //
-class Camera : public Entity {
+class Camera : public Entity, public Controllable {
    public:
     //
     //
     //
     Camera(float in_viewport_width, float in_viewport_height);
+    //
+    //
+    //
+    void handleInput() override;
     //
     //
     //

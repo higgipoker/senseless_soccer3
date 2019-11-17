@@ -14,8 +14,25 @@ Camera::Camera(float in_viewport_width, float in_viewport_height)
       view{{0, 0, in_viewport_width, in_viewport_height}} {
     movable.toggleGravity(false);
     movable.properties.co_friction = 0.01F;
-    speed = 2;
+    speed = 5;
     collider.setRadius(200);
+}
+//
+//
+//
+void Camera::handleInput() {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+        movable.velocity.y += -1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+        movable.velocity.y += 1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+        movable.velocity.x += -1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+        movable.velocity.x += 1;
+    }
 }
 //
 //
@@ -31,11 +48,12 @@ void Camera::follow(Entity &in_entity) {
 //
 void Camera::update() {
     if (following) {
-        if((following->movable.position - movable.position).magnitude2d()>50){
-            Vector3 dir = (following->movable.position-movable.position);
+        if ((following->movable.position - movable.position).magnitude2d() > 50 &&
+            Math::greater_than(following->movable.velocity.magnitude2d(), 0)) {
+            Vector3 dir = (following->movable.position - movable.position);
             dir.to2d();
             dir.normalise();
-            movable.velocity = dir *speed;
+            movable.velocity = dir * speed;
         }
     }
 

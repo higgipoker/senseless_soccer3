@@ -9,23 +9,23 @@ using namespace Engine;
 void PositionCenterForward::init() {
     {  // kick off positions
         // ball is in center so out ball east and west are the same
-        Vector3 def{0, pitch.getDimensions().halfway_line.getPosition().y - 50};
-        Vector3 att{0, pitch.getDimensions().halfway_line.getPosition().y};
+        Vector3 def{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y};
+        Vector3 att{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y};
         if (modifier_mask & modifier_left) {
-            def.x = pitch.getDimensions().bounds.getSize().x / 2 - pitch.getDimensions().center_circle.getRadius();
-            att.x = pitch.getDimensions().bounds.getSize().x / 2 - 20;
+            def.x = pitch.getPointOfInterest(PitchPointsOfInterest::CentercircleWest).x;
+            att.x = pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).x - 20;
 
         } else if (modifier_mask & modifier_right) {
-            def.x = pitch.getDimensions().bounds.getSize().x / 2 + pitch.getDimensions().center_circle.getRadius();
-            att.x = pitch.getDimensions().bounds.getSize().x / 2 + 20;
+            def.x = pitch.getPointOfInterest(PitchPointsOfInterest::CentercircleEast).x;
+            att.x = pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).x + 20;
         }
         set_piece_positions_defending[Situation::KickOff] = {{def}, {def}};
         set_piece_positions_attacking[Situation::KickOff] = {{att}, {att}};
     }
 
     {  // goal kick positions
-        Vector3 def{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y-100};
-        Vector3 att{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y-100};
+        Vector3 def{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y - 100};
+        Vector3 att{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y - 100};
         if (modifier_mask & modifier_left) {
             def.x = pitch.getPointOfInterest(PitchPointsOfInterest::CentercircleWest).x;
             att.x = pitch.getPointOfInterest(PitchPointsOfInterest::CentercircleWest).x;
