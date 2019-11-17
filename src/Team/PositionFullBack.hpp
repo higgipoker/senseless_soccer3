@@ -8,7 +8,8 @@ class PositionFullBack : public PositionDefender {
     //
     //
     //
-    PositionFullBack(const Pitch &in_pitch) : PositionDefender(in_pitch) {
+    PositionFullBack(const Pitch &in_pitch, const Team &in_my_team, const Team &in_other_team)
+        : PositionDefender(in_pitch, in_my_team, in_other_team) {
     }
     //
     //
@@ -17,5 +18,6 @@ class PositionFullBack : public PositionDefender {
     //
     //
     //
-    Engine::Vector3 getPlayingPosition(const Situation in_situation, const Team &in_my_team, const Team &in_other_team, const Ball &in_ball) override;
+    Engine::Vector3 getPlayingPosition(const Situation in_situation,
+                                       const Ball &in_ball) override;
 };

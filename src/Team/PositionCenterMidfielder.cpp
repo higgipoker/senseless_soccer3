@@ -9,33 +9,46 @@ using namespace Engine;
 void PositionCenterMidfielder::init() {
     {  // kick off positions
         Vector3 def{0, pitch.getDimensions().halfway_line.getPosition().y * 0.65F};
-        Vector3 att{0, pitch.getDimensions().halfway_line.getPosition().y};
+        Vector3 att{0, pitch.getDimensions().halfway_line.getPosition().y * 0.75F};
         if (modifier_mask & modifier_left) {
             def.x = att.x =
-                pitch.getDimensions().bounds.getSize().x / 2 - pitch.getDimensions().center_circle.getRadius()/1.5F;
+                pitch.getDimensions().bounds.getSize().x / 2 - pitch.getDimensions().center_circle.getRadius() / 1.5F;
 
         } else if (modifier_mask & modifier_right) {
             def.x = att.x =
-                pitch.getDimensions().bounds.getSize().x / 2 + pitch.getDimensions().center_circle.getRadius()/1.5F;
+                pitch.getDimensions().bounds.getSize().x / 2 + pitch.getDimensions().center_circle.getRadius() / 1.5F;
         }
-        set_piece_positions[Situation::KickOff] = {{def}, {att}};
+        set_piece_positions_defending[Situation::KickOff] = {{def}, {def}};
+        set_piece_positions_attacking[Situation::KickOff] = {{att}, {att}};
+    }
+
+    {  // goal kick positions
+        Vector3 def{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway).y*0.6F};
+        Vector3 att{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway).y*0.6F};
+        if (modifier_mask & modifier_left) {
+            def.x = att.x = pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).x - 100;
+
+        } else if (modifier_mask & modifier_right) {
+            def.x = att.x = pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).x + 100;
+        }
+        set_piece_positions_defending[Situation::GoalKick] = {{def}, {def}};
+        set_piece_positions_attacking[Situation::GoalKick] = {{att}, {att}};
     }
 }
 //
 //
 //
-Engine::Vector3 PositionCenterMidfielder::getPlayingPosition(const Situation in_situation, const Team &in_my_team,
-                                                             const Team &in_other_team, const Ball &in_ball) {
+Engine::Vector3 PositionCenterMidfielder::getPlayingPosition(const Situation in_situation, const Ball &in_ball) {
     Vector3 ball = pitch.toPitchSpace(in_ball.movable.position);
     // rotate perception of ball if attacking towards south
-    if (in_my_team.getAttackingGoal() == Direction::South) {
+    if (my_team.getAttackingGoal() == Direction::South) {
         ball.rotate(180, pitch.getDimensions().bounds.getSize().x / 2, pitch.getDimensions().bounds.getSize().y / 2);
     }
 
     float middle = pitch.getDimensions().bounds.getSize().x / 2;
     float ball_to_middle = ball.x - middle;
     float out_x = 0;
-    switch (in_my_team.gameplan.defensive_width_type) {
+    switch (my_team.gameplan.defensive_width_type) {
         case DefensivewidthType::Narrow:
             out_x = middle + ball_to_middle * 0.3F;
             break;
@@ -63,11 +76,11 @@ Engine::Vector3 PositionCenterMidfielder::getPlayingPosition(const Situation in_
     }
     out_x = std::clamp(out_x, min, max);
     float out_y = ball.y - 100;
-    out_y = std::clamp(out_y, in_my_team.gameplan.getDefensiveLine().y, pitch.getDimensions().bounds.getSize().y);
+    out_y = std::clamp(out_y, my_team.gameplan.getDefensiveLine().y, pitch.getDimensions().bounds.getSize().y);
     Vector3 result{out_x, ball.y - 100};
 
     // rotate for other side?
-    if (in_my_team.getAttackingGoal() == Direction::South) {
+    if (my_team.getAttackingGoal() == Direction::South) {
         {  // rotate on x
             Vector3 tmp{result.x, 0};
             tmp.rotate(180, middle, 0);
@@ -81,5 +94,5 @@ Engine::Vector3 PositionCenterMidfielder::getPlayingPosition(const Situation in_
         }
     }
 
-    return pitch.toScreenSpace(result);
+    return result;
 }

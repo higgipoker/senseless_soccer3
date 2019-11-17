@@ -31,23 +31,18 @@ void PlayingPosition::applyModifier(const PositionModifier in_mod) {
 //
 //
 //
-Engine::Vector3 PlayingPosition::getTargetPosition(const Situation in_situation, const Team &in_my_team,
-                                                   const Team &in_other_team, const Ball &in_ball) {
+Engine::Vector3 PlayingPosition::getTargetPosition(const Situation in_situation, const Ball &in_ball) {
     Vector3 result;
     switch (in_situation) {
         case Situation::Playing:
-            result = getPlayingPosition(in_situation, in_my_team, in_other_team, in_ball);
+            result = getPlayingPosition(in_situation, in_ball);
             break;
         case Situation::KickOff:
-            result = getSetPiecePosition(in_situation, in_my_team, in_other_team, in_ball);
-            break;
         case Situation::GoalKick:
-            break;
         case Situation::Corner:
-            break;
         case Situation::FreeKick:
-            break;
         case Situation::ThrowIn:
+            result = getSetPiecePosition(in_situation, in_ball);
             break;
     }
     return pitch.toScreenSpace(result);
@@ -55,29 +50,30 @@ Engine::Vector3 PlayingPosition::getTargetPosition(const Situation in_situation,
 //
 //
 //
-Engine::Vector3 PlayingPosition::getSetPiecePosition(const Situation in_situation, const Team &in_my_team,
-                                                     const Team &in_other_team, const Ball &in_ball) {
+Engine::Vector3 PlayingPosition::getSetPiecePosition(const Situation in_situation, const Ball &in_ball,
+                                                     const Direction in_pitch_side) {
     Engine::Vector3 result;
-    switch (in_situation) {
-        case Situation::KickOff: {
-            result = set_piece_positions[Situation::KickOff].first;
-            // rotate south->north?
-            if (in_my_team.getAttackingGoal() == Direction::South) {
-                Vector3 tmp{0, result.y};
-                tmp.rotate(180, 0, pitch.getDimensions().halfway_line.getPosition().y);
-                result.y = tmp.y;
+    switch (my_team.getAttackingState()) {
+        case AttackingState::Defending:
+            if (in_pitch_side == Direction::West) {
+                result = set_piece_positions_defending[in_situation].first;
+            } else {
+                result = set_piece_positions_defending[in_situation].second;
             }
-        } break;
-        case Situation::GoalKick:
             break;
-        case Situation::Corner:
+        case AttackingState::Attacking:
+            if (in_pitch_side == Direction::West) {
+                result = set_piece_positions_attacking[in_situation].first;
+            } else {
+                result = set_piece_positions_attacking[in_situation].second;
+            }
             break;
-        case Situation::FreeKick:
-            break;
-        case Situation::ThrowIn:
-            break;
-        case Situation::Playing:
-            break;
+    }
+    // rotate south->north?
+    if (my_team.getAttackingGoal() == Direction::South) {
+        Vector3 tmp{0, result.y};
+        tmp.rotate(180, 0, pitch.getDimensions().halfway_line.getPosition().y);
+        result.y = tmp.y;
     }
     return result;
 }

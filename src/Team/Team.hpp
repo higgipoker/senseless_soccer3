@@ -48,7 +48,7 @@ class Team {
     //
     //
     //
-    void addDefaultPlayers(const Team & in_other_team);
+    void addDefaultPlayers(const Team& in_other_team);
     //
     //
     //
@@ -87,6 +87,14 @@ class Team {
     //
     //
     Engine::Direction getDefendingGoal() const;
+    //
+    //
+    //
+    void setAttackingState(const AttackingState in_state);
+    //
+    //
+    //
+    AttackingState getAttackingState() const;
     //
     //
     //

@@ -8,7 +8,8 @@ class PositionWideMidfielder : public PositionMidfielder {
     //
     //
     //
-    PositionWideMidfielder(const Pitch &in_pitch) : PositionMidfielder(in_pitch) {
+    PositionWideMidfielder(const Pitch &in_pitch, const Team &in_my_team, const Team &in_other_team)
+        : PositionMidfielder(in_pitch, in_my_team, in_other_team) {
     }
     //
     //
@@ -17,6 +18,5 @@ class PositionWideMidfielder : public PositionMidfielder {
     //
     //
     //
-    Engine::Vector3 getPlayingPosition(const Situation in_situation, const Team &in_my_team, const Team &in_other_team,
-                                       const Ball &in_ball) override;
+    Engine::Vector3 getPlayingPosition(const Situation in_situation, const Ball &in_ball) override;
 };

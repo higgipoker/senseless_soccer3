@@ -8,36 +8,52 @@ using namespace Engine;
 //
 void PositionCenterForward::init() {
     {  // kick off positions
+        // ball is in center so out ball east and west are the same
         Vector3 def{0, pitch.getDimensions().halfway_line.getPosition().y - 50};
         Vector3 att{0, pitch.getDimensions().halfway_line.getPosition().y};
         if (modifier_mask & modifier_left) {
-            def.x = att.x =
-                pitch.getDimensions().bounds.getSize().x / 2 - pitch.getDimensions().center_circle.getRadius();
+            def.x = pitch.getDimensions().bounds.getSize().x / 2 - pitch.getDimensions().center_circle.getRadius();
+            att.x = pitch.getDimensions().bounds.getSize().x / 2 - 20;
 
         } else if (modifier_mask & modifier_right) {
-            def.x = att.x =
-                pitch.getDimensions().bounds.getSize().x / 2 + pitch.getDimensions().center_circle.getRadius();
+            def.x = pitch.getDimensions().bounds.getSize().x / 2 + pitch.getDimensions().center_circle.getRadius();
+            att.x = pitch.getDimensions().bounds.getSize().x / 2 + 20;
         }
-        set_piece_positions[Situation::KickOff] = {{def}, {att}};
+        set_piece_positions_defending[Situation::KickOff] = {{def}, {def}};
+        set_piece_positions_attacking[Situation::KickOff] = {{att}, {att}};
+    }
+
+    {  // goal kick positions
+        Vector3 def{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y-100};
+        Vector3 att{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y-100};
+        if (modifier_mask & modifier_left) {
+            def.x = pitch.getPointOfInterest(PitchPointsOfInterest::CentercircleWest).x;
+            att.x = pitch.getPointOfInterest(PitchPointsOfInterest::CentercircleWest).x;
+
+        } else if (modifier_mask & modifier_right) {
+            def.x = pitch.getPointOfInterest(PitchPointsOfInterest::CentercircleEast).x;
+            att.x = pitch.getPointOfInterest(PitchPointsOfInterest::CentercircleEast).x;
+        }
+        set_piece_positions_defending[Situation::GoalKick] = {{def}, {def}};
+        set_piece_positions_attacking[Situation::GoalKick] = {{att}, {att}};
     }
 }
 //
 //
 //
-Engine::Vector3 PositionCenterForward::getPlayingPosition(const Situation in_situation, const Team &in_my_team,
-                                                          const Team &in_other_team, const Ball &in_ball) {
+Engine::Vector3 PositionCenterForward::getPlayingPosition(const Situation in_situation, const Ball &in_ball) {
     Vector3 result;
     float middle = pitch.getDimensions().bounds.getSize().x / 2;
 
     Vector3 ball = pitch.toPitchSpace(in_ball.movable.position);
     // rotate perception of ball if attacking towards south
-    if (in_my_team.getAttackingGoal() == Direction::South) {
+    if (my_team.getAttackingGoal() == Direction::South) {
         ball.rotate(180, pitch.getDimensions().bounds.getSize().x / 2, pitch.getDimensions().bounds.getSize().y / 2);
     }
 
     float ball_to_middle = ball.x - middle;
     float out_x = 0;
-    switch (in_my_team.gameplan.defensive_width_type) {
+    switch (my_team.gameplan.defensive_width_type) {
         case DefensivewidthType::Narrow:
             out_x = middle + ball_to_middle * 0.3F;
             break;
@@ -64,15 +80,21 @@ Engine::Vector3 PositionCenterForward::getPlayingPosition(const Situation in_sit
         max = middle + constraint_width;
     }
     out_x = std::clamp(out_x, min, max);
-    result = {out_x, in_other_team.gameplan.getDefensiveLine().y};
-    result.y -= 100;
+    result = {out_x, other_team.gameplan.getDefensiveLine().y};
+
+    // TODO
+    if (my_team.getAttackingGoal() == Direction::South) {
+        result.y += 100;
+    } else {
+        result.y -= 100;
+    }
 
     // rotate left to right?
-    if (in_my_team.getAttackingGoal() == Direction::South) {
+    if (my_team.getAttackingGoal() == Direction::South) {
         Vector3 tmp{result.x, 0};
         tmp.rotate(180, middle, 0);
         result.x = tmp.x;
     }
 
-    return pitch.toScreenSpace(result);
+    return result;
 }

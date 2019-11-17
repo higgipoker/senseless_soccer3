@@ -43,5 +43,5 @@ void Seek::stop() {
 //
 //
 bool Seek::finished() {
-    return Math::less_than((target - player.movable.position).magnitude(), 1);
+    return Math::less_than((target - player.movable.position).magnitude(), 5);
 }

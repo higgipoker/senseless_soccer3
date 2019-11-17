@@ -11,7 +11,8 @@ class PositionCenterForward : public PositionForward {
     //
     //
     //
-    PositionCenterForward(const Pitch &in_pitch) : PositionForward(in_pitch) {
+    PositionCenterForward(const Pitch &in_pitch, const Team &in_my_team, const Team &in_other_team)
+        : PositionForward(in_pitch, in_my_team, in_other_team) {
     }
     //
     //
@@ -20,6 +21,6 @@ class PositionCenterForward : public PositionForward {
     //
     //
     //
-    Engine::Vector3 getPlayingPosition(const Situation in_situation, const Team &in_my_team, const Team &in_other_team,
+    Engine::Vector3 getPlayingPosition(const Situation in_situation,
                                        const Ball &in_ball) override;
 };

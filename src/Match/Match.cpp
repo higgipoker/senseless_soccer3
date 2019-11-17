@@ -39,13 +39,16 @@ Match::Match(UniquePtr<Pitch> in_pitch, Team &in_home_team, Team &in_away_team, 
     home_team.gameplan.defensive_width_type = DefensivewidthType::Normal;
     away_team.gameplan.defensive_width_type = DefensivewidthType::Normal;
 
+    home_team.setAttackingState(AttackingState::Attacking);
+    away_team.setAttackingState(AttackingState::Defending);
+
     ++instances;
     std::cout << instances << " matches" << std::endl;
 }
 //
 //
 //
-Match::~Match(){
+Match::~Match() {
     --instances;
     std::cout << instances << " matches" << std::endl;
 }

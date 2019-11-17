@@ -35,19 +35,28 @@ class PlayingPosition {
     //
     //
    public:
+    std::string name = "PlayingPosition";
     //
     //
     //
-    PlayingPosition(const Pitch &in_pitch) : pitch(in_pitch) {
+    PlayingPosition(const Pitch &in_pitch, const Team &in_my_team, const Team &in_other_team)
+        : pitch(in_pitch), my_team(in_my_team), other_team(in_other_team) {
         ++instances;
         std::cout << instances << " positions" << std::endl;
 
-        set_piece_positions[Situation::Playing] = {{}, {}};
-        set_piece_positions[Situation::KickOff] = {{}, {}};
-        set_piece_positions[Situation::GoalKick] = {{}, {}};
-        set_piece_positions[Situation::Corner] = {{}, {}};
-        set_piece_positions[Situation::FreeKick] = {{}, {}};
-        set_piece_positions[Situation::ThrowIn] = {{}, {}};
+        set_piece_positions_defending[Situation::Playing] = {{}, {}};
+        set_piece_positions_defending[Situation::KickOff] = {{}, {}};
+        set_piece_positions_defending[Situation::GoalKick] = {{}, {}};
+        set_piece_positions_defending[Situation::Corner] = {{}, {}};
+        set_piece_positions_defending[Situation::FreeKick] = {{}, {}};
+        set_piece_positions_defending[Situation::ThrowIn] = {{}, {}};
+
+        set_piece_positions_attacking[Situation::Playing] = {{}, {}};
+        set_piece_positions_attacking[Situation::KickOff] = {{}, {}};
+        set_piece_positions_attacking[Situation::GoalKick] = {{}, {}};
+        set_piece_positions_attacking[Situation::Corner] = {{}, {}};
+        set_piece_positions_attacking[Situation::FreeKick] = {{}, {}};
+        set_piece_positions_attacking[Situation::ThrowIn] = {{}, {}};
     }
     //
     //
@@ -63,18 +72,16 @@ class PlayingPosition {
     //
     //
     //
-    virtual Engine::Vector3 getTargetPosition(const Situation in_situation, const Team &in_my_team,
-                                              const Team &in_other_team, const Ball &in_ball);
+    virtual Engine::Vector3 getTargetPosition(const Situation in_situation, const Ball &in_ball);
     //
     //
     //
-    virtual Engine::Vector3 getPlayingPosition(const Situation in_situation, const Team &in_my_team,
-                                               const Team &in_other_team, const Ball &in_ball) = 0;
+    virtual Engine::Vector3 getPlayingPosition(const Situation in_situation, const Ball &in_ball) = 0;
     //
     //
     //
-    Engine::Vector3 getSetPiecePosition(const Situation in_situation, const Team &in_my_team,
-                                                const Team &in_other_team, const Ball &in_ball);
+    Engine::Vector3 getSetPiecePosition(const Situation in_situation, const Ball &in_ball,
+                                        const Engine::Direction in_pitch_side = Engine::Direction::West);
 
     //
     //
@@ -83,12 +90,15 @@ class PlayingPosition {
     //
     //
     //
-    std::map<Situation, std::pair<Engine::Vector3, Engine::Vector3> > set_piece_positions;
+    std::map<Situation, std::pair<Engine::Vector3, Engine::Vector3> > set_piece_positions_defending;
+    std::map<Situation, std::pair<Engine::Vector3, Engine::Vector3> > set_piece_positions_attacking;
     //
     //
     //
    protected:
     const Pitch &pitch;
+    const Team &my_team;
+    const Team &other_team;
     unsigned char modifier_mask{modifier_none};
     static int instances;
 };

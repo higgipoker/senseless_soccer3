@@ -16,7 +16,7 @@ class PitchSprite : public Engine::Sprite {
     //
     //
     //
-    virtual void init(const sf::FloatRect in_bounds, const PitchDimensions &in_dimensions,
+    virtual void init(const sf::FloatRect in_bounds, const PitchDrawDimensions &in_dimensions,
                       const std::string &in_grass_texture = "");
     //
     //

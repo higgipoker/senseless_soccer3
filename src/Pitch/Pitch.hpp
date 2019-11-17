@@ -36,20 +36,27 @@ class Pitch : public Engine::Entity {
     //
     //
     //
-    const PitchDimensions &getDimensions() const {
-        return dimensions;
+    const PitchDrawDimensions &getDimensions() const {
+        return draw_dimensions;
     }
     //
     //
     //
-    Engine::Entity &getMiniMapEntity(){
+    Engine::Entity &getMiniMapEntity() {
         return minimap_entity;
     }
+    //
+    //
+    //
+    Engine::Vector3 getPointOfInterest(const PitchPointsOfInterest in_which,
+                                       const PitchPointOfInterestSide in_side = PitchPointOfInterestSide::South) const;
 
    private:
+    PitchDrawDimensions draw_dimensions;
     PitchDimensions dimensions;
+
     PitchSprite sprite;
-    UniquePtr<Engine::Sprite> minimap {std::make_unique<MiniMap>()};
+    UniquePtr<Engine::Sprite> minimap{std::make_unique<MiniMap>()};
     Engine::Entity minimap_entity;
     //
     //
@@ -78,7 +85,7 @@ class Pitch : public Engine::Entity {
     //
     //
     //
-    void init_north_arc();
+    void init_south_arc();
     //
     //
     //

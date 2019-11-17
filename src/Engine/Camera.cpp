@@ -31,19 +31,12 @@ void Camera::follow(Entity &in_entity) {
 //
 void Camera::update() {
     if (following) {
-        Vector3 direction = following->movable.position - movable.position;
-        float distance = direction.magnitude2d();
-        //        if (Math::greater_than(distance, 100)) {
-        if (!Collider::contains(collider, following->movable.position)) {
-            direction.normalise();
-            static const float speed_factor = 0.05F;
-            static const float min_speed = 0;
-            static const float max_speed = 8;
-            float speed = std::clamp(distance * speed_factor, min_speed, max_speed);
-            movable.velocity = direction * speed;
+        if((following->movable.position - movable.position).magnitude2d()>50){
+            Vector3 dir = (following->movable.position-movable.position);
+            dir.to2d();
+            dir.normalise();
+            movable.velocity = dir *speed;
         }
-
-        movable.velocity.to2d();
     }
 
     // constrain to world rect

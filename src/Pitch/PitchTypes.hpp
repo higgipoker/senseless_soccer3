@@ -1,14 +1,30 @@
 #pragma once
 //
-#include "Engine/Vector.hpp"
 #include "Engine/ArcShape.hpp"
+#include "Engine/Vector.hpp"
 //
 #include "SFML/Graphics/CircleShape.hpp"
 #include "SFML/Graphics/RectangleShape.hpp"
 //
 //
 //
-struct PitchDimensions {
+enum class PitchPointsOfInterest : size_t {
+    Bye,
+    Six,
+    Eighteen,
+    Halfway,
+    CentercircleWest,
+    CentercircleEast,
+    CenterSpot,
+    PenaltySpot,
+    SideWest,
+    SideEast
+};
+enum class PitchPointOfInterestSide : size_t { South, North };
+//
+//
+//
+struct PitchDrawDimensions {
     // origin in screen space
     Engine::Vector3 origin;
     // pitch lines
@@ -25,7 +41,7 @@ struct PitchDimensions {
 
     std::vector<sf::Shape *> all_lines;
 
-    PitchDimensions() {
+    PitchDrawDimensions() {
         all_lines.push_back(&bounds);
         all_lines.push_back(&south_6);
         all_lines.push_back(&south_18);
@@ -35,4 +51,12 @@ struct PitchDimensions {
         all_lines.push_back(&south_penalty_spot);
         all_lines.push_back(&south_arc);
     }
+};
+
+//
+//
+//
+struct PitchDimensions {
+    static const size_t NumberPoints = 10;
+    Engine::Vector3 points[NumberPoints][2];
 };

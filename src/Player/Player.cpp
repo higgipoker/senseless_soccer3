@@ -323,6 +323,6 @@ void Player::setPlayingPosition(UniquePtr<PlayingPosition> in_position) {
 void Player::goToSetPiecePosition(const Situation in_situation) {
     if (auto position = playing_position.get()) {
         brain.changeState(brain_state::Idle);
-        brain.locomotion.seek(position->getTargetPosition(in_situation, my_team, other_team, match.getBall()));
+        brain.locomotion.seek(position->getTargetPosition(in_situation, match.getBall()));
     }
 }

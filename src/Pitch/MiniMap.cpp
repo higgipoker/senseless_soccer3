@@ -37,7 +37,7 @@ void MiniMap::updatePlayerPositions(const std::vector<Engine::Vector3>& in_posit
 //
 //
 //
-void MiniMap::init(const sf::FloatRect in_bounds, const PitchDimensions& in_dimensions,
+void MiniMap::init(const sf::FloatRect in_bounds, const PitchDrawDimensions& in_dimensions,
                    const std::string& in_grass_texture) {
     // make a texture for drawing the lines on
     pitch_texture.create(in_dimensions.bounds.getSize().x * scale_factor + 4,
