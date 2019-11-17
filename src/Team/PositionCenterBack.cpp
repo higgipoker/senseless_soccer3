@@ -34,14 +34,16 @@ void PositionCenterBack::init() {
         Vector3 att_left{0, pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen).y};
         Vector3 att_right{0, pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen).y};
         if (modifier_mask & modifier_left) {
-            def_left.x =def_right.x = att_left.x = att_right.x = pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).x - 100;
+            def_left.x = def_right.x = att_left.x = att_right.x =
+                pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).x - 100;
 
         } else if (modifier_mask & modifier_right) {
-            def_left.x =def_right.x = att_left.x = att_right.x = pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).x + 100;
+            def_left.x = def_right.x = att_left.x = att_right.x =
+                pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).x + 100;
         }
 
-        def_left.x-=100;
-        att_left.x-=100;
+        def_left.x -= 100;
+        att_left.x -= 100;
         clamp(def_left, def_right, att_left, att_right);
 
         set_piece_positions_defending[Situation::GoalKick] = {{def_left}, {def_right}};

@@ -70,7 +70,7 @@ void GameEngine::step() {
     }
 
     // render
-    window.clear({20, 120, 0});
+    window.clear({18, 60, 10});
     getMainCamera().update();
     window.setView(camera.getview());
 

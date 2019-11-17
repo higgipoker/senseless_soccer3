@@ -60,15 +60,19 @@ void Camera::update() {
     // constrain to world rect
     if (movable.position.x - view.getSize().x / 2 < world.left) {
         movable.setPosition(world.left + view.getSize().x / 2, movable.position.y);
+        movable.velocity.x = 0;
     }
     if (movable.position.x + view.getSize().x / 2 > world.left + world.width) {
         movable.setPosition(world.left + world.width - view.getSize().x / 2, movable.position.y);
+        movable.velocity.x = 0;
     }
     if (movable.position.y - view.getSize().y / 2 < world.top) {
         movable.setPosition(movable.position.x, world.top + view.getSize().y / 2);
+        movable.velocity.y = 0;
     }
     if (movable.position.y + view.getSize().y / 2 > world.top + world.height) {
         movable.setPosition(movable.position.x, world.top + world.height - view.getSize().y / 2);
+        movable.velocity.y = 0;
     }
 
     view.setCenter(movable.position.x, movable.position.y);
