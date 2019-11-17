@@ -3,8 +3,7 @@
 //
 //
 MiniMap::MiniMap() {
-    scale_factor = 0.05F;
-    scale.scale(scale_factor, scale_factor);
+    scale_factor = 0.1F;
 
     for (size_t i = 0; i < 20; ++i) {
         players[i].position = {0, 0};
@@ -18,17 +17,22 @@ MiniMap::MiniMap() {
             circles[i].setFillColor({0, 0, 255, 100});
         }
     }
+    ball.setRadius(15);
+    ball.setFillColor(sf::Color::White);
+    setPosition(10,10);
 }
 //
 //
 //
-void MiniMap::updatePlayerPositions(const std::vector<Engine::Vector3>& in_positions) {
+void MiniMap::updatePlayerPositions(const std::vector<Engine::Vector3>& in_positions,
+                                    const Engine::Vector3 in_ball_position) {
     size_t i = 0;
     for (auto& p : in_positions) {
         players[i].position = p.toSfVector();
         circles[i].setCenter(p.toSfVector());
         ++i;
     }
+    ball.setCenter(in_ball_position.toSfVector());
 }
 //
 //
@@ -127,60 +131,66 @@ void MiniMap::init(const sf::FloatRect in_bounds, const PitchDimensions& in_dime
     halfwayline[1] = {{bounds[1].position.x, bounds[3].position.y / 2}};
 
     // center circle
-    cc = in_dimensions.center_circle;
-    cc.setRadius(cc.getRadius() * scale_factor);
-    cc.setCenter((in_dimensions.bounds.getSize().x * scale_factor) / 2,
-                 (in_dimensions.bounds.getSize().y * scale_factor) / 2);
-    cc.setOutlineThickness(1);
-    cc.setOutlineColor({255, 255, 255, 100});
+    center_circle = in_dimensions.center_circle;
+    center_circle.setRadius(in_dimensions.center_circle.getRadius());
+    center_circle.setCenter((in_dimensions.bounds.getSize().x) / 2, (in_dimensions.bounds.getSize().y) / 2);
+    center_circle.setOutlineThickness(3);
+    center_circle.setOutlineColor({255, 255, 255, 100});
+
+    ////////////////////////////////////////////
+    vlines = {// bounds
+              bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5], bounds[6], bounds[7],
+
+              // south 6 yard box
+              south_6_box[0], south_6_box[1], south_6_box[2], south_6_box[3], south_6_box[4], south_6_box[5],
+
+              // north 6 yard box
+              north_6_box[0], north_6_box[1], north_6_box[2], north_6_box[3], north_6_box[4], north_6_box[5],
+
+              // south 18 yard box
+              south_18_box[0], south_18_box[1], south_18_box[2], south_18_box[3], south_18_box[4], south_18_box[5],
+
+              // north 18 yard box
+              north_18_box[0], north_18_box[1], north_18_box[2], north_18_box[3], north_18_box[4], north_18_box[5],
+
+              // halfway line
+              halfwayline[0], halfwayline[1]
+
+    };
+    for (auto& it : vlines) {
+        it.color = {255, 255, 255, 100};
+    }
 }
 //
 //
 //
 void MiniMap::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-    sf::Vertex lines[] = {
-        // bounds
-        bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5], bounds[6], bounds[7],
-
-        // south 6 yard box
-        south_6_box[0], south_6_box[1], south_6_box[2], south_6_box[3], south_6_box[4], south_6_box[5],
-
-        // north 6 yard box
-        north_6_box[0], north_6_box[1], north_6_box[2], north_6_box[3], north_6_box[4], north_6_box[5],
-
-        // south 18 yard box
-        south_18_box[0], south_18_box[1], south_18_box[2], south_18_box[3], south_18_box[4], south_18_box[5],
-
-        // north 18 yard box
-        north_18_box[0], north_18_box[1], north_18_box[2], north_18_box[3], north_18_box[4], north_18_box[5],
-
-        // halfway line
-        halfwayline[0], halfwayline[1]
-
-    };
-    for (size_t i = 0; i < sizeof(lines) / sizeof(lines[0]); ++i) {
-        lines[i].color = {255, 255, 255, 100};
-    }
-
     {  // lines
         sf::Transform transform;
         transform.translate(getPosition());
         transform.scale(scale_factor, scale_factor);
         states.transform = transform;
-        target.draw(lines, 34, sf::Lines, states);
+        target.draw(vlines.data(), vlines.size(), sf::Lines, states);
     }
 
     {  // center circle
         sf::Transform transform;
         transform.translate(getPosition());
-        target.draw(cc, transform);
+        transform.scale(scale_factor, scale_factor);
+        target.draw(center_circle, transform);
+    }
+
+    {  // ball
+        sf::Transform transform;
+        transform.translate(getPosition());
+        transform.scale(scale_factor, scale_factor);
+        target.draw(ball, transform);
     }
 
     {  // players
         sf::Transform transform;
         transform.translate(getPosition());
         transform.scale(scale_factor, scale_factor);
-        states.transform = transform;
         for (size_t i = 0; i < 20; ++i) {
             target.draw(circles[i], transform);
         }
@@ -196,4 +206,10 @@ sf::FloatRect MiniMap::getGlobalBounds() const {
     rect.width = bounds[1].position.x * scale_factor;
     rect.height = bounds[3].position.y * scale_factor;
     return rect;
+}
+//
+//
+//
+void MiniMap::setScale(float in_scale) {
+    scale_factor = in_scale;
 }

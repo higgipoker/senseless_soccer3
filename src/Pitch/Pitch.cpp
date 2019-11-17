@@ -50,6 +50,7 @@ Pitch::Pitch(const std::string& in_grass_texture, const sf::FloatRect in_bounds)
     // minimap is a pitch sprite with no grass texture
     static_cast<MiniMap*>(&minimap_entity.getSprite())->init(in_bounds, dimensions);
     minimap_entity.movable.name = "mini map";
+    minimap_entity.movable.position = {10,10};
 
     movable.position = dimensions.origin;
 }
@@ -118,10 +119,8 @@ void Pitch::init_6_yard_boxes() {
     dimensions.south_6.setFillColor(sf::Color::Transparent);
     dimensions.south_6.setOutlineColor(sf::ChalkWhite);
     dimensions.south_6.setOutlineThickness(StandardLineThickness);
-
     float x = (dimensions.bounds.getSize().x / 2) - (dimensions.south_6.getSize().x / 2);
     float y = dimensions.bounds.getSize().y - dimensions.south_6.getSize().y;
-
     dimensions.south_6.setPosition(sf::Vector2f(x, y));
 }
 //
@@ -134,12 +133,8 @@ void Pitch::init_18_yard_boxes() {
     dimensions.south_18.setFillColor(sf::Color::Transparent);
     dimensions.south_18.setOutlineColor(sf::ChalkWhite);
     dimensions.south_18.setOutlineThickness(StandardLineThickness);
-
     float x = (dimensions.bounds.getSize().x / 2) - (dimensions.south_18.getSize().x / 2);
     float y = dimensions.bounds.getSize().y - dimensions.south_18.getSize().y;
-
-    //    Vector3 tmp = toScreenSpace({x, y});
-    //    x = tmp.x, y = tmp.y;
     dimensions.south_18.setPosition(sf::Vector2f(x, y));
 }
 //
@@ -151,10 +146,8 @@ void Pitch::init_center_circle() {
     dimensions.center_circle.setFillColor(sf::Color::Transparent);
     dimensions.center_circle.setOutlineColor(sf::ChalkWhite);
     dimensions.center_circle.setOutlineThickness(StandardLineThickness);
-
     float x = (dimensions.bounds.getSize().x / 2) - dimensions.center_circle.getRadius();
     float y = (dimensions.bounds.getSize().y / 2) - dimensions.center_circle.getRadius();
-
     dimensions.center_circle.setPosition(sf::Vector2f(x, y));
 }
 //
@@ -163,12 +156,8 @@ void Pitch::init_center_circle() {
 void Pitch::init_center_spot() {
     dimensions.center_spot.setRadius(Metrics::MetersToPixels(0.2f));
     dimensions.center_spot.setFillColor(sf::ChalkWhite);
-
     float x = (dimensions.bounds.getSize().x / 2) - dimensions.center_spot.getRadius();
     float y = (dimensions.bounds.getSize().y / 2) - dimensions.center_spot.getRadius();
-
-    //    Vector3 tmp = toScreenSpace({x, y});
-    //    x = tmp.x, y = tmp.y;
     dimensions.center_spot.setPosition(sf::Vector2f(x, y));
 }
 //
@@ -177,12 +166,8 @@ void Pitch::init_center_spot() {
 void Pitch::init_penalty_spots() {
     dimensions.south_penalty_spot.setRadius(Metrics::MetersToPixels(0.2f));
     dimensions.south_penalty_spot.setFillColor(sf::ChalkWhite);
-
     float x = dimensions.bounds.getSize().x / 2;
     float y = dimensions.bounds.getSize().y - Metrics::MetersToPixels(10.9f);
-
-    //    Vector3 tmp = toScreenSpace({x, y});
-    //    x = tmp.x, y = tmp.y;
     dimensions.south_penalty_spot.setPosition(sf::Vector2f(x, y));
 }
 //
@@ -196,12 +181,8 @@ void Pitch::init_north_arc() {
     dimensions.south_arc.setOutlineThickness(StandardLineThickness);
     dimensions.south_arc.setOrigin(sf::Vector2f(dimensions.south_arc.getRadius(), dimensions.south_arc.getRadius()));
     dimensions.south_arc.setRotation(-90);
-
     float x = dimensions.bounds.getSize().x / 2;
     float y = dimensions.bounds.getSize().y - dimensions.south_18.getSize().y - 2;
-
-    //    Vector3 tmp = toScreenSpace({x, y});
-    //    x = tmp.x, y = tmp.y;
     dimensions.south_arc.setPosition(sf::Vector2f(x, y));
 }
 //
@@ -210,12 +191,8 @@ void Pitch::init_north_arc() {
 void Pitch::init_halfway_line() {
     dimensions.halfway_line.setSize({dimensions.bounds.getSize().x, 2});
     dimensions.halfway_line.setFillColor(sf::ChalkWhite);
-
     float x = 0;
     float y = dimensions.bounds.getSize().y / 2;
-
-    Vector3 tmp = toScreenSpace({x, y});
-    x = tmp.x, y = tmp.y;
     dimensions.halfway_line.setPosition(sf::Vector2f(x, y));
 }
 //

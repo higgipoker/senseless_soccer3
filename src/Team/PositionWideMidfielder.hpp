@@ -1,13 +1,21 @@
 #pragma once
-#include "PositionDefender.hpp"
+#include "PositionMidfielder.hpp"
 //
 //
 //
-class PositionWideMidfielder : public PositionDefender {
+class PositionWideMidfielder : public PositionMidfielder {
    public:
     //
     //
     //
-    Engine::Vector3 getTargetPosition(const Pitch &in_pitch, const Team &in_my_team, const Team &in_other_team,
-                                      const Ball &in_ball) override;
+    PositionWideMidfielder(const Pitch &in_pitch) : PositionMidfielder(in_pitch) {
+    }
+    //
+    //
+    //
+    void init() override;
+    //
+    //
+    //
+    Engine::Vector3 getTargetPosition(const Situation in_situation, const Team &in_my_team, const Team &in_other_team, const Ball &in_ball) override;
 };

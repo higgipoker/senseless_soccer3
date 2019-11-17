@@ -84,43 +84,43 @@ void Team::update() {
 void Team::addDefaultPlayers(const Team &in_other_team) {
     std::vector<UniquePtr<PlayingPosition>> positions;
 
-    UniquePtr<PlayingPosition> left_center_back = std::make_unique<PositionCenterBack>();
+    UniquePtr<PlayingPosition> left_center_back = std::make_unique<PositionCenterBack>(match->getPitch());
     left_center_back->applyModifier(PositionModifier::Left);
     positions.emplace_back(std::move(left_center_back));
 
-    UniquePtr<PlayingPosition> right_center_back = std::make_unique<PositionCenterBack>();
+    UniquePtr<PlayingPosition> right_center_back = std::make_unique<PositionCenterBack>(match->getPitch());
     right_center_back->applyModifier(PositionModifier::Right);
     positions.emplace_back(std::move(right_center_back));
 
-    UniquePtr<PlayingPosition> left_back = std::make_unique<PositionFullBack>();
+    UniquePtr<PlayingPosition> left_back = std::make_unique<PositionFullBack>(match->getPitch());
     left_back->applyModifier(PositionModifier::Left);
     positions.emplace_back(std::move(left_back));
 
-    UniquePtr<PlayingPosition> right_back = std::make_unique<PositionFullBack>();
+    UniquePtr<PlayingPosition> right_back = std::make_unique<PositionFullBack>(match->getPitch());
     right_back->applyModifier(PositionModifier::Right);
     positions.emplace_back(std::move(right_back));
 
-    UniquePtr<PlayingPosition> left_center_mid = std::make_unique<PositionCenterMidfielder>();
+    UniquePtr<PlayingPosition> left_center_mid = std::make_unique<PositionCenterMidfielder>(match->getPitch());
     left_center_mid->applyModifier(PositionModifier::Left);
     positions.emplace_back(std::move(left_center_mid));
 
-    UniquePtr<PlayingPosition> right_center_mid = std::make_unique<PositionCenterMidfielder>();
+    UniquePtr<PlayingPosition> right_center_mid = std::make_unique<PositionCenterMidfielder>(match->getPitch());
     right_center_mid->applyModifier(PositionModifier::Right);
     positions.emplace_back(std::move(right_center_mid));
 
-    UniquePtr<PlayingPosition> left_midfielder = std::make_unique<PositionWideMidfielder>();
+    UniquePtr<PlayingPosition> left_midfielder = std::make_unique<PositionWideMidfielder>(match->getPitch());
     left_midfielder->applyModifier(PositionModifier::Left);
     positions.emplace_back(std::move(left_midfielder));
 
-    UniquePtr<PlayingPosition> right_midfielder = std::make_unique<PositionWideMidfielder>();
+    UniquePtr<PlayingPosition> right_midfielder = std::make_unique<PositionWideMidfielder>(match->getPitch());
     right_midfielder->applyModifier(PositionModifier::Right);
     positions.emplace_back(std::move(right_midfielder));
 
-    UniquePtr<PlayingPosition> left_center_forward = std::make_unique<PositionCenterForward>();
+    UniquePtr<PlayingPosition> left_center_forward = std::make_unique<PositionCenterForward>(match->getPitch());
     left_center_forward->applyModifier(PositionModifier::Left);
     positions.emplace_back(std::move(left_center_forward));
 
-    UniquePtr<PlayingPosition> right_center_forward = std::make_unique<PositionCenterForward>();
+    UniquePtr<PlayingPosition> right_center_forward = std::make_unique<PositionCenterForward>(match->getPitch());
     right_center_forward->applyModifier(PositionModifier::Right);
     positions.emplace_back(std::move(right_center_forward));
 
@@ -134,12 +134,15 @@ void Team::addDefaultPlayers(const Team &in_other_team) {
         player->movable.name = ss.str();
         player->setTeamData(td);
         player->support_type = i;
-        player->getBrain().changeState(brain_state::Support);
         player->setPlayingPosition(std::move(positions[i]));
-        player->getBrain().changeState(brain_state::Cover);
+        //player->getBrain().changeState(brain_state::Cover);
+        player->movable.position =
+            match->getPitch().toScreenSpace({0, match->getPitch().getDimensions().halfway_line.getPosition().y -
+                                                    match->getPitch().getDimensions().origin.y});
         addPlayer(std::move(player));
     }
     positions.clear();
+    goToSetPiecePositions(Situation::KickOff);
 }
 //
 //
@@ -185,4 +188,12 @@ std::vector<Vector3> Team::getPlayerPositions() {
         positions.push_back((p->movable.position - match->getPitch().getDimensions().origin));
     }
     return positions;
+}
+//
+//
+//
+void Team::goToSetPiecePositions(const Situation in_situation) {
+    for (auto &player : players) {
+        player->goToSetPiecePosition(in_situation);
+    }
 }

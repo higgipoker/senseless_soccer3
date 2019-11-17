@@ -20,11 +20,15 @@ class MiniMap : public PitchSprite {
     //
     //
     virtual void init(const sf::FloatRect in_bounds, const PitchDimensions &in_dimensions,
-                      const std::string &in_grass_texture = "");
+                      const std::string &in_grass_texture = "") override;
     //
     //
     //
-    void updatePlayerPositions(const std::vector<Engine::Vector3> &in_positions);
+    void updatePlayerPositions(const std::vector<Engine::Vector3> &in_positions, const Engine::Vector3 in_ball_position);
+    //
+    //
+    //
+    void setScale(float in_scale_factor);
     //
     //
     //
@@ -37,7 +41,6 @@ class MiniMap : public PitchSprite {
     //
     //
    private:
-    sf::Transform scale;
     float scale_factor = 0.1F;
 
     // pitch lines
@@ -47,9 +50,12 @@ class MiniMap : public PitchSprite {
     sf::Vertex south_6_box[6];
     sf::Vertex south_18_box[6];
     sf::Vertex halfwayline[2];
-    sf::CircleShape cc;
+    sf::CircleShape center_circle;
+    sf::CircleShape ball;
 
     // players
     sf::Vertex players[20];
     sf::CircleShape circles[20];
+
+    std::vector<sf::Vertex> vlines;
 };

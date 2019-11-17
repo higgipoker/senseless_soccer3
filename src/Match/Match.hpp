@@ -55,7 +55,7 @@ class Match {
     //
     //
     //
-    inline Pitch& getPitch() {
+    inline Pitch& getPitch() const {
         return *pitch.get();
     };
     //

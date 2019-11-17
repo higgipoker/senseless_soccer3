@@ -83,6 +83,7 @@ class Debug {
 
     /// tmp
     static Pitch *pitch;
+    static float mini_map_scale_factor;
 };
 
 }  // namespace Engine

@@ -102,6 +102,10 @@ class Team {
     //
     //
     //
+    void goToSetPiecePositions(const Situation in_situation);
+    //
+    //
+    //
     Gameplan gameplan;
     // a team has its own sprite for rendering debug primitives etc
     Engine::Sprite sprite;

@@ -6,15 +6,21 @@ using namespace Engine;
 //
 //
 //
-Engine::Vector3 PositionCenterBack::getTargetPosition(const Pitch &in_pitch, const Team &in_my_team,
+void PositionCenterBack::init() {
+    set_piece_positions[Situation::KickOff] = {{}, {}};
+}
+//
+//
+//
+Engine::Vector3 PositionCenterBack::getTargetPosition(const Situation in_situation, const Team &in_my_team,
                                                       const Team &in_other_team, const Ball &in_ball) {
-    Vector3 ball = in_pitch.toPitchSpace(in_ball.movable.position);
+    Vector3 ball = pitch.toPitchSpace(in_ball.movable.position);
     // rotate perception of ball if attacking towards south
     if (in_my_team.getAttackingGoal() == Direction::South) {
-        ball.rotate(180, in_pitch.getDimensions().bounds.getSize().x / 2, in_pitch.getDimensions().bounds.getSize().y / 2);
+        ball.rotate(180, pitch.getDimensions().bounds.getSize().x / 2, pitch.getDimensions().bounds.getSize().y / 2);
     }
 
-    float middle = in_pitch.getDimensions().bounds.getSize().x / 2;
+    float middle = pitch.getDimensions().bounds.getSize().x / 2;
     float ball_to_middle = ball.x - middle;
     float out_x = 0;
     switch (in_my_team.gameplan.defensive_width_type) {
@@ -34,12 +40,12 @@ Engine::Vector3 PositionCenterBack::getTargetPosition(const Pitch &in_pitch, con
     float max = 0;
     float constraint_width = 0;
     if (modifier_mask & modifier_left) {
-        constraint_width = in_pitch.getDimensions().bounds.getSize().x * 0.2F;
+        constraint_width = pitch.getDimensions().bounds.getSize().x * 0.2F;
         min = middle - constraint_width;
         max = middle - constraint_width / 3;
     }
     if (modifier_mask & modifier_right) {
-        constraint_width = in_pitch.getDimensions().bounds.getSize().x * 0.2F;
+        constraint_width = pitch.getDimensions().bounds.getSize().x * 0.2F;
         min = middle + constraint_width / 3;
         max = middle + constraint_width;
     }
@@ -54,5 +60,5 @@ Engine::Vector3 PositionCenterBack::getTargetPosition(const Pitch &in_pitch, con
         result.x = tmp.x;
     }
 
-    return in_pitch.toScreenSpace(result);
+    return pitch.toScreenSpace(result);
 }

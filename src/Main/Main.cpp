@@ -24,7 +24,7 @@ using namespace Engine;
 //
 //
 //
-int main(int argc, char** args) {
+int main(int argc, char **args) {
     //
     // args
     //
@@ -54,10 +54,10 @@ int main(int argc, char** args) {
     //
     UniquePtr<Pitch> pitch = std::make_unique<Pitch>(graphics_folder.getPath(true) + "grass_checked.png", world);
     engine.addSprite(pitch->getSprite(), engine.getBackgroundLayer());
-    // engine.addSprite(pitch->getMiniMap(), engine.getHudLayer());
+
     engine.getDebugUI().providePitch(pitch.get());
     engine.addEntity(pitch->getMiniMapEntity(), engine.getHudLayer());
-    pitch->getMiniMapEntity().movable.position = {100, 100};
+    pitch->getMiniMapEntity().movable.position = {20, 20};
 
     //
     // teams
@@ -65,12 +65,10 @@ int main(int argc, char** args) {
     TeamFactory team_factory;
     Team team1 = team_factory.makeDefaultHomeTeam();
     Team team2 = team_factory.makeDefaultAwayTeam();
-
     //
     // match
     //
     Match match(std::move(pitch), team1, team2);
-
     match.getHomeTeam().addDefaultPlayers(match.getAwayTeam());
     match.getAwayTeam().addDefaultPlayers(match.getHomeTeam());
 
@@ -86,8 +84,10 @@ int main(int argc, char** args) {
     //    match.getHomeTeam().getPlayer().attachInput(engine.getDefaultGamepad());
     //  }
 
-    match.getBall().movable.setPosition(match.getPitch().getDimensions().center_spot.getCenter().x,
-                                        match.getPitch().getDimensions().center_spot.getCenter().y);
+    // puts the ball on the center spot
+    match.getBall().movable.position =
+        (match.getPitch().toScreenSpace({match.getPitch().getDimensions().center_spot.getCenter().x,
+                                         match.getPitch().getDimensions().center_spot.getCenter().y}));
 
     engine.addEntity(match.getBall(), engine.getDefaultLayer());
     engine.getMainCamera().follow(match.getBall());
@@ -115,13 +115,14 @@ int main(int argc, char** args) {
         auto v1 = match.getHomeTeam().getPlayerPositions();
         auto v2 = match.getAwayTeam().getPlayerPositions();
         std::vector<Engine::Vector3> v3;
-        for(auto &i:v1){
+        for (auto &i : v1) {
             v3.push_back(i);
         }
-        for(auto &i:v2){
+        for (auto &i : v2) {
             v3.push_back(i);
         }
-        static_cast<MiniMap*>(&match.getPitch().getMiniMap())->updatePlayerPositions(v3);
+        static_cast<MiniMap *>(&match.getPitch().getMiniMap())
+            ->updatePlayerPositions(v3, match.getBall().movable.position - match.getPitch().getDimensions().origin);
         match.update();
         // joysticker.update();
     }

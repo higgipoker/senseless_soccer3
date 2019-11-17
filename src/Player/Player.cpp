@@ -15,7 +15,8 @@ using namespace Engine;
 //
 //
 //
-Player::Player(Match &in_match, const Team &in_my_team, const Team &in_other_team, UniquePtr<PlayerSprite> in_sprite, UniquePtr<PlayerSprite> in_shadow)
+Player::Player(Match &in_match, const Team &in_my_team, const Team &in_other_team, UniquePtr<PlayerSprite> in_sprite,
+               UniquePtr<PlayerSprite> in_shadow)
     : Entity(std::move(in_sprite), std::move(in_shadow)),
       match(in_match),
       my_team(in_my_team),
@@ -45,7 +46,7 @@ Player::Player(Match &in_match, const Team &in_my_team, const Team &in_other_tea
 //
 //
 //
-Player::~Player(){
+Player::~Player() {
     --instances;
     std::cout << instances << " players" << std::endl;
 }
@@ -315,4 +316,13 @@ void Player::debug() {
 //
 void Player::setPlayingPosition(UniquePtr<PlayingPosition> in_position) {
     playing_position = std::move(in_position);
+}
+//
+//
+//
+void Player::goToSetPiecePosition(const Situation in_situation) {
+    if (auto position = playing_position.get()) {
+        brain.changeState(brain_state::Idle);
+        brain.locomotion.seek(position->getTargetPosition(in_situation, my_team, other_team, match.getBall()));
+    }
 }

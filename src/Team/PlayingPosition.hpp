@@ -26,14 +26,28 @@ const unsigned char modifier_unused3{1 << 7};    // 1000 0000
 //
 //
 //
+enum class Situation { Playing, KickOff, GoalKick, Corner, FreeKick, ThrowIn };
+//
+//
+//
 class PlayingPosition {
+    //
+    //
+    //
    public:
     //
     //
     //
-    PlayingPosition() {
+    PlayingPosition(const Pitch &in_pitch) : pitch(in_pitch) {
         ++instances;
         std::cout << instances << " positions" << std::endl;
+
+        set_piece_positions[Situation::Playing] = {{}, {}};
+        set_piece_positions[Situation::KickOff] = {{}, {}};
+        set_piece_positions[Situation::GoalKick] = {{}, {}};
+        set_piece_positions[Situation::Corner] = {{}, {}};
+        set_piece_positions[Situation::FreeKick] = {{}, {}};
+        set_piece_positions[Situation::ThrowIn] = {{}, {}};
     }
     //
     //
@@ -45,14 +59,25 @@ class PlayingPosition {
     //
     //
     //
-    virtual Engine::Vector3 getTargetPosition(const Pitch &in_pitch, const Team &in_my_team, const Team &in_other_team,
+    virtual void init() = 0;
+    //
+    //
+    //
+    virtual Engine::Vector3 getTargetPosition(const Situation in_situation, const Team &in_my_team, const Team &in_other_team,
                                               const Ball &in_ball) = 0;
     //
     //
     //
     void applyModifier(const PositionModifier in_mod);
-
+    //
+    //
+    //
+    std::map<Situation, std::pair<Engine::Vector3, Engine::Vector3> > set_piece_positions;
+    //
+    //
+    //
    protected:
+    const Pitch &pitch;
     unsigned char modifier_mask{modifier_none};
     static int instances;
 };

@@ -12,6 +12,7 @@ bool Debug::show_debug_hud = false;
 bool Debug::flag_draw_bounds = false;
 bool Debug::flag_draw_diagnostics = true;
 Pitch *Debug::pitch = nullptr;
+float Debug::mini_map_scale_factor = 0.1F;
 sf::Color Debug::bounds_color = sf::Color::Magenta;
 sf::Color Debug::disgnostics_color = sf::Color::Green;
 //
@@ -39,10 +40,13 @@ void Debug::update(const int in_frames, const int in_frametime) {
     { ImGui::Text("Frame time: %ims", in_frametime); }
     // mouse position
     { ImGui::Text("Mouse: %i, %i", static_cast<int>(mouse_x), static_cast<int>(mouse_y)); }
-    // mouse pitch position
     if (pitch) {
+        // mouse pitch position
         auto p = pitch->toPitchSpace({mouse_x, mouse_y});
         ImGui::Text("Pitch: %i, %i", static_cast<int>(p.x), static_cast<int>(p.y));
+        // mini map scale factor
+        static_cast<MiniMap *>(&pitch->getMiniMap())->setScale(mini_map_scale_factor);
+        { ImGui::SliderFloat("", &mini_map_scale_factor, 0.1f, 0.5f, "radar = %.3f"); }
     }
     // draw bounds
     { ImGui::Checkbox("Draw Bounds", &flag_draw_bounds); }
@@ -63,22 +67,6 @@ void Debug::handleInput(sf::Event &in_event) {
         sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
         mouse_x = worldPos.x;
         mouse_y = worldPos.y;
-    }
-    // handle mouse clicks
-    if (in_event.type == sf::Event::MouseButtonPressed) {
-        if (in_event.mouseButton.button == sf::Mouse::Left) {
-            if (in_event.mouseButton.button == sf::Mouse::Left) {
-                // get the current mouse position in the window
-                //            sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
-                // convert it to world coordinates
-                //            sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
-                //            std::cout << "click at " << static_cast<int>(worldPos.x) << ", " <<
-                //            static_cast<int>(worldPos.y)
-                //                      << std::endl;
-                //      std::cout << "click at " << static_cast<int>(pixelPos.x) << ", "
-                //                << static_cast<int>(pixelPos.y) << std::endl;
-            }
-        }
     }
 }
 //

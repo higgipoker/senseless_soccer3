@@ -116,6 +116,10 @@ class Player : public Engine::Entity, public Engine::Controllable {
     //
     //
     //
+    void goToSetPiecePosition(const Situation in_situation);
+    //
+    //
+    //
     void setPlayingPosition(UniquePtr<PlayingPosition> in_position);
     // test
     Engine::ProgressBar *power_bar = nullptr;

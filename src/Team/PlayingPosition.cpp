@@ -22,4 +22,5 @@ void PlayingPosition::applyModifier(const PositionModifier in_mod) {
             modifier_mask |= modifier_defensive;
             break;
     }
+    init();
 }
