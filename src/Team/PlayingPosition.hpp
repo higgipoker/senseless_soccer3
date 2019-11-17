@@ -44,6 +44,11 @@ class PlayingPosition {
         ++instances;
         std::cout << instances << " positions" << std::endl;
 
+        min_x = 0;
+        max_x = pitch.getPointOfInterest(PitchPointsOfInterest::SideEast).x;
+        min_y = 0;
+        max_y = pitch.getPointOfInterest(PitchPointsOfInterest::Bye, PitchPointOfInterestSide::North).y;
+
         set_piece_positions_defending[Situation::Playing] = {{}, {}};
         set_piece_positions_defending[Situation::KickOff] = {{}, {}};
         set_piece_positions_defending[Situation::GoalKick] = {{}, {}};
@@ -101,4 +106,23 @@ class PlayingPosition {
     const Team &other_team;
     unsigned char modifier_mask{modifier_none};
     static int instances;
+
+    float min_x = 0;
+    float max_x = 0;
+    float min_y = 0;
+    float max_y = 0;
+
+    void clamp(Engine::Vector3 &in_v1, Engine::Vector3 &in_v2, Engine::Vector3 &in_v3, Engine::Vector3 &in_v4) {
+        in_v1.x = std::clamp(in_v1.x, min_x, max_x);
+        in_v1.y = std::clamp(in_v1.y, min_y, max_y);
+
+        in_v2.x = std::clamp(in_v2.x, min_x, max_x);
+        in_v2.y = std::clamp(in_v2.y, min_y, max_y);
+
+        in_v3.x = std::clamp(in_v3.x, min_x, max_x);
+        in_v3.y = std::clamp(in_v3.y, min_y, max_y);
+
+        in_v4.x = std::clamp(in_v4.x, min_x, max_x);
+        in_v4.y = std::clamp(in_v4.y, min_y, max_y);
+    }
 };

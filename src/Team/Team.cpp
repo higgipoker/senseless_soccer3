@@ -156,8 +156,8 @@ void Team::addDefaultPlayers(const Team &in_other_team) {
         addPlayer(std::move(player));
     }
     positions.clear();
-    //goToSetPiecePositions(Situation::GoalKick);
-    goToSetPiecePositions(Situation::KickOff);
+    goToSetPiecePositions(Situation::GoalKick);
+    //goToSetPiecePositions(Situation::KickOff);
 }
 //
 //
