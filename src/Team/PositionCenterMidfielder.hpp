@@ -18,6 +18,6 @@ class PositionCenterMidfielder : public PositionMidfielder {
     //
     //
     //
-    Engine::Vector3 getTargetPosition(const Situation in_situation, const Team &in_my_team, const Team &in_other_team,
+    Engine::Vector3 getPlayingPosition(const Situation in_situation, const Team &in_my_team, const Team &in_other_team,
                                       const Ball &in_ball) override;
 };

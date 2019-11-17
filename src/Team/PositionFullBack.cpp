@@ -7,12 +7,24 @@ using namespace Engine;
 //
 //
 void PositionFullBack::init() {
-    set_piece_positions[Situation::KickOff] = {{}, {}};
+    {  // kick off positions
+        Vector3 def{0, pitch.getDimensions().halfway_line.getPosition().y * 0.4F};
+        Vector3 att{0, pitch.getDimensions().halfway_line.getPosition().y};
+        if (modifier_mask & modifier_left) {
+            def.x = att.x =
+                pitch.getDimensions().bounds.getSize().x*0.16F ;
+
+        } else if (modifier_mask & modifier_right) {
+            def.x = att.x =
+                pitch.getDimensions().bounds.getSize().x *0.83F ;
+        }
+        set_piece_positions[Situation::KickOff] = {{def}, {att}};
+    }
 }
 //
 //
 //
-Engine::Vector3 PositionFullBack::getTargetPosition(const Situation in_situation, const Team &in_my_team,
+Engine::Vector3 PositionFullBack::getPlayingPosition(const Situation in_situation, const Team &in_my_team,
                                                     const Team &in_other_team, const Ball &in_ball) {
     Vector3 ball = pitch.toPitchSpace(in_ball.movable.position);
     // rotate perception of ball if attacking towards south
@@ -60,5 +72,5 @@ Engine::Vector3 PositionFullBack::getTargetPosition(const Situation in_situation
         result.x = tmp.x;
     }
 
-    return pitch.toScreenSpace(result);
+    return result;
 }

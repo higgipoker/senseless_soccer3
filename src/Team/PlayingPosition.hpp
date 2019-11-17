@@ -63,8 +63,19 @@ class PlayingPosition {
     //
     //
     //
-    virtual Engine::Vector3 getTargetPosition(const Situation in_situation, const Team &in_my_team, const Team &in_other_team,
-                                              const Ball &in_ball) = 0;
+    virtual Engine::Vector3 getTargetPosition(const Situation in_situation, const Team &in_my_team,
+                                              const Team &in_other_team, const Ball &in_ball);
+    //
+    //
+    //
+    virtual Engine::Vector3 getPlayingPosition(const Situation in_situation, const Team &in_my_team,
+                                               const Team &in_other_team, const Ball &in_ball) = 0;
+    //
+    //
+    //
+    Engine::Vector3 getSetPiecePosition(const Situation in_situation, const Team &in_my_team,
+                                                const Team &in_other_team, const Ball &in_ball);
+
     //
     //
     //
