@@ -247,8 +247,12 @@ void GameEngine::poll_input_devices() {
             case sf::Event::Closed:
                 running = false;
                 break;
-            case sf::Event::Resized:
-                break;
+            case sf::Event::Resized: {
+                // update the view to the new size of the window
+                // update the view to the new size of the window
+                sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+                hud_view = sf::View(visibleArea);
+            } break;
             case sf::Event::LostFocus:
                 break;
             case sf::Event::GainedFocus:
