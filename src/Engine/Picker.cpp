@@ -7,14 +7,15 @@ namespace Engine {
 //
 //
 //
-Picker::Picker(sf::RenderWindow &in_window, std::set<Movable *> &in_movables)
-    : window(in_window), movables(in_movables) {
+Picker::Picker(sf::RenderWindow &in_window, std::set<Movable *> &in_movables, Debug & in_debug)
+    : window(in_window), movables(in_movables), debug(in_debug){
 }
 //
 //
 //
 void Picker::update() {
     if (dragging && grabbed) {
+        debug.picked = grabbed->name;
         sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
         sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
         if (hud_grabbed) {

@@ -20,21 +20,21 @@ using namespace Engine;
 //
 int Team::instances = 0;
 //
-Team::Team(const TeamType in_home_or_away, const Kit &in_kit) : home_or_away(in_home_or_away), kit(in_kit) {
+Team::Team(const std::string &in_name,const TeamType in_home_or_away, const Kit &in_kit) :name(in_name), home_or_away(in_home_or_away), kit(in_kit) {
     sprite_texture->loadFromFile(player_factory.getSpriteSheeet(kit.type));
     sprite_texture->swapColors(kit.palette);
 
     shadow_texture->loadFromFile(player_factory.getShadowSheet());
 
     ++instances;
-    std::cout << instances << " teams" << std::endl;
+    //std::cout << instances << " teams" << std::endl;
 }
 //
 //
 //
 Team::~Team() {
     --instances;
-    std::cout << instances << " teams" << std::endl;
+    //std::cout << instances << " teams" << std::endl;
 }
 //
 //
@@ -156,8 +156,7 @@ void Team::addDefaultPlayers(const Team &in_other_team) {
         addPlayer(std::move(player));
     }
     positions.clear();
-    goToSetPiecePositions(Situation::GoalKick);
-    //goToSetPiecePositions(Situation::KickOff);
+    goToSetPiecePositions(Situation::KickOff);
 }
 //
 //
@@ -207,9 +206,9 @@ std::vector<Vector3> Team::getPlayerPositions() {
 //
 //
 //
-void Team::goToSetPiecePositions(const Situation in_situation) {
+void Team::goToSetPiecePositions(const Situation in_situation, const Direction in_pitch_side) {
     for (auto &player : players) {
-        player->goToSetPiecePosition(in_situation);
+        player->goToSetPiecePosition(in_situation, in_pitch_side);
     }
 }
 //

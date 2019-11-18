@@ -21,16 +21,24 @@ void PositionFullBack::init() {
     }
 
     {  // goal kick positions
-        Vector3 def{0, pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen).y};
-        Vector3 att{0, pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen).y};
+        Vector3 def_left{0, pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen).y};
+        Vector3 def_right{0, pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen).y};
+        Vector3 att_left{0, pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen).y};
+        Vector3 att_right{0, pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen).y};
         if (modifier_mask & modifier_left) {
-            def.x = att.x = pitch.getPointOfInterest(PitchPointsOfInterest::SideWest).x + 100;
+            def_left.x = def_right.x = att_left.x = att_right.x =pitch.getPointOfInterest(PitchPointsOfInterest::SideWest).x + 100;
 
         } else if (modifier_mask & modifier_right) {
-            def.x = att.x = pitch.getPointOfInterest(PitchPointsOfInterest::SideEast).x - 100;
+            def_left.x = def_right.x = att_left.x = att_right.x = pitch.getPointOfInterest(PitchPointsOfInterest::SideEast).x - 100;
         }
-        set_piece_positions_defending[Situation::GoalKick] = {{def}, {def}};
-        set_piece_positions_attacking[Situation::GoalKick] = {{att}, {att}};
+        def_left.x -= 200;
+        att_left.x -= 200;
+        def_right.x += 200;
+        att_right.x += 200;
+        clamp(def_left, def_right, att_left, att_right);
+
+        set_piece_positions_defending[Situation::GoalKick] = {{def_left}, {def_right}};
+        set_piece_positions_attacking[Situation::GoalKick] = {{att_left}, {att_right}};
     }
 }
 //

@@ -12,11 +12,11 @@ class TeamFactory : public Engine::BaseFactory {
   //
   //
   //
-  Team makeDefaultHomeTeam();
+  Team makeDefaultHomeTeam(const std::string & in_name);
   //
   //
   //
-  Team makeDefaultAwayTeam();
+  Team makeDefaultAwayTeam(const std::string & in_name);
   //
   //
   //

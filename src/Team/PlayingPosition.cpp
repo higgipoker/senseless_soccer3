@@ -31,7 +31,8 @@ void PlayingPosition::applyModifier(const PositionModifier in_mod) {
 //
 //
 //
-Engine::Vector3 PlayingPosition::getTargetPosition(const Situation in_situation, const Ball &in_ball) {
+Engine::Vector3 PlayingPosition::getTargetPosition(const Situation in_situation, const Ball &in_ball,
+                                                   const Direction in_pitch_side) {
     Vector3 result;
     switch (in_situation) {
         case Situation::Playing:
@@ -42,7 +43,14 @@ Engine::Vector3 PlayingPosition::getTargetPosition(const Situation in_situation,
         case Situation::Corner:
         case Situation::FreeKick:
         case Situation::ThrowIn:
-            result = getSetPiecePosition(in_situation, in_ball);
+            result = getSetPiecePosition(in_situation, in_ball, in_pitch_side);
+            // rotate for other side?
+            if (my_team.getAttackingGoal() == Direction::South) {
+                // since the team y defensive line has already been calced, only rotate x here
+                Vector3 tmp{result.x, 0};
+                tmp.rotate(180, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).x, 0);
+                result.x = tmp.x;
+            }
             break;
     }
     return pitch.toScreenSpace(result);

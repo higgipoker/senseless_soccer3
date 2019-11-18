@@ -6,7 +6,7 @@ int Texture::ref = 0;
 //
 bool Texture::loadFromFile(const std::string& filename, const sf::IntRect& area) {
     loaded_file = filename;
-    std::cout << ++ref << " textures loaded ( " << filename << ")" << std::endl;
+    //std::cout << ++ref << " textures loaded ( " << filename << ")" << std::endl;
     return sf::Texture::loadFromFile(filename, area);
 }
 //

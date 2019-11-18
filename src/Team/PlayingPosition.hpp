@@ -42,7 +42,7 @@ class PlayingPosition {
     PlayingPosition(const Pitch &in_pitch, const Team &in_my_team, const Team &in_other_team)
         : pitch(in_pitch), my_team(in_my_team), other_team(in_other_team) {
         ++instances;
-        std::cout << instances << " positions" << std::endl;
+        // std::cout << instances << " positions" << std::endl;
 
         min_x = 0;
         max_x = pitch.getPointOfInterest(PitchPointsOfInterest::SideEast).x;
@@ -68,7 +68,7 @@ class PlayingPosition {
     //
     ~PlayingPosition() {
         --instances;
-        std::cout << instances << " positions" << std::endl;
+        // std::cout << instances << " positions" << std::endl;
     }
     //
     //
@@ -77,7 +77,8 @@ class PlayingPosition {
     //
     //
     //
-    virtual Engine::Vector3 getTargetPosition(const Situation in_situation, const Ball &in_ball);
+    virtual Engine::Vector3 getTargetPosition(const Situation in_situation, const Ball &in_ball,
+                                              const Engine::Direction in_pitch_side = Engine::Direction::West);
     //
     //
     //

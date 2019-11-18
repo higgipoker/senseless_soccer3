@@ -32,7 +32,7 @@ class Team {
     //
     //
     //
-    Team(const TeamType in_home_or_away, const Kit& in_kit);
+    Team(const std::string &in_name, const TeamType in_home_or_away, const Kit& in_kit);
     //
     //
     //
@@ -110,13 +110,15 @@ class Team {
     //
     //
     //
-    void goToSetPiecePositions(const Situation in_situation);
+    void goToSetPiecePositions(const Situation in_situation,
+                               const Engine::Direction in_pitch_side = Engine::Direction::West);
     //
     //
     //
     Gameplan gameplan;
     // a team has its own sprite for rendering debug primitives etc
     Engine::Sprite sprite;
+    std::string name;
 
    protected:
     Match* match = nullptr;

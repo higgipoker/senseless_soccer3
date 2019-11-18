@@ -42,8 +42,10 @@ void PositionCenterBack::init() {
                 pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).x + 100;
         }
 
-        def_left.x -= 100;
-        att_left.x -= 100;
+        def_left.x -= 200;
+        att_left.x -= 200;
+        def_right.x += 200;
+        att_right.x += 200;
         clamp(def_left, def_right, att_left, att_right);
 
         set_piece_positions_defending[Situation::GoalKick] = {{def_left}, {def_right}};

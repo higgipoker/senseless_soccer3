@@ -4,14 +4,14 @@
 //
 //
 //
-Team TeamFactory::makeDefaultHomeTeam() {
+Team TeamFactory::makeDefaultHomeTeam(const std::string &in_name) {
   auto kit = kit_factory.makeDefaultRedKit();
-  return Team(TeamType::Home, kit);
+  return Team(in_name,TeamType::Home, kit);
 }
 //
 //
 //
-Team TeamFactory::makeDefaultAwayTeam() {
+Team TeamFactory::makeDefaultAwayTeam(const std::string &in_name) {
   auto kit = kit_factory.makeDefaultBlueKit();
-  return Team(TeamType::Away, kit);
+  return Team(in_name, TeamType::Away, kit);
 }

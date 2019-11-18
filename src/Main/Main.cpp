@@ -20,11 +20,18 @@
 #include "Team/Team.hpp"
 #include "Team/TeamFactory.hpp"
 
+#include <thread>
+
+void call_from_thread() {
+    std::cout << "Hello, World" << std::endl;
+}
+
 using namespace Engine;
 //
 //
 //
 int main(int argc, char **args) {
+    std::thread t1(call_from_thread);
     //
     // args
     //
@@ -54,8 +61,6 @@ int main(int argc, char **args) {
     //
     UniquePtr<Pitch> pitch = std::make_unique<Pitch>(graphics_folder.getPath(true) + "grass_checked.png", world);
     engine.addSprite(pitch->getSprite(), engine.getBackgroundLayer());
-
-    engine.getDebugUI().providePitch(pitch.get());
     engine.addEntity(pitch->getMiniMapEntity(), engine.getHudLayer());
     pitch->getMiniMapEntity().movable.position = {20, 20};
 
@@ -63,12 +68,13 @@ int main(int argc, char **args) {
     // teams
     //
     TeamFactory team_factory;
-    Team team1 = team_factory.makeDefaultHomeTeam();
-    Team team2 = team_factory.makeDefaultAwayTeam();
+    Team team1 = team_factory.makeDefaultHomeTeam("Team1");
+    Team team2 = team_factory.makeDefaultAwayTeam("Team2");
     //
     // match
     //
     Match match(std::move(pitch), team1, team2);
+    engine.getDebugUI().match = &match;
     match.getHomeTeam().addDefaultPlayers(match.getAwayTeam());
     match.getAwayTeam().addDefaultPlayers(match.getHomeTeam());
 
@@ -127,6 +133,7 @@ int main(int argc, char **args) {
         // joysticker.update();
     }
 
+    t1.join();
     std::cout << args[0] << " exited normally" << std::endl;
     return 0;
 }

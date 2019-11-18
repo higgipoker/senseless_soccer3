@@ -13,6 +13,7 @@ int Match::instances = 0;
 //
 Match::Match(UniquePtr<Pitch> in_pitch, Team &in_home_team, Team &in_away_team, BallType in_ball_type)
     : pitch(std::move(in_pitch)), home_team(in_home_team), away_team(in_away_team) {
+    attacking_team = TeamType::Home;
     auto ball_texture = std::make_unique<Engine::Texture>();
     ball_texture->loadFromFile(ball_factory.getSpriteSheeet(in_ball_type));
 
@@ -43,14 +44,14 @@ Match::Match(UniquePtr<Pitch> in_pitch, Team &in_home_team, Team &in_away_team, 
     away_team.setAttackingState(AttackingState::Defending);
 
     ++instances;
-    std::cout << instances << " matches" << std::endl;
+    // std::cout << instances << " matches" << std::endl;
 }
 //
 //
 //
 Match::~Match() {
     --instances;
-    std::cout << instances << " matches" << std::endl;
+    // std::cout << instances << " matches" << std::endl;
 }
 //
 //
@@ -83,4 +84,20 @@ void Match::update() {
 //
 Ball &Match::getBall() {
     return *ball;
+}
+//
+//
+//
+void Match::setAttackingTeam(const TeamType in_which) {
+    attacking_team = in_which;
+    switch(attacking_team){
+        case TeamType::Home:
+            home_team.setAttackingState(AttackingState::Attacking);
+            away_team.setAttackingState(AttackingState::Defending);
+            break;
+        case TeamType::Away:
+            home_team.setAttackingState(AttackingState::Defending);
+            away_team.setAttackingState(AttackingState::Attacking);
+            break;
+    }
 }

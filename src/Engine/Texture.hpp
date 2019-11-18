@@ -13,8 +13,8 @@ class Texture : public sf::Texture {
     //
     //
     virtual ~Texture() {
-        std::cout << "Destruct Texture (" << loaded_file << "), " << --ref << " textures remaining"
-                  << std::endl;
+        // std::cout << "Destruct Texture (" << loaded_file << "), " << --ref << " textures remaining"
+        //        << std::endl;
     }
     //
     //

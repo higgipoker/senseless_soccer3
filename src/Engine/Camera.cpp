@@ -48,13 +48,6 @@ void Camera::follow(Entity &in_entity) {
 //
 void Camera::update() {
     if (following) {
-        if ((following->movable.position - movable.position).magnitude2d() > 50 &&
-            Math::greater_than(following->movable.velocity.magnitude2d(), 0)) {
-            Vector3 dir = (following->movable.position - movable.position);
-            dir.to2d();
-            dir.normalise();
-            movable.velocity = dir * speed;
-        }
     }
 
     // constrain to world rect

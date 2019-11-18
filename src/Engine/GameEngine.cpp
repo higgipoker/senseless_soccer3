@@ -15,7 +15,7 @@ GameEngine::GameEngine(const std::string &in_window_title, int in_window_width, 
     : window(in_window_title, in_window_width, in_window_height, in_flags, in_fullscreen),
       camera(in_window_width, in_window_height),
       debug_gui(window),
-      picker(window, movables) {
+      picker(window, movables, debug_gui) {
     hud_view.setSize(in_window_width, in_window_height);
     hud_view.setCenter(in_window_width / 2, in_window_height / 2);
 

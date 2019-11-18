@@ -41,14 +41,14 @@ Player::Player(Match &in_match, const Team &in_my_team, const Team &in_other_tea
     control.setOutlineColor(Debug::defaultDiagnosticsColor());
 
     ++instances;
-    std::cout << instances << " players" << std::endl;
+    //std::cout << instances << " players" << std::endl;
 }
 //
 //
 //
 Player::~Player() {
     --instances;
-    std::cout << instances << " players" << std::endl;
+    //std::cout << instances << " players" << std::endl;
 }
 //
 //
@@ -320,9 +320,9 @@ void Player::setPlayingPosition(UniquePtr<PlayingPosition> in_position) {
 //
 //
 //
-void Player::goToSetPiecePosition(const Situation in_situation) {
+void Player::goToSetPiecePosition(const Situation in_situation, const Direction in_pitch_side) {
     if (auto position = playing_position.get()) {
         brain.changeState(brain_state::Idle);
-        brain.locomotion.seek(position->getTargetPosition(in_situation, match.getBall()));
+        brain.locomotion.seek(position->getTargetPosition(in_situation, match.getBall(), in_pitch_side));
     }
 }

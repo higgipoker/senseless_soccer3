@@ -1,6 +1,7 @@
 #pragma once
 #ifndef NDEBUG
 
+#include "Match/Match.hpp"
 #include "Pitch/Pitch.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -56,12 +57,9 @@ class Debug {
     //
     //
     static sf::Color defaultDiagnosticsColor();
-    //
-    //
-    //
-    static void providePitch(Pitch *in_pitch) {
-        pitch = in_pitch;
-    };
+
+    static std::string picked;
+    static Match *match;
 
    private:
     /// target window
@@ -80,10 +78,17 @@ class Debug {
 
     /// display debug gui?
     static bool show_debug_hud;
-
-    /// tmp
-    static Pitch *pitch;
     static float mini_map_scale_factor;
+
+    static int home_team_positioning;
+    static int away_team_positioning;
+    static int home_pitch_side;
+    static int away_pitch_side;
+    static int attacking_team;
+
+    static int active_team;
+
+    static void draw_team_menu(int which_team=0);
 };
 
 }  // namespace Engine

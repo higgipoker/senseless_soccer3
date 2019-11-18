@@ -16,7 +16,6 @@ namespace Engine {
 //
 //
 Sprite::Sprite() {
-
 }
 //
 //

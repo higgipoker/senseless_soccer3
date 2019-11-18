@@ -12,6 +12,7 @@
 #include <SFML/Graphics/RenderTexture.hpp>
 //
 class Team;
+enum class TeamType;
 //
 //
 //
@@ -63,6 +64,10 @@ class Match {
     //
     void initMatchTexture(const Engine::Texture& team1_texture, const Engine::Texture& team2_texture,
                           const Engine::Texture& ball_texture);
+    //
+    //
+    //
+    void setAttackingTeam(const TeamType in_which);
 
    protected:
     MatchFactory factory;
@@ -71,6 +76,7 @@ class Match {
     UniquePtr<Ball> ball;
     Team& home_team;
     Team& away_team;
+    TeamType attacking_team;
 
     static int instances;
 };

@@ -116,7 +116,7 @@ class Player : public Engine::Entity, public Engine::Controllable {
     //
     //
     //
-    void goToSetPiecePosition(const Situation in_situation);
+    void goToSetPiecePosition(const Situation in_situation, const Engine::Direction in_pitch_side);
     //
     //
     //
