@@ -20,9 +20,9 @@
 #include "Team/Team.hpp"
 #include "Team/TeamFactory.hpp"
 
-#include <thread>
+#include <SFML/System.hpp>
 
-void call_from_thread() {
+void func() {
     std::cout << "Hello, World" << std::endl;
 }
 
@@ -31,7 +31,8 @@ using namespace Engine;
 //
 //
 int main(int argc, char **args) {
-    std::thread t1(call_from_thread);
+     sf::Thread thread(&func);
+      thread.launch();
     //
     // args
     //
@@ -132,8 +133,7 @@ int main(int argc, char **args) {
         match.update();
         // joysticker.update();
     }
-
-    t1.join();
+    thread.wait();
     std::cout << args[0] << " exited normally" << std::endl;
     return 0;
 }
