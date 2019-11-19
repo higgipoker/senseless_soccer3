@@ -200,7 +200,6 @@ void Pitch::init_center_circle() {
     draw_dimensions.center_circle.setCenter(
         {draw_dimensions.bounds.getSize().x / 2, draw_dimensions.bounds.getSize().y / 2});
 
-
     dimensions.points[static_cast<size_t>(PitchPointsOfInterest::CentercircleWest)]
                      [static_cast<size_t>(PitchPointOfInterestSide::South)] = {
         draw_dimensions.bounds.getSize().x / 2 - draw_dimensions.center_circle.getRadius(),
@@ -209,7 +208,6 @@ void Pitch::init_center_circle() {
                      [static_cast<size_t>(PitchPointOfInterestSide::North)] = {
         draw_dimensions.bounds.getSize().x / 2 - draw_dimensions.center_circle.getRadius(),
         draw_dimensions.bounds.getSize().x / 2};
-
 
     dimensions.points[static_cast<size_t>(PitchPointsOfInterest::CentercircleEast)]
                      [static_cast<size_t>(PitchPointOfInterestSide::South)] = {
@@ -268,6 +266,28 @@ void Pitch::init_south_arc() {
     float x = draw_dimensions.bounds.getSize().x / 2;
     float y = draw_dimensions.bounds.getSize().y - draw_dimensions.south_18.getSize().y - 2;
     draw_dimensions.south_arc.setPosition(sf::Vector2f(x, y));
+
+    dimensions.points[static_cast<size_t>(PitchPointsOfInterest::EighteenArcWest)][static_cast<size_t>(
+        PitchPointOfInterestSide::South)] = {dimensions
+                                                     .points[static_cast<size_t>(PitchPointsOfInterest::PenaltySpot)]
+                                                            [static_cast<size_t>(PitchPointOfInterestSide::South)]
+                                                     .x -
+                                                 draw_dimensions.south_arc.getRadius(),
+                                             dimensions
+                                                 .points[static_cast<size_t>(PitchPointsOfInterest::PenaltySpot)]
+                                                        [static_cast<size_t>(PitchPointOfInterestSide::South)]
+                                                 .y};
+
+    dimensions.points[static_cast<size_t>(PitchPointsOfInterest::EighteenArcEast)][static_cast<size_t>(
+        PitchPointOfInterestSide::South)] = {dimensions
+                                                     .points[static_cast<size_t>(PitchPointsOfInterest::PenaltySpot)]
+                                                            [static_cast<size_t>(PitchPointOfInterestSide::South)]
+                                                     .x +
+                                                 draw_dimensions.south_arc.getRadius(),
+                                             dimensions
+                                                 .points[static_cast<size_t>(PitchPointsOfInterest::PenaltySpot)]
+                                                        [static_cast<size_t>(PitchPointOfInterestSide::South)]
+                                                 .y};
 }
 //
 //

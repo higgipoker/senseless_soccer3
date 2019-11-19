@@ -45,9 +45,23 @@ void PositionCenterForward::init() {
         def_right.x += 200;
         att_right.x += 200;
         clamp(def_left, def_right, att_left, att_right);
-
         set_piece_positions_defending[Situation::GoalKick] = {{def_left}, {def_right}};
         set_piece_positions_attacking[Situation::GoalKick] = {{att_left}, {att_right}};
+    }
+    {  // corner positions
+       // todo: make this the posts
+        Vector3 def{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway, PitchPointOfInterestSide::North).y};
+        Vector3 att{0, pitch.getPointOfInterest(PitchPointsOfInterest::Bye, PitchPointOfInterestSide::North).y-60};
+        if (modifier_mask & modifier_left) {
+            def.x = pitch.getPointOfInterest(PitchPointsOfInterest::CentercircleWest).x - 20;
+            att.x = pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).x - 20;
+
+        } else if (modifier_mask & modifier_right) {
+            def.x = pitch.getPointOfInterest(PitchPointsOfInterest::CentercircleEast).x + 20;
+            att.x = pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).x + 20;
+        }
+        set_piece_positions_defending[Situation::Corner] = {{def}, {def}};
+        set_piece_positions_attacking[Situation::Corner] = {{att}, {att}};
     }
 }
 //

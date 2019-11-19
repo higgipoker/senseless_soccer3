@@ -18,7 +18,9 @@ enum class PitchPointsOfInterest : size_t {
     CenterSpot,
     PenaltySpot,
     SideWest,
-    SideEast
+    SideEast,
+    EighteenArcWest,
+    EighteenArcEast
 };
 enum class PitchPointOfInterestSide : size_t { South, North };
 //
@@ -57,6 +59,6 @@ struct PitchDrawDimensions {
 //
 //
 struct PitchDimensions {
-    static const size_t NumberPoints = 10;
+    static const size_t NumberPoints = 12;
     Engine::Vector3 points[NumberPoints][2];
 };

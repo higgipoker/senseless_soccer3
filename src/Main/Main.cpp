@@ -31,8 +31,8 @@ using namespace Engine;
 //
 //
 int main(int argc, char **args) {
-     sf::Thread thread(&func);
-      thread.launch();
+    sf::Thread thread(&func);
+    thread.launch();
     //
     // args
     //

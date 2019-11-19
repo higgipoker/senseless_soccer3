@@ -11,7 +11,7 @@ void PositionCenterMidfielder::init() {
         Vector3 def{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y * 0.65F};
         Vector3 att{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y * 0.75F};
         if (modifier_mask & modifier_left) {
-                def.x = att.x = pitch.getPointOfInterest(PitchPointsOfInterest::CentercircleWest).x;
+            def.x = att.x = pitch.getPointOfInterest(PitchPointsOfInterest::CentercircleWest).x;
 
         } else if (modifier_mask & modifier_right) {
             def.x = att.x = pitch.getPointOfInterest(PitchPointsOfInterest::CentercircleEast).x;
@@ -26,19 +26,32 @@ void PositionCenterMidfielder::init() {
         Vector3 def_right{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway).y * 0.6F};
         Vector3 att_right{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway).y * 0.6F};
         if (modifier_mask & modifier_left) {
-           def_left.x = def_right.x = att_left.x = att_right.x =pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).x - 100;
+            def_left.x = def_right.x = att_left.x = att_right.x =
+                pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).x - 100;
 
         } else if (modifier_mask & modifier_right) {
-            def_left.x = def_right.x = att_left.x = att_right.x = pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).x + 100;
+            def_left.x = def_right.x = att_left.x = att_right.x =
+                pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).x + 100;
         }
         def_left.x -= 200;
         att_left.x -= 200;
         def_right.x += 200;
         att_right.x += 200;
         clamp(def_left, def_right, att_left, att_right);
-
         set_piece_positions_defending[Situation::GoalKick] = {{def_left}, {def_right}};
         set_piece_positions_attacking[Situation::GoalKick] = {{att_left}, {att_right}};
+    }
+    {  // corner
+        Vector3 def{0, pitch.getPointOfInterest(PitchPointsOfInterest::Six, PitchPointOfInterestSide::South).y};
+        Vector3 att{0, pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen, PitchPointOfInterestSide::North).y};
+        if (modifier_mask & modifier_left) {
+            def.x = att.x = pitch.getPointOfInterest(PitchPointsOfInterest::CentercircleWest).x;
+
+        } else if (modifier_mask & modifier_right) {
+            def.x = att.x = pitch.getPointOfInterest(PitchPointsOfInterest::CentercircleEast).x;
+        }
+        set_piece_positions_defending[Situation::Corner] = {{def}, {def}};
+        set_piece_positions_attacking[Situation::Corner] = {{att}, {att}};
     }
 }
 //

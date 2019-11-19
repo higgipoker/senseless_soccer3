@@ -33,15 +33,40 @@ void PositionWideMidfielder::init() {
             def_left.x = def_right.x = att_left.x = att_right.x =
                 pitch.getPointOfInterest(PitchPointsOfInterest::SideEast).x - 100;
         }
-        def_left.x -= 200;
-        att_left.x -= 200;
-        def_right.x += 200;
-        att_right.x += 200;
-
+        const int offset = 300;
+        def_left.x -= offset;
+        att_left.x -= offset;
+        def_right.x += offset;
+        att_right.x += offset;
         clamp(def_left, def_right, att_left, att_right);
 
         set_piece_positions_defending[Situation::GoalKick] = {{def_left}, {def_right}};
         set_piece_positions_attacking[Situation::GoalKick] = {{att_left}, {att_right}};
+    }
+    {  // corner
+        Vector3 def_left{0,
+                         pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen, PitchPointOfInterestSide::South).y};
+        Vector3 att_left{0,
+                         pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen, PitchPointOfInterestSide::North).y};
+        Vector3 def_right{0,
+                          pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen, PitchPointOfInterestSide::South).y};
+        Vector3 att_right{0,
+                          pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen, PitchPointOfInterestSide::North).y};
+        if (modifier_mask & modifier_left) {
+            def_left.x = def_right.x = pitch.getPointOfInterest(PitchPointsOfInterest::EighteenArcWest).x;
+            att_left.x = att_right.x = pitch.getPointOfInterest(PitchPointsOfInterest::SideWest).x + 100;
+
+        } else if (modifier_mask & modifier_right) {
+            def_left.x = def_right.x = pitch.getPointOfInterest(PitchPointsOfInterest::EighteenArcEast).x;
+            att_left.x = att_right.x = pitch.getPointOfInterest(PitchPointsOfInterest::SideEast).x - 100;
+        }
+        const int offset = 300;
+        att_left.x -= offset;
+        att_right.x += offset;
+        clamp(def_left, def_right, att_left, att_right);
+
+        set_piece_positions_defending[Situation::Corner] = {{def_left}, {def_right}};
+        set_piece_positions_attacking[Situation::Corner] = {{att_left}, {att_right}};
     }
 }
 //

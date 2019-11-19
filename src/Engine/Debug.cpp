@@ -44,7 +44,7 @@ void Debug::update(const int in_frames, const int in_frametime) {
     ImGui::SFML::Update(window, ui_clock.restart());
     ImGui::Begin("Debug");
 
-    if (ImGui::CollapsingHeader("General")) {
+    if (ImGui::CollapsingHeader("General", ImGuiTreeNodeFlags_DefaultOpen)) {
         // current frame
         { ImGui::Text("Frame: %i", in_frames - in_frames % 10); }
         // frametime
@@ -158,7 +158,8 @@ void Debug::draw_team_menu(int which_team) {
     int initial_pitch_side = *act_pitch_side;
     ImGui::RadioButton("KickOff", act_team_positioning, 0);
     ImGui::RadioButton("GoalKick", act_team_positioning, 1);
-    ImGui::RadioButton("Support", act_team_positioning, 2);
+    ImGui::RadioButton("Corner", act_team_positioning, 2);
+    ImGui::RadioButton("Support", act_team_positioning, 9);
 
     ImGui::RadioButton("Left", act_pitch_side, 0);
     ImGui::SameLine();
@@ -175,6 +176,8 @@ void Debug::draw_team_menu(int which_team) {
                 act_team.goToSetPiecePositions(Situation::GoalKick, side);
                 break;
             case 2:
+                act_team.goToSetPiecePositions(Situation::Corner, side);
+            case 9:
                 // match->getHomeTeam().goToSetPiecePositions(Situation::GoalKick);
                 break;
         }
