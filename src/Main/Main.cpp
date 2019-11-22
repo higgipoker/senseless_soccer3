@@ -2,6 +2,7 @@
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 #endif
 
+#include <SFML/System.hpp>
 #include <sstream>
 
 #include "Ball/Ball.hpp"
@@ -107,7 +108,7 @@ int main(int argc, char **args) {
     match.getHomeTeam().getPlayer(0).power_bar = &bar;
     engine.addSprite(bar, engine.getDefaultLayer());
 
-    srand(time(nullptr));
+    srand(static_cast<unsigned int>(time(nullptr)));
 
     Joysticker joysticker;
     joysticker.input = &engine.getDefaultGamepad();
@@ -127,10 +128,6 @@ int main(int argc, char **args) {
         for (auto &i : v2) {
             v3.push_back(i);
         }
-        static_cast<MiniMap *>(&match.getPitch().getMiniMap())
-            ->updatePlayerPositions(v3, match.getBall().movable.position - match.getPitch().getDimensions().origin);
-        match.update();
-        // joysticker.update();
     }
     running = false;
     for (int i = 0; i < num_threads; ++i) {

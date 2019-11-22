@@ -9,8 +9,7 @@ using namespace Engine;
 //
 //
 PlayerSprite::PlayerSprite(const sf::Texture& in_texture,
-                           const TeamType in_team,
-                           SpriteSetDefinition in_def)
+                           const TeamType in_team, SpriteSetDefinition in_def)
     : Sprite(in_texture) {
   perspectivizable = true;
 
@@ -25,7 +24,8 @@ PlayerSprite::PlayerSprite(const sf::Texture& in_texture,
   populateSlideAnimations(slide_animations);
 
   // for players, anchor the sprite to bottom (position is feet)
-  setOrigin(in_def.frame_width / 2, in_def.frame_height);
+  setOrigin(static_cast<float>(in_def.frame_width / 2),
+            static_cast<float>(in_def.frame_height));
 }
 //
 //
