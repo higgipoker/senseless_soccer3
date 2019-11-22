@@ -1,13 +1,14 @@
 #include "Sprite.hpp"
-#include "Debug.hpp"
-#include "Metrics.hpp"
-#include "Vector.hpp"
+
+#include <math.h>
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
-
-#include <math.h>
 #include <cassert>
+
+#include "Debug.hpp"
+#include "Metrics.hpp"
+#include "Vector.hpp"
 //
 //
 //
@@ -15,12 +16,11 @@ namespace Engine {
 //
 //
 //
-Sprite::Sprite() {
-}
+Sprite::Sprite() {}
 //
 //
 //
-Sprite::Sprite(SharedPtr<sf::Texture> in_texture)  {
+Sprite::Sprite(SharedPtr<sf::Texture> in_texture) {
   setTexture(*in_texture.get());
 }
 //
@@ -52,7 +52,8 @@ void Sprite::init(const SpriteSetDefinition &in_def) {
   setFrame(current_frame);
 
   // default set origin to center
-  setOrigin(in_def.frame_width / 2, in_def.frame_height / 2);
+  setOrigin(static_cast<float>(in_def.frame_width / 2),
+            static_cast<float>(in_def.frame_height / 2));
 
   // for perspective scaling
   perspective_width = getLocalBounds().width;

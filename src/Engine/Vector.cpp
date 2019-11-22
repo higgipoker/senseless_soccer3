@@ -244,7 +244,7 @@ bool Vector3::equals(const Vector3 &v, float tolerance) {
 //
 void Vector3::roundAngle(int nearest_angle) {
   Vector3 rounded;
-  float nearest_radians = Radians(nearest_angle);
+  float nearest_radians = Radians(static_cast<float>(nearest_angle));
   float angle = atan2f(y, x);
   float remainder = std::fmod(angle, nearest_radians);
 
