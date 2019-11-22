@@ -61,21 +61,17 @@ void GameEngine::step() {
         movable->step(dt);
     }
 
-    // sort renderables
-    for (auto &layer : render_layers) {
-        if (layer.second.sortable) {
-            std::sort(std::begin(layer.second.sprite_list), std::end(layer.second.sprite_list),
-                      [](sf::Drawable *d1, sf::Drawable *d2) -> bool { return d1->z < d2->z; });
-        }
-    }
-
     // render
     window.clear({18, 60, 10});
     getMainCamera().update();
     window.setView(camera.getview());
 
     // render entities
-    for (const auto &layer : render_layers) {
+    for (auto &layer : render_layers) {
+        if (layer.second.sortable) {
+            std::sort(std::begin(layer.second.sprite_list), std::end(layer.second.sprite_list),
+                      [](sf::Drawable *d1, sf::Drawable *d2) -> bool { return d1->z < d2->z; });
+        }
         for (const auto &drawable : layer.second.sprite_list) {
             drawable->perspectivize(camera.getHeight());
             window.draw(*drawable);

@@ -21,9 +21,15 @@
 #include "Team/TeamFactory.hpp"
 
 #include <SFML/System.hpp>
+#include <mutex>
+#include <thread>
 
-void func() {
-    std::cout << "Hello, World" << std::endl;
+void threadCallback(int id, bool *in) {
+    static std::mutex mutex;
+    while (*in) {
+        const std::lock_guard<std::mutex> lock(mutex);
+        std::cout << "Hello, World " << id << std::endl;
+    }
 }
 
 using namespace Engine;
@@ -31,21 +37,14 @@ using namespace Engine;
 //
 //
 int main(int argc, char **args) {
-    sf::Thread thread(&func);
-    thread.launch();
-    //
-    // args
-    //
-    if (argc > 1) {
-        std::cout << argc - 1 << " args: ";
-        for (int i = 1; i < argc; ++i) {
-            std::cout << args[i];
-            if (i != argc - 1) {
-                std::cout << ", ";
-            }
-        }
-        std::cout << std::endl;
+    bool running = true;
+    const int num_threads = 10000;
+
+    std::thread t[num_threads];
+    for (int i = 0; i < num_threads; ++i) {
+        t[i] = std::thread(threadCallback, i + 1, &running);
     }
+
     //
     // game resources
     //
@@ -55,12 +54,12 @@ int main(int argc, char **args) {
     //
     // engine
     //
-    sf::IntRect wnd_size{0, 0, 1280, 730};
+    sf::IntRect wnd_size{0, 0, 1280, 720};
     GameEngine engine("senseless soccer", wnd_size.width, wnd_size.height);
     //
     // pitch
     //
-    UniquePtr<Pitch> pitch = std::make_unique<Pitch>(graphics_folder.getPath(true) + "grass_checked.png", world);
+    auto pitch = std::make_unique<Pitch>(graphics_folder.getPath(true) + "grass_checked.png", world);
     engine.addSprite(pitch->getSprite(), engine.getBackgroundLayer());
     engine.addEntity(pitch->getMiniMapEntity(), engine.getHudLayer());
     pitch->getMiniMapEntity().movable.position = {20, 20};
@@ -133,7 +132,10 @@ int main(int argc, char **args) {
         match.update();
         // joysticker.update();
     }
-    thread.wait();
+    running = false;
+    for (int i = 0; i < num_threads; ++i) {
+        t[i].join();
+    }
     std::cout << args[0] << " exited normally" << std::endl;
     return 0;
 }
