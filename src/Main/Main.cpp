@@ -128,11 +128,18 @@ int main(int argc, char **args) {
         for (auto &i : v2) {
             v3.push_back(i);
         }
+  static_cast<MiniMap *>(&match.getPitch().getMiniMap())
+        ->updatePlayerPositions(v3,
+                                match.getBall().movable.position -
+                                    match.getPitch().getDimensions().origin);
+    match.update();
+    // joysticker.update();
     }
     running = false;
     for (int i = 0; i < num_threads; ++i) {
         t[i].join();
     }
+  
     std::cout << args[0] << " exited normally" << std::endl;
     return 0;
 }
