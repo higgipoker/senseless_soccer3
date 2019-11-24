@@ -12,6 +12,7 @@
 #include <SFML/Graphics/RenderTexture.hpp>
 //
 class Team;
+class Player;
 enum class TeamType;
 //
 //
@@ -68,6 +69,9 @@ class Match {
     //
     //
     void setAttackingTeam(const TeamType in_which);
+
+    // todo tmp
+    Player* player_in_possession = nullptr;
 
    protected:
     MatchFactory factory;

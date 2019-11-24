@@ -180,4 +180,5 @@ class Player : public Engine::Entity, public Engine::Controllable {
     friend class BrainSupport;
     friend class BrainCover;
     friend class Locomotion;
+    friend class Team;
 };

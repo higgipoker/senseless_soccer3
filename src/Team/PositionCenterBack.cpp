@@ -58,11 +58,11 @@ void PositionCenterBack::init() {
         Vector3 att_right{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y};
         if (modifier_mask & modifier_left) {
             def_left.x = def_right.x = att_left.x = att_right.x =
-                pitch.getPointOfInterest(PitchPointsOfInterest::PenaltySpot).x-25;
+                pitch.getPointOfInterest(PitchPointsOfInterest::PenaltySpot).x - 25;
 
         } else if (modifier_mask & modifier_right) {
             def_left.x = def_right.x = att_left.x = att_right.x =
-                pitch.getPointOfInterest(PitchPointsOfInterest::PenaltySpot).x+25;
+                pitch.getPointOfInterest(PitchPointsOfInterest::PenaltySpot).x + 25;
         }
         clamp(def_left, def_right, att_left, att_right);
         set_piece_positions_defending[Situation::Corner] = {{def_left}, {def_right}};

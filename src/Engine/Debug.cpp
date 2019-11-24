@@ -159,7 +159,7 @@ void Debug::draw_team_menu(int which_team) {
     ImGui::RadioButton("KickOff", act_team_positioning, 0);
     ImGui::RadioButton("GoalKick", act_team_positioning, 1);
     ImGui::RadioButton("Corner", act_team_positioning, 2);
-    ImGui::RadioButton("Support", act_team_positioning, 9);
+    ImGui::RadioButton("Play", act_team_positioning, 9);
 
     ImGui::RadioButton("Left", act_pitch_side, 0);
     ImGui::SameLine();
@@ -177,8 +177,9 @@ void Debug::draw_team_menu(int which_team) {
                 break;
             case 2:
                 act_team.goToSetPiecePositions(Situation::Corner, side);
+                break;
             case 9:
-                // match->getHomeTeam().goToSetPiecePositions(Situation::GoalKick);
+                act_team.goToSetPiecePositions(Situation::Playing, side);
                 break;
         }
     }

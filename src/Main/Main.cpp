@@ -1,3 +1,4 @@
+
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 #endif
@@ -27,10 +28,17 @@
 
 void threadCallback(int id, bool *in) {
     static std::mutex mutex;
-    while (*in) {
+    int i = 0;
+    int cnt = 0;
+    while (i < 100000) {
+        // while (*in) {
         const std::lock_guard<std::mutex> lock(mutex);
-        std::cout << "Hello, World " << id << std::endl;
+        cnt = i / 0.3F;
+        ++cnt;
+        ++i;
     }
+
+    std::cout << "thread " << id << " done" << std::endl;
 }
 
 using namespace Engine;
@@ -38,14 +46,15 @@ using namespace Engine;
 //
 //
 int main(int argc, char **args) {
+    //
+    // thread test
+    //
     bool running = true;
-    const int num_threads = 10000;
-
+    const int num_threads = 10;
     std::thread t[num_threads];
     for (int i = 0; i < num_threads; ++i) {
         t[i] = std::thread(threadCallback, i + 1, &running);
     }
-
     //
     // game resources
     //
@@ -64,13 +73,11 @@ int main(int argc, char **args) {
     engine.addSprite(pitch->getSprite(), engine.getBackgroundLayer());
     engine.addEntity(pitch->getMiniMapEntity(), engine.getHudLayer());
     pitch->getMiniMapEntity().movable.position = {20, 20};
-
     //
     // teams
     //
-    TeamFactory team_factory;
-    Team team1 = team_factory.makeDefaultHomeTeam("Team1");
-    Team team2 = team_factory.makeDefaultAwayTeam("Team2");
+    Team team1 = TeamFactory::makeDefaultHomeTeam("Team1");
+    Team team2 = TeamFactory::makeDefaultAwayTeam("Team2");
     //
     // match
     //
@@ -117,6 +124,16 @@ int main(int argc, char **args) {
     engine.getDefaultGamepad().attachListener(joysticker);
 
     engine.getMainCamera().setWorldRect(world);
+
+    //
+    // gamestate
+    //
+    gamestate.match = &match;
+    gamestate.home_team = &match.getHomeTeam();
+    gamestate.away_team = &match.getAwayTeam();
+    gamestate.ball = &match.getBall();
+    gamestate.pitch = &match.getPitch();
+
     while (engine.isRunning()) {
         engine.step();
         auto v1 = match.getHomeTeam().getPlayerPositions();
@@ -128,18 +145,16 @@ int main(int argc, char **args) {
         for (auto &i : v2) {
             v3.push_back(i);
         }
-  static_cast<MiniMap *>(&match.getPitch().getMiniMap())
-        ->updatePlayerPositions(v3,
-                                match.getBall().movable.position -
-                                    match.getPitch().getDimensions().origin);
-    match.update();
-    // joysticker.update();
+        static_cast<MiniMap *>(&match.getPitch().getMiniMap())
+            ->updatePlayerPositions(v3, match.getBall().movable.position - match.getPitch().getDimensions().origin);
+        match.update();
+        // joysticker.update();
     }
     running = false;
     for (int i = 0; i < num_threads; ++i) {
         t[i].join();
     }
-  
+
     std::cout << args[0] << " exited normally" << std::endl;
     return 0;
 }

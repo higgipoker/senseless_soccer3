@@ -32,7 +32,7 @@ class Team {
     //
     //
     //
-    Team(const std::string &in_name, const TeamType in_home_or_away, const Kit& in_kit);
+    Team(const std::string& in_name, const TeamType in_home_or_away, const Kit& in_kit);
     //
     //
     //
@@ -119,6 +119,7 @@ class Team {
     // a team has its own sprite for rendering debug primitives etc
     Engine::Sprite sprite;
     std::string name;
+    Player *closest_to_ball = nullptr;
 
    protected:
     Match* match = nullptr;

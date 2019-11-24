@@ -90,7 +90,7 @@ Ball &Match::getBall() {
 //
 void Match::setAttackingTeam(const TeamType in_which) {
     attacking_team = in_which;
-    switch(attacking_team){
+    switch (attacking_team) {
         case TeamType::Home:
             home_team.setAttackingState(AttackingState::Attacking);
             away_team.setAttackingState(AttackingState::Defending);

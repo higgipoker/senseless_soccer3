@@ -11,6 +11,7 @@ class Team;
 //
 //
 enum class PositionModifier { Center, Left, Right, Attacking, Defensive };
+enum class MarkingModifier { Zonal, Man, Tight, None };
 //
 //
 //
@@ -105,14 +106,19 @@ class PlayingPosition {
     const Pitch &pitch;
     const Team &my_team;
     const Team &other_team;
+    MarkingModifier marking;
     unsigned char modifier_mask{modifier_none};
     static int instances;
-
+    //
+    //
+    //
     float min_x = 0;
     float max_x = 0;
     float min_y = 0;
     float max_y = 0;
-
+    //
+    //
+    //
     void clamp(Engine::Vector3 &in_v1, Engine::Vector3 &in_v2, Engine::Vector3 &in_v3, Engine::Vector3 &in_v4) {
         in_v1.x = std::clamp(in_v1.x, min_x, max_x);
         in_v1.y = std::clamp(in_v1.y, min_y, max_y);

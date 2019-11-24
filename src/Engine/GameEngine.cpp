@@ -10,23 +10,24 @@ namespace Engine {
 //
 //
 //
-GameEngine::GameEngine(const std::string &in_window_title, int in_window_width,
-                       int in_window_height, int in_flags, bool in_fullscreen)
-    : window(in_window_title, in_window_width, in_window_height, in_flags,
-             in_fullscreen),
-      camera(static_cast<float>(in_window_width),
-             static_cast<float>(in_window_height)),
+static const bool NotSortable = false;
+static const bool Sortable = true;
+//
+//
+//
+GameEngine::GameEngine(const std::string &in_window_title, int in_window_width, int in_window_height, int in_flags,
+                       bool in_fullscreen)
+    : window(in_window_title, in_window_width, in_window_height, in_flags, in_fullscreen),
+      camera(static_cast<float>(in_window_width), static_cast<float>(in_window_height)),
       debug_gui(window),
       picker(window, movables, debug_gui) {
-  hud_view.setSize(static_cast<float>(in_window_width),
-                   static_cast<float>(in_window_height));
-  hud_view.setCenter(static_cast<float>(in_window_width / 2),
-                     static_cast<float>(in_window_height / 2));
+    hud_view.setSize(static_cast<float>(in_window_width), static_cast<float>(in_window_height));
+    hud_view.setCenter(static_cast<float>(in_window_width / 2), static_cast<float>(in_window_height / 2));
 
     camera.movable.position = {static_cast<float>(in_window_width) / 2, static_cast<float>(in_window_height) / 2};
-    background_layer = addLayer(false);
-    shadow_layer = addLayer(false);
-    default_layer = addLayer(false);
+    background_layer = addLayer(NotSortable);
+    shadow_layer = addLayer(NotSortable);
+    default_layer = addLayer(Sortable);
     camera.setHeight(50);
     addEntity(camera);
     addControllable(camera);
@@ -48,7 +49,7 @@ void GameEngine::step() {
     // fps
     float current_time = clock.getElapsedTime().asSeconds();
     frames++;
-  if (current_time - last_time >= 1.0F) {
+    if (current_time - last_time >= 1.0F) {
         frametime = 1000 / frames;
         frames = 0;
         last_time += 1.0;

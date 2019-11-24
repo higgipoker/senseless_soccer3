@@ -12,14 +12,14 @@ class TeamFactory : public Engine::BaseFactory {
   //
   //
   //
-  Team makeDefaultHomeTeam(const std::string & in_name);
+  static Team makeDefaultHomeTeam(const std::string & in_name);
   //
   //
   //
-  Team makeDefaultAwayTeam(const std::string & in_name);
+  static Team makeDefaultAwayTeam(const std::string & in_name);
   //
   //
   //
  private:
-  KitFactory kit_factory;
+  static KitFactory kit_factory;
 };

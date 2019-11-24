@@ -36,5 +36,9 @@ class BrainCover : public BrainState {
     //
     void change_direction();
     //
+    //
+    //
+    bool should_close_down();
+    //
     Engine::Vector3 last_target;
 };
