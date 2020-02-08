@@ -50,7 +50,7 @@ class Folder {
   //
   //
   //
-  void read_files_and_folders(bool in_refresh = false, GetType in_type=GetType::All);
+  void read_files_and_folders(bool in_refresh = false);
 };
 /**
  * @brief The WorkingFolder class

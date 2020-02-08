@@ -33,7 +33,6 @@ class Picker {
     sf::Vector2f last_dragged_position;
     bool hud_grabbed = false;
     sf::Vector2f grab_offset;
-
     Debug &debug;
 };
 

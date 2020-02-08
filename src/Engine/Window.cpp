@@ -36,7 +36,6 @@ Window::Window(const std::string &title, const int width, const int height, int 
     WorkingFolder folder;
     sf::Image icon;
     icon.loadFromFile(folder.getPath(true) + "gfx/icon.png");
-
     setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 }
 }  // namespace Engine

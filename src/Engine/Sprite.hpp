@@ -90,6 +90,7 @@ class Sprite : public sf::Sprite {
   inline void setPerspectivizable(bool in_status) {
     perspectivizable = in_status;
   }
+
   /// a list of shapes for debug drawing
   std::vector<sf::Shape*> debug_shapes;
   /// for perspective

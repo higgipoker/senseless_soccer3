@@ -24,11 +24,8 @@ class MiniMap : public PitchSprite {
     //
     //
     //
-    void updatePlayerPositions(const std::vector<Engine::Vector3> &in_positions, const Engine::Vector3 in_ball_position);
-    //
-    //
-    //
-    void setScale(float in_scale_factor);
+    void updatePlayerPositions(const std::vector<Engine::Vector3> &in_positions,
+                               const Engine::Vector3 in_ball_position);
     //
     //
     //
@@ -41,21 +38,19 @@ class MiniMap : public PitchSprite {
     //
     //
    private:
-    float scale_factor = 0.1F;
-
     // pitch lines
-    sf::Vertex bounds[8];
-    sf::Vertex north_6_box[6];
-    sf::Vertex north_18_box[6];
-    sf::Vertex south_6_box[6];
-    sf::Vertex south_18_box[6];
-    sf::Vertex halfwayline[2];
+    std::array<sf::Vertex, 8> bounds;
+    std::array<sf::Vertex, 6> north_6_box;
+    std::array<sf::Vertex, 6> north_18_box;
+    std::array<sf::Vertex, 6> south_6_box;
+    std::array<sf::Vertex, 6> south_18_box;
+    std::array<sf::Vertex, 2> halfwayline;
     sf::CircleShape center_circle;
     sf::CircleShape ball;
 
     // players
-    sf::Vertex players[20];
-    sf::CircleShape circles[20];
+    std::array<sf::Vertex, 20> players;
+    std::array<sf::CircleShape, 20> circles;
 
     std::vector<sf::Vertex> vlines;
 };
