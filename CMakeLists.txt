@@ -96,6 +96,7 @@ add_executable(senseless_soccer3
     src/Ball/BallFactory.cpp
     src/Match/Match.cpp
     src/Match/MatchFactory.cpp
+    src/Match/MatchEngine.cpp
     src/Team/Team.cpp
     src/Team/PlayingPosition.cpp
     src/Team/PositionDefender.cpp
