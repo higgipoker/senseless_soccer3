@@ -17,6 +17,7 @@ static struct GameState {
     Team *away_team = nullptr;
     Ball *ball = nullptr;
     Pitch *pitch = nullptr;
+    MiniMap *minimap = nullptr;
     //
     //
     //

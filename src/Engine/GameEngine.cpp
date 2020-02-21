@@ -46,58 +46,65 @@ GameEngine::~GameEngine() {
 void GameEngine::step() {
     ++frame_counter;
 
-    // fps
-    float current_time = clock.getElapsedTime().asSeconds();
-    frames++;
-    if (current_time - last_time >= 1.0F) {
-        frametime = 1000 / frames;
-        frames = 0;
-        last_time += 1.0;
-    }
-
-    // handle input
-    poll_input_devices();
-    for (const auto &controllable : controllables) {
-        controllable->handleInput();
-    }
-
-    // update entities
-    for (const auto &movable : movables) {
-        movable->step(dt);
-    }
-
-    // render
-    window.clear({18, 60, 10});
-    getMainCamera().update();
-    window.setView(camera.getview());
-
-    // render entities
-    for (auto &layer : render_layers) {
-        if (layer.second.sortable) {
-            std::sort(std::begin(layer.second.sprite_list), std::end(layer.second.sprite_list),
-                      [](sf::Drawable *d1, sf::Drawable *d2) -> bool { return d1->z < d2->z; });
+    {  // calc fps
+        float current_time = clock.getElapsedTime().asSeconds();
+        frames++;
+        if (current_time - last_time >= 1.0F) {
+            frametime = 1000 / frames;
+            frames = 0;
+            last_time += 1.0;
         }
-        for (const auto &drawable : layer.second.sprite_list) {
-            drawable->perspectivize(camera.getHeight());
+    }
+
+    {  // handle input
+        if (window.hasFocus()) {
+            poll_input_devices();
+            for (const auto &controllable : controllables) {
+                controllable->handleInput();
+            }
+        }
+    }
+
+    {  // update entities
+        getMainCamera().update();
+        for (const auto &movable : movables) {
+            movable->step(dt);
+        }
+    }
+
+    {  // render
+        window.clear({18, 60, 10});
+        window.setView(camera.getview());
+
+        // entity layers
+        for (auto &layer : render_layers) {
+            // sort the layer
+            if (layer.second.sortable) {
+                std::sort(std::begin(layer.second.sprite_list), std::end(layer.second.sprite_list),
+                          [](sf::Drawable *d1, sf::Drawable *d2) -> bool { return d1->z < d2->z; });
+            }
+            // render the layer
+            for (const auto &drawable : layer.second.sprite_list) {
+                drawable->perspectivize(camera.getHeight());
+                window.draw(*drawable);
+            }
+        }
+
+        //  hud
+        window.setView(hud_view);
+        for (const auto &drawable : hud.sprite_list) {
             window.draw(*drawable);
         }
-    }
 
-    // render hud
-    window.setView(hud_view);
-    for (const auto &drawable : hud.sprite_list) {
-        window.draw(*drawable);
+        // debug
+        if (Debug::showHud()) {
+            window.setView(hud_view);
+            debug_gui.update(frame_counter, frametime);
+            window.setView(camera.getview());
+            picker.update();
+        }
+        window.display();
     }
-
-    // render debug
-    if (Debug::showHud()) {
-        window.setView(hud_view);
-        debug_gui.update(frame_counter, frametime);
-        window.setView(camera.getview());
-        picker.update();
-    }
-
-    window.display();
 }
 //
 //
@@ -123,10 +130,12 @@ void GameEngine::addSprite(Sprite &in_sprite, layer_id in_layer_id) {
     if (in_layer_id == RenderLayer::INVALID_LAYER) {
         // add to default layer
         render_layers.at(default_layer).sprite_list.push_back(&in_sprite);
+
     } else {
         // add to specified layer
         if (in_layer_id < render_layers.size()) {
             render_layers.at(in_layer_id).sprite_list.push_back(&in_sprite);
+
         } else {
             std::cout << "Engine::addRenderable> Tried to add to non existent layer: " << in_layer_id << std::endl;
         }
@@ -148,6 +157,7 @@ void GameEngine::addEntity(Entity &in_entity, layer_id in_layer_id) {
     }
 
     addSprite(in_entity.getSprite(), in_layer_id);
+
     if (in_entity.hasShadow()) {
         addSprite(in_entity.getShadow(), shadow_layer);
     }

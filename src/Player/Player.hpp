@@ -60,7 +60,8 @@ class Player : public Engine::Entity, public Engine::Controllable {
     //
     //
     //
-    Player(Match &in_match, const Team &in_my_team, const Team & in_other_team, UniquePtr<PlayerSprite> in_sprite, UniquePtr<PlayerSprite> in_shadow);
+    Player(Match &in_match, const Team &in_my_team, const Team &in_other_team, UniquePtr<PlayerSprite> in_sprite,
+           UniquePtr<PlayerSprite> in_shadow);
     //
     //
     //
@@ -169,6 +170,7 @@ class Player : public Engine::Entity, public Engine::Controllable {
     void debug();
 
     static int instances;
+
    public:
     // state machine pattern
     friend class PlayerState;

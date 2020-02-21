@@ -17,11 +17,11 @@ Match::Match(UniquePtr<Pitch> in_pitch, Team &in_home_team, Team &in_away_team, 
     auto ball_texture = std::make_unique<Engine::Texture>();
     ball_texture->loadFromFile(ball_factory.getSpriteSheeet(in_ball_type));
 
-    if (factory.createMatchTexture(std::move(home_team.getSpriteTexture()), std::move(away_team.getSpriteTexture()),
-                                   std::move(home_team.getShadowTexture()), std::move(away_team.getShadowTexture()),
+    if (factory.createMatchTexture(home_team.getSpriteTexture(), away_team.getSpriteTexture(),
+                                   home_team.getShadowTexture(), away_team.getShadowTexture(),
                                    std::move(ball_texture))) {
-        ball = std::make_unique<Ball>(std::move(std::make_unique<BallSprite>(factory.getMatchTexture())),
-                                      std::move(std::make_unique<BallShadowSprite>(factory.getMatchTexture())));
+        ball = std::make_unique<Ball>((std::make_unique<BallSprite>(factory.getMatchTexture())),
+                                      (std::make_unique<BallShadowSprite>(factory.getMatchTexture())));
         ball->getSprite().setPerspectivizable(true);
         ball->movable.name = "Ball";
     } else {

@@ -64,7 +64,7 @@ void Debug::update(const int in_frames, const int in_frametime) {
             auto p = match->getPitch().toPitchSpace({mouse_x, mouse_y});
             ImGui::Text("Pitch: %i, %i", static_cast<int>(p.x), static_cast<int>(p.y));
             // mini map scale factor
-            match->getPitch().getMiniMap().setScale(mini_map_scale_factor, mini_map_scale_factor);
+            match->getPitch().getMiniMapSprite().setScale(mini_map_scale_factor, mini_map_scale_factor);
             { ImGui::SliderFloat("", &mini_map_scale_factor, 0.1f, 0.5f, "radar = %.3f"); }
         }
     }
@@ -106,7 +106,7 @@ void Debug::handleInput(sf::Event &in_event) {
         if (picked == "mini map") {
             mini_map_scale_factor += in_event.mouseWheelScroll.delta * 0.01F;
             mini_map_scale_factor = std::clamp(mini_map_scale_factor, 0.1F, 0.5F);
-            match->getPitch().getMiniMap().setScale(mini_map_scale_factor, mini_map_scale_factor);
+            match->getPitch().getMiniMapSprite().setScale(mini_map_scale_factor, mini_map_scale_factor);
         }
     }
 }

@@ -24,10 +24,6 @@ class Pitch : public Engine::Entity {
     //
     //
     //
-    Engine::Sprite &getMiniMap();
-    //
-    //
-    //
     Engine::Vector3 toScreenSpace(const Engine::Vector3 &in_vector) const;
     //
     //
@@ -38,6 +34,18 @@ class Pitch : public Engine::Entity {
     //
     const PitchDrawDimensions &getDimensions() const {
         return draw_dimensions;
+    }
+    //
+    //
+    //
+    MiniMap& GetMiniMap(){
+        return static_cast<MiniMap&>(*minimap.get());
+    }
+    //
+    //
+    //
+    Engine::Sprite &getMiniMapSprite() {
+        return minimap_entity.getSprite();
     }
     //
     //

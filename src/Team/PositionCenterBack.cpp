@@ -8,7 +8,6 @@ using namespace Engine;
 //
 void PositionCenterBack::init() {
     {  // kick off positions
-
         Vector3 def_left{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y * 0.35F};
         Vector3 def_right{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y * 0.35F};
         Vector3 att_left{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y * 0.55F};
