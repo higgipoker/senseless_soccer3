@@ -71,11 +71,11 @@ void PositionCenterBack::init() {
 //
 //
 //
-Engine::Vector3 PositionCenterBack::getPlayingPosition(const Situation in_situation, const Ball &in_ball) {
+Engine::Vector3 PositionCenterBack::getPlayingPosition(const Ball &in_ball) {
     Vector3 ball = pitch.toPitchSpace(in_ball.movable.position);
     // rotate perception of ball if attacking towards south
     if (my_team.getAttackingGoal() == Direction::South) {
-        ball.rotate(180, pitch.getDimensions().bounds.getSize().x / 2, pitch.getDimensions().bounds.getSize().y / 2);
+        ball.rotate(0, pitch.getDimensions().bounds.getSize().x / 2, pitch.getDimensions().bounds.getSize().y / 2);
     }
 
     float middle = pitch.getDimensions().bounds.getSize().x / 2;
@@ -114,7 +114,7 @@ Engine::Vector3 PositionCenterBack::getPlayingPosition(const Situation in_situat
     if (my_team.getAttackingGoal() == Direction::South) {
         // since the team y defensive line has already been calced, only rotate x here
         Vector3 tmp{result.x, 0};
-        tmp.rotate(180, middle, 0);
+        tmp.rotate(0, middle, 0);
         result.x = tmp.x;
     }
 

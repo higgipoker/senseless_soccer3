@@ -156,8 +156,9 @@ void Sprite::perspectivize(const float in_camera_height) {
         sprite_scale_factor *= sprite_ratio;
         setScale(sprite_scale_factor, sprite_scale_factor);
 
-        if (shadow)
+        if (shadow) {
             shadow->setScale(sprite_scale_factor, sprite_scale_factor);
+        }
 
         // y offset due to height
         float z_cm = entity_height * Metrics::Z_PERSP_OFFSET;

@@ -52,63 +52,63 @@ class GameEngine {
     //
     //
     //
-    void step();
+    void step() noexcept;
     //
     //
     //
-    int addLayer(bool in_sortable = false);
+    int addLayer(const bool in_sortable = false) noexcept;
     //
     //
     //
-    void addSprite(Sprite &in_sprite, layer_id in_layer_id = RenderLayer::INVALID_LAYER);
+    void addSprite(Sprite &in_sprite, layer_id in_layer_id = RenderLayer::INVALID_LAYER) noexcept;
     //
     //
     //
-    void addControllable(Controllable &in_controllable);
+    void addControllable(Controllable &in_controllable) noexcept;
     //
     //
     //
-    void addEntity(Entity &in_entity, layer_id in_layer_id = RenderLayer::INVALID_LAYER);
+    void addEntity(Entity &in_entity, layer_id in_layer_id = RenderLayer::INVALID_LAYER) noexcept;
     //
     //
     //
-    bool isRunning() const;
+    bool isRunning() const noexcept;
     //
     //
     //
-    sf::RenderTarget &getRenderTarget();
+    sf::RenderTarget &getRenderTarget() noexcept;
     //
     //
     //
-    Camera &getMainCamera();
+    Camera &getMainCamera() noexcept;
     //
     //
     //
-    layer_id getHudLayer() const;
+    layer_id getHudLayer() const noexcept;
     //
     //
     //
-    layer_id getBackgroundLayer() const;
+    layer_id getBackgroundLayer() const noexcept;
     //
     //
     //
-    layer_id getDefaultLayer() const;
+    layer_id getDefaultLayer() const noexcept;
     //
     //
     //
-    layer_id getShadowLayer() const;
+    layer_id getShadowLayer() const noexcept;
     //
     //
     //
-    Keyboard &getDefaultKeyboard();
+    Keyboard &getDefaultKeyboard() noexcept;
     //
     //
     //
-    Gamepad &getDefaultGamepad();
+    Gamepad &getDefaultGamepad() noexcept;
     //
     //
     //
-    Debug &getDebugUI() {
+    Debug &getDebugUI() noexcept {
         return debug_gui;
     }
     /// tmp
@@ -142,10 +142,10 @@ class GameEngine {
     //
     //
     //
-    void toggle_debg(bool in_keep_on = false);
+    void toggle_debg(bool in_keep_on = false) noexcept;
     //
     //
     //
-    void poll_input_devices();
+    void poll_input_devices() noexcept;
 };
 }  // namespace Engine

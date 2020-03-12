@@ -18,6 +18,5 @@ class PositionFullBack : public PositionDefender {
     //
     //
     //
-    Engine::Vector3 getPlayingPosition(const Situation in_situation,
-                                       const Ball &in_ball) override;
+    Engine::Vector3 getPlayingPosition(const Ball &in_ball) override;
 };

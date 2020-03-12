@@ -17,19 +17,20 @@ void Gameplan::updateDefensiveLine(const Pitch &in_pitch, const Ball &in_ball,
 
     // rotate perception of ball if attacking towards south
     if (in_attacking_direction == Direction::South) {
-        ball.rotate(180, in_pitch.getDimensions().bounds.getSize().x / 2, in_pitch.getDimensions().bounds.getSize().y / 2);
+        ball.rotate(0, in_pitch.getDimensions().bounds.getSize().x / 2,
+                    in_pitch.getDimensions().bounds.getSize().y / 2);
     }
 
-    const float min = 0;                                           // goal line
+    const float min = 0;                                                // goal line
     const float max = in_pitch.getDimensions().bounds.getSize().y / 2;  // half way line
 
     switch (defensive_line_height) {
         case DefensiveLineType::Deep:
             defensive_line.y = std::clamp(min + (static_cast<int>(ball.y * 0.4F)), min, max);
             break;
-        case DefensiveLineType::Normal: {
+        case DefensiveLineType::Normal:
             defensive_line.y = std::clamp(min + (static_cast<int>(ball.y * 0.6F)), min, max);
-        } break;
+            break;
         case DefensiveLineType::High:
             defensive_line.y = std::clamp(min + (static_cast<int>(ball.y * 0.8F)), min, max);
             break;

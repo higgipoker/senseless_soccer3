@@ -6,11 +6,11 @@
  * @brief The Stand locomotion sents the subject to a fixed location
  */
 class Stand : public Locomotion {
- public:
+public:
   /**
    * @brief Stand
    */
-  Stand(Player& in_player);
+  Stand(Player &in_player);
   /**
    */
   ~Stand() override = default;

@@ -24,7 +24,7 @@ class Debug {
     //
     //
     //
-    void update(const int in_frames, const int in_frametime);
+    void draw(const int in_frames, const int in_frametime);
     //
     //
     //
@@ -67,9 +67,7 @@ class Debug {
     /// a clock for ui tick
     sf::Clock ui_clock;
     /// track mouse
-    float mouse_x = 0;
-    float mouse_y = 0;
-
+    Vector3 mouse_position;
     /// debug flags
     static bool flag_draw_bounds;
     static sf::Color bounds_color;

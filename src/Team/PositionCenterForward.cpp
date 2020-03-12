@@ -49,9 +49,9 @@ void PositionCenterForward::init() {
         set_piece_positions_attacking[Situation::GoalKick] = {{att_left}, {att_right}};
     }
     {  // corner positions
-       // todo: make this the posts
+        // todo: make this the posts
         Vector3 def{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway, PitchPointOfInterestSide::North).y};
-        Vector3 att{0, pitch.getPointOfInterest(PitchPointsOfInterest::Bye, PitchPointOfInterestSide::North).y-60};
+        Vector3 att{0, pitch.getPointOfInterest(PitchPointsOfInterest::Bye, PitchPointOfInterestSide::North).y - 60};
         if (modifier_mask & modifier_left) {
             def.x = pitch.getPointOfInterest(PitchPointsOfInterest::CentercircleWest).x - 20;
             att.x = pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).x - 20;
@@ -67,7 +67,7 @@ void PositionCenterForward::init() {
 //
 //
 //
-Engine::Vector3 PositionCenterForward::getPlayingPosition(const Situation in_situation, const Ball &in_ball) {
+Engine::Vector3 PositionCenterForward::getPlayingPosition(const Ball &in_ball) {
     Vector3 result;
     float middle = pitch.getDimensions().bounds.getSize().x / 2;
 

@@ -5,7 +5,7 @@ using namespace Engine;
 //
 //
 //
-Stand::Stand(Player& in_player) : Locomotion(in_player) {}
+Stand::Stand(Player &in_player) : Locomotion(in_player) {}
 //
 //
 //

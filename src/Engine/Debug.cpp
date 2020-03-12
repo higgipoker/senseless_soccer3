@@ -40,7 +40,7 @@ Debug::~Debug() {
 //
 //
 //
-void Debug::update(const int in_frames, const int in_frametime) {
+void Debug::draw(const int in_frames, const int in_frametime) {
     ImGui::SFML::Update(window, ui_clock.restart());
     ImGui::Begin("Debug");
 
@@ -50,7 +50,14 @@ void Debug::update(const int in_frames, const int in_frametime) {
         // frametime
         { ImGui::Text("Frame time: %ims", in_frametime); }
         // mouse position
-        { ImGui::Text("Mouse: %i, %i", static_cast<int>(mouse_x), static_cast<int>(mouse_y)); }
+        {
+            ImGui::Text("Mouse (screen): %i, %i", static_cast<int>(mouse_position.x),
+                        static_cast<int>(mouse_position.y));
+        }
+        {
+            ImGui::Text("Mouse (pitch): %i, %i", static_cast<int>(match->getPitch().toPitchSpace(mouse_position).x),
+                        static_cast<int>(match->getPitch().toPitchSpace(mouse_position).x));
+        }
         // draw bounds
         { ImGui::Checkbox("Draw Bounds", &flag_draw_bounds); }
         // draw diagnostics
@@ -61,7 +68,7 @@ void Debug::update(const int in_frames, const int in_frametime) {
     if (ImGui::CollapsingHeader("Pitch")) {
         if (match) {
             // mouse pitch position
-            auto p = match->getPitch().toPitchSpace({mouse_x, mouse_y});
+            auto p = match->getPitch().toPitchSpace({mouse_position.x, mouse_position.y});
             ImGui::Text("Pitch: %i, %i", static_cast<int>(p.x), static_cast<int>(p.y));
             // mini map scale factor
             match->getPitch().getMiniMapSprite().setScale(mini_map_scale_factor, mini_map_scale_factor);
@@ -100,8 +107,8 @@ void Debug::handleInput(sf::Event &in_event) {
     if (in_event.type == sf::Event::MouseMoved) {
         sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
         sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
-        mouse_x = worldPos.x;
-        mouse_y = worldPos.y;
+        mouse_position.x = worldPos.x;
+        mouse_position.y = worldPos.y;
     } else if (in_event.type == sf::Event::MouseWheelScrolled) {
         if (picked == "mini map") {
             mini_map_scale_factor += in_event.mouseWheelScroll.delta * 0.01F;

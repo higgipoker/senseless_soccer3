@@ -22,7 +22,7 @@ class Head : public Locomotion{
   /**
    * @brief start
    */
-   void start() override;
+void start() override;
   /**
    * @brief step
    */

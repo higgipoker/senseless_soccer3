@@ -57,7 +57,7 @@ void PositionCenterMidfielder::init() {
 //
 //
 //
-Engine::Vector3 PositionCenterMidfielder::getPlayingPosition(const Situation in_situation, const Ball &in_ball) {
+Engine::Vector3 PositionCenterMidfielder::getPlayingPosition( const Ball &in_ball) {
     Vector3 ball = pitch.toPitchSpace(in_ball.movable.position);
     // rotate perception of ball if attacking towards south
     if (my_team.getAttackingGoal() == Direction::South) {

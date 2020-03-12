@@ -43,7 +43,7 @@ GameEngine::~GameEngine() {
 //
 //
 //
-void GameEngine::step() {
+void GameEngine::step() noexcept {
     ++frame_counter;
 
     {  // calc fps
@@ -86,20 +86,20 @@ void GameEngine::step() {
             // render the layer
             for (const auto &drawable : layer.second.sprite_list) {
                 drawable->perspectivize(camera.getHeight());
-                window.draw(*drawable);
+                drawable->draw(window);
             }
         }
 
         //  hud
         window.setView(hud_view);
         for (const auto &drawable : hud.sprite_list) {
-            window.draw(*drawable);
+            drawable->draw(window);
         }
 
         // debug
         if (Debug::showHud()) {
             window.setView(hud_view);
-            debug_gui.update(frame_counter, frametime);
+            debug_gui.draw(frame_counter, frametime);
             window.setView(camera.getview());
             picker.update();
         }
@@ -109,7 +109,7 @@ void GameEngine::step() {
 //
 //
 //
-int GameEngine::addLayer(bool in_sortable) {
+int GameEngine::addLayer(const bool in_sortable) noexcept {
     const int new_id = render_layers.size();
     render_layers.insert({new_id, RenderLayer(in_sortable)});
     return new_id;
@@ -117,7 +117,7 @@ int GameEngine::addLayer(bool in_sortable) {
 //
 //
 //
-void GameEngine::addSprite(Sprite &in_sprite, layer_id in_layer_id) {
+void GameEngine::addSprite(Sprite &in_sprite, layer_id in_layer_id) noexcept {
     if (in_layer_id == RenderLayer::HUD_LAYER) {
         hud.sprite_list.push_back(&in_sprite);
         return;
@@ -144,13 +144,13 @@ void GameEngine::addSprite(Sprite &in_sprite, layer_id in_layer_id) {
 //
 //
 //
-void GameEngine::addControllable(Controllable &in_controllable) {
+void GameEngine::addControllable(Controllable &in_controllable) noexcept {
     controllables.insert(&in_controllable);
 }
 //
 //
 //
-void GameEngine::addEntity(Entity &in_entity, layer_id in_layer_id) {
+void GameEngine::addEntity(Entity &in_entity, layer_id in_layer_id) noexcept {
     // tmp todo
     if (in_layer_id == getHudLayer()) {
         in_entity.movable.is_hud = true;
@@ -166,61 +166,61 @@ void GameEngine::addEntity(Entity &in_entity, layer_id in_layer_id) {
 //
 //
 //
-bool GameEngine::isRunning() const {
+bool GameEngine::isRunning() const noexcept {
     return running;
 }
 //
 //
 //
-sf::RenderTarget &GameEngine::getRenderTarget() {
+sf::RenderTarget &GameEngine::getRenderTarget() noexcept {
     return window;
 }
 //
 //
 //
-Camera &GameEngine::getMainCamera() {
+Camera &GameEngine::getMainCamera() noexcept {
     return camera;
 }
 //
 //
 //
-layer_id GameEngine::getHudLayer() const {
+layer_id GameEngine::getHudLayer() const noexcept {
     return hud_layer;
 }
 //
 //
 //
-layer_id GameEngine::getBackgroundLayer() const {
+layer_id GameEngine::getBackgroundLayer() const noexcept {
     return background_layer;
 }
 //
 //
 //
-layer_id GameEngine::getDefaultLayer() const {
+layer_id GameEngine::getDefaultLayer() const noexcept {
     return default_layer;
 }
 //
 //
 //
-layer_id GameEngine::getShadowLayer() const {
+layer_id GameEngine::getShadowLayer() const noexcept {
     return shadow_layer;
 }
 //
 //
 //
-Keyboard &GameEngine::getDefaultKeyboard() {
+Keyboard &GameEngine::getDefaultKeyboard() noexcept {
     return default_keyboard;
 }
 //
 //
 //
-Gamepad &GameEngine::getDefaultGamepad() {
+Gamepad &GameEngine::getDefaultGamepad() noexcept {
     return gamepad1;
 }
 //
 //
 //
-void GameEngine::toggle_debg(bool in_keep_on) {
+void GameEngine::toggle_debg(bool in_keep_on) noexcept {
 #ifndef NDEBUG
     if (in_keep_on) {
         Debug::show();
@@ -232,13 +232,15 @@ void GameEngine::toggle_debg(bool in_keep_on) {
 //
 //
 //
-void GameEngine::poll_input_devices() {
+void GameEngine::poll_input_devices() noexcept {
     static sf::Event event;
     while (window.pollEvent(event)) {
+#ifndef NDEBUG
         if (Debug::showHud()) {
             debug_gui.handleInput(event);
             picker.handleInput(event);
         }
+#endif
         switch (event.type) {
             case sf::Event::KeyPressed:
                 if (window.hasFocus()) {
