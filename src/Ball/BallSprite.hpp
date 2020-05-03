@@ -1,12 +1,12 @@
 #pragma once
 
+#include <map>
+
 #include "Engine/Compass.hpp"
 #include "Engine/Sprite.hpp"
 #include "Engine/SpriteAnimation.hpp"
 #include "Engine/Types.hpp"
-
-#include <map>
-
+namespace Senseless {
 using Frames = std::vector<int>;
 static const int BALL_ANIM_FRAME_TIME = 6;
 //
@@ -34,20 +34,18 @@ enum {
 //
 //
 //
-class BallSprite : public Engine::Sprite {
+class BallSprite : public Sprite {
  public:
   //
   //
   //
-  BallSprite(
-      const sf::Texture& in_texture,
-      const Engine::SpriteSetDefinition in_def = Engine::SpriteSetDefinition{
-          DEFAULT_VERTICAL_OFFSET, BALL_FRAME_WIDTH, BALL_FRAME_HEIGHT,
-          BALL_FRAMES, BALL_START_ROW, BALL_START_COL, BALL_COLS});
+  BallSprite(const sf::Texture& in_texture,
+             const SpriteSetDefinition in_def = SpriteSetDefinition{
+                 DEFAULT_VERTICAL_OFFSET, BALL_FRAME_WIDTH, BALL_FRAME_HEIGHT, BALL_FRAMES,
+                 BALL_START_ROW, BALL_START_COL, BALL_COLS});
 
  protected:
-  Engine::SpriteAnimation roll_animation{ID_ANIM_ROLL, BALL_ANIM_FRAME_TIME,
-                                         roll};
+  SpriteAnimation roll_animation{ID_ANIM_ROLL, BALL_ANIM_FRAME_TIME, roll};
 };
 //
 //
@@ -57,10 +55,9 @@ class BallShadowSprite : public BallSprite {
   //
   //
   //
-  BallShadowSprite(
-      const sf::Texture &in_texture,
-      const Engine::SpriteSetDefinition in_def = Engine::SpriteSetDefinition{
-          DEFAULT_VERTICAL_OFFSET, BALL_FRAME_WIDTH, BALL_FRAME_HEIGHT,
-          BALL_SHADOW_FRAMES, BALL_START_ROW, BALL_SHADOW_START_COL,
-          BALL_COLS});
+  BallShadowSprite(const sf::Texture& in_texture,
+                   const SpriteSetDefinition in_def = SpriteSetDefinition{
+                       DEFAULT_VERTICAL_OFFSET, BALL_FRAME_WIDTH, BALL_FRAME_HEIGHT,
+                       BALL_SHADOW_FRAMES, BALL_START_ROW, BALL_SHADOW_START_COL, BALL_COLS});
 };
+}  // namespace Senseless

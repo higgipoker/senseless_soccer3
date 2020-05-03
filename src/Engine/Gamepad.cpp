@@ -1,7 +1,7 @@
 ﻿#include "Gamepad.hpp"
 
 #include <iostream>
-namespace Engine {
+namespace Senseless {
 using namespace sf;
 //
 //
@@ -143,4 +143,4 @@ void Gamepad::update() {
     old_buttonmask = buttonmask;
   }
 }
-}  // namespace Engine
+}  // namespace Senseless

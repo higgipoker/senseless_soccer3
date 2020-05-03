@@ -5,7 +5,7 @@
 //
 //
 //
-namespace Engine {
+namespace Senseless {
 //
 //
 //
@@ -34,4 +34,4 @@ class Keyboard : public InputDevice {
   //
   void update() override;
 };
-}  // namespace Engine
+}  // namespace Senseless

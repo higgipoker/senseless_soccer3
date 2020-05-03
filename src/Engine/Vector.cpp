@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-namespace Engine {
+namespace Senseless {
 //
 //
 //
@@ -376,4 +376,4 @@ sf::Vector2f Vector3::toSfVector() const { return sf::Vector2f{x, y}; }
 //
 void Vector3::to2d() { this->z = 0; }
 
-}  // namespace Engine
+}  // namespace Senseless

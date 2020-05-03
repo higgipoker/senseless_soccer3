@@ -1,5 +1,6 @@
 #pragma once
 #include "PlayerState.hpp"
+namespace Senseless {
 class Player;
 /**
  * @brief The PlayerStateDribble class
@@ -40,3 +41,4 @@ class PlayerStateDribble : public PlayerState {
   //
   void kick();
 };
+}  // namespace Senseless

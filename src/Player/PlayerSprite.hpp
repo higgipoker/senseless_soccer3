@@ -1,12 +1,11 @@
 #pragma once
 
-#include "PlayerAnimations.hpp"
+#include <map>
 
 #include "Engine/Compass.hpp"
 #include "Engine/Sprite.hpp"
-
-#include <map>
-
+#include "PlayerAnimations.hpp"
+namespace Senseless {
 enum class TeamType;
 
 // sprite frame constants
@@ -26,7 +25,7 @@ inline const int SHADOW_START_ROW = 0;
 //
 //
 //
-class PlayerSprite : public Engine::Sprite {
+class PlayerSprite : public Sprite {
  public:
   //
   //
@@ -35,16 +34,14 @@ class PlayerSprite : public Engine::Sprite {
   //
   //
   //
-  PlayerSprite(
-      const sf::Texture& in_texture, const TeamType in_team,
-      Engine::SpriteSetDefinition in_def = Engine::SpriteSetDefinition{
-          VERTICAL_OFFSET_TEAM1, FRAME_WIDTH, FRAME_HEIGHT, FRAMES, START_ROW,
-          START_COL, COLS});
+  PlayerSprite(const sf::Texture& in_texture, const TeamType in_team,
+               SpriteSetDefinition in_def = SpriteSetDefinition{
+                   VERTICAL_OFFSET_TEAM1, FRAME_WIDTH, FRAME_HEIGHT, FRAMES, START_ROW, START_COL,
+                   COLS});
   //
   //
   //
-  void setPlayerAnimation(PlayerAnimationType in_type,
-                          Engine::Direction in_direction);
+  void setPlayerAnimation(PlayerAnimationType in_type, Direction in_direction);
   //
   //
   //
@@ -62,9 +59,9 @@ class PlayerShadowSprite : public PlayerSprite {
   //
   //
   //
-  PlayerShadowSprite(
-      const sf::Texture& in_texture,
-      const Engine::SpriteSetDefinition in_def = Engine::SpriteSetDefinition{
-          SHADOW_VERTICAL_OFFSET, FRAME_WIDTH, FRAME_HEIGHT, FRAMES,
-          SHADOW_START_ROW, START_COL, COLS});
+  PlayerShadowSprite(const sf::Texture& in_texture,
+                     const SpriteSetDefinition in_def = SpriteSetDefinition{
+                         SHADOW_VERTICAL_OFFSET, FRAME_WIDTH, FRAME_HEIGHT, FRAMES,
+                         SHADOW_START_ROW, START_COL, COLS});
 };
+}  // namespace Senseless

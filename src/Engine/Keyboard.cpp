@@ -1,6 +1,6 @@
 #include "Keyboard.hpp"
 
-namespace Engine {
+namespace Senseless {
 //
 //
 //
@@ -23,4 +23,4 @@ void Keyboard::update() {
     buttonmask |= mask_a;
   }
 }
-}  // namespace Engine
+}  // namespace Senseless

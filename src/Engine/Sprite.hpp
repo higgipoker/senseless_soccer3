@@ -13,7 +13,7 @@
 #include <string>
 #include <vector>
 
-namespace Engine {
+namespace Senseless {
 //
 //
 //
@@ -115,4 +115,4 @@ class Sprite : public sf::Sprite {
     //
     void draw_debug(sf::RenderTarget& target) const;
 };
-}  // namespace Engine
+}  // namespace Senseless

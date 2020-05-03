@@ -1,6 +1,7 @@
 #pragma once
 #include "BrainState.hpp"
 //
+namespace Senseless {
 class Player;
 //
 //
@@ -27,8 +28,8 @@ class BrainPass : public BrainState {
   //
   //
   virtual bool stateOver() override;
-private:
 
+ private:
   Player *receiver = nullptr;
   //
   //
@@ -36,3 +37,4 @@ private:
   void select_receiver();
   int ticks = 0;
 };
+}  // namespace Senseless

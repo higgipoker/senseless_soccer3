@@ -3,6 +3,7 @@
 #include "Ball/Ball.hpp"
 #include "Brain.hpp"
 #include "Player/Player.hpp"
+namespace Senseless {
 //
 //
 //
@@ -29,3 +30,4 @@ void BrainWait::stop() {}
 //
 //
 bool BrainWait::stateOver() { return ++ticks > 1000; }
+}  // namespace Senseless

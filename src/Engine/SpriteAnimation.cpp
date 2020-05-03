@@ -1,5 +1,5 @@
 #include "SpriteAnimation.hpp"
-namespace Engine {
+namespace Senseless {
 //
 //
 //
@@ -56,4 +56,4 @@ int SpriteAnimation::currentFrame() { return *current_frame; }
 //
 //
 int SpriteAnimation::getID() const { return id; }
-}  // namespace Engine
+}  // namespace Senseless

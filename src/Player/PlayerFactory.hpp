@@ -9,6 +9,7 @@
 #include "Engine/Types.hpp"
 //
 #include <SFML/Graphics/Texture.hpp>
+namespace Senseless{
 //
 class Match;
 class Team;
@@ -17,7 +18,7 @@ enum class TeamType;
 //
 //
 //
-class PlayerFactory : public Engine::BaseFactory {
+class PlayerFactory : public BaseFactory {
    public:
     //
     //
@@ -42,3 +43,4 @@ class PlayerFactory : public Engine::BaseFactory {
     //
     UniquePtr<Player> makePlayer(Match &in_match, const Team &in_my_team, const Team &in_other_team, const TeamType in_strip);
 };
+}

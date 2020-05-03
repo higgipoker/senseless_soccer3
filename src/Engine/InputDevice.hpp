@@ -1,17 +1,16 @@
 #pragma once
 #include <SFML/Window/Event.hpp>
-
 #include <map>
 #include <set>
 #include <vector>
 //
 //
 //
-namespace Engine {
+namespace Senseless {
 //
 //
 //
-const unsigned char mask_zero{0};        // 0000 0001
+const unsigned char mask_zero{0};        // 0000 0000
 const unsigned char mask_a{1 << 0};      // 0000 0001
 const unsigned char mask_b{1 << 1};      // 0000 0010
 const unsigned char mask_x{1 << 2};      // 0000 0100
@@ -68,21 +67,9 @@ static std::map<InputEvent, std::string> event_to_string{
 //
 class InputListener {
  public:
-  //
-  //
-  //
   virtual ~InputListener() = default;
-  //
-  //
-  //
-  virtual void onInputEvent(const InputEvent in_event,
-                            const std::vector<int> &in_params) = 0;
-  //
-  //
-  //
-  static std::string toString(const InputEvent in_event) {
-    return event_to_string.at(in_event);
-  }
+  virtual void onInputEvent(const InputEvent in_event, const std::vector<int> &in_params) = 0;
+  static std::string toString(const InputEvent in_event) { return event_to_string.at(in_event); }
 };
 //
 //
@@ -92,49 +79,16 @@ class InputDevice {
   /// Public Interface
   //////////////////////////////////////////////////////////////////////
  public:
-  //
-  //
-  //
   InputDevice() = default;
-  //
-  //
-  //
   virtual ~InputDevice() = default;
-  //
-  //
-  //
   virtual void update() = 0;
-  //
-  //
-  //
   bool up();
-  //
-  //
-  //
   bool down();
-  //
-  //
-  //
   bool left();
-  //
-  //
-  //
   bool right();
-  //
-  //
-  //
   bool fireDown();
-  //
-  //
-  //
   bool isButtonPressed(const unsigned char in_which);
-  //
-  //
-  //
   void attachListener(InputListener &in_listener);
-  //
-  //
-  //
   void detatchListener(InputListener &in_listener);
 
   //////////////////////////////////////////////////////////////////////
@@ -157,12 +111,10 @@ class InputDevice {
   unsigned char buttonmask{0x0};
   unsigned char directionmask{0x0};
   unsigned char old_buttonmask{0x0};
-  //
-  //
-  //
+
   void notify(const InputEvent in_event, const std::vector<int> &in_params);
-  ///
+
   std::set<InputListener *> listeners;
 };
 
-}  // namespace Engine
+}  // namespace Senseless

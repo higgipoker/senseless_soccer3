@@ -4,7 +4,7 @@
 #include "BrainState.hpp"
 #include "Engine/Compass.hpp"
 #include "Engine/Vector.hpp"
-
+namespace Senseless {
 class Brain;
 //
 //
@@ -14,7 +14,7 @@ class DribblePattern {
   //
   //
   //
-  virtual Engine::Compass nextDirection(Engine::Compass in_current_dir) = 0;
+  virtual Compass nextDirection(Compass in_current_dir) = 0;
   //
   //
   //
@@ -31,10 +31,10 @@ class DribblePatternRandom : public DribblePattern {
   //
   //
   //
-  Engine::Compass nextDirection(Engine::Compass in_current_dir) override {
-    Engine::Vector3 v = in_current_dir.toVector();
+  Compass nextDirection(Compass in_current_dir) override {
+    Vector3 v = in_current_dir.toVector();
     v.rotate(static_cast<float>(rand() % 2 == 1 ? 45 : -45));
-    Engine::Compass dir(v);
+    Compass dir(v);
     return dir;
   }
   //
@@ -84,3 +84,4 @@ class BrainDribble : public BrainState {
   int dribble_ticks = 0;
   bool first_touch = true;
 };
+}  // namespace Senseless

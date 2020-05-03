@@ -1,5 +1,5 @@
 #include "Texture.hpp"
-namespace Engine {
+namespace Senseless {
 int Texture::ref = 0;
 //
 //
@@ -25,4 +25,4 @@ void Texture::swapColors(const std::vector<std::pair<sf::Color, sf::Color> >& in
     }
     loadFromImage(img);
 }
-}  // namespace Engine
+}  // namespace Senseless

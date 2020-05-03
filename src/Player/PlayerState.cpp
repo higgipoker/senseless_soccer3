@@ -2,7 +2,7 @@
 //
 #include "Player.hpp"
 
-using namespace Engine;
+namespace Senseless {
 //
 //
 //
@@ -14,9 +14,9 @@ PlayerState::~PlayerState() {}
 //
 //
 //
-void PlayerState::step() { 
-}
+void PlayerState::step() {}
 //
 //
 //
 player_state PlayerState::nextState() { return next_state; }
+}  // namespace Senseless

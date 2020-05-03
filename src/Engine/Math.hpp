@@ -1,6 +1,6 @@
 #pragma once
 #include <cmath>
-namespace Engine {
+namespace Senseless {
 
 const float TOL = 0.01F;
 const float PI = 3.14159265359F;
@@ -43,4 +43,4 @@ public:
   }
 };
 
-} // namespace Engine
+} // namespace Senseless

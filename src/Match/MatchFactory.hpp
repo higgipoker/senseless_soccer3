@@ -5,19 +5,18 @@
 #include "Engine/Types.hpp"
 //
 #include <SFML/Graphics/RenderTexture.hpp>
+namespace Senseless {
 //
 //
 //
-class MatchFactory : public Engine::BaseFactory {
+class MatchFactory : public BaseFactory {
  public:
   //
   //
   //
-  bool createMatchTexture(UniquePtr<Engine::Texture> team1_texture,
-                          UniquePtr<Engine::Texture> team2_texture,
-                          UniquePtr<Engine::Texture> shadow_texture1,
-                          UniquePtr<Engine::Texture> shadow_texture2,
-                          UniquePtr<Engine::Texture> ball_texture);
+  bool createMatchTexture(UniquePtr<Texture> team1_texture, UniquePtr<Texture> team2_texture,
+                          UniquePtr<Texture> shadow_texture1, UniquePtr<Texture> shadow_texture2,
+                          UniquePtr<Texture> ball_texture);
   //
   //
   //
@@ -26,3 +25,4 @@ class MatchFactory : public Engine::BaseFactory {
  private:
   sf::RenderTexture match_texture;
 };
+}  // namespace Senseless

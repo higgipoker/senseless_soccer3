@@ -1,6 +1,6 @@
 #include "MatchEngine.hpp"
-using namespace Engine;
-namespace MatchEngine {
+using namespace Senseless;
+namespace Senseless {
 //
 //
 //

@@ -4,6 +4,7 @@
 #include "Brain.hpp"
 #include "Match/Match.hpp"
 #include "Player/Player.hpp"
+namespace Senseless {
 //
 //
 //
@@ -14,9 +15,7 @@ BrainRetrieve::BrainRetrieve(Brain& in_brain) : BrainState(in_brain) {
 //
 //
 //
-void BrainRetrieve::start() {
-  brain.locomotion.pursue(brain.player.match.getBall().movable);
-}
+void BrainRetrieve::start() { brain.locomotion.pursue(brain.player.match.getBall().movable); }
 //
 //
 //
@@ -29,3 +28,4 @@ void BrainRetrieve::stop() {}
 //
 //
 bool BrainRetrieve::stateOver() { return brain.player.ball_under_control; }
+}  // namespace Senseless

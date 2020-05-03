@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include <map>
-namespace Engine {
+namespace Senseless {
 //
 //
 //
@@ -29,4 +29,4 @@ class Texture : public sf::Texture {
     std::string loaded_file;
     static int ref;
 };
-}  // namespace Engine
+}  // namespace Senseless

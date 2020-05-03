@@ -1,7 +1,7 @@
 #include "Head.hpp"
 
 #include "Player/Player.hpp"
-using namespace Engine;
+namespace Senseless {
 //
 //
 //
@@ -17,7 +17,7 @@ void Head::start() { player.run(Compass(direction)); }
 //
 //
 //
-void Head::step() {stay_in_pitch();}
+void Head::step() { stay_in_pitch(); }
 //
 //
 //
@@ -26,3 +26,4 @@ void Head::stop() { player.movable.resetVelocity(); }
 //
 //
 bool Head::finished() { return false; }
+}  // namespace Senseless

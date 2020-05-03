@@ -1,4 +1,0 @@
-#ifndef PITCHDEFINES_HPP
-#define PITCHDEFINES_HPP
-
-#endif // PITCHDEFINES_HPP

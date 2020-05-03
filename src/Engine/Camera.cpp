@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <iostream>
 
-namespace Engine {
+namespace Senseless {
 //
 //
 //
@@ -95,4 +95,4 @@ void Camera::setHeight(const float in_height) {
 void Camera::setWorldRect(sf::FloatRect in_rect) {
     world = in_rect;
 }
-}  // namespace Engine
+}  // namespace Senseless

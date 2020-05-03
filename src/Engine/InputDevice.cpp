@@ -1,13 +1,12 @@
 #include "InputDevice.hpp"
 
 #include <iostream>
-namespace Engine {
+#include <cassert>
+namespace Senseless {
 //
 //
 //
-bool InputDevice::up() {
-  return directionmask & mask_dpad_up || directionmask & mask_stick_up;
-}
+bool InputDevice::up() { return directionmask & mask_dpad_up || directionmask & mask_stick_up; }
 //
 //
 //
@@ -33,9 +32,7 @@ bool InputDevice::fireDown() { return buttonmask & mask_a; }
 //
 //
 //
-void InputDevice::attachListener(InputListener &in_listener) {
-  listeners.insert(&in_listener);
-}
+void InputDevice::attachListener(InputListener &in_listener) { listeners.insert(&in_listener); }
 //
 //
 //
@@ -48,16 +45,14 @@ void InputDevice::detatchListener(InputListener &in_listener) {
 //
 //
 //
-void InputDevice::notify(const InputEvent in_event,
-                         const std::vector<int> &in_params) {
+void InputDevice::notify(const InputEvent in_event, const std::vector<int> &in_params) {
   for (auto &listener : listeners) {
+      assert(listener);
     listener->onInputEvent(in_event, in_params);
   }
 }
 //
 //
 //
-bool InputDevice::isButtonPressed(const unsigned char in_which) {
-  return in_which & buttonmask;
-}
-}  // namespace Engine
+bool InputDevice::isButtonPressed(const unsigned char in_which) { return in_which & buttonmask; }
+}  // namespace Senseless

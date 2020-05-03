@@ -1,7 +1,7 @@
 #include "BrainState.hpp"
 
 #include "Brain.hpp"
-
+namespace Senseless {
 //
 //
 //
@@ -14,3 +14,4 @@ BrainState::~BrainState() {}
 //
 //
 void BrainState::changeToNextState() { brain.changeState(next_state); }
+}  // namespace Senseless

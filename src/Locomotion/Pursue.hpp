@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Locomotion.hpp"
-
 #include "Engine/Movable.hpp"
+#include "Locomotion.hpp"
+namespace Senseless {
 /**
  * @brief The Pursue locomotion sents the subject to a fixed location
  */
@@ -19,7 +19,7 @@ class Pursue : public Locomotion {
    * @brief init
    * @param in_target
    */
-  void init(Engine::Movable &in_target);
+  void init(Movable &in_target);
   /**
    * @brief start
    */
@@ -39,6 +39,7 @@ class Pursue : public Locomotion {
   bool finished() override;
 
  protected:
-  Engine::Movable *target = nullptr;
+  Movable *target = nullptr;
   float last_distance = 0;
 };
+}  // namespace Senseless

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Locomotion.hpp"
-
+namespace Senseless{
 /**
  * @brief The Head locomotion sents the subject to a fixed location
  */
@@ -18,7 +18,7 @@ class Head : public Locomotion{
    * @brief init
    * @param in_target
    */
-  void init(Engine::Vector3 in_direction);
+  void init(Vector3 in_direction);
   /**
    * @brief start
    */
@@ -38,5 +38,6 @@ void start() override;
    bool finished() override;
 
 private:
-   Engine::Vector3 direction;
+   Vector3 direction;
 };
+}

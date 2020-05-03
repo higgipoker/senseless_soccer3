@@ -1,12 +1,12 @@
 #pragma once
 
 #include "Locomotion.hpp"
-
+namespace Senseless {
 /**
  * @brief The Stand locomotion sents the subject to a fixed location
  */
 class Stand : public Locomotion {
-public:
+ public:
   /**
    * @brief Stand
    */
@@ -37,3 +37,4 @@ public:
    */
   bool finished() override;
 };
+}  // namespace Senseless

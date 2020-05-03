@@ -1,12 +1,12 @@
 #pragma once
 #include "Debug.hpp"
-#include "Movable.hpp"
+#include "Entity.hpp"
 //
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
 //
 #include <set>
-namespace Engine {
+namespace Senseless {
 //
 //
 //
@@ -15,7 +15,7 @@ class Picker {
     //
     //
     //
-    Picker(sf::RenderWindow &in_window, std::set<Movable *> &in_movables, Debug & in_debug);
+    Picker(sf::RenderWindow &in_window, std::set<Entity *> &in_entities, Debug & in_debug);
     //
     //
     //
@@ -27,13 +27,13 @@ class Picker {
 
    private:
     sf::RenderWindow &window;
-    std::set<Movable *> &movables;
+    std::set<Entity *> &entities;
     bool dragging = false;
-    Movable *grabbed = nullptr;
+    Entity *grabbed = nullptr;
     sf::Vector2f last_dragged_position;
     bool hud_grabbed = false;
     sf::Vector2f grab_offset;
     Debug &debug;
 };
 
-}  // namespace Engine
+}  // namespace Senseless

@@ -1,4 +1,5 @@
 #include "KitFactory.hpp"
+namespace Senseless {
 //
 //
 //
@@ -14,3 +15,5 @@ Kit KitFactory::makeDefaultBlueKit() {
            {sf::Color(215, 0, 0), sf::Color(0, 0, 215)},
            {sf::Color(255, 0, 0), sf::Color(0, 0, 255)}}};
 }
+
+}  // namespace Senseless

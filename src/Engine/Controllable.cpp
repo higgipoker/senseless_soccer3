@@ -1,7 +1,7 @@
 #include "Controllable.hpp"
 
 #include <cassert>
-namespace Engine {
+namespace Senseless {
 //
 //
 //
@@ -17,6 +17,7 @@ void Controllable::attachInput(InputDevice &in_device) {
 //
 //
 void Controllable::detachInput() {
+  input->detatchListener(*this);
   input = nullptr;
 }
 //
@@ -33,4 +34,4 @@ InputDevice &Controllable::getInputDevice() const {
 //
 //
 bool Controllable::isInputAttached() { return input != nullptr; }
-}  // namespace Engine
+}  // namespace Senseless

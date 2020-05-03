@@ -1,12 +1,13 @@
 #include "Pursue.hpp"
+
 #include "Engine/Compass.hpp"
 #include "Player/Player.hpp"
 
-using namespace Engine;
+namespace Senseless {
 //
 //
 //
-Pursue::Pursue(Player & in_player) : Locomotion(in_player) {}
+Pursue::Pursue(Player &in_player) : Locomotion(in_player) {}
 //
 //
 //
@@ -43,3 +44,4 @@ void Pursue::stop() { player.stopRunning(); }
 //
 //
 bool Pursue::finished() { return false; }
+}  // namespace Senseless

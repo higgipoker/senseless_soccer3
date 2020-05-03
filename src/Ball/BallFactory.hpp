@@ -4,12 +4,13 @@
 //
 //
 //
+namespace Senseless {
 enum class BallType { Standard };
 
 //
 //
 //
-class BallFactory : public Engine::BaseFactory {
+class BallFactory : public BaseFactory {
  public:
   //
   //
@@ -23,5 +24,8 @@ class BallFactory : public Engine::BaseFactory {
 
     return graphics_folder.getPath(true) + "ball.png";
   }
+
  private:
 };
+
+}  // namespace Senseless

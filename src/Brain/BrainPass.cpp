@@ -1,9 +1,9 @@
 #include "BrainPass.hpp"
 
 #include "Brain.hpp"
-
 #include "Player/Player.hpp"
 #include "Team/Team.hpp"
+namespace Senseless {
 static const int PASS_TICKS = 0;
 //
 //
@@ -43,3 +43,4 @@ bool BrainPass::stateOver() {
 //
 //
 void BrainPass::select_receiver() {}
+}  // namespace Senseless

@@ -1,7 +1,7 @@
 #pragma once
 #include "InputDevice.hpp"
 
-namespace Engine {
+namespace Senseless {
 //
 //
 //
@@ -20,4 +20,4 @@ class Gamepad : public InputDevice {
   int sf_joystick_index = 0;
   float thumbstick_threshold = 50.0f;
 };
-}  // namespace Engine
+}  // namespace Senseless

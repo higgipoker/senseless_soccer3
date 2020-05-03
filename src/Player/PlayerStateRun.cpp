@@ -1,11 +1,10 @@
 #include "PlayerStateRun.hpp"
 
-#include "Match/Match.hpp"
-#include "Player.hpp"
-
 #include "Engine/Collider.hpp"
 #include "Engine/Compass.hpp"
-using namespace Engine;
+#include "Match/Match.hpp"
+#include "Player.hpp"
+namespace Senseless {
 //
 //
 //
@@ -16,9 +15,7 @@ PlayerStateRun::PlayerStateRun(Player &in_player) : PlayerState(in_player) {
 //
 //
 //
-void PlayerStateRun::start() {
-  player.current_speed = run_speeds[player.speed];
-}
+void PlayerStateRun::start() { player.current_speed = run_speeds[player.speed]; }
 //
 //
 //
@@ -26,8 +23,7 @@ void PlayerStateRun::step() {
   PlayerState::step();
 
   Compass direction(player.movable.velocity);
-  player.player_sprite.setPlayerAnimation(PlayerAnimationType::Run,
-                                          direction.direction);
+  player.player_sprite.setPlayerAnimation(PlayerAnimationType::Run, direction.direction);
 }
 //
 //
@@ -49,3 +45,4 @@ bool PlayerStateRun::stateOver() {
   }
   return false;
 }
+}  // namespace Senseless

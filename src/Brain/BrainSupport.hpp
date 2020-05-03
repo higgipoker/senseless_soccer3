@@ -1,7 +1,8 @@
 #pragma once
-#include "BrainState.hpp"
-
 #include <SFML/Graphics/CircleShape.hpp>
+
+#include "BrainState.hpp"
+namespace Senseless {
 class Player;
 //
 //
@@ -38,3 +39,4 @@ class BrainSupport : public BrainState {
   //
   void change_direction();
 };
+}  // namespace Senseless

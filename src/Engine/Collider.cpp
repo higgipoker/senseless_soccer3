@@ -1,7 +1,7 @@
 #include "Collider.hpp"
 
 #include "Vector.hpp"
-namespace Engine {
+namespace Senseless {
 //
 //
 //
@@ -57,7 +57,7 @@ bool Collider::contains(const sf::CircleShape &circle, const Vector3 &point) {
 // the Barycentric Technique using dot products to cleverly avoid roots...
 // see: http://www.blackpawn.com/texts/pointinpoly/default.html
 // -----------------------------------------------------------------------------
-bool Collider::collides(const Engine::Vector3 &point,
+bool Collider::collides(const Vector3 &point,
                         const sf::TriangleShape &triangle) {
   Vector3 v0 = Vector3(triangle.getPoint(2).x, triangle.getPoint(2).y) -
                Vector3(triangle.getPoint(0).x, triangle.getPoint(0).y);
@@ -79,4 +79,4 @@ bool Collider::collides(const Engine::Vector3 &point,
   return (u >= 0) && (v >= 0) && (u + v < 1);
 }
 
-}  // namespace Engine
+}  // namespace Senseless

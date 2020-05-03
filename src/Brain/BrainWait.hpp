@@ -1,5 +1,6 @@
 #pragma once
 #include "BrainState.hpp"
+namespace Senseless {
 class Brain;
 /**
  * @brief The Retrieve class
@@ -31,3 +32,4 @@ class BrainWait : public BrainState {
  protected:
   int ticks = 0;
 };
+}  // namespace Senseless

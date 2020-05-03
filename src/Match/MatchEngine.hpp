@@ -3,7 +3,7 @@
 #include "Engine/Vector.hpp"
 //
 #include <vector>
-namespace MatchEngine {
+namespace Senseless {
 //
 class MatchEngine;
 class Match;
@@ -32,9 +32,9 @@ struct Player {
     TeamID team = TeamID::Home;
     unsigned int speed = 1;
     unsigned int mass = 1;
-    Engine::Vector3 position;
-    Engine::Vector3 velocity;
-    Engine::Vector3 force;
+    Vector3 position;
+    Vector3 velocity;
+    Vector3 force;
 };
 //
 //

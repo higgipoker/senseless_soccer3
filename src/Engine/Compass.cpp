@@ -3,7 +3,7 @@
 
 #include <utility>
 
-namespace Engine {
+namespace Senseless {
 //
 //  constructor
 //
@@ -100,4 +100,4 @@ void Compass::fromVector(const Vector3 &v) {
 Compass Compass::getRandomDirection() {
   return {(static_cast<Direction>(rand() % 7))};
 }
-}  // namespace Engine
+}  // namespace Senseless

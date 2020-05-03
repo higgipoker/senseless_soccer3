@@ -3,7 +3,7 @@
 #include <initializer_list>
 #include <vector>
 
-namespace Engine {
+namespace Senseless {
 /**
  * @brief The SpriteAnimation class
  */
@@ -66,4 +66,4 @@ class SpriteAnimation {
   /// for non looping anims, we can tell when they are finished
   bool finito = false;
 };
-}  // namespace Engine
+}  // namespace Senseless

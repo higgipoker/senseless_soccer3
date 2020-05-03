@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
-enum class brain_state { Idle, Cover,Support, Retrieve, Dribble, Pass, Wait };
+namespace Senseless {
+enum class brain_state { Idle, Cover, Support, Retrieve, Dribble, Pass, Wait };
 
 class Brain;
 /**
@@ -76,3 +77,4 @@ class BrainIdle : public BrainState {
    */
   bool stateOver() override { return false; };
 };
+}  // namespace Senseless

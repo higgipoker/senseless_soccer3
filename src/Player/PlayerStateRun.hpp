@@ -1,5 +1,6 @@
 #pragma once
 #include "PlayerState.hpp"
+namespace Senseless {
 class Player;
 /**
  * @brief The PlayerStateRun class
@@ -28,3 +29,4 @@ class PlayerStateRun : public PlayerState {
    */
   bool stateOver() override;
 };
+}  // namespace Senseless

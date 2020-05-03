@@ -1,14 +1,15 @@
 #pragma once
 
-#include "BrainPass.hpp"
-#include "BrainDribble.hpp"
-#include "BrainRetrieve.hpp"
-#include "BrainSupport.hpp"
 #include "BrainCover.hpp"
-#include "BrainWait.hpp"
+#include "BrainDribble.hpp"
+#include "BrainPass.hpp"
+#include "BrainRetrieve.hpp"
 #include "BrainState.hpp"
+#include "BrainSupport.hpp"
+#include "BrainWait.hpp"
 #include "Locomotion/LocomotionManager.hpp"
 
+namespace Senseless {
 class Player;
 
 /**
@@ -56,4 +57,4 @@ class Brain {
   friend class BrainCover;
   friend class BrainWait;
 };
-
+}  // namespace Senseless

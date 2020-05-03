@@ -2,7 +2,7 @@
 #include <map>
 #include <string>
 
-namespace Engine {
+namespace Senseless {
 //
 //
 //
@@ -71,4 +71,4 @@ class Compass {
         return direction_to_string[direction];
     }
 };
-}  // namespace Engine
+}  // namespace Senseless

@@ -7,7 +7,7 @@
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/View.hpp>
 
-namespace Engine {
+namespace Senseless {
 //
 //
 //
@@ -53,4 +53,4 @@ class Camera : public Entity, public Controllable {
     sf::CircleShape collider;
 };
 
-}  // namespace Engine
+}  // namespace Senseless

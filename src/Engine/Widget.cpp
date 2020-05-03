@@ -1,2 +1,2 @@
 #include "Widget.hpp"
-namespace Engine {}
+namespace Senseless {}

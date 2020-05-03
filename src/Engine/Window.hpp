@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
-namespace Engine{
+namespace Senseless{
 class Window : public sf::RenderWindow {
  public:
   /**

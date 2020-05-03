@@ -6,66 +6,24 @@
 //
 #include <string>
 
-namespace Engine {
+namespace Senseless {
 //
 //
 //
 class Movable {
    public:
-    //
-    //
-    //
     void setPosition(const float in_x, const float in_y, const float in_z);
-    //
-    //
-    //
     void setPosition(const float in_x, const float in_y);
-    //
-    //
-    //
-    void setPosition(const int in_x, const int in_y);
-    //
-    //
-    //
     void setPosition(const sf::Vector2f in_point);
-    //
-    //
-    //
     void move(const float in_dx, const float in_dy);
-    //
-    //
-    //
     void resetVelocity();
-    //
-    //
-    //
     void place(const Vector3& in_position);
-    //
-    //
-    //
     void applyForce(const Vector3& in_force);
-    //
-    //
-    //
     void resetForces();
-    //
-    //
-    //
     void step(const float in_dt);
-    //
-    //
-    //
     void toggleGravity(const bool in_status);
-    //
-    //
-    //
-
     void setBounds(sf::FloatRect in_bounds);
-    //
-    //
-    //
     sf::FloatRect  getBounds();
-
     /// object physical properties
     struct {
         float mass = 1;
@@ -95,29 +53,14 @@ class Movable {
     /// movable components
     Vector3 position;
     Vector3 velocity;
-    // for debug picking
-    std::string name;
-
 
     // tmp todo
     bool is_hud = false;
 
    private:
-    //
-    //
-    //
     void integrate_improved_euler(const float in_dt);
-    //
-    //
-    //
     Vector3 integrate(const float in_dt);
-    //
-    //
-    //
     bool affected_by_gravity = true;
-    //
-    //
-    //
     sf::FloatRect bounds;
 };
-}  // namespace Engine
+}  // namespace Senseless

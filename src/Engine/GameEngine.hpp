@@ -17,7 +17,7 @@
 #include "Sprite.hpp"
 #include "Window.hpp"
 
-namespace Engine {
+namespace Senseless {
 
 using layer_id = size_t;
 
@@ -43,7 +43,7 @@ class GameEngine {
     //
     //
     //
-    GameEngine(const std::string &in_window_title = "Untitled", int in_window_width = 800, int in_window_height = 600,
+    GameEngine(const std::string &in_window_title = "Untitled", float in_window_width = 800, float in_window_height = 600,
                int in_flags = sf::Style::Default, bool in_fullscreen = false);
     //
     //
@@ -56,11 +56,7 @@ class GameEngine {
     //
     //
     //
-    int addLayer(const bool in_sortable = false) noexcept;
-    //
-    //
-    //
-    void addSprite(Sprite &in_sprite, layer_id in_layer_id = RenderLayer::INVALID_LAYER) noexcept;
+    int addLayer(const bool in_sortable = false) noexcept;    
     //
     //
     //
@@ -124,7 +120,7 @@ class GameEngine {
     sf::View hud_view;
     std::map<int, RenderLayer> render_layers;
     RenderLayer hud;
-    std::set<Movable *> movables;
+    std::set<Entity *> entities;
     std::set<Controllable *> controllables;
     float dt = 0.01F;
     bool running = true;
@@ -142,10 +138,14 @@ class GameEngine {
     //
     //
     //
-    void toggle_debg(bool in_keep_on = false) noexcept;
+    void add_sprite(Sprite &in_sprite, layer_id in_layer_id = RenderLayer::INVALID_LAYER) noexcept;
+    //
+    //
+    //
+    void toggle_debug(bool in_keep_on = false) noexcept;
     //
     //
     //
     void poll_input_devices() noexcept;
 };
-}  // namespace Engine
+}  // namespace Senseless

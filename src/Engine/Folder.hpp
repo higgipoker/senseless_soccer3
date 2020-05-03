@@ -3,7 +3,7 @@
 #include <set>
 #include <string>
 
-namespace Engine {
+namespace Senseless {
 enum class GetType { Files, Folders, All };
 
 /**
@@ -63,4 +63,4 @@ class WorkingFolder : public Folder {
   WorkingFolder();
 };
 
-}  // namespace Engine
+}  // namespace Senseless

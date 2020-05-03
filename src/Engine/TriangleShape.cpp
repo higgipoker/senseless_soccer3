@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-using namespace Engine;
+using namespace Senseless;
 
 namespace sf {
 //

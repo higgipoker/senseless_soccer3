@@ -6,7 +6,7 @@
 //
 //
 //
-namespace Engine {
+namespace Senseless {
 //
 //
 //
@@ -71,4 +71,4 @@ class ProgressBar : public Widget {
   sf::RectangleShape outline{{width, height}};
 };
 
-}  // namespace Engine
+}  // namespace Senseless

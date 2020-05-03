@@ -12,7 +12,7 @@
 //
 //
 //
-namespace Engine {
+namespace Senseless {
 //
 //
 //
@@ -161,9 +161,9 @@ void Sprite::perspectivize(const float in_camera_height) {
         }
 
         // y offset due to height
-        float z_cm = entity_height * Metrics::Z_PERSP_OFFSET;
+        float z_cm = entity_height * Z_PERSP_OFFSET;
         if (Math::greater_than(z_cm, 0)) {
-            float y_offset = Metrics::Y_OFFSET_DUE_TO_HEIGHT * z_cm;
+            float y_offset = Y_OFFSET_DUE_TO_HEIGHT * z_cm;
             move(0, -y_offset);
         }
     }
@@ -174,4 +174,4 @@ void Sprite::perspectivize(const float in_camera_height) {
 void Sprite::setBasePerspectiveWidth(const float in_width) {
     perspective_width = in_width;
 }
-}  // namespace Engine
+}  // namespace Senseless

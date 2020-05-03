@@ -1,6 +1,6 @@
 #pragma once
 #include "Engine/Vector.hpp"
-
+namespace Senseless {
 class Player;
 /**
  * @brief The Locomotion class
@@ -41,3 +41,4 @@ class Locomotion {
   //
   void stay_in_pitch();
 };
+}  // namespace Senseless

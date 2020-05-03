@@ -1,7 +1,7 @@
 #include "Stand.hpp"
 
 #include "Player/Player.hpp"
-using namespace Engine;
+namespace Senseless{
 //
 //
 //
@@ -26,3 +26,4 @@ void Stand::stop() {}
 //
 //
 bool Stand::finished() { return false; }
+}

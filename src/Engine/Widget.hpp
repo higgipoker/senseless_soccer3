@@ -2,7 +2,7 @@
 #include "Sprite.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
-namespace Engine {
+namespace Senseless {
 //
 //
 //
@@ -26,4 +26,4 @@ class Widget : public Sprite {
   void draw(sf::RenderTarget& target, sf::RenderStates states) const = 0;
 };
 
-}  // namespace Engine
+}  // namespace Senseless

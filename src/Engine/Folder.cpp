@@ -15,7 +15,7 @@
 #include <array>
 #include <iostream>
 
-namespace Engine {
+namespace Senseless {
 //
 //
 //
@@ -104,4 +104,4 @@ void Folder::read_files_and_folders(bool in_refresh) {
 WorkingFolder::WorkingFolder() : Folder(getWorkingDirectory()) {
 }
 
-}  // namespace Engine
+}  // namespace Senseless

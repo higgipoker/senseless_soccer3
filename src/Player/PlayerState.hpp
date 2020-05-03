@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+namespace Senseless {
 class Player;
 
 /**
@@ -43,7 +44,7 @@ class PlayerState {
   player_state nextState();
 
   /// degug
-  std::string name="Not Set";
+  std::string name = "Not Set";
 
  protected:
   /// context for state  machine pattern
@@ -52,3 +53,4 @@ class PlayerState {
   /// next state
   player_state next_state = player_state::Stand;
 };
+}  // namespace Senseless

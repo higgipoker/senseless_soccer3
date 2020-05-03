@@ -4,7 +4,7 @@
 
 #include <SFML/System/Vector2.hpp>
 
-namespace Engine {
+namespace Senseless {
 
 enum class Index { X = 0, Y = 1, Z = 2 };
 
@@ -112,4 +112,4 @@ class Vector3 {
   // -------------------------------------------------------------------------
   void fromSfVector(const sf::Vector2f &from);
 };
-}  // namespace Engine
+}  // namespace Senseless

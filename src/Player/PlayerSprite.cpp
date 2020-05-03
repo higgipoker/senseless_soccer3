@@ -4,12 +4,12 @@
 //
 //
 //
-using namespace Engine;
+namespace Senseless {
 //
 //
 //
-PlayerSprite::PlayerSprite(const sf::Texture& in_texture,
-                           const TeamType in_team, SpriteSetDefinition in_def)
+PlayerSprite::PlayerSprite(const sf::Texture& in_texture, const TeamType in_team,
+                           SpriteSetDefinition in_def)
     : Sprite(in_texture) {
   perspectivizable = true;
 
@@ -24,14 +24,12 @@ PlayerSprite::PlayerSprite(const sf::Texture& in_texture,
   populateSlideAnimations(slide_animations);
 
   // for players, anchor the sprite to bottom (position is feet)
-  setOrigin(static_cast<float>(in_def.frame_width / 2),
-            static_cast<float>(in_def.frame_height));
+  setOrigin(static_cast<float>(in_def.frame_width / 2), static_cast<float>(in_def.frame_height));
 }
 //
 //
 //
-void PlayerSprite::setPlayerAnimation(PlayerAnimationType in_type,
-                                      Direction in_direction) {
+void PlayerSprite::setPlayerAnimation(PlayerAnimationType in_type, Direction in_direction) {
   switch (in_type) {
     case PlayerAnimationType::Run:
       Sprite::setAnimation(&(run_animations.at(in_direction)));
@@ -52,3 +50,4 @@ PlayerShadowSprite::PlayerShadowSprite(const sf::Texture& in_texture,
     : PlayerSprite(in_texture, TeamType::Home, in_def) {
   perspectivizable = false;
 }
+}  // namespace Senseless

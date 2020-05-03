@@ -1,10 +1,10 @@
 #include "Entity.hpp"
-
+//
+#include "Metrics.hpp"
+//
 #include <cassert>
 #include <iostream>
-
-#include "Metrics.hpp"
-namespace Engine {
+namespace Senseless {
 //
 //
 //
@@ -27,8 +27,8 @@ Entity::Entity(UniquePtr<Sprite> in_sprite, UniquePtr<Sprite> in_shadow)
 void Entity::update() {
   sprite->setPosition(movable.position.x, movable.position.y);
   if (hasShadow()) {
-    shadow->setPosition({sprite->getPosition().x + shadow_offset,
-                         sprite->getPosition().y + shadow_offset});
+    shadow->setPosition(
+        {sprite->getPosition().x + shadow_offset, sprite->getPosition().y + shadow_offset});
   }
   sprite->animate();
   sprite->entity_height = movable.position.z;
@@ -50,15 +50,20 @@ Vector3 Entity::directionTo(const Entity &in_entity, bool in_2d) const {
 //
 //
 float Entity::distanceTo(const Entity &in_entity) const {
-  auto ret = (in_entity.movable.position - movable.position).magnitude();
-  return ret;
+  return (in_entity.movable.position - movable.position).magnitude();
 }
 //
 //
 //
-Sprite &Entity::getSprite() { return *sprite.get(); }
+Sprite &Entity::getSprite() {
+  assert(sprite);
+  return *sprite.get();
+}
 //
 //
 //
-Sprite &Entity::getShadow() { return *shadow.get(); }
-}  // namespace Engine
+Sprite &Entity::getShadow() {
+  assert(has_shadow);
+  return *shadow.get();
+}
+}  // namespace Senseless

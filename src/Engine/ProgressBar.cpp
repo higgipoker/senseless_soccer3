@@ -2,7 +2,7 @@
 //
 //
 //
-namespace Engine {
+namespace Senseless {
 //
 //
 //
@@ -74,4 +74,4 @@ float ProgressBar::getWidth() { return width; }
 //
 //
 float ProgressBar::getHeight() { return height; }
-}  // namespace Engine
+}  // namespace Senseless

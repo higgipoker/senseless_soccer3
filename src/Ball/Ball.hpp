@@ -1,20 +1,19 @@
 #pragma once
 
-#include "Engine/Entity.hpp"
-
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
+#include "Engine/Entity.hpp"
+namespace Senseless {
 /**
  * @brief The Ball class
  */
-class Ball : public Engine::Entity {
+class Ball : public Entity {
  public:
   //
   //
   //
-  Ball(UniquePtr<Engine::Sprite> in_sprite,
-       UniquePtr<Engine::Sprite> in_shadow);
+  Ball(UniquePtr<Sprite> in_sprite, UniquePtr<Sprite> in_shadow);
   //
   //
   //
@@ -22,7 +21,7 @@ class Ball : public Engine::Entity {
   //
   //
   //
-  void kick(Engine::Vector3 in_force);
+  void kick(Vector3 in_force);
   //
   //
   //
@@ -34,7 +33,7 @@ class Ball : public Engine::Entity {
   //
   //
   //
-  void applySideSpin(Engine::Vector3 in_spin);
+  void applySideSpin(Vector3 in_spin);
   //
   //
   //
@@ -49,8 +48,8 @@ class Ball : public Engine::Entity {
   void stop_recording_distance() { recording_distance = false; }
   bool recording_distance = false;
   float distance;
-  Engine::Vector3 initial_position;
-  Engine::Vector3 last_position;
+  Vector3 initial_position;
+  Vector3 last_position;
   float last_force = 0;
 
  protected:
@@ -60,3 +59,4 @@ class Ball : public Engine::Entity {
   //
   void debug();
 };
+}  // namespace Senseless

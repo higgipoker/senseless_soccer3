@@ -1,10 +1,9 @@
 #include "LocomotionManager.hpp"
 
 #include "Engine/Entity.hpp"
-
 #include "Player/Player.hpp"
 
-using namespace Engine;
+namespace Senseless {
 //
 //
 //
@@ -69,3 +68,4 @@ void LocomotionManager::update() {
     }
   }
 }
+}  // namespace Senseless

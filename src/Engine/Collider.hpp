@@ -3,7 +3,7 @@
 #include "Engine/Vector.hpp"
 //
 #include <SFML/Graphics/CircleShape.hpp>
-namespace Engine {
+namespace Senseless {
 //
 //
 //
@@ -24,7 +24,7 @@ class Collider {
     //
     //
     //
-    static bool collides(const Engine::Vector3 &point, const sf::TriangleShape &triangle);
+    static bool collides(const Vector3 &point, const sf::TriangleShape &triangle);
     //
     //
     //
@@ -37,4 +37,4 @@ class Collider {
         return false;
     }
 };
-}  // namespace Engine
+}  // namespace Senseless

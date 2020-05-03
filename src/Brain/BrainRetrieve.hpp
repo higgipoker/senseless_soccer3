@@ -1,10 +1,11 @@
 #pragma once
 #include "BrainState.hpp"
+namespace Senseless {
 class Brain;
 /**
  * @brief The Retrieve class
  */
-class BrainRetrieve : public BrainState{
+class BrainRetrieve : public BrainState {
  public:
   /**
    * @brief Retrieve
@@ -13,18 +14,19 @@ class BrainRetrieve : public BrainState{
   /**
    * @brief start
    */
-   void start() override;
+  void start() override;
   /**
    * @brief update
    */
-   void step() override;
+  void step() override;
   /**
    * @brief end
    */
-   void stop() override;
+  void stop() override;
   /**
    * @brief stateOver
    * @return
    */
-   bool stateOver() override;
+  bool stateOver() override;
 };
+}  // namespace Senseless
