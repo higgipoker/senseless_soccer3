@@ -1,7 +1,5 @@
 #include "GameEngine.hpp"
 //
-#include "CoordinateSystem.h"
-//
 #include <SFML/Window/Event.hpp>
 #include <cassert>
 #include <iostream>

@@ -7,13 +7,7 @@ namespace Senseless {
 //
 class Gamepad : public InputDevice {
  public:
-  //
-  //
-  //
   Gamepad();
-  //
-  //
-  //
   void update() override;
 
  protected:

@@ -10,6 +10,21 @@
 //
 #include <iostream>
 namespace Senseless {
+//
+//
+//
+std::map<brain_state, std::string > Player::brainstates = {
+    { brain_state::Idle, "Idle"},
+    { brain_state::Cover, "Cover"},
+    { brain_state::Support, "Support"},
+    { brain_state::Retrieve, "Retrieve" },
+    { brain_state::Dribble, "Dribble"},
+    { brain_state::Pass, "Pass"},
+    { brain_state::Wait, "Wait"},
+};
+//
+//
+//
 int Player::instances = 0;
 //
 //
@@ -76,7 +91,7 @@ void Player::handleInput() {
     }
     run(movement_vector);
   } else {
-    brain.update();
+    brain.think();
   }
 }
 //

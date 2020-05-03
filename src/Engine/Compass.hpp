@@ -6,7 +6,16 @@ namespace Senseless {
 //
 //
 //
-enum class Direction : int { North = 0, NorthEast, East, SouthEast, South, SouthWest, West, NorthWest };
+enum class Direction : int {
+  North = 0,
+  NorthEast,
+  East,
+  SouthEast,
+  South,
+  SouthWest,
+  West,
+  NorthWest
+};
 //
 //
 //
@@ -23,52 +32,16 @@ class Vector3;
 //
 //
 class Compass {
-   public:
-    //
-    //
-    //
-    Compass();
-    //
-    //
-    //
-    Compass(Direction dir);
-    //
-    //
-    //
-    Compass(const Vector3 &vec);
-    //
-    //
-    //
-    Vector3 toVector();
-    //
-    //
-    //
-    void fromVector(const Vector3 &v);
-    //
-    //
-    //
-    Direction direction = Direction::North;
-    //
-    //
-    //
-    inline bool operator==(const Compass &rhs) {
-        return direction == rhs.direction;
-    }
-    //
-    //
-    //
-    inline bool operator!=(const Compass &rhs) {
-        return direction != rhs.direction;
-    }
-    //
-    //
-    //
-    static Compass getRandomDirection();
-    //
-    //
-    //
-    inline std::string print() {
-        return direction_to_string[direction];
-    }
+ public:
+  Compass();
+  Compass(Direction dir);
+  Compass(const Vector3 &vec);
+  Vector3 toVector();
+  void fromVector(const Vector3 &v);
+  Direction direction = Direction::North;
+  static Compass getRandomDirection();
+  inline std::string print() { return direction_to_string[direction]; }
+  inline bool operator==(const Compass &rhs) { return direction == rhs.direction; }
+  inline bool operator!=(const Compass &rhs) { return direction != rhs.direction; }
 };
 }  // namespace Senseless

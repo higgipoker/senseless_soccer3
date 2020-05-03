@@ -1,6 +1,7 @@
 #pragma once
 #include "Gameplan.hpp"
 #include "KitFactory.hpp"
+#include "PlayingPosition.hpp"
 //
 #include "Player/PlayerFactory.hpp"
 //

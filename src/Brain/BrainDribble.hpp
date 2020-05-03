@@ -11,13 +11,7 @@ class Brain;
 //
 class DribblePattern {
  public:
-  //
-  //
-  //
   virtual Compass nextDirection(Compass in_current_dir) = 0;
-  //
-  //
-  //
   virtual bool changeDirection() = 0;
 
  protected:
@@ -56,26 +50,10 @@ class DribblePatternRandom : public DribblePattern {
 //
 class BrainDribble : public BrainState {
  public:
-  /**
-   * @brief Retrieve
-   */
   BrainDribble(Brain &in_brain);
-  /**
-   * @brief start
-   */
   void start() override;
-  /**
-   * @brief update
-   */
   void step() override;
-  /**
-   * @brief end
-   */
   void stop() override;
-  /**
-   * @brief stateOver
-   * @return
-   */
   bool stateOver() override;
 
  protected:

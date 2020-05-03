@@ -22,6 +22,8 @@ int Debug::home_pitch_side = 0;
 int Debug::away_pitch_side = 0;
 int Debug::attacking_team = 0;
 
+int Debug::brainstate = static_cast<int>(brain_state::Idle);
+
 int Debug::active_team = 0;
 GameState *Debug::gamestate = nullptr;
 //
@@ -123,13 +125,20 @@ void Debug::draw_main_window() {
 //
 //
 void Debug::draw_player_window() {
+  brainstate = static_cast<int>(static_cast<Player*>(picked)->getBrainState());
   ImGui::Begin(picked->name.c_str());
-  // picked entity
-  {
+  {  // picked player
     ImGui::Text("Pitch Space: %4.0f, %4.0f",
                 gamestate->pitch->toPitchSpace(picked_position_screen).x,
                 gamestate->pitch->toPitchSpace(picked_position_screen).y);
     ImGui::Text("Screen Space: %4.0f, %4.0f", picked_position_screen.x, picked_position_screen.y);
+  }
+  {  // brain states
+    ImGui::Text("Brain state:");
+    int val = 0;
+    for (auto &bs : Player::brainstates) {
+        ImGui::RadioButton(bs.second.c_str(), &brainstate, val++);
+    }
   }
   ImGui::End();
 }

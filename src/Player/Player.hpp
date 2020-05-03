@@ -5,8 +5,8 @@
 #include "PlayerStateStand.hpp"
 //
 #include "Ball/Ball.hpp"
-#include "Brain/Brain.hpp"
 #include "Team/PlayingPosition.hpp"
+#include "Brain/Brain.hpp"
 //
 #include "Engine/Controllable.hpp"
 #include "Engine/Entity.hpp"
@@ -125,5 +125,11 @@ class Player : public Entity, public Controllable {
   friend class BrainCover;
   friend class Locomotion;
   friend class Team;
+
+  // for debug hud
+  static std::map<brain_state, std::string > brainstates;
+  brain_state getBrainState(){
+      return brain.state;
+  }
 };
 }  // namespace Senseless

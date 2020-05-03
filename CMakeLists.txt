@@ -41,7 +41,6 @@ endif (UNIX)
 # --------------------------------------------------
 add_executable(senseless_soccer3
     src/Main/Main.cpp
-    src/Engine/CoordinateSystem.cpp
     src/Engine/Vector.cpp
     src/Engine/Folder.cpp
     src/Engine/Window.cpp
@@ -68,6 +67,9 @@ add_executable(senseless_soccer3
     src/Engine/BaseFactory.cpp
     src/Engine/Picker.cpp
     src/Game/Game.cpp
+    src/Game/Object.cpp
+    src/Game/ObjectPool.cpp
+    src/Game/Message.cpp
     src/Locomotion/LocomotionManager.cpp
     src/Locomotion/Locomotion.cpp
     src/Locomotion/Seek.cpp
@@ -76,6 +78,7 @@ add_executable(senseless_soccer3
     src/Locomotion/Stand.cpp
     src/Brain/Brain.cpp
     src/Brain/BrainState.cpp
+    src/Brain/BrainIdle.cpp
     src/Brain/BrainRetrieve.cpp
     src/Brain/BrainDribble.cpp
     src/Brain/BrainPass.cpp
@@ -97,6 +100,8 @@ add_executable(senseless_soccer3
     src/Ball/BallSprite.cpp
     src/Ball/BallFactory.cpp
     src/Match/Match.cpp
+    src/Match/MatchState.cpp
+    src/Match/MatchEnterPitch.cpp
     src/Match/MatchFactory.cpp
     src/Match/MatchEngine.cpp
     src/Team/Team.cpp
