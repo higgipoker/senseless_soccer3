@@ -41,6 +41,7 @@ endif (UNIX)
 # --------------------------------------------------
 add_executable(senseless_soccer3
     src/Main/Main.cpp
+    src/Engine/CoordinateSystem.cpp
     src/Engine/Vector.cpp
     src/Engine/Folder.cpp
     src/Engine/Window.cpp
@@ -91,6 +92,7 @@ add_executable(senseless_soccer3
     src/Pitch/Pitch.cpp
     src/Pitch/PitchSprite.cpp
     src/Pitch/MiniMap.cpp
+    src/Pitch/MiniMapSprite.cpp
     src/Ball/Ball.cpp
     src/Ball/BallSprite.cpp
     src/Ball/BallFactory.cpp
