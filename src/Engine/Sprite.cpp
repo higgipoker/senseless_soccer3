@@ -1,14 +1,14 @@
 #include "Sprite.hpp"
 
-#include "Debug.hpp"
-#include "Metrics.hpp"
-#include "Vector.hpp"
+#include <math.h>
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
-
-#include <math.h>
 #include <cassert>
+
+#include "Debug.hpp"
+#include "Metrics.hpp"
+#include "Vector.hpp"
 //
 //
 //
@@ -27,16 +27,21 @@ Sprite::Sprite(SharedPtr<sf::Texture> in_texture) {
 //
 //
 //
+Sprite::Sprite(const sf::Texture &texture) : sf::Sprite(texture) {
+}
+//
+//
+//
 void Sprite::init(const SpriteSetDefinition &in_def) {
-    int x = in_def.frame_width * in_def.start_col;
-    int y = in_def.vertical_offset + in_def.frame_height * in_def.start_row;
-    int col = in_def.start_col;
+    int x           = in_def.frame_width * in_def.start_col;
+    int y           = in_def.vertical_offset + in_def.frame_height * in_def.start_row;
+    int col         = in_def.start_col;
     int frame_count = in_def.spriteset_frames;
     while (--frame_count >= 0) {
         sf::IntRect rect;
-        rect.left = x;
-        rect.top = y;
-        rect.width = in_def.frame_width;
+        rect.left   = x;
+        rect.top    = y;
+        rect.width  = in_def.frame_width;
         rect.height = in_def.frame_height;
         frames.push_back(rect);
 
@@ -53,7 +58,8 @@ void Sprite::init(const SpriteSetDefinition &in_def) {
     setFrame(current_frame);
 
     // default set origin to center
-    setOrigin(static_cast<float>(in_def.frame_width / 2), static_cast<float>(in_def.frame_height / 2));
+    setOrigin(static_cast<float>(in_def.frame_width / 2),
+              static_cast<float>(in_def.frame_height / 2));
 
     // for perspective scaling
     perspective_width = getLocalBounds().width;
@@ -138,8 +144,8 @@ void Sprite::stopAnimating() {
 void Sprite::perspectivize(const float in_camera_height) {
     if (perspectivizable) {
         // size depending on distance from camera
-        float dimensions = perspective_width;
-        float dist_from_camera = in_camera_height - entity_height;
+        float dimensions       = perspective_width;
+        float dist_from_camera = in_camera_height - *entity_z;
 
         // other side of camera, don't perspectivize!
         if (dist_from_camera <= 0) {
@@ -149,10 +155,10 @@ void Sprite::perspectivize(const float in_camera_height) {
             return;
         }
 
-        float angular_diameter = 2 * (atanf(dimensions / (2 * dist_from_camera)));
-        float degs = Degrees(angular_diameter);
+        float angular_diameter    = 2 * (atanf(dimensions / (2 * dist_from_camera)));
+        float degs                = Degrees(angular_diameter);
         float sprite_scale_factor = degs / dimensions;
-        float sprite_ratio = dimensions / getLocalBounds().width;
+        float sprite_ratio        = dimensions / getLocalBounds().width;
         sprite_scale_factor *= sprite_ratio;
         setScale(sprite_scale_factor, sprite_scale_factor);
 
@@ -161,7 +167,7 @@ void Sprite::perspectivize(const float in_camera_height) {
         }
 
         // y offset due to height
-        float z_cm = entity_height * Z_PERSP_OFFSET;
+        float z_cm = *entity_z * Z_PERSP_OFFSET;
         if (Math::greater_than(z_cm, 0)) {
             float y_offset = Y_OFFSET_DUE_TO_HEIGHT * z_cm;
             move(0, -y_offset);
@@ -173,5 +179,11 @@ void Sprite::perspectivize(const float in_camera_height) {
 //
 void Sprite::setBasePerspectiveWidth(const float in_width) {
     perspective_width = in_width;
+}
+//
+//
+//
+void Sprite::setPerspectivizable(bool in_status) {
+    perspectivizable = in_status;
 }
 }  // namespace Senseless

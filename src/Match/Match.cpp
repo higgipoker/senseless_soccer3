@@ -28,7 +28,7 @@ Match::Match(UniquePtr<Pitch> in_pitch,
         ball =
             std::make_unique<Ball>((std::make_unique<BallSprite>(factory.getMatchTexture())),
                                    (std::make_unique<BallShadowSprite>(factory.getMatchTexture())));
-        ball->getSprite().setPerspectivizable(true);
+        ball->renderable.sprite->setPerspectivizable(true);
         ball->name = "Ball";
     } else {
         std::cout << "create match texture failed" << std::endl;

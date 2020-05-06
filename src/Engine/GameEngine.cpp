@@ -157,10 +157,10 @@ void GameEngine::addEntity(Entity &in_entity, layer_id in_layer_id) noexcept {
     in_entity.movable.is_hud = true;
   }
 
-  add_sprite(in_entity.getSprite(), in_layer_id);
+  add_sprite(*in_entity.renderable.sprite, in_layer_id);
 
-  if (in_entity.hasShadow()) {
-    add_sprite(in_entity.getShadow(), shadow_layer);
+  if (in_entity.renderable.shadow.get()) {
+    add_sprite(*in_entity.renderable.shadow, shadow_layer);
   }
   entities.insert(&in_entity);
 }

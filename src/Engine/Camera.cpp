@@ -14,7 +14,7 @@ Camera::Camera(float in_viewport_width, float in_viewport_height)
       view{{0, 0, in_viewport_width, in_viewport_height}} {
     movable.toggleGravity(false);
     movable.properties.co_friction = 0.01F;
-    speed = 5;
+    movable.speed = 5;
     collider.setRadius(200);
 }
 //

@@ -2,8 +2,10 @@
 map! <F1> :e %<.cpp<CR>
 ":e %<.h
 "
+set laststatus=2
+set statusline=%F
 set showmatch
-set makeprg=make\ -C\ %:h\ -j6
+set makeprg=make\ -C\ Debug\ -j6
 let g:netrw_banner=0
 set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
 command! MakeTags !ctags -R .

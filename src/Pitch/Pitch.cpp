@@ -15,7 +15,7 @@ const int BorderLineThickness = 1;
 //
 //
 //
-Pitch::Pitch(const std::string& in_grass_texture) {
+Pitch::Pitch(const std::string& in_grass_texture) : Entity(std::make_unique<Sprite>(), std::make_unique<Sprite>()){
   draw_dimensions.origin = {100, 100};
   init_bounds();
   init_halfway_line();
@@ -26,8 +26,8 @@ Pitch::Pitch(const std::string& in_grass_texture) {
   init_18_yard_boxes();
   init_south_arc();
   // the sprite
-  sprite = std::make_unique<PitchSprite>();
-  static_cast<PitchSprite*>(sprite.get())->init(draw_dimensions, in_grass_texture);
+  renderable.sprite = std::make_unique<PitchSprite>();
+  static_cast<PitchSprite*>(renderable.sprite.get())->init(draw_dimensions, in_grass_texture);
   movable.position = draw_dimensions.origin;
 }
 //
@@ -207,7 +207,7 @@ void Pitch::init_south_arc() {
 //
 //
 void Pitch::update() {
-  static_cast<PitchSprite*>(sprite.get())->setPosition(movable.position.x, movable.position.y);
+  static_cast<PitchSprite*>(renderable.sprite.get())->setPosition(movable.position.x, movable.position.y);
 }
 //
 //

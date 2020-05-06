@@ -3,7 +3,6 @@ namespace Senseless {
 //
 //
 //
-MiniMap::MiniMap() {
-    sprite = std::make_unique<MiniMapSprite>();
+MiniMap::MiniMap() : Entity(std::make_unique<MiniMapSprite>(), std::make_unique<Sprite>()) {
 }
-}  // namespace senseless
+}  // namespace Senseless

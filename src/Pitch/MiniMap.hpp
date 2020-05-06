@@ -10,7 +10,7 @@ namespace Senseless {
 class MiniMap : public Entity {
  public:
   MiniMap();
-  MiniMapSprite& getSprite() { return static_cast<MiniMapSprite&>(*sprite); }
+  MiniMapSprite& getSprite() { return static_cast<MiniMapSprite&>(*renderable.sprite); }
 
  private:
 };

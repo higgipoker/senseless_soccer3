@@ -15,8 +15,8 @@ Ball::Ball(UniquePtr<Sprite> in_sprite, UniquePtr<Sprite> in_shadow)
   movable.properties.co_friction = 0.01F;
   movable.properties.co_bounciness = 0.8f;
   movable.properties.cross_section = radius * 2;
-  sprite->setBasePerspectiveWidth(radius * 2);
-  shadow->setBasePerspectiveWidth(radius * 2);
+  renderable.sprite->setBasePerspectiveWidth(radius * 2);
+  renderable.shadow->setBasePerspectiveWidth(radius * 2);
 }
 //
 //
@@ -39,10 +39,10 @@ void Ball::update() {
   if (Math::greater_than(movable.velocity.magnitude(), 0)) {
     // sprite rotates in direction of movement (unless spin...later!!)
     const float offset = 180;  // according to the spritesheet image
-    sprite->setRotation(movable.velocity.angle() + offset);
-    sprite->startAnimating();
+    renderable.sprite->setRotation(movable.velocity.angle() + offset);
+    renderable.sprite->startAnimating();
   } else {
-    sprite->stopAnimating();
+    renderable.sprite->stopAnimating();
   }
 #ifndef NDEBUG
   debug();
@@ -56,19 +56,19 @@ void Ball::debug() {
   collidable.setOutlineThickness(1);
   collidable.setOutlineColor(Debug::defaultDiagnosticsColor());
 
-  sprite->debug_shapes.clear();
-  sprite->debug_shapes.push_back(&collidable);
+  renderable.sprite->debug_shapes.clear();
+  renderable.sprite->debug_shapes.push_back(&collidable);
 
   if (DRAW_RAYS) {
     xray.setSize({world.width, 1});
     xray.setPosition(0, collidable.getCenter().y);
     xray.setFillColor(sf::Color::Magenta);
-    sprite->debug_shapes.push_back(&xray);
+    renderable.sprite->debug_shapes.push_back(&xray);
 
     yray.setSize({1, world.height});
     yray.setPosition(collidable.getCenter().x, 0);
     yray.setFillColor(sf::Color::Magenta);
-    sprite->debug_shapes.push_back(&yray);
+    renderable.sprite->debug_shapes.push_back(&yray);
   }
 }
 //

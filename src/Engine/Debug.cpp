@@ -48,7 +48,7 @@ void Debug::draw() {
   ImGui::SFML::Update(window, ui_clock.restart());
   draw_main_window();
   if (picked) {
-    if (picked->type == TypePlayer) {
+      if (picked->type == EntityType::Player) {
       draw_player_window();
     }
   }
@@ -95,7 +95,7 @@ void Debug::draw_main_window() {
       auto p = gamestate->pitch->toPitchSpace({mouse_position.x, mouse_position.y});
       ImGui::Text("Pitch: %i, %i", static_cast<int>(p.x), static_cast<int>(p.y));
       // mini map scale factor
-      gamestate->minimap->getSprite().setScale(mini_map_scale_factor, mini_map_scale_factor);
+      gamestate->minimap->renderable.sprite->setScale(mini_map_scale_factor, mini_map_scale_factor);
       { ImGui::SliderFloat("", &mini_map_scale_factor, 0.1f, 0.5f, "radar = %.3f"); }
     }
   }
@@ -158,7 +158,7 @@ void Debug::handleInput(sf::Event &in_event) {
     if (picked && picked->name == "mini map") {
       mini_map_scale_factor += in_event.mouseWheelScroll.delta * 0.01F;
       mini_map_scale_factor = std::clamp(mini_map_scale_factor, 0.1F, 0.5F);
-      gamestate->minimap->getSprite().setScale(mini_map_scale_factor, mini_map_scale_factor);
+      gamestate->minimap->renderable.sprite->setScale(mini_map_scale_factor, mini_map_scale_factor);
     }
   }
 }
