@@ -1,4 +1,9 @@
-set makeprg=make\ -C\ Debug\ -j6
+"todo this switch header/source, make a keymap:
+map! <F1> :e %<.cpp<CR>
+":e %<.h
+"
+set showmatch
+set makeprg=make\ -C\ %:h\ -j6
 let g:netrw_banner=0
 set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
 command! MakeTags !ctags -R .
@@ -9,8 +14,8 @@ syntax enable
 filetype plugin on
 :set number relativenumber
 :set nu rnu
-set background=dark
-:colo gruvbox
+set background=light
+:colo PaperColor
 " All system-wide defaults are set in $VIMRUNTIME/debian.vim and sourced by
 " the call to :runtime you can find below.  If you wish to change any of those
 " settings, you should do it in this file (/etc/vim/vimrc), since debian.vim
