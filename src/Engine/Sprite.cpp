@@ -21,12 +21,6 @@ Sprite::Sprite() {
 //
 //
 //
-Sprite::Sprite(SharedPtr<sf::Texture> in_texture) {
-    setTexture(*in_texture.get());
-}
-//
-//
-//
 Sprite::Sprite(const sf::Texture &texture) : sf::Sprite(texture) {
 }
 //
@@ -69,9 +63,21 @@ void Sprite::init(const SpriteSetDefinition &in_def) {
 //
 void Sprite::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     sf::Sprite::draw(target, states);
-
 #ifndef NDEBUG
-    draw_debug(target);
+    if (Debug::showHud() && Debug::drawBounds()) {
+        sf::RectangleShape bounds{sf::Vector2f{getGlobalBounds().width, getGlobalBounds().height}};
+        bounds.setPosition({getGlobalBounds().left, getGlobalBounds().top});
+        bounds.setFillColor(sf::Color::Transparent);
+        bounds.setOutlineColor(Debug::defaultBoundsColor());
+        bounds.setOutlineThickness(1);
+
+        target.draw(bounds);
+    }
+    if (Debug::showHud() && Debug::drawDiagnostics()) {
+        for (auto &shape : debug_shapes) {
+            target.draw(*shape);
+        }
+    }
 #endif
 }
 //
@@ -110,25 +116,6 @@ void Sprite::animate() {
 //
 //
 //
-void Sprite::draw_debug(sf::RenderTarget &target) const {
-    if (Debug::showHud() && Debug::drawBounds()) {
-        sf::RectangleShape bounds{sf::Vector2f{getGlobalBounds().width, getGlobalBounds().height}};
-        bounds.setPosition({getGlobalBounds().left, getGlobalBounds().top});
-        bounds.setFillColor(sf::Color::Transparent);
-        bounds.setOutlineColor(Debug::defaultBoundsColor());
-        bounds.setOutlineThickness(1);
-
-        target.draw(bounds);
-    }
-    if (Debug::showHud() && Debug::drawDiagnostics()) {
-        for (auto &shape : debug_shapes) {
-            target.draw(*shape);
-        }
-    }
-}
-//
-//
-//
 void Sprite::startAnimating() {
     animating = true;
 }
@@ -150,8 +137,7 @@ void Sprite::perspectivize(const float in_camera_height) {
         // other side of camera, don't perspectivize!
         if (dist_from_camera <= 0) {
             setScale({0.f, 0.f});
-            if (shadow)
-                shadow->setScale(100, 100);
+            shadow->setScale(100, 100);
             return;
         }
 
@@ -161,10 +147,7 @@ void Sprite::perspectivize(const float in_camera_height) {
         float sprite_ratio        = dimensions / getLocalBounds().width;
         sprite_scale_factor *= sprite_ratio;
         setScale(sprite_scale_factor, sprite_scale_factor);
-
-        if (shadow) {
-            shadow->setScale(sprite_scale_factor, sprite_scale_factor);
-        }
+        shadow->setScale(sprite_scale_factor, sprite_scale_factor);
 
         // y offset due to height
         float z_cm = *entity_z * Z_PERSP_OFFSET;

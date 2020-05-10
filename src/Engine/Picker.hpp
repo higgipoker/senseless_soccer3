@@ -15,7 +15,7 @@ class Picker {
     //
     //
     //
-    Picker(sf::RenderWindow &in_window, std::set<Entity *> &in_entities, Debug & in_debug);
+    Picker(const sf::RenderWindow &in_window, std::vector<Entity *> &in_entities, Debug & in_debug);
     //
     //
     //
@@ -26,8 +26,8 @@ class Picker {
     void handleInput(const sf::Event &in_event);
 
    private:
-    sf::RenderWindow &window;
-    std::set<Entity *> &entities;
+    const sf::RenderWindow &window;
+    std::vector<Entity *> &entities;
     bool dragging = false;
     Entity *grabbed = nullptr;
     sf::Vector2f last_dragged_position;

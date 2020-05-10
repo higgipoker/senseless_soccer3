@@ -54,12 +54,12 @@ bool BrainCover::stateOver() {
 //
 bool BrainCover::should_close_down() {
   // if the ball is loose and i am closest to the ball -> definitely close down
-  if (brain.player.match.player_in_possession == nullptr) {
-    if (brain.player.my_team.closest_to_ball == &brain.player) {
-      std::cout << brain.player.name << " closing down" << std::endl;
-      return true;
-    }
-  }
+//  if (brain.player.match.player_in_possession == nullptr) {
+//    if (brain.player.my_team.closest_to_ball == &brain.player) {
+//      std::cout << brain.player.name << " closing down" << std::endl;
+//      return true;
+//    }
+//  }
 
   return false;
 }

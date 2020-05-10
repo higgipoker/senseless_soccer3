@@ -7,7 +7,7 @@ namespace Senseless {
 //
 //
 //
-Picker::Picker(sf::RenderWindow &in_window, std::set<Entity *> &in_entities,
+Picker::Picker(const sf::RenderWindow &in_window, std::vector<Entity *> &in_entities,
                Debug &in_debug)
     : window(in_window), entities(in_entities), debug(in_debug) {}
 //
@@ -52,6 +52,7 @@ void Picker::handleInput(const sf::Event &in_event) {
             grab_offset.y = pixelPos.y - entity->movable.getBounds().top;
           }
         } else {
+          if(entity->type==EntityType::Pitch)continue;
           if (Collider::contains(entity->movable.getBounds(), worldPos)) {
             hud_grabbed = false;
             std::cout << "Picked " << entity->name << std::endl;

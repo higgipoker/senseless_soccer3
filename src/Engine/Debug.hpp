@@ -15,7 +15,7 @@ namespace Senseless {
  */
 class Debug {
    public:
-    Debug   (sf::RenderWindow &in_window);
+    Debug   (const sf::RenderWindow &in_window);
     ~Debug  ();
 
     void prep               (const int in_frames, const int in_frametime);
@@ -36,7 +36,7 @@ class Debug {
     static GameState*   gamestate;
 
    private:
-    sf::RenderWindow&   window;
+    const sf::RenderWindow&   window;
     sf::Clock           ui_clock;
     Vector3             mouse_position;
     int                 framecount = 0;

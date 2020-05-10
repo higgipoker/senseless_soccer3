@@ -354,7 +354,7 @@ void Vector3::normalizeToUnits() {
 //
 //
 //
-bool Vector3::isMovingTowards(Vector3 testPoint, Vector3 objectVelocity) {
+bool Vector3::isMovingTowards(Vector3 testPoint, Vector3 objectVelocity) const {
   Vector3 tmp{x, y};
   Vector3 toPoint = testPoint - tmp;
   float dot = toPoint.dotProduct(objectVelocity);

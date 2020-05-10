@@ -6,42 +6,22 @@
 #include "Engine/Vector.hpp"
 namespace Senseless {
 class Player;
-//
-//
-//
+// ***************************************************************************
+// *                                                                         *
+// * BrainCover                                                              *
+// *                                                                         *
+// ***************************************************************************
 class BrainCover : public BrainState {
- public:
-  //
-  //
-  //
-  BrainCover(Brain& in_brain);
-  //
-  //
-  //
-  virtual void start() override;
-  //
-  //
-  //
-  virtual void step() override;
-  //
-  //
-  //
-  virtual void stop() override;
-  //
-  //
-  //
-  virtual bool stateOver() override;
+    public:
+       BrainCover   (Brain& in_brain);
+    void start        ()          override;
+    void step         ()          override;
+    void stop         ()          override;
+    bool stateOver    ()          override;
 
- private:
-  //
-  //
-  //
-  void change_direction();
-  //
-  //
-  //
-  bool should_close_down();
-  //
-  Vector3 last_target;
+    private:
+    void change_direction();
+    bool should_close_down();
+    Vector3 last_target;
 };
 }  // namespace Senseless

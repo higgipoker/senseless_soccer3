@@ -2,34 +2,20 @@
 #include "BrainState.hpp"
 namespace Senseless {
 class Brain;
-/**
- * @brief The Retrieve class
- */
+// ***************************************************************************
+// *                                                                         *
+// * BrainWait                                                               *
+// *                                                                         *
+// ***************************************************************************
 class BrainWait : public BrainState {
- public:
-  /**
-   * @brief Retrieve
-   */
-  BrainWait(Brain &in_brain);
-  /**
-   * @brief start
-   */
-  void start() override;
-  /**
-   * @brief update
-   */
-  void step() override;
-  /**
-   * @brief end
-   */
-  void stop() override;
-  /**
-   * @brief stateOver
-   * @return
-   */
-  bool stateOver() override;
+    public:
+        BrainWait   (Brain &in_brain);
+    void  start       () override;
+    void  step        () override;
+    void  stop        () override;
+    bool  stateOver   () override;
 
- protected:
-  int ticks = 0;
+    protected:
+    int ticks = 0;
 };
 }  // namespace Senseless

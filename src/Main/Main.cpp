@@ -83,11 +83,11 @@ int main(int argc, char **args) {
     //
     // pitch
     //
-    auto pitch = std::make_unique<Pitch>(graphics_folder.getPath(true) + "grass_checked.png");
-    engine.addEntity(*pitch, engine.getBackgroundLayer());
+    Pitch pitch (graphics_folder.getPath(true) + "grass_checked.png");
+    engine.addEntity(pitch, engine.getBackgroundLayer());
     UniquePtr<MiniMap> minimap{std::make_unique<MiniMap>()};
     minimap->movable.position = {20, 20};
-    static_cast<MiniMapSprite *>(&minimap->getSprite())->init(pitch->getDrawDimensions());
+    static_cast<MiniMapSprite *>(&minimap->getSprite())->init(pitch.getDrawDimensions());
     minimap->name = "mini map";
     engine.addEntity(*minimap, engine.getHudLayer());
     minimap->movable.position = {10, 10};
@@ -99,7 +99,7 @@ int main(int argc, char **args) {
     //
     // match
     //
-    Match match(std::move(pitch), team1, team2);
+    Match match(pitch, team1, team2);
     engine.getDebugUI().gamestate = &gamestate;
     // match.getAwayTeam().addDefaultPlayers(match.getHomeTeam());
     match.getHomeTeam().addDefaultPlayers(match.getAwayTeam());
@@ -155,15 +155,24 @@ int main(int argc, char **args) {
     engine.getMainCamera().setWorldRect(world);
 
     while (engine.isRunning()) {
+        // updates renderable and movable aspects
         engine.step();
+        // updates the match, players, ball etc
+        match.step();
+        // tmp
         auto positions = join_vectors(gamestate.home_team->getPlayerPositions(),
                                       gamestate.away_team->getPlayerPositions());
 
-        match.update();
+
+        Vector3 camera_position = gamestate.pitch->toPitchSpace(engine.getMainCamera().movable.position);
+        sf::RectangleShape cam;
+        cam.setSize(engine.getMainCamera().getRect().getSize());
+        cam.setPosition(camera_position.toSfVector());
+
         static_cast<MiniMapSprite *>(gamestate.minimap->renderable.sprite.get())
-            ->updatePlayerPositions(
-                positions, gamestate.pitch->toPitchSpace(match.getBall().movable.position));
-        gamestate.minimap->update();
+            ->update(
+                positions, gamestate.pitch->toPitchSpace(match.getBall().movable.position), cam);
+        //gamestate.minimap->update();
         // joysticker.update();
     }
     running = false;

@@ -14,13 +14,8 @@ namespace Senseless {
 //
 //
 std::map<brain_state, std::string> Player::brainstates = {
-    {brain_state::Idle, "Idle"},
-    {brain_state::Cover, "Cover"},
-    {brain_state::Support, "Support"},
-    {brain_state::Retrieve, "Retrieve"},
-    {brain_state::Dribble, "Dribble"},
-    {brain_state::Pass, "Pass"},
-    {brain_state::Wait, "Wait"},
+    {brain_state::Idle, "Idle"},       {brain_state::Cover, "Cover"}, {brain_state::Support, "Support"}, {brain_state::Retrieve, "Retrieve"},
+    {brain_state::Dribble, "Dribble"}, {brain_state::Pass, "Pass"},   {brain_state::Wait, "Wait"},
 };
 //
 //
@@ -29,26 +24,12 @@ int Player::instances = 0;
 //
 //
 //
-Player::Player(Match &                 in_match,
-               const Team &            in_my_team,
-               const Team &            in_other_team,
-               UniquePtr<PlayerSprite> in_sprite,
-               UniquePtr<PlayerSprite> in_shadow)
-    : Entity(std::move(in_sprite), std::move(in_shadow)),
-      match(in_match),
-      my_team(in_my_team),
-      other_team(in_other_team),
-      brain(*this),
-      state_stand(*this),
-      state_run(*this),
-      state_dribble(*this),
-      state(&state_stand),
-      player_sprite(static_cast<PlayerSprite &>(*renderable.sprite)),
-      player_shadow(static_cast<PlayerSprite &>(*renderable.shadow)) {
+Player::Player(Match &in_match, const Team &in_my_team, const Team &in_other_team, UniquePtr<PlayerSprite> in_sprite, UniquePtr<PlayerSprite> in_shadow)
+    : Entity(std::move(in_sprite), std::move(in_shadow)), state_stand(*this), state_run(*this), state_dribble(*this), state(&state_stand), my_team(in_my_team), other_team(in_other_team),
+      match(in_match), brain(*this), player_sprite(static_cast<PlayerSprite &>(*renderable.sprite)), player_shadow(static_cast<PlayerSprite &>(*renderable.shadow)) {
     type = EntityType::Player;
     feet.setRadius(1.0F);
     control.setRadius(12);
-
     speed         = RunningSpeed::Fast;
     current_speed = run_speeds[speed];
 
@@ -57,7 +38,6 @@ Player::Player(Match &                 in_match,
     control.setFillColor(sf::Color::Transparent);
     control.setOutlineThickness(1);
     control.setOutlineColor(Debug::defaultDiagnosticsColor());
-
     ++instances;
     // std::cout << instances << " players" << std::endl;
 }
@@ -95,15 +75,16 @@ void Player::handleInput() {
             movement_vector.x = 1;
         }
         run(movement_vector);
-    } else {
-        brain.think();
     }
 }
 //
 //
 //
-void Player::update() {
-    Entity::update();
+void Player::update(const float in_dt) {
+    if (!input) {
+        brain.think();
+    }
+    Entity::update(in_dt);
 
     short_pass_triangle.reset();
     short_pass_triangle.setFillColor({255, 0, 0, 70});
@@ -118,9 +99,7 @@ void Player::update() {
 
     feet.setCenter(movable.position.x, movable.position.y - feet.getRadius());
     control.setCenter(feet.getCenter());
-    renderable.shadow->setFrame(renderable.sprite->getFrame());
-    distance_from_ball =
-        Vector3::distance_to(movable.position, my_team.match->getBall().movable.position);
+    distance_from_ball   = Vector3::distance_to(movable.position, my_team.match->getBall().movable.position);
     renderable.sprite->z = movable.position.y;
 
 #ifndef NDEBUG
@@ -202,7 +181,6 @@ void Player::kick(const float in_force) {
     force *= in_force;
     force.z = force.magnitude2d() * 0.2F;
     my_team.match->getBall().kick(force);
-    my_team.match->getBall().start_recording_distance();
 }
 //
 //
@@ -219,11 +197,10 @@ void         Player::shortPass(Player &in_receiver) {
         ++force_needed;
     }
 
-    Vector3 force = Vector3::direction_to(movable.position,in_receiver.movable.position);
+    Vector3 force = Vector3::direction_to(movable.position, in_receiver.movable.position);
     force.setMagnitude(force_needed);
     my_team.match->getBall().kick(force);
     in_receiver.brain.changeState(brain_state::Retrieve);
-    my_team.match->getBall().start_recording_distance();
 }
 //
 //
@@ -341,8 +318,7 @@ void Player::setPlayingPosition(UniquePtr<PlayingPosition> in_position) {
 void Player::goToSetPiecePosition(const Situation in_situation, const Direction in_pitch_side) {
     if (auto position = playing_position.get()) {
         brain.changeState(brain_state::Idle);
-        brain.locomotion.seek(
-            position->getTargetPosition(in_situation, match.getBall(), in_pitch_side));
+        brain.locomotion.seek(position->getTargetPosition(in_situation, match.getBall(), in_pitch_side));
     }
 }
 }  // namespace Senseless

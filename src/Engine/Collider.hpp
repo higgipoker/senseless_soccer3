@@ -3,6 +3,8 @@
 #include "Engine/Vector.hpp"
 //
 #include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+
 namespace Senseless {
 //
 //
@@ -20,6 +22,13 @@ class Collider {
       return true;
     }
     return false;
+  }
+  static bool contains(sf::RectangleShape in_rect, Vector3 in_point) {
+      if (in_point.x > in_rect.getPosition().x && in_point.x < in_rect.getPosition().x+ in_rect.getSize().x &&
+          in_point.y > in_rect.getPosition().y && in_point.y < in_rect.getPosition().y + in_rect.getSize().y) {
+          return true;
+      }
+      return false;
   }
 };
 }  // namespace Senseless

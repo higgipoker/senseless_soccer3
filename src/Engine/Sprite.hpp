@@ -26,17 +26,18 @@ struct SpriteSetDefinition {
     int start_col = 0;
     int sheet_cols = 0;
 };
-//
-//
-//
+// ***************************************************************************
+// *                                                                         *
+// * Sprite                                                                  *
+// *                                                                         *
+// ***************************************************************************
 class Sprite : public sf::Sprite {
-   public:
+    public:
     // -----------------------------------------------------------------------
     // functions
     // -----------------------------------------------------------------------
                  Sprite                  ();
                  Sprite                  (const sf::Texture& texture);
-                 Sprite                  (SharedPtr<sf::Texture> in_texture);
             void init                    (const SpriteSetDefinition& in_def);
             void setFrame                (const int in_frame);
             int  getFrame                ();
@@ -52,18 +53,16 @@ class Sprite : public sf::Sprite {
     // -----------------------------------------------------------------------
     // members
     // -----------------------------------------------------------------------
-    float*                      entity_z = nullptr;
-    Sprite*                     shadow = nullptr;
+    float*                      entity_z        = nullptr;
+    Sprite*                     shadow          = nullptr;
     std::vector<sf::Shape*>     debug_shapes;
 
-   protected:
+    protected:
     std::vector<sf::IntRect>    frames;
-    SpriteAnimation*            animation = nullptr;
-    int                         current_frame = 0;
-    bool                        animating = false;
-    bool                        perspectivizable = false;
-    float                       perspective_width = 0;
-
-    void draw_debug(sf::RenderTarget& target) const;
+    SpriteAnimation*            animation           = nullptr;
+    int                         current_frame       = 0;
+    bool                        animating           = false;
+    bool                        perspectivizable    = false;
+    float                       perspective_width   = 0;
 };
 }  // namespace Senseless

@@ -8,14 +8,13 @@ namespace Senseless {
 
 enum class Index { X = 0, Y = 1, Z = 2 };
 
-//  ----------------------------------------------------------------------------
-//
-//  A class to represent a Vector
-//
-//
-//  ----------------------------------------------------------------------------
+// ***************************************************************************
+// *                                                                         *
+// * Vector3                                                                 *
+// *                                                                         *
+// ***************************************************************************
 class Vector3 {
-   public:
+    public:
     // -------------------------------------------------------------------------
     // components
     // -------------------------------------------------------------------------
@@ -100,7 +99,7 @@ class Vector3 {
     float        projectionOn(Vector3 &line);
     float        dotProduct(const Vector3 &rhs);
     float        perpProduct(const Vector3 &rhs, bool right_normal = true);
-    bool         isMovingTowards(Vector3 testPoint, Vector3 objectVelocity);
+    bool         isMovingTowards(Vector3 testPoint, Vector3 objectVelocity) const;
 
     // -------------------------------------------------------------------------
     // comparison operations
@@ -126,5 +125,9 @@ class Vector3 {
     static inline float distance_to(const Vector3 from, const Vector3 to) {
         return (to - from).magnitude();
     };
+    static inline bool moving_towards(const Vector3 position, const Vector3 velocity, const Vector3 testpoint){
+        Vector3 toPoint = testpoint - position;
+        return toPoint.dotProduct(velocity) > 0;
+    }
 };
 }  // namespace Senseless

@@ -8,49 +8,24 @@ class Player;
  */
 enum class player_state { Stand, Run, Dribble };
 
-/**
- * @brief The PlayerState class
- */
+// ***************************************************************************
+// *                                                                         *
+// * PlayerState                                                             *
+// *                                                                         *
+// ***************************************************************************
 class PlayerState {
  public:
-  /**
-   * @brief PlayerState
-   */
-  PlayerState(Player &in_player);
-  /**
-   * @brief ~PlayerState
-   */
-  virtual ~PlayerState();
-  /**
-   * @brief start
-   */
-  virtual void start() = 0;
-  /**
-   * @brief update
-   */
-  virtual void step();
-  /**
-   * @brief end
-   */
-  virtual void stop() = 0;
-  /**
-   * @brief stateOver
-   * @return
-   */
-  virtual bool stateOver() = 0;
-  /**
-   * @brief changeToNextState
-   */
-  player_state nextState();
-
-  /// degug
-  std::string name = "Not Set";
+                PlayerState (Player &in_player);
+  virtual       ~PlayerState();
+  virtual void  start       () = 0;
+  virtual void  step        ();
+  virtual void  stop        () = 0;
+  virtual bool  stateOver   () = 0;
+  player_state  nextState   ();
+  std::string   name = "Not Set";
 
  protected:
-  /// context for state  machine pattern
-  Player &player;
-
-  /// next state
-  player_state next_state = player_state::Stand;
+  Player&       player;
+  player_state  next_state = player_state::Stand;
 };
 }  // namespace Senseless

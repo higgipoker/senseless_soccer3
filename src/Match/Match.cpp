@@ -11,11 +11,11 @@ int Match::instances = 0;
 //
 //
 //
-Match::Match(UniquePtr<Pitch> in_pitch,
+Match::Match(Pitch&           in_pitch,
              Team&            in_home_team,
              Team&            in_away_team,
              BallType         in_ball_type)
-    : pitch(std::move(in_pitch)), home_team(in_home_team), away_team(in_away_team) {
+    : pitch(in_pitch), home_team(in_home_team), away_team(in_away_team) {
     attacking_team    = TeamType::Home;
     auto ball_texture = std::make_unique<Texture>();
     ball_texture->loadFromFile(ball_factory.getSpriteSheeet(in_ball_type));
@@ -25,9 +25,7 @@ Match::Match(UniquePtr<Pitch> in_pitch,
                                    home_team.getShadowTexture(),
                                    away_team.getShadowTexture(),
                                    std::move(ball_texture))) {
-        ball =
-            std::make_unique<Ball>((std::make_unique<BallSprite>(factory.getMatchTexture())),
-                                   (std::make_unique<BallShadowSprite>(factory.getMatchTexture())));
+        ball = std::make_unique<Ball>((std::make_unique<BallSprite>(factory.getMatchTexture())), (std::make_unique<BallShadowSprite>(factory.getMatchTexture())));
         ball->renderable.sprite->setPerspectivizable(true);
         ball->name = "Ball";
     } else {
@@ -92,33 +90,12 @@ Team& Match::getAwayTeam() {
 //
 //
 Pitch& Match::getPitch() const {
-    return *pitch.get();
+    return pitch;
 };
 //
 //
 //
-void Match::update() {
-    pitch->update();
-    ball->update();
-    home_team.update();
-    away_team.update();
-
-    // keep the ball in the pitch
-    auto pitchrect = pitch->getDimensions().bounds;
-
-    if (ball->movable.position.x < pitchrect.getPosition().x) {
-        ball->movable.velocity.x = -ball->movable.velocity.x;
-    }
-    if (ball->movable.position.x > pitchrect.getPosition().x + pitchrect.getSize().x) {
-        ball->movable.velocity.x = -ball->movable.velocity.x;
-    }
-
-    if (ball->movable.position.y < pitchrect.getPosition().y) {
-        ball->movable.velocity.y = -ball->movable.velocity.y;
-    }
-    if (ball->movable.position.y > pitchrect.getPosition().y + pitchrect.getSize().y) {
-        ball->movable.velocity.y = -ball->movable.velocity.y;
-    }
+void Match::step() {
 }
 //
 //

@@ -4,13 +4,6 @@ int Texture::ref = 0;
 //
 //
 //
-bool Texture::loadFromFile(const std::string& filename, const sf::IntRect& area) {
-    loaded_file = filename;
-    return sf::Texture::loadFromFile(filename, area);
-}
-//
-//
-//
 void Texture::swapColors(const std::vector<std::pair<sf::Color, sf::Color> >& in_palette) {
     sf::Image img = copyToImage();
 

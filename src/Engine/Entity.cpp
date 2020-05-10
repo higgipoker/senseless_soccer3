@@ -18,7 +18,8 @@ Entity::Entity(UniquePtr<Sprite> in_sprite, UniquePtr<Sprite> in_shadow)
 //
 //
 //
-void Entity::update() {
+void Entity::update(const float in_dt) {
+    movable.step(in_dt);
     renderable.sprite->setPosition(movable.position.x, movable.position.y);
     renderable.shadow->setPosition({renderable.sprite->getPosition().x + SHADOW_OFFSET, renderable.sprite->getPosition().y + SHADOW_OFFSET});
     renderable.sprite->animate();

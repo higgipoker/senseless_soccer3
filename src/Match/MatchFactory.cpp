@@ -39,8 +39,7 @@ bool MatchFactory::createMatchTexture(UniquePtr<Texture> team1_texture,
   match_texture.draw(s4);
   match_texture.display();
 
-  // once the textures have been copied to the match texture, we can get rid of
-  // them out of memory
+  // once the textures have been copied to the match texture, we can get rid of them out of memory
   team1_texture.reset();
   team2_texture.reset();
   shadow_texture1.reset();

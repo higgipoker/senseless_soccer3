@@ -1,32 +1,21 @@
 #pragma once
 #include <SFML/Graphics/Texture.hpp>
-#include <iostream>
 
+#include <iostream>
 #include <map>
 namespace Senseless {
-//
-//
-//
+// ***************************************************************************
+// *                                                                         *
+// * Texture                                                                 *
+// *                                                                         *
+// ***************************************************************************
 class Texture : public sf::Texture {
-   public:
-    //
-    //
-    //
-    virtual ~Texture() {
-        // std::cout << "Destruct Texture (" << loaded_file << "), " << --ref << " textures remaining"
-        //        << std::endl;
-    }
-    //
-    //
-    //
-    bool loadFromFile(const std::string& filename, const sf::IntRect& area = sf::IntRect()) override;
-    //
-    //
-    //
-    void swapColors(const std::vector<std::pair<sf::Color, sf::Color>>& in_palette);
+    public:
+        void swapColors     (const std::vector<std::pair<sf::Color, sf::Color>>& in_palette);
 
-   private:
-    std::string loaded_file;
-    static int ref;
+    private:
+        std::string loaded_file;
+        static int  ref;
 };
+// ***************************************************************************
 }  // namespace Senseless

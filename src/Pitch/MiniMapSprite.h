@@ -11,8 +11,8 @@ class MiniMapSprite : public Sprite {
     MiniMapSprite();
     sf::FloatRect getGlobalBounds() const override;
     void          init(const PitchDrawDimensions &in_dimensions);
-    void          updatePlayerPositions(const std::vector<Vector3> &in_positions,
-                                        const Vector3               in_ball_position);
+    void          update(const std::vector<Vector3> &in_positions,
+                                        const Vector3               in_ball_position, const sf::RectangleShape in_camera);
 
    protected:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
@@ -27,6 +27,7 @@ class MiniMapSprite : public Sprite {
     std::array<sf::Vertex, 2> halfwayline;
     sf::CircleShape           center_circle;
     sf::CircleShape           ball;
+    sf::RectangleShape        camera;
 
     // players
     std::array<sf::Vertex, 20>      players;

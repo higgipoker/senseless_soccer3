@@ -5,7 +5,6 @@
 #include <set>
 namespace Senseless {
 class Object;
-
 // ***************************************************************************
 // *                                                                         *
 // * ObjectPool                                                              *
@@ -14,6 +13,7 @@ class Object;
 class ObjectPool {
     public:
     static void add            (Object *obj);
+    static void rem            (Object *obj);
     static void sendMessage    (const MessageName &in_message);
     private:
     static std::set<Object*> objects;

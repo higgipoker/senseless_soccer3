@@ -7,12 +7,11 @@
 #include "Engine/SpriteAnimation.hpp"
 #include "Engine/Types.hpp"
 namespace Senseless {
-using Frames = std::vector<int>;
 static const int BALL_ANIM_FRAME_TIME = 6;
 //
 // spritesheet layout defines
 //
-inline const int DEFAULT_VERTICAL_OFFSET = 288;
+inline const int DEFAULT_VERTICAL_OFFSET = 224;
 inline const int BALL_FRAME_WIDTH = 32;
 inline const int BALL_FRAME_HEIGHT = 32;
 inline const int BALL_FRAMES = 7;
@@ -24,40 +23,49 @@ inline const int BALL_SHADOW_START_COL = 7;
 //
 // rolling animation
 //
-inline Frames roll{0, 1, 2, 3, 4, 5, 6};
+inline std::vector<int> roll{0, 1, 2, 3, 4, 5, 6};
 //
 // anim ids
 //
 enum {
   ID_ANIM_ROLL = 1,
 };
-//
-//
-//
+// ***************************************************************************
+// *                                                                         *
+// * BallSprite                                                              *
+// *                                                                         *
+// ***************************************************************************
 class BallSprite : public Sprite {
  public:
-  //
-  //
-  //
-  BallSprite(const sf::Texture& in_texture,
-             const SpriteSetDefinition in_def = SpriteSetDefinition{
-                 DEFAULT_VERTICAL_OFFSET, BALL_FRAME_WIDTH, BALL_FRAME_HEIGHT, BALL_FRAMES,
-                 BALL_START_ROW, BALL_START_COL, BALL_COLS});
 
- protected:
-  SpriteAnimation roll_animation{ID_ANIM_ROLL, BALL_ANIM_FRAME_TIME, roll};
+    BallSprite  (   const sf::Texture& in_texture,
+                    const SpriteSetDefinition in_def = SpriteSetDefinition{
+                    DEFAULT_VERTICAL_OFFSET,
+                    BALL_FRAME_WIDTH,
+                    BALL_FRAME_HEIGHT,
+                    BALL_FRAMES,
+                    BALL_START_ROW,
+                    BALL_START_COL,
+                    BALL_COLS});
+
+    protected:
+    SpriteAnimation roll_animation{ID_ANIM_ROLL, BALL_ANIM_FRAME_TIME, roll};
 };
-//
-//
-//
+// ***************************************************************************
+// *                                                                         *
+// * BallShadowSprite                                                        *
+// *                                                                         *
+// ***************************************************************************
 class BallShadowSprite : public BallSprite {
- public:
-  //
-  //
-  //
-  BallShadowSprite(const sf::Texture& in_texture,
-                   const SpriteSetDefinition in_def = SpriteSetDefinition{
-                       DEFAULT_VERTICAL_OFFSET, BALL_FRAME_WIDTH, BALL_FRAME_HEIGHT,
-                       BALL_SHADOW_FRAMES, BALL_START_ROW, BALL_SHADOW_START_COL, BALL_COLS});
+    public:
+    BallShadowSprite(   const sf::Texture& in_texture,
+                        const SpriteSetDefinition in_def = SpriteSetDefinition{
+                        DEFAULT_VERTICAL_OFFSET,
+                        BALL_FRAME_WIDTH,
+                        BALL_FRAME_HEIGHT,
+                        BALL_SHADOW_FRAMES,
+                        BALL_START_ROW,
+                        BALL_SHADOW_START_COL,
+                        BALL_COLS});
 };
 }  // namespace Senseless

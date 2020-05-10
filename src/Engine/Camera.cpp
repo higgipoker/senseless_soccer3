@@ -12,6 +12,7 @@ namespace Senseless {
 Camera::Camera(float in_viewport_width, float in_viewport_height)
     : Entity(std::make_unique<Sprite>(), std::make_unique<Sprite>()),
       view{{0, 0, in_viewport_width, in_viewport_height}} {
+    type = EntityType::Camera;
     movable.toggleGravity(false);
     movable.properties.co_friction = 0.01F;
     movable.speed = 5;
@@ -46,7 +47,8 @@ void Camera::follow(Entity &in_entity) {
 //
 //
 //
-void Camera::update() {
+void Camera::update(const float in_dt) {
+    Entity::update(in_dt);
     if (following) {
     }
 
@@ -94,5 +96,16 @@ void Camera::setHeight(const float in_height) {
 //
 void Camera::setWorldRect(sf::FloatRect in_rect) {
     world = in_rect;
+}
+//
+//
+//
+sf::RectangleShape Camera::getRect(){
+    sf::RectangleShape rect;
+
+    rect.setPosition({view.getCenter().x - view.getSize().x/2,view.getCenter().y - view.getSize().y/2 });
+    rect.setSize({view.getSize().x, view.getSize().y});
+
+    return rect;
 }
 }  // namespace Senseless

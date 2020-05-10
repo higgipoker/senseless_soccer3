@@ -22,43 +22,41 @@ enum class TeamType;
 // * Match                                                                   *
 // *                                                                         *
 // ***************************************************************************
-// *
-// *
-class Match  : public Object{
+class Match : public Object{
    public:
-    Match(UniquePtr<Pitch> in_pitch,
-          Team&            in_home_team,
-          Team&            in_away_team,
-          BallType         in_ball_type = BallType::Standard);
-    ~Match();
+    Match   (     Pitch&           in_pitch,
+                  Team&            in_home_team,
+                  Team&            in_away_team,
+                  BallType         in_ball_type = BallType::Standard);
+    ~Match  ();
 
-    void receive(const MessageName in_message) override;
+    // object message receiver
+    void                receive         (const MessageName in_message) override;
 
-    const sf::Texture&  getMatchTexture ();
-    void                update          ();
+    void                step            ();
+    const sf::Texture&  getMatchTexture ();    
     Ball&               getBall         ();
     Team&               getHomeTeam     ();
     Team&               getAwayTeam     ();
     Pitch&              getPitch        () const;
+    void                setAttackingTeam(   const TeamType in_which);
     void                initMatchTexture(   const Texture& team1_texture,
                                             const Texture& team2_texture,
                                             const Texture& ball_texture);
-    void                setAttackingTeam(   const TeamType in_which);
 
     Player* player_in_possession = nullptr;
 
    protected:
     MatchFactory     factory;
     BallFactory      ball_factory;
-    UniquePtr<Pitch> pitch;
+    Pitch&           pitch;
     UniquePtr<Ball>  ball;
     Team&            home_team;
     Team&            away_team;
     TeamType         attacking_team;
 
+    // debug checking for mem leakst
     static int instances;
 };
-// *
-// *
-// ***************************************************************************
+
 }  // namespace Senseless

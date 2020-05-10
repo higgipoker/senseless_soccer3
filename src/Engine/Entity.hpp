@@ -13,14 +13,14 @@ static const bool  DRAW_RAYS = false;
 // ------------------------
 // possible types of entity
 // ------------------------
-enum class EntityType { Unknown, Player, Ball };
+enum class EntityType { Unknown, Player, Ball, Camera, Pitch };
 class Entity {
    public:
     // -----------------------------------------------------------------------
     // functions
     // -----------------------------------------------------------------------
                     Entity      (UniquePtr<Sprite> in_sprite, UniquePtr<Sprite> in_shadow);
-    virtual void    update      ();
+    virtual void    update      (const float in_dt);
 
     // -----------------------------------------------------------------------
     // members

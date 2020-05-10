@@ -27,6 +27,7 @@ Brain::Brain(Player &in_player)
       support_state(*this),
       wait_state(*this),
       current_state(&idle_state) {
+    persist = true;
 }
 //
 //
