@@ -13,15 +13,17 @@ class TeamFactory : public BaseFactory {
   //
   //
   //
-  static Team makeDefaultHomeTeam(const std::string& in_name);
+  Team& makeDefaultHomeTeam(const std::string& in_name);
   //
   //
   //
-  static Team makeDefaultAwayTeam(const std::string& in_name);
+  Team& makeDefaultAwayTeam(const std::string& in_name);
   //
   //
   //
+  void reset();
  private:
   static KitFactory kit_factory;
+  std::vector<std::unique_ptr<Team>> teams;
 };
 }  // namespace Senseless

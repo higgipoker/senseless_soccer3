@@ -13,19 +13,19 @@ namespace Senseless {
 //
 //
 class MiniMap : public Entity {
- public:
-  void    update      (const float in_dt) override;
-  MiniMapSprite& getSprite() { return static_cast<MiniMapSprite&>(*renderable.sprite); }
+   public:
+    void           update(const float in_dt) override;
+    MiniMapSprite& getSprite();
 
- private:
-  MiniMap(Team& in_home_team, Team& in_away_team, Ball& in_ball, Pitch& in_pitch, Camera& in_camera);
-  Team& home_team;
-  Team& away_team;
-  Ball& ball;
-  Pitch& pitch;
-  Camera& camera;
+   private:
+    MiniMap(Team& in_home_team, Team& in_away_team, Ball& in_ball, Pitch& in_pitch, Camera& in_camera);
+    Team&   home_team;
+    Team&   away_team;
+    Ball&   ball;
+    Pitch&  pitch;
+    Camera& camera;
 
- public:
-  friend class EntityFactory;
+   public:
+    friend class EntityFactory;
 };
 }  // namespace Senseless

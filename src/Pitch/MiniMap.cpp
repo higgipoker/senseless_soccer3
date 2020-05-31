@@ -26,4 +26,10 @@ void MiniMap::update(const float in_dt) {
     cam.setPosition(pitchpos.x, pitchpos.y);
     getSprite().update(positions, pitch.toPitchSpace(ball.movable.position), cam);
 }
+//
+//
+//
+MiniMapSprite& MiniMap::getSprite() {
+    return static_cast<MiniMapSprite&>(*renderable.sprite);
+}
 }  // namespace Senseless

@@ -5,6 +5,7 @@
 #include "Player/Player.hpp"
 #include "Match/Match.hpp"
 #include "Engine/Collider.hpp"
+#include "Game/Game.hpp"
 
 namespace Senseless {
 BrainDribble::BrainDribble(Brain& in_brain) : BrainState(in_brain), pattern(&pattern_random) {
@@ -21,7 +22,7 @@ void BrainDribble::start() {
 }
 
 void BrainDribble::step() {
-    const auto& pitch = brain.player.match->getPitch();
+    const auto& pitch = *brain.player.gamestate->pitch;
     // just keep inside the pitch for now
     Vector3 topleft{pitch.getPointOfInterest(PitchPointsOfInterest::SideWest).x, pitch.getPointOfInterest(PitchPointsOfInterest::Bye, PitchPointOfInterestSide::North).y};
     Vector3 size{pitch.getPointOfInterest(PitchPointsOfInterest::SideEast).x - pitch.getPointOfInterest(PitchPointsOfInterest::SideWest).x,

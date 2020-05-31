@@ -46,9 +46,8 @@ class Player : public Entity, public Controllable {
   Compass   getDirection            ();
   Brain&    getBrain                ();
 
-  Team*                         my_team= nullptr;;
-  Team*                         other_team= nullptr;;
-  Match*                        match = nullptr;
+  Team*                         my_team= nullptr;
+  Team*                         other_team= nullptr;
 
  protected:
   // -----------------------------------------------------------------------

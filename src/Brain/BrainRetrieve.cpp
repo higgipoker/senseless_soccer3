@@ -5,6 +5,7 @@
 #include "Ball/Ball.hpp"
 #include "Match/Match.hpp"
 #include "Player/Player.hpp"
+#include "Game/Game.hpp"
 //
 //
 //
@@ -20,7 +21,7 @@ BrainRetrieve::BrainRetrieve(Brain& in_brain) : BrainState(in_brain) {
 //
 //
 void BrainRetrieve::start() {
-    brain.locomotion.pursue(brain.player.match->getBall().movable);
+    brain.locomotion.pursue(brain.player.gamestate->ball->movable);
 }
 //
 //

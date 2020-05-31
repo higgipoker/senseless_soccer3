@@ -6,8 +6,8 @@
 //
 namespace Senseless {
 class Pitch : public Entity {
- public:  
-  void update();
+ public:
+  void update(const float in_dt) override;
   Vector3 toScreenSpace(const Vector3 &in_vector) const;
   Vector3 toPitchSpace(const Vector3 &in_vector) const;
   const PitchDrawDimensions &getDimensions() const { return draw_dimensions; }  

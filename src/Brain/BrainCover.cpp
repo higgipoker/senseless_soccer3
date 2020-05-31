@@ -5,6 +5,7 @@
 #include "Match/Match.hpp"
 #include "Player/Player.hpp"
 #include "Team/Team.hpp"
+#include "Game/Game.hpp"
 
 namespace Senseless {
 //
@@ -16,7 +17,7 @@ BrainCover::BrainCover(Brain& in_brain) : BrainState(in_brain) { name = "Cover";
 //
 void BrainCover::start() {
   if (auto position = brain.player.playing_position.get()) {
-    auto target = position->getTargetPosition(Situation::Playing, brain.player.match->getBall());
+    auto target = position->getTargetPosition(Situation::Playing, *brain.player.gamestate->ball);
     brain.locomotion.seek(target);
     last_target = target;
   }
@@ -26,7 +27,7 @@ void BrainCover::start() {
 //
 void BrainCover::step() {
   if (auto position = brain.player.playing_position.get()) {
-    auto target = position->getTargetPosition(Situation::Playing, brain.player.match->getBall());
+      auto target = position->getTargetPosition(Situation::Playing, *brain.player.gamestate->ball);
     auto dist = (brain.player.movable.position - target).magnitude2d();
     if (Math::greater_than(dist, 1) &&
         Math::greater_than((target - last_target).magnitude2d(), 1)) {

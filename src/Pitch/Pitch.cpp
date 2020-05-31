@@ -207,7 +207,7 @@ void Pitch::init_south_arc() {
 //
 //
 //
-void Pitch::update() {
+void Pitch::update(const float in_dt) {
   static_cast<PitchSprite*>(renderable.sprite.get())->setPosition(movable.position.x, movable.position.y);
 }
 //

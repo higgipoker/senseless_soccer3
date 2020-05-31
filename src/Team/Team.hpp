@@ -5,10 +5,11 @@
 //
 #include "Player/PlayerFactory.hpp"
 //
+#include <memory>
+
 #include "Engine/InputDevice.hpp"
 #include "Engine/Sprite.hpp"
 #include "Engine/Texture.hpp"
-#include <memory>
 //
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Texture.hpp>
@@ -29,49 +30,42 @@ class Player;
 //
 //
 //
-class Team {
+class Team : public Entity {
  public:
-                        Team                    (const std::string& in_name, const TeamStrip in_home_or_away, const Kit& in_kit);
-                        ~Team                   ();
-  void                  setAttackingGoal        (Direction in_dir);
-  void                  update                  ();
-  void                  addDefaultPlayers       (Team &in_other_team);
-  void                  addPlayer               (Player *in_player);
-  bool                  hasPlayers              () { return !players.empty(); }
-  void                  setMatch                (Match& in_match);
-  void                  setAttackingState       (const AttackingState in_state);
-  void                  goToSetPiecePositions   (const Situation in_situation, const Direction in_pitch_side = Direction::West);
-  Player&               getPlayer               (const size_t in_which);
-  size_t                numberPlayers           () { return players.size(); }
-  TeamStrip              getTeamType             () { return home_or_away; }
-  Direction             getAttackingGoal        () const;
-  Direction             getDefendingGoal        () const;
-  AttackingState        getAttackingState       () const;
-  std::unique_ptr<Texture>    getSpriteTexture();
-  std::unique_ptr<Texture>    getShadowTexture        ();
-  std::vector<Vector3>  getPlayerPositions      ();
+  Team(const std::string& in_name);
+  ~Team();
+  void setAttackingGoal(Direction in_dir);
+  void update(const float in_dt) override;
+  void addDefaultPlayers(Team& in_other_team);
+  void addPlayer(Player* in_player);
+  bool hasPlayers() { return !players.empty(); }
+  void setAttackingState(const AttackingState in_state);
+  void goToSetPiecePositions(const Situation in_situation,
+                             const Direction in_pitch_side = Direction::West);
+  Player& getPlayer(const size_t in_which);
+  size_t numberPlayers() { return players.size(); }
+  Direction getAttackingGoal() const;
+  Direction getDefendingGoal() const;
+  AttackingState getAttackingState() const;
+  std::vector<Vector3> getPlayerPositions();
 
-  Gameplan      gameplan;
-  Sprite        sprite;
-  std::string   name;
-  Player*       closest_to_ball = nullptr;
+  Gameplan gameplan;
+  Sprite sprite;
+  std::string name;
+  Player* closest_to_ball = nullptr;
 
  protected:
-  Match*                            match = nullptr;
-  AttackingState                    attacking_state = AttackingState::Attacking;
-  TeamStrip                          home_or_away = TeamStrip::Home;
-  Kit                               kit;
-  std::vector<Player*>              players;
-  int                               loose_ball_ticks = 60;
-  Vector3                           last_ball_position;  
-  Direction                         attacking_goal = Direction::South;
-  Direction                         defending_goal = Direction::North;
-  std::unique_ptr<Texture>                sprite_texture = std::make_unique<Texture>();
-  std::unique_ptr<Texture>                shadow_texture = std::make_unique<Texture>();
+  AttackingState attacking_state = AttackingState::Attacking;
+  TeamStrip home_or_away = TeamStrip::Home;
+  std::vector<Player*> players;
+  int loose_ball_ticks = 60;
+  Vector3 last_ball_position;
+  Direction attacking_goal = Direction::South;
+  Direction defending_goal = Direction::North;
 
   // debugs
-  sf::RectangleShape    defensive_line;
-  static int            instances;
+  sf::RectangleShape defensive_line;
+  static int instances;
 
  public:
   friend class Player;

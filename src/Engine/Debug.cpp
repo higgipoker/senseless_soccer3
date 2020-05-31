@@ -227,7 +227,7 @@ void Debug::draw_team_menu(int which_team) {
     int * act_team_positioning = which_team == 0 ? &home_team_positioning : &away_team_positioning;
     int * act_pitch_side       = which_team == 0 ? &home_pitch_side : &away_pitch_side;
     Team &act_team =
-        which_team == 0 ? gamestate->match->getHomeTeam() : gamestate->match->getAwayTeam();
+        which_team == 0 ? *gamestate->home_team : *gamestate->away_team;
 
     int initial_positioning = *act_team_positioning;
     int initial_pitch_side  = *act_pitch_side;

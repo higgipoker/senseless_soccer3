@@ -56,7 +56,7 @@ class BallSprite : public Sprite {
 // * BallShadowSprite                                                        *
 // *                                                                         *
 // ***************************************************************************
-class BallShadowSprite : public BallSprite {
+class BallShadowSprite : public Sprite {
     public:
     BallShadowSprite(   const sf::Texture& in_texture,
                         const SpriteSetDefinition in_def = SpriteSetDefinition{

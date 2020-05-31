@@ -4,6 +4,7 @@
 //
 #include "Match/Match.hpp"
 #include "Player/Player.hpp"
+#include "Game/Game.hpp"
 //
 #include "Engine/Math.hpp"
 //
@@ -16,12 +17,9 @@ namespace Senseless {
 //
 int Team::instances = 0;
 //
-Team::Team(const std::string &in_name, const TeamStrip in_home_or_away, const Kit &in_kit)
-    : name(in_name), home_or_away(in_home_or_away), kit(in_kit) {
-    sprite_texture->loadFromFile(PlayerFactory::getSpriteSheeet(kit.type));
-    sprite_texture->swapColors(kit.palette);
-    shadow_texture->loadFromFile(PlayerFactory::getShadowSheet());
-
+Team::Team(const std::string &in_name)
+    : Entity(std::make_unique<Sprite>(), std::make_unique<Sprite>()),
+      name(in_name) {
     ++instances;
     // std::cout << instances << " teams" << std::endl;
 }
@@ -31,20 +29,6 @@ Team::Team(const std::string &in_name, const TeamStrip in_home_or_away, const Ki
 Team::~Team() {
     --instances;
     // std::cout << instances << " teams" << std::endl;
-}
-//
-//
-//
-std::unique_ptr<Texture> Team::getSpriteTexture() {
-    assert(sprite_texture != nullptr);
-    return std::move(sprite_texture);
-}
-//
-//
-//
-std::unique_ptr<Texture> Team::getShadowTexture() {
-    assert(shadow_texture != nullptr);
-    return std::move(shadow_texture);
 }
 //
 //
@@ -60,7 +44,7 @@ void Team::setAttackingGoal(Direction in_dir) {
 //
 //
 //
-void Team::update() {
+void Team::update(const float in_dt) {
     // update players
     std::sort(std::begin(players),
               std::end(players),
@@ -73,14 +57,14 @@ void Team::update() {
         }
     }  
     auto dist =
-        (last_ball_position.magnitude2d() - match->getBall().movable.position.magnitude2d());
+        (last_ball_position.magnitude2d() - gamestate->ball->movable.position.magnitude2d());
     if (Math::greater_than(fabs(dist), 50)) {
-        gameplan.updateDefensiveLine(match->getPitch(), match->getBall(), attacking_goal);
-        last_ball_position = match->getBall().movable.position;
+        gameplan.updateDefensiveLine(*gamestate->pitch, *gamestate->ball, attacking_goal);
+        last_ball_position = gamestate->ball->movable.position;
     }
 
     defensive_line.setPosition(
-        match->getPitch().toScreenSpace(gameplan.getDefensiveLine()).toSfVector());
+        gamestate->pitch->toScreenSpace(gameplan.getDefensiveLine()).toSfVector());
     sprite.debug_shapes.clear();
     sprite.debug_shapes.push_back(&defensive_line);
     if (this->attacking_goal == Direction::South) {
@@ -112,16 +96,6 @@ Player &Team::getPlayer(const size_t in_which) {
 //
 //
 //
-void Team::setMatch(Match &in_match) {
-    match = &in_match;
-
-    // debugs
-    defensive_line.setSize({match->getPitch().getDimensions().bounds.getSize().x, 6});
-    defensive_line.setFillColor({255, 0, 0, 50});
-}
-//
-//
-//
 Direction Team::getAttackingGoal() const {
     return attacking_goal;
 }
@@ -137,7 +111,7 @@ Direction Team::getDefendingGoal() const {
 std::vector<Vector3> Team::getPlayerPositions() {
     std::vector<Vector3> positions;
     for (auto &p : players) {
-        positions.push_back((p->movable.position - match->getPitch().getDimensions().origin));
+        positions.push_back((p->movable.position - gamestate->pitch->getDimensions().origin));
     }
     return positions;
 }

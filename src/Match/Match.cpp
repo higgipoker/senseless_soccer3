@@ -1,8 +1,9 @@
 #include "Match.hpp"
 //
 #include "Ball/BallSprite.hpp"
-#include "Team/Team.hpp"
 #include "Engine/EntityFactory.h"
+#include "Game/Game.hpp"
+#include "Team/Team.hpp"
 //
 #include <algorithm>
 #include <cassert>
@@ -13,116 +14,96 @@ int Match::instances = 0;
 //
 //
 //
-Match::Match(Pitch&           in_pitch,
-             Team&            in_home_team,
-             Team&            in_away_team,
-             BallType         in_ball_type)
-    : pitch(in_pitch), home_team(in_home_team), away_team(in_away_team) {
-    attacking_team    = TeamStrip::Home;
-    auto ball_texture = std::make_unique<Texture>();
-    ball_texture->loadFromFile(ball_factory.getSpriteSheeet(in_ball_type));
+Match::Match(const Kit &in_home_kit, const Kit &in_away_kit)
+    : Entity(std::make_unique<Sprite>(), std::make_unique<Sprite>()) {
+  home_team = std::make_unique<Team>("Home Team");
+  away_team = std::make_unique<Team>("Away Team");
 
-    if (factory.createMatchTexture(home_team.getSpriteTexture(),
-                                   away_team.getSpriteTexture(),
-                                   home_team.getShadowTexture(),
-                                   away_team.getShadowTexture(),
-                                   std::move(ball_texture))) {               
-    } else {
-        std::cout << "create match texture failed" << std::endl;
-    }
+  // texture for home team
+  Texture home_texture;
+  home_texture.loadFromFile(PlayerFactory::getSpriteSheeet(in_home_kit.type));
+  home_texture.swapColors(in_home_kit.palette);
 
-    home_team.setMatch(*this);
-    away_team.setMatch(*this);
+  // texture for away team
+  Texture away_texture;
+  away_texture.loadFromFile(PlayerFactory::getSpriteSheeet(in_away_kit.type));
+  away_texture.swapColors(in_away_kit.palette);
 
-    home_team.setAttackingGoal(Direction::North);
-    away_team.setAttackingGoal(Direction::South);
+  // shadow texture
+  Texture shadow_texture;
+  shadow_texture.loadFromFile(PlayerFactory::getShadowSheet());
 
-    home_team.gameplan.defensive_line_height = DefensiveLineType::Normal;
-    away_team.gameplan.defensive_line_height = DefensiveLineType::Normal;
+  // ball texture
+  BallFactory ball_factory;
+  Texture ball_texture;
+  ball_texture.loadFromFile(ball_factory.getSpriteSheeet(BallType::Standard));
 
-    home_team.gameplan.defensive_width_type = DefensivewidthType::Normal;
-    away_team.gameplan.defensive_width_type = DefensivewidthType::Normal;
+  auto width = std::max(
+      home_texture.getSize().x,
+      std::max(away_texture.getSize().x,
+               std::max(shadow_texture.getSize().x, ball_texture.getSize().x)));
 
-    home_team.setAttackingState(AttackingState::Attacking);
-    away_team.setAttackingState(AttackingState::Defending);
+  auto height = home_texture.getSize().y + away_texture.getSize().y +
+                shadow_texture.getSize().y + ball_texture.getSize().y;
 
-    send(PlayerReachedKickoffPosition);
+  match_texture = std::make_unique<sf::RenderTexture>();
+  if (!match_texture->create(width, height)) {
+    std::cout << "Could not create tecture with dimensions " << width << "x"
+              << height << std::endl;
+    std::cout << "Max texture dimensions: " << sf::Texture::getMaximumSize()
+              << " x " << sf::Texture::getMaximumSize() << std::endl;
+  }
 
-    ++instances;
-    // std::cout << instances << " matches" << std::endl;
+  sf::Sprite s1(home_texture);
+  sf::Sprite s2(away_texture);
+  sf::Sprite s3(shadow_texture);
+  sf::Sprite s4(ball_texture);
+  s2.move(0, s1.getLocalBounds().height);
+  s3.move(0, s2.getGlobalBounds().top + s2.getLocalBounds().height);
+  s4.move(0, s3.getGlobalBounds().top + s3.getLocalBounds().height);
+
+  match_texture->clear({0, 0, 0, 0});
+  match_texture->draw(s1);
+  match_texture->draw(s2);
+  match_texture->draw(s3);
+  match_texture->draw(s4);
+  match_texture->display();
+
+  ++instances;
+  // std::cout << instances << " matches" << std::endl;
 }
 //
 //
 //
 Match::~Match() {
-    --instances;
-    // std::cout << instances << " matches" << std::endl;
+  --instances;
+  // std::cout << instances << " matches" << std::endl;
 }
 //
 //
 //
-void Match::receive(const MessageName in_message) {
-    switch (in_message) {
-        case PlayerReachedKickoffPosition:
-            break;
-    }
+const sf::Texture &Match::getMatchTexture() {
+  return match_texture->getTexture();
 }
 //
 //
 //
-const sf::Texture& Match::getMatchTexture() {
-    return factory.getMatchTexture();
-}
-//
-//
-//
-Team& Match::getHomeTeam() {
-    return home_team;
-}
-//
-//
-//
-Team& Match::getAwayTeam() {
-    return away_team;
-}
-//
-//
-//
-Pitch& Match::getPitch() const {
-    return pitch;
-};
-//
-//
-//
-void Match::step() {
-}
-//
-//
-//
-void Match::setBall(Ball &in_ball){
-    ball = &in_ball;
-}
-//
-//
-//
-Ball& Match::getBall() {
-    assert(ball);
-    return *ball;
-}
+void Match::step() {}
+
 //
 //
 //
 void Match::setAttackingTeam(const TeamStrip in_which) {
-    attacking_team = in_which;
-    switch (attacking_team) {
-        case TeamStrip::Home:
-            home_team.setAttackingState(AttackingState::Attacking);
-            away_team.setAttackingState(AttackingState::Defending);
-            break;
-        case TeamStrip::Away:
-            home_team.setAttackingState(AttackingState::Defending);
-            away_team.setAttackingState(AttackingState::Attacking);
-            break;
-    }
+  auto attacking_team = in_which;
+  switch (attacking_team) {
+    case TeamStrip::Home:
+      gamestate->home_team->setAttackingState(AttackingState::Attacking);
+      gamestate->away_team->setAttackingState(AttackingState::Defending);
+      break;
+    case TeamStrip::Away:
+      gamestate->home_team->setAttackingState(AttackingState::Defending);
+      gamestate->away_team->setAttackingState(AttackingState::Attacking);
+      break;
+  }
 }
 }  // namespace Senseless

@@ -4,10 +4,14 @@
 #include "Ball/Ball.hpp"
 #include "Pitch/Pitch.hpp"
 //
+#include <memory>
+
+#include "Team/KitFactory.hpp"
 #include "Ball/BallFactory.hpp"
+#include "Engine/Entity.hpp"
 #include "Engine/Sprite.hpp"
 #include "Engine/Texture.hpp"
-#include <memory>
+#include "Team/Team.hpp"
 #include "Game/Object.h"
 //
 #include <SFML/Graphics/RenderTexture.hpp>
@@ -22,42 +26,27 @@ enum class TeamStrip;
 // * Match                                                                   *
 // *                                                                         *
 // ***************************************************************************
-class Match : public Object{
-   public:
-    Match   (     Pitch&           in_pitch,
-                  Team&            in_home_team,
-                  Team&            in_away_team,
-                  BallType         in_ball_type = BallType::Standard);
-    ~Match  ();
+class Match : public Entity {
+ public:
+  Match(const Kit &in_home_kit,
+        const Kit &in_away_kit);
+  ~Match();
 
-    // object message receiver
-    void                receive         (const MessageName in_message) override;
+  void step();
+  const sf::Texture& getMatchTexture();
+  Team& getHomeTeam(){return *home_team;}
+  Team& getAwayTeam(){return *away_team;}
+  void setAttackingTeam(const TeamStrip in_which);
 
-    void                step            ();
-    const sf::Texture&  getMatchTexture ();    
-    Ball&               getBall         ();
-    Team&               getHomeTeam     ();
-    Team&               getAwayTeam     ();
-    Pitch&              getPitch        () const;
-    void                setAttackingTeam(   const TeamStrip in_which);
-    void                initMatchTexture(   const Texture& team1_texture,
-                                            const Texture& team2_texture,
-                                            const Texture& ball_texture);
-    void                setBall         (Ball &in_ball);
+  Player* player_in_possession = nullptr;
 
-    Player* player_in_possession = nullptr;
+ protected:
+  std::unique_ptr<Team> home_team;
+  std::unique_ptr<Team> away_team;
+  std::unique_ptr<sf::RenderTexture> match_texture;
 
-   protected:
-    MatchFactory     factory;
-    BallFactory      ball_factory;
-    Pitch&           pitch;    
-    Team&            home_team;
-    Team&            away_team;
-    Ball*            ball = nullptr;
-    TeamStrip        attacking_team;
-
-    // debug checking for mem leakst
-    static int instances;
+  // debug checking for mem leakst
+  static int instances;
 };
 
 }  // namespace Senseless

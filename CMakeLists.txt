@@ -117,8 +117,7 @@ add_executable(senseless_soccer3
     src/Team/PositionWideMidfielder.cpp
     src/Team/PositionForward.cpp
     src/Team/PositionCenterForward.cpp
-    src/Team/Gameplan.cpp
-    src/Team/TeamFactory.cpp
+    src/Team/Gameplan.cpp    
     src/Team/KitFactory.cpp
     src/Controls/Joysticker.cpp
     src/imgui/imgui.cpp

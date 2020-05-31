@@ -17,7 +17,7 @@ Player& EntityFactory::newPlayer(const sf::Texture& match_texture, const TeamStr
 //
 //
 Ball& EntityFactory::newBall(const sf::Texture& match_texture) {
-    auto shadow = std::make_unique<BallSprite>(match_texture);
+    auto shadow = std::make_unique<BallShadowSprite>(match_texture);
     auto sprite = std::make_unique<BallSprite>(match_texture);
     auto ball   = std::unique_ptr<Ball>(new Ball(std::move(sprite), std::move(shadow)));
     entities.emplace_back(std::move(ball));
