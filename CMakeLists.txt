@@ -40,11 +40,12 @@ endif (UNIX)
 # build files
 # --------------------------------------------------
 add_executable(senseless_soccer3
-    src/Main/Main.cpp
+    src/Main/Main.cpp    
     src/Engine/Vector.cpp
     src/Engine/Folder.cpp
     src/Engine/Window.cpp
     src/Engine/Movable.cpp
+    src/Engine/Renderable.cpp
     src/Engine/GameEngine.cpp
     src/Engine/Sprite.cpp
     src/Engine/SpriteAnimation.cpp
@@ -66,6 +67,7 @@ add_executable(senseless_soccer3
     src/Engine/Texture.cpp
     src/Engine/BaseFactory.cpp
     src/Engine/Picker.cpp
+    src/Engine/EntityFactory.cpp
     src/Game/Game.cpp
     src/Game/Object.cpp
     src/Game/ObjectPool.cpp
@@ -105,6 +107,7 @@ add_executable(senseless_soccer3
     src/Match/MatchFactory.cpp
     src/Match/MatchEngine.cpp
     src/Team/Team.cpp
+    src/Team/PositionFactory.cpp
     src/Team/PlayingPosition.cpp
     src/Team/PositionDefender.cpp
     src/Team/PositionCenterBack.cpp
