@@ -9,14 +9,16 @@ namespace Senseless {
 //
 //
 //
-Ball::Ball(std::unique_ptr<Sprite> in_sprite, std::unique_ptr<Sprite> in_shadow)
-    : Entity(std::move(in_sprite), std::move(in_shadow)) {
+Ball::Ball(std::unique_ptr<Sprite> in_sprite, std::unique_ptr<Sprite> in_shadow) : Entity(std::move(in_sprite), std::move(in_shadow)) {
+    radius = 3.F;
     collidable.setRadius(radius);
     movable.properties.co_friction   = 0.01F;
     movable.properties.co_bounciness = 0.8F;
     movable.properties.cross_section = radius * 2;
     renderable.sprite->setBasePerspectiveWidth(radius * 2);
     renderable.shadow->setBasePerspectiveWidth(radius * 2);
+
+    name = "ball";
 }
 //
 //
@@ -37,7 +39,7 @@ void Ball::update(const float in_dt) {
     // sprite only animates if moving
     if (Math::greater_than(movable.velocity.magnitude(), 0)) {
         // sprite rotates in direction of movement (unless spin...later!!)
-        const float offset = 180;  // according to the spritesheet image
+        const float offset = 180;  // TODO according to the spritesheet image
         renderable.sprite->setRotation(movable.velocity.angle() + offset);
         renderable.sprite->startAnimating();
     } else {

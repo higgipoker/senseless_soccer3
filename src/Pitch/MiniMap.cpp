@@ -13,6 +13,7 @@ MiniMap::MiniMap(Team &in_home_team, Team &in_away_team, Ball &in_ball, Pitch &i
       pitch(in_pitch),
       camera(in_camera) {
     getSprite().init(pitch.getDrawDimensions());
+    name = "mini map";
 }
 //
 //

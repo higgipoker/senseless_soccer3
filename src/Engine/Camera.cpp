@@ -80,8 +80,14 @@ void Camera::update(const float in_dt) {
 //
 //
 //
-sf::View &Camera::getview() {
+sf::View &Camera::getView() {
     return view;
+}
+//
+//
+//
+sf::View &Camera::getHudView(){
+    return hud_view;
 }
 //
 //

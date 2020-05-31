@@ -41,8 +41,6 @@ void BrainDribble::step() {
 
     static const float thresshold = 10;
 
-    std::cout << ((player_position - west).magnitude2d()) << std::endl;
-
     // getting too close to north
     if ((player_position - north).magnitude2d() < thresshold) {
         if (Vector3::isMovingTowards(player_position, player_velocity, north)) {
@@ -67,7 +65,6 @@ void BrainDribble::step() {
     // getting too close to west
     if ((player_position - west).magnitude2d() < thresshold) {
         if (Vector3::isMovingTowards(player_position, player_velocity, west)) {
-            std::cout << "moving west" << std::endl;
             turn();
         }
     }
@@ -93,7 +90,10 @@ bool BrainDribble::stateOver() {
 void BrainDribble::turn() {
     turning         = true;
     Vector3 rotated = brain.player.movable.velocity;
+    int i = rand()%3;
+    while(i--){
     rotated.rotate(-45);
+    }
     turn_target_direction = Compass(rotated).direction;
 }
 

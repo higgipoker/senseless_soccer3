@@ -26,7 +26,6 @@ void Picker::update() {
         worldPos.y -= grab_offset.y;
         grabbed->movable.setPosition(worldPos);
         last_dragged_position = worldPos;
-        std::cout << worldPos.x << ", " << worldPos.y << std::endl;
     }
 }
 //

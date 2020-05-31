@@ -14,8 +14,13 @@ namespace Senseless {
 //
 //
 std::map<brain_state, std::string> Player::brainstates = {
-    {brain_state::Idle, "Idle"},       {brain_state::Cover, "Cover"}, {brain_state::Support, "Support"}, {brain_state::Retrieve, "Retrieve"},
-    {brain_state::Dribble, "Dribble"}, {brain_state::Pass, "Pass"},   {brain_state::Wait, "Wait"},
+    {brain_state::Idle, "Idle"},
+    {brain_state::Cover, "Cover"},
+    {brain_state::Support, "Support"},
+    {brain_state::Retrieve, "Retrieve"},
+    {brain_state::Dribble, "Dribble"},
+    {brain_state::Pass, "Pass"},
+    {brain_state::Wait, "Wait"},
 };
 //
 //
@@ -34,8 +39,8 @@ Player::Player(std::unique_ptr<PlayerSprite> in_sprite, std::unique_ptr<PlayerSp
       player_sprite(static_cast<PlayerSprite &>(*renderable.sprite)),
       player_shadow(static_cast<PlayerSprite &>(*renderable.shadow)) {
     type = EntityType::Player;
-    feet.setRadius(1.0F);
-    control.setRadius(12);
+    feet.setRadius(4.0F);
+    control.setRadius(14);
     speed         = RunningSpeed::Fast;
     current_speed = run_speeds[speed];
 
@@ -191,9 +196,7 @@ void Player::kick(const float in_force) {
 //
 //
 //
-inline float MIN_KICK_FORCE = 3;
-inline float MAX_KICK_FORCE = 100;
-void         Player::shortPass(Player &in_receiver) {
+void Player::shortPass(Player &in_receiver) {
     float distance     = Vector3::distance_to(movable.position, in_receiver.movable.position);
     float force_needed = 2;
 

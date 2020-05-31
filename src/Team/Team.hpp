@@ -42,12 +42,13 @@ class Team : public Entity {
   void setAttackingState(const AttackingState in_state);
   void goToSetPiecePositions(const Situation in_situation,
                              const Direction in_pitch_side = Direction::West);
-  Player& getPlayer(const size_t in_which);
   size_t numberPlayers() { return players.size(); }
   Direction getAttackingGoal() const;
   Direction getDefendingGoal() const;
   AttackingState getAttackingState() const;
   std::vector<Vector3> getPlayerPositions();
+
+  std::vector<Player*> players;
 
   Gameplan gameplan;
   Sprite sprite;
@@ -57,7 +58,6 @@ class Team : public Entity {
  protected:
   AttackingState attacking_state = AttackingState::Attacking;
   TeamStrip home_or_away = TeamStrip::Home;
-  std::vector<Player*> players;
   int loose_ball_ticks = 60;
   Vector3 last_ball_position;
   Direction attacking_goal = Direction::South;

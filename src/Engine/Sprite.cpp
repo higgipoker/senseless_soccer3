@@ -52,8 +52,7 @@ void Sprite::init(const SpriteSetDefinition &in_def) {
     setFrame(current_frame);
 
     // default set origin to center
-    setOrigin(static_cast<float>(in_def.frame_width / 2),
-              static_cast<float>(in_def.frame_height / 2));
+    setOrigin(static_cast<float>(in_def.frame_width / 2), static_cast<float>(in_def.frame_height / 2));
 
     // for perspective scaling
     perspective_width = getLocalBounds().width;

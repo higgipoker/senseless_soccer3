@@ -12,6 +12,7 @@ namespace Senseless {
 // ***************************************************************************
 class Ball : public Entity {
     public:
+     Ball (std::unique_ptr<Sprite> in_sprite, std::unique_ptr<Sprite> in_shadow);
     // -----------------------------------------------------------------------
     // functions
     // -----------------------------------------------------------------------        
@@ -31,15 +32,7 @@ class Ball : public Entity {
     float             distance = 0;
     float             last_force = 0;
     protected:
-    float radius = 3;
-
-   // -----------------------------------------------------------------------
-   // force all entities to be acquired through the factory
-   // -----------------------------------------------------------------------
-   protected:
-    Ball (std::unique_ptr<Sprite> in_sprite, std::unique_ptr<Sprite> in_shadow);
-   public:
-    friend class EntityFactory;
+    float radius = 2.5F;
 };
 // *
 // *

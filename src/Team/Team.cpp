@@ -89,13 +89,6 @@ void Team::addPlayer(Player* in_player) {
 //
 //
 //
-Player &Team::getPlayer(const size_t in_which) {
-    assert(in_which < players.size());
-    return *players.at(in_which);
-}
-//
-//
-//
 Direction Team::getAttackingGoal() const {
     return attacking_goal;
 }

@@ -72,7 +72,6 @@ class GameEngine {
   Camera &camera;
   Debug debug_gui;
   Picker picker;
-  sf::View hud_view;
   std::vector<RenderLayer> render_layers;
   std::vector<Entity *> entities;
   std::vector<Controllable *> controllables;

@@ -7,19 +7,19 @@
 namespace Senseless {
 class Pitch : public Entity {
  public:
+  Pitch(const std::string &in_grass_texture);
   void update(const float in_dt) override;
   Vector3 toScreenSpace(const Vector3 &in_vector) const;
   Vector3 toPitchSpace(const Vector3 &in_vector) const;
-  const PitchDrawDimensions &getDimensions() const { return draw_dimensions; }  
-  Vector3 getPointOfInterest(
-      const PitchPointsOfInterest in_which,
-      const PitchPointOfInterestSide in_side = PitchPointOfInterestSide::South) const;
-  PitchDrawDimensions &getDrawDimensions(){return draw_dimensions;};
+  const PitchDrawDimensions &getDimensions() const { return draw_dimensions; }
+  Vector3 getPointOfInterest(const PitchPointsOfInterest in_which,
+                             const PitchPointOfInterestSide in_side =
+                                 PitchPointOfInterestSide::South) const;
+  PitchDrawDimensions &getDrawDimensions() { return draw_dimensions; };
 
  private:
-  Pitch(const std::string &in_grass_texture);
   PitchDrawDimensions draw_dimensions;
-  PitchDimensions dimensions;  
+  PitchDimensions dimensions;
 
   void init_bounds();
   void init_6_yard_boxes();
@@ -29,7 +29,5 @@ class Pitch : public Entity {
   void init_penalty_spots();
   void init_south_arc();
   void init_halfway_line();
- public:
-  friend class EntityFactory;
 };
 }  // namespace Senseless
