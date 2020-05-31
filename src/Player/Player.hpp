@@ -12,7 +12,7 @@
 #include "Engine/Entity.hpp"
 #include "Engine/ProgressBar.hpp"
 #include "Engine/TriangleShape.hpp"
-#include "Engine/Types.hpp"
+#include <memory>
 #include <SFML/Graphics/CircleShape.hpp>
 #include <map>
 
@@ -29,8 +29,8 @@ class Player : public Entity, public Controllable {
   // -----------------------------------------------------------------------
   // functions
   // -----------------------------------------------------------------------
-            Player                  (Match &in_match, const Team &in_my_team, const Team &in_other_team, UniquePtr<PlayerSprite> in_sprite, UniquePtr<PlayerSprite> in_shadow);
-            ~Player                 ();
+  Player (std::unique_ptr<PlayerSprite> in_sprite, std::unique_ptr<PlayerSprite> in_shadow);
+            virtual ~Player                 ();
   void      update                  (const float in_dt) override;
   void      handleInput             () override;
   void      onInputEvent            (const InputEvent in_event, const std::vector<int> &in_params) override;
@@ -41,10 +41,14 @@ class Player : public Entity, public Controllable {
   void      run                     (Vector3 in_direction);
   void      stopRunning             ();
   void      goToSetPiecePosition    (const Situation in_situation, const Direction in_pitch_side);
-  void      setPlayingPosition      (UniquePtr<PlayingPosition> in_position);
+  void      setPlayingPosition      (std::unique_ptr<PlayingPosition> in_position);
   bool      ballInControlRange      ();
   Compass   getDirection            ();
   Brain&    getBrain                ();
+
+  Team*                         my_team= nullptr;;
+  Team*                         other_team= nullptr;;
+  Match*                        match = nullptr;
 
  protected:
   // -----------------------------------------------------------------------
@@ -53,11 +57,7 @@ class Player : public Entity, public Controllable {
   PlayerStateStand              state_stand;
   PlayerStateRun                state_run;
   PlayerStateDribble            state_dribble;
-  PlayerState*                  state = nullptr;
-
-  const Team&                   my_team;
-  const Team&                   other_team;
-  Match&                        match;
+  PlayerState*                  state = nullptr;  
   Brain                         brain;
   ProgressBar*                  power_bar = nullptr;
   sf::TriangleShape             short_pass_triangle;
@@ -70,7 +70,7 @@ class Player : public Entity, public Controllable {
   RunningSpeed                  speed = RunningSpeed::Normal;
   TeamData                      team_data;
   Attributes                    attribs;
-  UniquePtr<PlayingPosition>    playing_position;
+  std::unique_ptr<PlayingPosition>    playing_position;
   float                         current_speed = 0;
   bool                          ball_under_control = false;
   float                         distance_from_ball = 0;
@@ -85,7 +85,10 @@ class Player : public Entity, public Controllable {
 
   static int instances;
 
+  // force entities to be acquired via factory
+
  public:
+  friend class EntityFactory;
   // -----------------------------------------------------------------------
   // for state machine pattern
   // -----------------------------------------------------------------------

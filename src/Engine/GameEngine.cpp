@@ -5,32 +5,27 @@
 #include <iostream>
 
 #include "Vector.hpp"
+#include "EntityFactory.h"
 
 namespace Senseless {
 //
 //
 //
-static const bool NotSortable   = false;
-static const bool Sortable      = true;
-static const bool Overlay       = true;
+static const bool NotSortable = false;
+static const bool Sortable    = true;
+static const bool Overlay     = true;
 //
 //
 //
-GameEngine::GameEngine(const std::string &in_window_title,
-                       float              in_window_width,
-                       float              in_window_height,
-                       int                in_flags,
-                       bool               in_fullscreen)
-
-    : window    (in_window_title, in_window_width, in_window_height, in_flags, in_fullscreen),
-      camera    (in_window_width, in_window_height),
-      debug_gui (window),
-      picker    (window, entities, debug_gui) {
-
+GameEngine::GameEngine(Camera &in_camera, const std::string &in_window_title, float in_window_width, float in_window_height, int in_flags, bool in_fullscreen)
+    : window(in_window_title, in_window_width, in_window_height, in_flags, in_fullscreen),
+      camera(in_camera),
+      debug_gui(window),
+      picker(window, entities, debug_gui) {
     // set up the render layers
     background_layer = addLayer(NotSortable);
     shadow_layer     = addLayer(NotSortable);
-    default_layer    = addLayer(Sortable);
+    sprite_layer     = addLayer(Sortable);
     hud_layer        = addLayer(NotSortable, Overlay);
 
     // setup the hud view
@@ -75,26 +70,24 @@ void GameEngine::step() noexcept {
         }
     }
 
-    // update entities    
+    // update entities
     for (const auto &entity : entities) {
         entity->update(dt);
     }
 
     // render
-    window.clear({18, 60, 10});    
+    window.clear({18, 60, 10});
 
     // render layers
     for (auto &layer : render_layers) {
         // sort the layer
         if (layer.sortable) {
-            std::sort(std::begin(layer.sprite_list),
-                      std::end(layer.sprite_list),
-                      [](sf::Drawable *d1, sf::Drawable *d2) -> bool { return d1->z < d2->z; });
+            std::sort(std::begin(layer.sprite_list), std::end(layer.sprite_list), [](sf::Drawable *d1, sf::Drawable *d2) -> bool { return d1->z < d2->z; });
         }
         // render the layer
-        if(layer.overlay){
+        if (layer.overlay) {
             window.setView(hud_view);
-        }else{
+        } else {
             window.setView(camera.getview());
         }
         for (const auto &drawable : layer.sprite_list) {
@@ -118,7 +111,7 @@ void GameEngine::step() noexcept {
 //
 int GameEngine::addLayer(const bool in_sortable, const bool in_overlay) noexcept {
     const int new_id = render_layers.size();
-    render_layers.push_back(RenderLayer(in_sortable, in_overlay));
+    render_layers.emplace_back(RenderLayer(in_sortable, in_overlay));
     return new_id;
 }
 //
@@ -131,7 +124,7 @@ void GameEngine::add_sprite(Sprite &in_sprite, layer_id in_layer_id) noexcept {
     }
     if (in_layer_id == RenderLayer::INVALID_LAYER) {
         // add to default layer
-        render_layers.at(default_layer).sprite_list.push_back(&in_sprite);
+        render_layers.at(sprite_layer).sprite_list.push_back(&in_sprite);
 
     } else {
         // add to specified layer
@@ -139,8 +132,7 @@ void GameEngine::add_sprite(Sprite &in_sprite, layer_id in_layer_id) noexcept {
             render_layers.at(in_layer_id).sprite_list.push_back(&in_sprite);
 
         } else {
-            std::cout << "addRenderable> Tried to add to non existent layer: " << in_layer_id
-                      << std::endl;
+            std::cout << "addRenderable> Tried to add to non existent layer: " << in_layer_id << std::endl;
         }
     }
 }
@@ -190,7 +182,7 @@ layer_id GameEngine::getBackgroundLayer() const noexcept {
 //
 //
 layer_id GameEngine::getDefaultLayer() const noexcept {
-    return default_layer;
+    return sprite_layer;
 }
 //
 //

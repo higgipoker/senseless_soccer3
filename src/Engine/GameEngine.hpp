@@ -42,7 +42,7 @@ struct RenderLayer {
 // ***************************************************************************
 class GameEngine {
    public:
-                                GameEngine          (const std::string &in_window_title = "Untitled", float in_window_width = 800, float in_window_height = 600,
+                                GameEngine          (Camera &in_camera, const std::string &in_window_title = "Untitled", float in_window_width = 800, float in_window_height = 600,
                                                         int in_flags = sf::Style::Default, bool in_fullscreen = false);
                                 ~GameEngine         ();
         void                    step                () noexcept;
@@ -68,7 +68,7 @@ class GameEngine {
         Window                      window;
         Keyboard                    default_keyboard;
         Gamepad                     gamepad1;
-        Camera                      camera;
+        Camera&                     camera;
         Debug                       debug_gui;
         Picker                      picker;
         sf::View                    hud_view;
@@ -76,7 +76,7 @@ class GameEngine {
         std::vector<Entity *>       entities;
         std::vector<Controllable *> controllables;
         layer_id                    background_layer = RenderLayer::INVALID_LAYER;
-        layer_id                    default_layer = RenderLayer::INVALID_LAYER;
+        layer_id                    sprite_layer = RenderLayer::INVALID_LAYER;
         layer_id                    shadow_layer = RenderLayer::INVALID_LAYER;
         layer_id                    hud_layer = RenderLayer::INVALID_LAYER;
         sf::Clock                   clock;

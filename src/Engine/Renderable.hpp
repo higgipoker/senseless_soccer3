@@ -3,8 +3,8 @@
 namespace Senseless {
 class Renderable {
    public:
-    Renderable(UniquePtr<Sprite> in_sprite, UniquePtr<Sprite> in_shadow);
-    UniquePtr<Sprite> sprite;
-    UniquePtr<Sprite> shadow;
+    Renderable(std::unique_ptr<Sprite> in_sprite, std::unique_ptr<Sprite> in_shadow);
+    std::unique_ptr<Sprite> sprite;
+    std::unique_ptr<Sprite> shadow;
 };
 }  // namespace Senseless

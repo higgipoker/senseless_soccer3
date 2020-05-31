@@ -100,6 +100,7 @@ class Vector3 {
     float        dotProduct(const Vector3 &rhs);
     float        perpProduct(const Vector3 &rhs, bool right_normal = true);
     bool         isMovingTowards(Vector3 testPoint, Vector3 objectVelocity) const;
+    static bool  isMovingTowards(const Vector3 pos, const Vector3 vel, const Vector3 test_point);
 
     // -------------------------------------------------------------------------
     // comparison operations

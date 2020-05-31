@@ -6,7 +6,7 @@
 #include "Engine/Sprite.hpp"
 #include "PlayerAnimations.hpp"
 namespace Senseless {
-enum class TeamType;
+enum class TeamStrip;
 
 // sprite frame constants
 inline const int VERTICAL_OFFSET_TEAM1 = 0;
@@ -31,7 +31,7 @@ class PlayerSprite : public Sprite {
     // -----------------------------------------------------------------------
     PlayerSprite        () { perspectivizable = true; };
     PlayerSprite        (   const sf::Texture& in_texture,
-                            const TeamType in_team,
+                            const TeamStrip in_team,
                             SpriteSetDefinition in_def = SpriteSetDefinition{   VERTICAL_OFFSET_TEAM1,
                                                                                 FRAME_WIDTH,
                                                                                 FRAME_HEIGHT,

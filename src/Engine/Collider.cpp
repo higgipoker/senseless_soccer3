@@ -1,6 +1,8 @@
 #include "Collider.hpp"
 
 #include "Vector.hpp"
+
+#include<cmath>
 namespace Senseless {
 //
 //
@@ -27,10 +29,10 @@ bool Collider::collides(const sf::CircleShape &c1, const sf::CircleShape &c2) {
 bool Collider::contains(const sf::CircleShape &big,
                         const sf::CircleShape &small) {
   // distance
-  float dist_sq = sqrt(((small.getCenter().x - big.getCenter().x) *
-                        (small.getCenter().x - big.getCenter().x)) +
-                       ((small.getCenter().y - big.getCenter().y) *
-                        (small.getCenter().y - big.getCenter().y)));
+  float dist_sq = std::sqrt(((small.getCenter().x - big.getCenter().x) *
+                            (small.getCenter().x - big.getCenter().x)) +
+                            ((small.getCenter().y - big.getCenter().y) *
+                            (small.getCenter().y - big.getCenter().y)));
 
   if (big.getRadius() > (dist_sq + small.getRadius())) {
     return true;

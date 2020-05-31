@@ -26,8 +26,7 @@ Brain::Brain(Player &in_player)
       pass_state(*this),
       support_state(*this),
       wait_state(*this),
-      current_state(&idle_state) {
-    persist = true;
+      current_state(&idle_state) {    
 }
 //
 //

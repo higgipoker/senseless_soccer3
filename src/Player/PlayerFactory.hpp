@@ -6,7 +6,7 @@
 #include "Engine/BaseFactory.hpp"
 #include "Engine/Folder.hpp"
 #include "Engine/Texture.hpp"
-#include "Engine/Types.hpp"
+#include <memory>
 //
 #include <SFML/Graphics/Texture.hpp>
 namespace Senseless {
@@ -14,7 +14,7 @@ namespace Senseless {
 class Match;
 class Team;
 enum class KitType;
-enum class TeamType;
+enum class TeamStrip;
 //
 //
 //
@@ -23,27 +23,20 @@ class PlayerFactory : public BaseFactory {
     //
     //
     //
-    std::string getSpriteSheeet(const KitType in_kit_type) {
+    static std::string getSpriteSheeet(const KitType in_kit_type) {
         switch (in_kit_type) {
             case KitType::Standard:
-                return graphics_folder.getPath(true) + "player.png";
+                return working_folder.getPath() + "/gfx/" + "player.png";
                 break;
         }
 
-        return graphics_folder.getPath(true) + "player.png";
+        return working_folder.getPath() + "/gfx/" + "player.png";
     }
     //
     //
     //
-    std::string getShadowSheet() {
-        return graphics_folder.getPath(true) + "player_shadow.png";
+    static std::string getShadowSheet() {
+        return working_folder.getPath() + "/gfx/" + "player_shadow.png";
     }
-    //
-    //
-    //
-    UniquePtr<Player> makePlayer(Match &        in_match,
-                                 const Team &   in_my_team,
-                                 const Team &   in_other_team,
-                                 const TeamType in_strip);
 };
 }  // namespace Senseless

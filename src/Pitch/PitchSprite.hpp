@@ -2,7 +2,7 @@
 #include "PitchTypes.hpp"
 //
 #include "Engine/Sprite.hpp"
-#include "Engine/Types.hpp"
+#include <memory>
 //
 #include <SFML/Graphics/RenderTexture.hpp>
 //

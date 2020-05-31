@@ -4,16 +4,25 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 namespace Senseless {
 MiniMapSprite::MiniMapSprite() {
-    for (size_t i = 0; i < 20; ++i) {
-        players[i].position = {0, 0};
+    int i = 0;
+    for (auto& player : players) {
+        ++i;
+        player.position = {0, 0};
         if (i < 10) {
-            players[i].color = sf::Color::Red;
-            circles[i].setRadius(30);
-            circles[i].setFillColor({255, 0, 0, 100});
+            player.color = sf::Color::Red;
         } else {
-            players[i].color = sf::Color::Blue;
-            circles[i].setRadius(30);
-            circles[i].setFillColor({0, 0, 255, 100});
+            player.color = sf::Color::Blue;
+        }
+    }
+    i = 0;
+    for (auto& circle : circles) {
+        ++i;
+        if (i < 10) {
+            circle.setRadius(30);
+            circle.setFillColor({255, 0, 0, 100});
+        } else {
+            circle.setRadius(30);
+            circle.setFillColor({0, 0, 255, 100});
         }
     }
     ball.setRadius(15);
@@ -111,27 +120,55 @@ void MiniMapSprite::init(const PitchDrawDimensions& in_dimensions) {
     center_circle = in_dimensions.center_circle;
     center_circle.setRadius(in_dimensions.center_circle.getRadius());
     center_circle.setCenter((in_dimensions.bounds.getSize().x) / 2, (in_dimensions.bounds.getSize().y) / 2);
-    center_circle.setOutlineThickness(3);
+    center_circle.setOutlineThickness(6);
     center_circle.setOutlineColor({255, 255, 255, 100});
 
     ////////////////////////////////////////////
     vlines = {// bounds
-              bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5], bounds[6], bounds[7],
+              bounds[0],
+              bounds[1],
+              bounds[2],
+              bounds[3],
+              bounds[4],
+              bounds[5],
+              bounds[6],
+              bounds[7],
 
               // south 6 yard box
-              south_6_box[0], south_6_box[1], south_6_box[2], south_6_box[3], south_6_box[4], south_6_box[5],
+              south_6_box[0],
+              south_6_box[1],
+              south_6_box[2],
+              south_6_box[3],
+              south_6_box[4],
+              south_6_box[5],
 
               // north 6 yard box
-              north_6_box[0], north_6_box[1], north_6_box[2], north_6_box[3], north_6_box[4], north_6_box[5],
+              north_6_box[0],
+              north_6_box[1],
+              north_6_box[2],
+              north_6_box[3],
+              north_6_box[4],
+              north_6_box[5],
 
               // south 18 yard box
-              south_18_box[0], south_18_box[1], south_18_box[2], south_18_box[3], south_18_box[4], south_18_box[5],
+              south_18_box[0],
+              south_18_box[1],
+              south_18_box[2],
+              south_18_box[3],
+              south_18_box[4],
+              south_18_box[5],
 
               // north 18 yard box
-              north_18_box[0], north_18_box[1], north_18_box[2], north_18_box[3], north_18_box[4], north_18_box[5],
+              north_18_box[0],
+              north_18_box[1],
+              north_18_box[2],
+              north_18_box[3],
+              north_18_box[4],
+              north_18_box[5],
 
               // halfway line
-              halfwayline[0], halfwayline[1]
+              halfwayline[0],
+              halfwayline[1]
 
     };
     for (auto& it : vlines) {
@@ -150,7 +187,7 @@ void MiniMapSprite::update(const std::vector<Vector3>& in_positions, const Vecto
     }
     ball.setCenter(in_ball_position.toSfVector());
     camera = in_camera;
-    camera.setCenter(in_camera.getPosition());
+    //camera.setCenter(in_camera.getPosition());
 }
 //
 //
@@ -181,11 +218,11 @@ void MiniMapSprite::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 
     {
         // center circle
-        //        sf::Transform transform;
-        //        transform.translate(getPosition());
-        //        transform.scale(getScale().x, getScale().x);
-        //        states.transform = transform;
-        //        target.draw(center_circle, states);
+        sf::Transform transform;
+        transform.translate(getPosition());
+        transform.scale(getScale().x, getScale().x);
+        states.transform = transform;
+        target.draw(center_circle, states);
     }
 
     {  // ball

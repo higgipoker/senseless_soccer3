@@ -33,13 +33,13 @@ Folder::Folder(const std::string &in_path) : path(in_path) {
 //
 //
 //
-const std::string Folder::getPath(bool in_add_trailing_slash) {
+std::string Folder::getPath(bool in_add_trailing_slash) {
     return in_add_trailing_slash ? path + "/" : path;
 }
 //
 //
 //
-const std::set<std::string> Folder::getFileList(bool in_refresh) {
+std::set<std::string> Folder::getFileList(bool in_refresh) {
     if (in_refresh) {
         read_files_and_folders();
     }
@@ -48,7 +48,7 @@ const std::set<std::string> Folder::getFileList(bool in_refresh) {
 //
 //
 //
-const std::set<std::string> Folder::getFolderList(bool in_refresh) {
+std::set<std::string> Folder::getFolderList(bool in_refresh) {
     if (in_refresh) {
         read_files_and_folders();
     }
@@ -57,7 +57,7 @@ const std::set<std::string> Folder::getFolderList(bool in_refresh) {
 //
 //
 //
-const std::set<std::string> Folder::getFileAndFolderList(bool in_refresh) {
+std::set<std::string> Folder::getFileAndFolderList(bool in_refresh) {
     if (in_refresh) {
         read_files_and_folders();
     }

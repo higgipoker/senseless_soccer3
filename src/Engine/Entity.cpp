@@ -8,7 +8,7 @@ namespace Senseless {
 //
 //
 //
-Entity::Entity(UniquePtr<Sprite> in_sprite, UniquePtr<Sprite> in_shadow)
+Entity::Entity(std::unique_ptr<Sprite> in_sprite, std::unique_ptr<Sprite> in_shadow)
     : renderable(std::move(in_sprite), std::move(in_shadow)) {
     // a sprite knows about its own shadow for perspectivizing
     renderable.sprite->shadow = renderable.shadow.get();

@@ -1,10 +1,6 @@
 #include "Team.hpp"
 //
-#include "PositionCenterBack.hpp"
-#include "PositionCenterForward.hpp"
-#include "PositionCenterMidfielder.hpp"
-#include "PositionFullBack.hpp"
-#include "PositionWideMidfielder.hpp"
+#include "../Engine/EntityFactory.h"
 //
 #include "Match/Match.hpp"
 #include "Player/Player.hpp"
@@ -20,11 +16,11 @@ namespace Senseless {
 //
 int Team::instances = 0;
 //
-Team::Team(const std::string &in_name, const TeamType in_home_or_away, const Kit &in_kit)
+Team::Team(const std::string &in_name, const TeamStrip in_home_or_away, const Kit &in_kit)
     : name(in_name), home_or_away(in_home_or_away), kit(in_kit) {
-    sprite_texture->loadFromFile(player_factory.getSpriteSheeet(kit.type));
+    sprite_texture->loadFromFile(PlayerFactory::getSpriteSheeet(kit.type));
     sprite_texture->swapColors(kit.palette);
-    shadow_texture->loadFromFile(player_factory.getShadowSheet());
+    shadow_texture->loadFromFile(PlayerFactory::getShadowSheet());
 
     ++instances;
     // std::cout << instances << " teams" << std::endl;
@@ -39,14 +35,14 @@ Team::~Team() {
 //
 //
 //
-UniquePtr<Texture> Team::getSpriteTexture() {
+std::unique_ptr<Texture> Team::getSpriteTexture() {
     assert(sprite_texture != nullptr);
     return std::move(sprite_texture);
 }
 //
 //
 //
-UniquePtr<Texture> Team::getShadowTexture() {
+std::unique_ptr<Texture> Team::getShadowTexture() {
     assert(shadow_texture != nullptr);
     return std::move(shadow_texture);
 }
@@ -68,11 +64,11 @@ void Team::update() {
     // update players
     std::sort(std::begin(players),
               std::end(players),
-              [](UniquePtr<Player> &p1, UniquePtr<Player> &p2) -> bool {
+              [](Player *p1, Player *p2) -> bool {
                   return p1->distance_from_ball < p2->distance_from_ball;
               });
     if (!players.empty()) {
-        if (auto player = players.at(0).get()) {
+        if (auto player = players.at(0)) {
             closest_to_ball = player;
         }
     }  
@@ -98,96 +94,20 @@ void Team::update() {
 //
 //
 //
-void Team::addDefaultPlayers(const Team &in_other_team) {
-    std::vector<UniquePtr<PlayingPosition>> positions;
-
-    auto left_center_back =
-        std::make_unique<PositionCenterBack>(match->getPitch(), *this, in_other_team);
-    left_center_back->applyModifier(PositionModifier::Left);
-    left_center_back->name = "Left Center Back";
-    positions.emplace_back(std::move(left_center_back));
-
-    auto right_center_back =
-        std::make_unique<PositionCenterBack>(match->getPitch(), *this, in_other_team);
-    right_center_back->applyModifier(PositionModifier::Right);
-    right_center_back->name = "Right Center Back";
-    positions.emplace_back(std::move(right_center_back));
-
-    auto left_back = std::make_unique<PositionFullBack>(match->getPitch(), *this, in_other_team);
-    left_back->applyModifier(PositionModifier::Left);
-    left_back->name = "Letf Back";
-    positions.emplace_back(std::move(left_back));
-
-    auto right_back = std::make_unique<PositionFullBack>(match->getPitch(), *this, in_other_team);
-    right_back->applyModifier(PositionModifier::Right);
-    right_back->name = "Right Back";
-    positions.emplace_back(std::move(right_back));
-
-    auto left_center_mid =
-        std::make_unique<PositionCenterMidfielder>(match->getPitch(), *this, in_other_team);
-    left_center_mid->applyModifier(PositionModifier::Left);
-    left_center_mid->name = "Left Center Mid";
-    positions.emplace_back(std::move(left_center_mid));
-
-    auto right_center_mid =
-        std::make_unique<PositionCenterMidfielder>(match->getPitch(), *this, in_other_team);
-    right_center_mid->applyModifier(PositionModifier::Right);
-    right_center_mid->name = "Right Center Mid";
-    positions.emplace_back(std::move(right_center_mid));
-
-    auto left_midfielder =
-        std::make_unique<PositionWideMidfielder>(match->getPitch(), *this, in_other_team);
-    left_midfielder->applyModifier(PositionModifier::Left);
-    left_midfielder->name = "Left Midfielder";
-    positions.emplace_back(std::move(left_midfielder));
-
-    auto right_midfielder =
-        std::make_unique<PositionWideMidfielder>(match->getPitch(), *this, in_other_team);
-    right_midfielder->applyModifier(PositionModifier::Right);
-    right_midfielder->name = "Right Midfielder";
-    positions.emplace_back(std::move(right_midfielder));
-
-    auto left_center_forward =
-        std::make_unique<PositionCenterForward>(match->getPitch(), *this, in_other_team);
-    left_center_forward->applyModifier(PositionModifier::Left);
-    left_center_forward->name = "Left Center Forward";
-    positions.emplace_back(std::move(left_center_forward));
-
-    auto right_center_forward =
-        std::make_unique<PositionCenterForward>(match->getPitch(), *this, in_other_team);
-    right_center_forward->applyModifier(PositionModifier::Right);
-    right_center_forward->name = "Right Center Forward";
-    positions.emplace_back(std::move(right_center_forward));
-
-    // for (size_t i = 0; i < positions.size(); ++i) {
-    for (size_t i = 0; i < 1; ++i) {
-        UniquePtr<Player> player =
-            player_factory.makePlayer(*match, *this, in_other_team, home_or_away);
-        TeamData td;
-        td.shirt_number = static_cast<int>(i + 1);
-        player->name    = positions[i]->name;
-        player->setTeamData(td);
-        player->support_type = static_cast<int>(i);
-        player->setPlayingPosition(std::move(positions[i]));
-        player->movable.position = match->getPitch().toScreenSpace(
-            {0, match->getPitch().getDimensions().halfway_line.getPosition().y});
-        addPlayer(std::move(player));
-    }
-    positions.clear();
-    goToSetPiecePositions(Situation::KickOff);
+void Team::addDefaultPlayers(Team &in_other_team) {
 }
 //
 //
 //
-void Team::addPlayer(UniquePtr<Player> in_player) {
-    players.push_back(std::move(in_player));
+void Team::addPlayer(Player* in_player) {
+    players.push_back(in_player);
 }
 //
 //
 //
 Player &Team::getPlayer(const size_t in_which) {
     assert(in_which < players.size());
-    return *players.at(in_which).get();
+    return *players.at(in_which);
 }
 //
 //

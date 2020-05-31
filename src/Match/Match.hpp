@@ -7,7 +7,7 @@
 #include "Ball/BallFactory.hpp"
 #include "Engine/Sprite.hpp"
 #include "Engine/Texture.hpp"
-#include "Engine/Types.hpp"
+#include <memory>
 #include "Game/Object.h"
 //
 #include <SFML/Graphics/RenderTexture.hpp>
@@ -15,7 +15,7 @@
 namespace Senseless {
 class Team;
 class Player;
-enum class TeamType;
+enum class TeamStrip;
 
 // ***************************************************************************
 // *                                                                         *
@@ -39,21 +39,22 @@ class Match : public Object{
     Team&               getHomeTeam     ();
     Team&               getAwayTeam     ();
     Pitch&              getPitch        () const;
-    void                setAttackingTeam(   const TeamType in_which);
+    void                setAttackingTeam(   const TeamStrip in_which);
     void                initMatchTexture(   const Texture& team1_texture,
                                             const Texture& team2_texture,
                                             const Texture& ball_texture);
+    void                setBall         (Ball &in_ball);
 
     Player* player_in_possession = nullptr;
 
    protected:
     MatchFactory     factory;
     BallFactory      ball_factory;
-    Pitch&           pitch;
-    UniquePtr<Ball>  ball;
+    Pitch&           pitch;    
     Team&            home_team;
     Team&            away_team;
-    TeamType         attacking_team;
+    Ball*            ball = nullptr;
+    TeamStrip        attacking_team;
 
     // debug checking for mem leakst
     static int instances;

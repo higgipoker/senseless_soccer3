@@ -16,7 +16,7 @@ BrainCover::BrainCover(Brain& in_brain) : BrainState(in_brain) { name = "Cover";
 //
 void BrainCover::start() {
   if (auto position = brain.player.playing_position.get()) {
-    auto target = position->getTargetPosition(Situation::Playing, brain.player.match.getBall());
+    auto target = position->getTargetPosition(Situation::Playing, brain.player.match->getBall());
     brain.locomotion.seek(target);
     last_target = target;
   }
@@ -26,7 +26,7 @@ void BrainCover::start() {
 //
 void BrainCover::step() {
   if (auto position = brain.player.playing_position.get()) {
-    auto target = position->getTargetPosition(Situation::Playing, brain.player.match.getBall());
+    auto target = position->getTargetPosition(Situation::Playing, brain.player.match->getBall());
     auto dist = (brain.player.movable.position - target).magnitude2d();
     if (Math::greater_than(dist, 1) &&
         Math::greater_than((target - last_target).magnitude2d(), 1)) {
@@ -54,7 +54,7 @@ bool BrainCover::stateOver() {
 //
 bool BrainCover::should_close_down() {
   // if the ball is loose and i am closest to the ball -> definitely close down
-//  if (brain.player.match.player_in_possession == nullptr) {
+//  if (brain.player.match->player_in_possession == nullptr) {
 //    if (brain.player.my_team.closest_to_ball == &brain.player) {
 //      std::cout << brain.player.name << " closing down" << std::endl;
 //      return true;

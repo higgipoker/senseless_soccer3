@@ -24,9 +24,15 @@ int Player::instances = 0;
 //
 //
 //
-Player::Player(Match &in_match, const Team &in_my_team, const Team &in_other_team, UniquePtr<PlayerSprite> in_sprite, UniquePtr<PlayerSprite> in_shadow)
-    : Entity(std::move(in_sprite), std::move(in_shadow)), state_stand(*this), state_run(*this), state_dribble(*this), state(&state_stand), my_team(in_my_team), other_team(in_other_team),
-      match(in_match), brain(*this), player_sprite(static_cast<PlayerSprite &>(*renderable.sprite)), player_shadow(static_cast<PlayerSprite &>(*renderable.shadow)) {
+Player::Player(std::unique_ptr<PlayerSprite> in_sprite, std::unique_ptr<PlayerSprite> in_shadow)
+    : Entity(std::move(in_sprite), std::move(in_shadow)),
+      state_stand(*this),
+      state_run(*this),
+      state_dribble(*this),
+      state(&state_stand),
+      brain(*this),
+      player_sprite(static_cast<PlayerSprite &>(*renderable.sprite)),
+      player_shadow(static_cast<PlayerSprite &>(*renderable.shadow)) {
     type = EntityType::Player;
     feet.setRadius(1.0F);
     control.setRadius(12);
@@ -39,14 +45,14 @@ Player::Player(Match &in_match, const Team &in_my_team, const Team &in_other_tea
     control.setOutlineThickness(1);
     control.setOutlineColor(Debug::defaultDiagnosticsColor());
     ++instances;
-    // std::cout << instances << " players" << std::endl;
+    std::cout << instances << " players" << std::endl;
 }
 //
 //
 //
 Player::~Player() {
     --instances;
-    // std::cout << instances << " players" << std::endl;
+    std::cout << instances << " players" << std::endl;
 }
 //
 //
@@ -99,7 +105,7 @@ void Player::update(const float in_dt) {
 
     feet.setCenter(movable.position.x, movable.position.y - feet.getRadius());
     control.setCenter(feet.getCenter());
-    distance_from_ball   = Vector3::distance_to(movable.position, my_team.match->getBall().movable.position);
+    distance_from_ball   = Vector3::distance_to(movable.position, my_team->match->getBall().movable.position);
     renderable.sprite->z = movable.position.y;
 
 #ifndef NDEBUG
@@ -110,7 +116,7 @@ void Player::update(const float in_dt) {
 //
 //
 void Player::face_ball() {
-    auto direction = Vector3::direction_to(movable.position, my_team.match->getBall().movable.position);
+    auto direction = Vector3::direction_to(movable.position, my_team->match->getBall().movable.position);
     direction.roundAngle(45);
     direction.normalizeToUnits();
     Compass to_ball(direction);
@@ -136,7 +142,7 @@ void Player::change_state(const player_state in_state) {
 //
 //
 bool Player::ballInControlRange() {
-    return Collider::contains(control, my_team.match->getBall().collidable);
+    return Collider::contains(control, my_team->match->getBall().collidable);
 }
 //
 //
@@ -180,7 +186,7 @@ void Player::kick(const float in_force) {
     Vector3 force = facing.toVector();
     force *= in_force;
     force.z = force.magnitude2d() * 0.2F;
-    my_team.match->getBall().kick(force);
+    my_team->match->getBall().kick(force);
 }
 //
 //
@@ -199,7 +205,7 @@ void         Player::shortPass(Player &in_receiver) {
 
     Vector3 force = Vector3::direction_to(movable.position, in_receiver.movable.position);
     force.setMagnitude(force_needed);
-    my_team.match->getBall().kick(force);
+    my_team->match->getBall().kick(force);
     in_receiver.brain.changeState(brain_state::Retrieve);
 }
 //
@@ -265,10 +271,10 @@ void Player::calc_short_pass_candidates() {
     // tmp
     short_pass_candidates.clear();
     // get a list of players in my short pass range
-    for (auto &player : my_team.players) {
+    for (auto &player : my_team->players) {
         // is in short pass range
         if (Collider::collides(player->movable.position, short_pass_triangle)) {
-            short_pass_candidates.push_back(player.get());
+            short_pass_candidates.push_back(player);
             short_pass_triangle.setFillColor({0, 255, 0, 70});
         }
     }
@@ -285,7 +291,7 @@ void Player::debug() {
     }
 
     // change color if ball touching feet
-    if (Collider::collides(feet, my_team.match->getBall().collidable)) {
+    if (Collider::collides(feet, my_team->match->getBall().collidable)) {
         feet.setFillColor(sf::Color::Green);
     }
 
@@ -309,7 +315,7 @@ void Player::debug() {
 //
 //
 //
-void Player::setPlayingPosition(UniquePtr<PlayingPosition> in_position) {
+void Player::setPlayingPosition(std::unique_ptr<PlayingPosition> in_position) {
     playing_position = std::move(in_position);
 }
 //
@@ -318,7 +324,7 @@ void Player::setPlayingPosition(UniquePtr<PlayingPosition> in_position) {
 void Player::goToSetPiecePosition(const Situation in_situation, const Direction in_pitch_side) {
     if (auto position = playing_position.get()) {
         brain.changeState(brain_state::Idle);
-        brain.locomotion.seek(position->getTargetPosition(in_situation, match.getBall(), in_pitch_side));
+        brain.locomotion.seek(position->getTargetPosition(in_situation, match->getBall(), in_pitch_side));
     }
 }
 }  // namespace Senseless

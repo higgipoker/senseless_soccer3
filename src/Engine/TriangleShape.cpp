@@ -30,7 +30,7 @@ void TriangleShape::reset(){
 //
 //
 //
-Vector2f TriangleShape::getPoint(std::size_t index) const {
+Vector2f TriangleShape::getPoint(const std::size_t index) const {
   return points[index];
 }
 

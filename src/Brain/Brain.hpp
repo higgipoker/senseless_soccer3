@@ -58,7 +58,6 @@ class Brain {
     friend class BrainWait;
 
     // for diagnostics
-    brain_state state = brain_state::Idle;
-    bool persist = false;
+    brain_state state = brain_state::Idle;    
 };
 }  // namespace Senseless

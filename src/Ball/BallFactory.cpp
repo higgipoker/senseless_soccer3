@@ -7,9 +7,9 @@ namespace Senseless {
 std::string BallFactory::getSpriteSheeet(const BallType in_ball_type) {
   switch (in_ball_type) {
     case BallType::Standard:
-      return graphics_folder.getPath(true) + "ball.png";
+      return working_folder.getPath() + "/gfx/" + "ball.png";
       break;
   }
-  return graphics_folder.getPath(true) + "ball.png";
+  return working_folder.getPath() + "/gfx/" + "ball.png";
 }
 }  // namespace Senseless

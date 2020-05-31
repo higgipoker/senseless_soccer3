@@ -4,6 +4,8 @@
 #include <iostream>
 
 #include "Team/Team.hpp"
+#include "Brain/Brain.hpp"
+#include "Player/Player.hpp"
 #include "imgui/imgui-SFML.h"
 #include "imgui/imgui.h"
 
@@ -29,8 +31,8 @@ GameState *Debug::gamestate   = nullptr;
 //
 //
 //
-Debug::Debug(const sf::RenderWindow &in_window) : window(in_window) {
-    ImGui::SFML::Init(const_cast<sf::RenderWindow&>(in_window));
+Debug::Debug(sf::RenderWindow &in_window) : window(in_window) {
+    ImGui::SFML::Init(in_window);
 }
 //
 //
@@ -49,7 +51,7 @@ void Debug::prep(const int in_frames, const int in_frametime) {
 //
 //
 void Debug::draw() {
-    ImGui::SFML::Update(const_cast<sf::RenderWindow&>(window), ui_clock.restart());
+    ImGui::SFML::Update(window, ui_clock.restart());
     draw_main_window();
     if (picked) {
         if (picked->type == EntityType::Player) {
@@ -113,8 +115,8 @@ void Debug::draw_main_window() {
         ImGui::SameLine();
         ImGui::RadioButton("Away", &attacking_team, 1);
         if (ori_attacking_team != attacking_team) {
-            gamestate->match->setAttackingTeam(attacking_team == 0 ? TeamType::Home
-                                                                   : TeamType::Away);
+            gamestate->match->setAttackingTeam(attacking_team == 0 ? TeamStrip::Home
+                                                                   : TeamStrip::Away);
         }
 
         ImGui::Text("Set:");

@@ -8,12 +8,12 @@ namespace Senseless {
 //
 //
 //
-PlayerSprite::PlayerSprite(const sf::Texture& in_texture, const TeamType in_team,
+PlayerSprite::PlayerSprite(const sf::Texture& in_texture, const TeamStrip in_team,
                            SpriteSetDefinition in_def)
     : Sprite(in_texture) {
   perspectivizable = true;
 
-  if (in_team == TeamType::Away) {
+  if (in_team == TeamStrip::Away) {
     in_def.vertical_offset = VERTICAL_OFFSET_TEAM2;
   }
 
@@ -47,7 +47,7 @@ void PlayerSprite::setPlayerAnimation(PlayerAnimationType in_type, Direction in_
 //
 PlayerShadowSprite::PlayerShadowSprite(const sf::Texture& in_texture,
                                        const SpriteSetDefinition in_def)
-    : PlayerSprite(in_texture, TeamType::Home, in_def) {
+    : PlayerSprite(in_texture, TeamStrip::Home, in_def) {
   perspectivizable = false;
 }
 }  // namespace Senseless

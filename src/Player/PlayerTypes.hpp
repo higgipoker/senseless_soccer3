@@ -29,7 +29,7 @@ inline std::map<RunningSpeed, float> dribble_speeds = {
 //
 //
 inline std::map<RunningSpeed, float> kick_mods = {
-    {RunningSpeed::VerySlow, 0.8F}, {RunningSpeed::Slow, 1.2F},     {RunningSpeed::Normal, 1.4F},
-    {RunningSpeed::Fast, 2.1F},     {RunningSpeed::VeryFast, 3.0F},
+    {RunningSpeed::VerySlow, 0.7F}, {RunningSpeed::Slow, 1.1F},     {RunningSpeed::Normal, 1.3F},
+    {RunningSpeed::Fast, 2.0F},     {RunningSpeed::VeryFast, 2.9F},
     };
 }

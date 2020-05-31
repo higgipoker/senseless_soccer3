@@ -18,7 +18,7 @@ class BrainSupport : public BrainState {
     virtual bool  stateOver       () override;
 
     private:
-    Player*           player_in_possession;
+    Player*           player_in_possession = nullptr;
     int               ticks_since_change = 0;
     sf::CircleShape   radius;
 

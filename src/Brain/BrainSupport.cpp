@@ -30,15 +30,15 @@ void BrainSupport::start() {
 void BrainSupport::step() {
     int CHANGE_TICKS = brain.player.support_type % 2 == 0 ? 150 : 50;
 
-    auto pos = brain.player.match.getBall().movable.position.toSfVector();
+    auto pos = brain.player.match->getBall().movable.position.toSfVector();
     radius.setCenter(pos);
 
     auto dist = Vector3::distance_to(brain.player.movable.position,
-                                     brain.player.match.getBall().movable.position);
+                                     brain.player.match->getBall().movable.position);
     if (dist > radius.getRadius()) {
         ticks_since_change    = 0;
         Compass new_direction = Vector3::direction_to(
-            brain.player.movable.position, brain.player.match.getBall().movable.position);
+            brain.player.movable.position, brain.player.match->getBall().movable.position);
         brain.locomotion.head(new_direction.toVector());
     }
 

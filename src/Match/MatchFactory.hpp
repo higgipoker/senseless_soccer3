@@ -2,7 +2,7 @@
 //
 #include "Engine/BaseFactory.hpp"
 #include "Engine/Texture.hpp"
-#include "Engine/Types.hpp"
+#include <memory>
 //
 #include <SFML/Graphics/RenderTexture.hpp>
 namespace Senseless {
@@ -14,9 +14,9 @@ class MatchFactory : public BaseFactory {
   //
   //
   //
-  bool createMatchTexture(UniquePtr<Texture> team1_texture, UniquePtr<Texture> team2_texture,
-                          UniquePtr<Texture> shadow_texture1, UniquePtr<Texture> shadow_texture2,
-                          UniquePtr<Texture> ball_texture);
+  bool createMatchTexture(std::unique_ptr<Texture> team1_texture, std::unique_ptr<Texture> team2_texture,
+                          std::unique_ptr<Texture> shadow_texture1, std::unique_ptr<Texture> shadow_texture2,
+                          std::unique_ptr<Texture> ball_texture);
   //
   //
   //

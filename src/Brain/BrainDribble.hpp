@@ -26,11 +26,10 @@ class BrainDribble : public BrainState {
     int                   dribble_ticks = 0;
     bool                  first_touch = true;
 
-    void keep_in_pitch();
     void turn();
     bool is_turning();
     bool turning = false;
     bool waiting_for_reenter_bounds = false;
-    Direction turn_target_direction = Direction::North;
+    Direction turn_target_direction = Direction::North;    
 };
 }  // namespace Senseless

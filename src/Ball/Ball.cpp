@@ -3,17 +3,17 @@
 #include <iostream>
 
 #include "Engine/Debug.hpp"
-#include "Engine/Types.hpp"
+#include <memory>
 #include "Game/Game.hpp"
 namespace Senseless {
 //
 //
 //
-Ball::Ball(UniquePtr<Sprite> in_sprite, UniquePtr<Sprite> in_shadow)
+Ball::Ball(std::unique_ptr<Sprite> in_sprite, std::unique_ptr<Sprite> in_shadow)
     : Entity(std::move(in_sprite), std::move(in_shadow)) {
     collidable.setRadius(radius);
     movable.properties.co_friction   = 0.01F;
-    movable.properties.co_bounciness = 0.8f;
+    movable.properties.co_bounciness = 0.8F;
     movable.properties.cross_section = radius * 2;
     renderable.sprite->setBasePerspectiveWidth(radius * 2);
     renderable.shadow->setBasePerspectiveWidth(radius * 2);

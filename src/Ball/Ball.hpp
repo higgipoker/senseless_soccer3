@@ -14,8 +14,7 @@ class Ball : public Entity {
     public:
     // -----------------------------------------------------------------------
     // functions
-    // -----------------------------------------------------------------------
-        Ball              (UniquePtr<Sprite> in_sprite, UniquePtr<Sprite> in_shadow);
+    // -----------------------------------------------------------------------        
     void  update          (const float in_dt) override;
     void  kick            (Vector3 in_force);
     void  applyTopSpin    (float in_factor);
@@ -29,10 +28,18 @@ class Ball : public Entity {
     Vector3           last_position;
     sf::CircleShape   collidable;
     bool              recording_distance = false;
-    float             distance;
+    float             distance = 0;
     float             last_force = 0;
     protected:
     float radius = 3;
+
+   // -----------------------------------------------------------------------
+   // force all entities to be acquired through the factory
+   // -----------------------------------------------------------------------
+   protected:
+    Ball (std::unique_ptr<Sprite> in_sprite, std::unique_ptr<Sprite> in_shadow);
+   public:
+    friend class EntityFactory;
 };
 // *
 // *

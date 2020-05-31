@@ -5,11 +5,11 @@ namespace Senseless {
 //
 //
 //
-bool MatchFactory::createMatchTexture(UniquePtr<Texture> team1_texture,
-                                      UniquePtr<Texture> team2_texture,
-                                      UniquePtr<Texture> shadow_texture1,
-                                      UniquePtr<Texture> shadow_texture2,
-                                      UniquePtr<Texture> ball_texture) {
+bool MatchFactory::createMatchTexture(std::unique_ptr<Texture> team1_texture,
+                                      std::unique_ptr<Texture> team2_texture,
+                                      std::unique_ptr<Texture> shadow_texture1,
+                                      std::unique_ptr<Texture> shadow_texture2,
+                                      std::unique_ptr<Texture> ball_texture) {
   auto width = std::max(team1_texture->getSize().x,
                         std::max(team2_texture->getSize().x, std::max(shadow_texture1->getSize().x,
                                                                       ball_texture->getSize().x)));
@@ -24,9 +24,9 @@ bool MatchFactory::createMatchTexture(UniquePtr<Texture> team1_texture,
     return false;
   }
 
-  sf::Sprite s1(*team1_texture.get());
-  sf::Sprite s2(*team2_texture.get());
-  sf::Sprite s3(*shadow_texture1.get());
+  sf::Sprite s1(*team1_texture);
+  sf::Sprite s2(*team2_texture);
+  sf::Sprite s3(*shadow_texture1);
   sf::Sprite s4(*ball_texture.get());
   s2.move(0, s1.getLocalBounds().height);
   s3.move(0, s2.getGlobalBounds().top + s2.getLocalBounds().height);

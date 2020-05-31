@@ -5,7 +5,7 @@
 #include "Engine/Compass.hpp"
 #include "Engine/Sprite.hpp"
 #include "Engine/SpriteAnimation.hpp"
-#include "Engine/Types.hpp"
+#include <memory>
 namespace Senseless {
 static const int BALL_ANIM_FRAME_TIME = 6;
 //

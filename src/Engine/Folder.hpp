@@ -19,19 +19,19 @@ class Folder {
   //
   //
   //
-  const std::string getPath(bool in_add_trailing_slash = false);
+  std::string getPath(bool in_add_trailing_slash = false);
   //
   //
   //
-  const std::set<std::string> getFileList(bool in_refresh = false);
+  std::set<std::string> getFileList(bool in_refresh = false);
   //
   //
   //
-  const std::set<std::string> getFolderList(bool in_refresh = false);
+  std::set<std::string> getFolderList(bool in_refresh = false);
   //
   //
   //
-  const std::set<std::string> getFileAndFolderList(bool in_refresh = false);
+  std::set<std::string> getFileAndFolderList(bool in_refresh = false);
   //
   //
   //

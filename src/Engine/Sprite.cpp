@@ -1,6 +1,6 @@
 #include "Sprite.hpp"
 
-#include <math.h>
+#include <cmath>
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -136,7 +136,7 @@ void Sprite::perspectivize(const float in_camera_height) {
 
         // other side of camera, don't perspectivize!
         if (dist_from_camera <= 0) {
-            setScale({0.f, 0.f});
+            setScale({0.F, 0.F});
             shadow->setScale(100, 100);
             return;
         }

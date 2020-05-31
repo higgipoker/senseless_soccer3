@@ -8,6 +8,7 @@
 #include <sstream>
 #include <thread>
 
+#include "Engine/EntityFactory.h"
 #include "Ball/Ball.hpp"
 #include "Ball/BallSprite.hpp"
 #include "Controls/Joysticker.hpp"
@@ -15,7 +16,7 @@
 #include "Engine/GameEngine.hpp"
 #include "Engine/ProgressBar.hpp"
 #include "Engine/Texture.hpp"
-#include "Engine/Types.hpp"
+#include <memory>
 #include "Game/Game.hpp"
 #include "Match/Match.hpp"
 #include "Pitch/MiniMapSprite.h"
@@ -24,6 +25,7 @@
 #include "Player/PlayerSprite.hpp"
 #include "Team/Team.hpp"
 #include "Team/TeamFactory.hpp"
+#include "Team/PositionFactory.h"
 //
 //
 //
@@ -48,30 +50,20 @@ using namespace Senseless;
 //
 //
 //
-template <class T>
-std::vector<T> join_vectors(const std::vector<T> &_v1, const std::vector<T> &_v2) {
-    std::vector<T> v3;
-    v3.reserve(_v1.size() + _v2.size());
-    v3.insert(v3.end(), _v1.begin(), _v1.end());
-    v3.insert(v3.end(), _v2.begin(), _v2.end());
-    return v3;
-}
-//
-//
-//
 int main(int argc, char **args) {
     //
     // thread test
     //
-    bool                                 running     = true;
-    const int                            num_threads = 10;
-    std::array<std::thread, num_threads> threads;
-    for (int i = 0; i < num_threads; ++i) {
-        threads.at(i) = std::thread(threadCallback, i + 1, &running);
-    }
+    //    bool running     = true;
+    //    const int num_threads = 10;
+    //    std::array<std::thread, num_threads> threads;
+    //    for (int i = 0; i < num_threads; ++i) {
+    //        threads.at(i) = std::thread(threadCallback, i + 1, &running);
+    //    }
     //
     // game resources
     //
+    EntityFactory entity_factory;
     WorkingFolder working_folder;
     Folder        graphics_folder(working_folder.getPath() + "/gfx");
     Folder        data_folder(working_folder.getPath() + "/data");
@@ -79,30 +71,52 @@ int main(int argc, char **args) {
     // engine
     //
     sf::IntRect wnd_size{0, 0, 1280, 720};
-    GameEngine  engine("senseless soccer", wnd_size.width, wnd_size.height);
+    Camera &    camera = entity_factory.newCamera(wnd_size.width, wnd_size.height);
+    GameEngine  engine(camera, "senseless soccer", wnd_size.width, wnd_size.height);
     //
     // pitch
     //
-    Pitch pitch (graphics_folder.getPath(true) + "grass_checked.png");
+    Pitch &pitch = entity_factory.newPitch(graphics_folder.getPath(true) + "grass_checked.png");
     engine.addEntity(pitch, engine.getBackgroundLayer());
-    UniquePtr<MiniMap> minimap{std::make_unique<MiniMap>()};
-    minimap->movable.position = {20, 20};
-    static_cast<MiniMapSprite *>(&minimap->getSprite())->init(pitch.getDrawDimensions());
-    minimap->name = "mini map";
-    engine.addEntity(*minimap, engine.getHudLayer());
-    minimap->movable.position = {10, 10};
     //
     // teams
     //
     Team team1 = TeamFactory::makeDefaultHomeTeam("Team1");
     Team team2 = TeamFactory::makeDefaultAwayTeam("Team2");
     //
-    // match
+    // match and ball
     //
     Match match(pitch, team1, team2);
+    Ball &ball = entity_factory.newBall(match.getMatchTexture());
+    ball.renderable.sprite->setPerspectivizable(true);
+    ball.name = "Ball";
+    match.setBall(ball);
     engine.getDebugUI().gamestate = &gamestate;
-    // match.getAwayTeam().addDefaultPlayers(match.getHomeTeam());
-    match.getHomeTeam().addDefaultPlayers(match.getAwayTeam());
+    //
+    // mini map
+    //
+    MiniMap &minimap         = entity_factory.newMiniMap(team1, team2, ball, pitch, engine.getMainCamera());
+    minimap.name             = "mini map";
+    minimap.movable.position = {10, 10};
+    engine.addEntity(minimap, engine.getHudLayer());
+
+    // add players to team 1
+    PositionFactory positions;
+    auto            right_center_forward = positions.newCenterForward(pitch, team1, team2);
+    right_center_forward->applyModifier(PositionModifier::Right);
+    right_center_forward->name = "Right Center Forward";
+    Player &player             = entity_factory.newPlayer(match.getMatchTexture(), TeamStrip::Home);
+    player.match               = &match;
+    player.my_team             = &team1;
+    player.other_team          = &team2;
+    TeamData td;
+    td.shirt_number = 10;
+    player.name     = right_center_forward->name;
+    player.setTeamData(td);
+    player.setPlayingPosition(std::move(right_center_forward));
+    player.movable.position = pitch.toScreenSpace({0, pitch.getDimensions().halfway_line.getPosition().y});
+    team1.addPlayer(&player);
+    team1.goToSetPiecePositions(Situation::KickOff);
     //
     // gamestate
     //
@@ -111,7 +125,7 @@ int main(int argc, char **args) {
     gamestate.away_team = &match.getAwayTeam();
     gamestate.ball      = &match.getBall();
     gamestate.pitch     = &match.getPitch();
-    gamestate.minimap   = minimap.get();
+    gamestate.minimap   = &minimap;
     //
     // set up engine with entities
     //
@@ -128,9 +142,7 @@ int main(int argc, char **args) {
     //  }
 
     // puts the ball on the center spot
-    gamestate.ball->movable.position = gamestate.pitch->toScreenSpace(
-        {gamestate.pitch->getDimensions().center_spot.getCenter().x,
-         gamestate.pitch->getDimensions().center_spot.getCenter().y});
+    gamestate.ball->movable.position = gamestate.pitch->toScreenSpace({gamestate.pitch->getDimensions().center_spot.getCenter().x, gamestate.pitch->getDimensions().center_spot.getCenter().y});
 
     engine.addEntity(*gamestate.ball, engine.getDefaultLayer());
     engine.getMainCamera().follow(*gamestate.ball);
@@ -155,30 +167,13 @@ int main(int argc, char **args) {
     engine.getMainCamera().setWorldRect(world);
 
     while (engine.isRunning()) {
-        // updates renderable and movable aspects
         engine.step();
-        // updates the match, players, ball etc
         match.step();
-        // tmp
-        auto positions = join_vectors(gamestate.home_team->getPlayerPositions(),
-                                      gamestate.away_team->getPlayerPositions());
-
-
-        Vector3 camera_position = gamestate.pitch->toPitchSpace(engine.getMainCamera().movable.position);
-        sf::RectangleShape cam;
-        cam.setSize(engine.getMainCamera().getRect().getSize());
-        cam.setPosition(camera_position.toSfVector());
-
-        static_cast<MiniMapSprite *>(gamestate.minimap->renderable.sprite.get())
-            ->update(
-                positions, gamestate.pitch->toPitchSpace(match.getBall().movable.position), cam);
-        //gamestate.minimap->update();
-        // joysticker.update();
     }
-    running = false;
-    for (int i = 0; i < num_threads; ++i) {
-        threads.at(i).join();
-    }
+    //    running = false;
+    //    for (int i = 0; i < num_threads; ++i) {
+    //        threads.at(i).join();
+    //    }
 
     if (argc) {
         std::cout << args[0] << " exited normally" << std::endl;

@@ -14,8 +14,7 @@ namespace Senseless {
 // *                                                                         *
 // ***************************************************************************
 class Camera : public Entity, public Controllable {
-    public:
-                        Camera          (float in_viewport_width, float in_viewport_height);
+    public:                        
     void                handleInput     () override;
     void                update          (const float in_dt) override;
     void                follow          (Entity &in_entity);
@@ -30,6 +29,11 @@ class Camera : public Entity, public Controllable {
     sf::FloatRect       world;
     Entity*             following = nullptr;
     sf::CircleShape     collider;
+
+   private:
+   Camera          (float in_viewport_width, float in_viewport_height);
+   public:
+    friend class EntityFactory;
 };
 
 }  // namespace Senseless

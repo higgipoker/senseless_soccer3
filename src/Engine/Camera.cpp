@@ -50,6 +50,10 @@ void Camera::follow(Entity &in_entity) {
 void Camera::update(const float in_dt) {
     Entity::update(in_dt);
     if (following) {
+        movable.position.x = following->movable.position.x;
+        movable.position.y = following->movable.position.y;
+        view.setCenter(movable.position.x, movable.position.y);
+
     }
 
     // constrain to world rect

@@ -21,17 +21,9 @@ inline std::map<Buttons, sf::Keyboard::Key> keymap{
 
 class Keyboard : public InputDevice {
  public:
-  //
-  //
-  //
   Keyboard() = default;
-  //
-  //
-  //
   ~Keyboard() = default;
-  //
-  //
-  //
+
   void update() override;
 };
 }  // namespace Senseless

@@ -363,6 +363,14 @@ bool Vector3::isMovingTowards(Vector3 testPoint, Vector3 objectVelocity) const {
 //
 //
 //
+bool Vector3::isMovingTowards(const Vector3 pos, const Vector3 vel, const Vector3 test_point){
+    Vector3 to_point = test_point - pos;
+    float dot = to_point.dotProduct(vel);
+    return dot > 0;
+}
+//
+//
+//
 void Vector3::fromSfVector(const sf::Vector2f &from) {
   this->x = from.x;
   this->y = from.y;

@@ -1,6 +1,6 @@
 #pragma once
 #include "Engine/BaseFactory.hpp"
-#include "Engine/Types.hpp"
+#include <memory>
 #include "Team/KitFactory.hpp"
 namespace Senseless {
 //

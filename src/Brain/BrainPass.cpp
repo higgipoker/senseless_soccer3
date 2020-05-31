@@ -17,7 +17,7 @@ BrainPass::BrainPass(Brain& in_brain) : BrainState(in_brain) {
 //
 void BrainPass::start() {
     ticks = 0;
-    if (brain.player.short_pass_candidates.size()) {
+    if (!brain.player.short_pass_candidates.empty()) {
         receiver = brain.player.short_pass_candidates[0];
     }
 }

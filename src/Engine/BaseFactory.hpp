@@ -7,7 +7,6 @@ namespace Senseless {
 class BaseFactory {
  public:
  protected:
-  WorkingFolder working_folder;
-  Folder graphics_folder{working_folder.getPath() + "/gfx"};
+  static WorkingFolder working_folder;
 };
 }  // namespace Senseless

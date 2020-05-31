@@ -19,7 +19,7 @@ class Entity {
     // -----------------------------------------------------------------------
     // functions
     // -----------------------------------------------------------------------
-                    Entity      (UniquePtr<Sprite> in_sprite, UniquePtr<Sprite> in_shadow);
+    virtual        ~Entity      (){};
     virtual void    update      (const float in_dt);
 
     // -----------------------------------------------------------------------
@@ -35,6 +35,12 @@ class Entity {
     // -----------------------------------------------------------------------
     sf::RectangleShape xray;
     sf::RectangleShape yray;
+
+   protected:
+    // -----------------------------------------------------------------------
+    // force all entities to be acquired through the factory
+    // -----------------------------------------------------------------------
+    Entity      (std::unique_ptr<Sprite> in_sprite, std::unique_ptr<Sprite> in_shadow);
 };
 
 }  // namespace Senseless
