@@ -40,7 +40,7 @@ Player::Player(std::unique_ptr<PlayerSprite> in_sprite, std::unique_ptr<PlayerSp
       player_shadow(static_cast<PlayerSprite &>(*renderable.shadow)) {
     type = EntityType::Player;
     feet.setRadius(4.0F);
-    control.setRadius(14);
+    control.setRadius(16);
     speed         = RunningSpeed::Fast;
     current_speed = run_speeds[speed];
 
@@ -50,14 +50,14 @@ Player::Player(std::unique_ptr<PlayerSprite> in_sprite, std::unique_ptr<PlayerSp
     control.setOutlineThickness(1);
     control.setOutlineColor(Debug::defaultDiagnosticsColor());
     ++instances;
-    std::cout << instances << " players" << std::endl;
+    //std::cout << instances << " players" << std::endl;
 }
 //
 //
 //
 Player::~Player() {
     --instances;
-    std::cout << instances << " players" << std::endl;
+    //std::cout << instances << " players" << std::endl;
 }
 //
 //

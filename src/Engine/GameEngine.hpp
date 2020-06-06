@@ -42,7 +42,7 @@ struct RenderLayer {
 // ***************************************************************************
 class GameEngine {
  public:
-  GameEngine(Camera &in_camera, const std::string &in_window_title = "Untitled",
+  GameEngine(const std::string &in_window_title = "Untitled",
              float in_window_width = 800, float in_window_height = 600,
              int in_flags = sf::Style::Default, bool in_fullscreen = false);
   ~GameEngine();
@@ -52,6 +52,7 @@ class GameEngine {
   void addControllable(Controllable &in_controllable) noexcept;
   void addEntity(Entity &in_entity,
                  layer_id in_layer_id = RenderLayer::INVALID_LAYER) noexcept;
+  void remEntity(Entity &in_entity);
   bool isRunning() const noexcept;
   const sf::RenderTarget &getRenderTarget() const noexcept;
   Camera &getMainCamera() noexcept;
@@ -62,6 +63,17 @@ class GameEngine {
   const Keyboard &getDefaultKeyboard() const noexcept;
   Gamepad &getDefaultGamepad() noexcept;
   Debug &getDebugUI() noexcept { return debug_gui; }
+  void addCamera(Camera &in_camera){
+      remEntity(default_camera);
+      camera = &in_camera;
+      addEntity(*camera);
+  }
+  void removeCamera(){
+      remEntity(*camera);
+      camera = &default_camera;
+      addEntity(default_camera);
+  }
+  void reset();
   /// tmp
   int frame_counter = 0;
 
@@ -69,7 +81,8 @@ class GameEngine {
   Window window;
   Keyboard default_keyboard;
   Gamepad gamepad1;
-  Camera &camera;
+  Camera default_camera{800,600};
+  Camera *camera = &default_camera;
   Debug debug_gui;
   Picker picker;
   std::vector<RenderLayer> render_layers;

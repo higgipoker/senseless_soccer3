@@ -20,6 +20,7 @@ Match::Match(float in_window_width, float in_window_height, const Kit &in_home_k
     Folder        graphics_folder(working_folder.getPath() + "/gfx");
 
     camera = std::make_unique<Camera>(in_window_width, in_window_height);
+    camera->name = "Match Camera";
     camera->getHudView().setSize(in_window_width, in_window_height);
     camera->getHudView().setCenter(in_window_width / 2, in_window_height / 2);
     camera->setWorldRect(world);
@@ -84,12 +85,14 @@ Match::Match(float in_window_width, float in_window_height, const Kit &in_home_k
     ball->movable.position.z = 50;
     camera->follow(*ball);
 
-    home_team->setAttackingGoal(Direction::North);
+    home_team->attacking_goal = (Direction::North);
+    home_team->defending_goal = (Direction::South);
     home_team->gameplan.defensive_line_height = DefensiveLineType::Normal;
     home_team->gameplan.defensive_width_type  = DefensivewidthType::Normal;
     home_team->setAttackingState(AttackingState::Attacking);
 
-    away_team->setAttackingGoal(Direction::South);
+    away_team->attacking_goal = (Direction::South);
+    away_team->defending_goal = (Direction::North);
     away_team->gameplan.defensive_line_height = DefensiveLineType::Normal;
     away_team->gameplan.defensive_width_type  = DefensivewidthType::Normal;
     away_team->setAttackingState(AttackingState::Defending);

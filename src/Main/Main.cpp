@@ -14,36 +14,96 @@
 #include <sstream>
 #include <thread>
 using namespace Senseless;
+enum class GameState { Main_Menu, Load_Match, Match, Unload_Match };
+bool      loadMatch();
+bool      unloadMatch();
+GameState doMainMenu(void);
+
+GameEngine engine("senseless soccer", wnd_size.width, wnd_size.height);
+Game gamestate;
+std::unique_ptr<Match> match;
 //
 //
 //
 int main() {
     srand(static_cast<unsigned int>(time(nullptr)));
 
-    std::unique_ptr<Match>      match  = std::make_unique<Match>(wnd_size.width, wnd_size.height, KitFactory::makeDefaultRedKit(), KitFactory::makeDefaultBlueKit());
-    std::unique_ptr<GameEngine> engine = std::make_unique<GameEngine>(match->getCamera(), "senseless soccer", wnd_size.width, wnd_size.height);        
 
-    GameState gamestate(*match, match->getHomeTeam(), match->getAwayTeam(), match->getBall(), match->getPitch(), match->getMinimap());
-    Entity::gamestate              = &gamestate;
-    engine->getDebugUI().gamestate = &gamestate;    
 
-    // add entities to engine
-    engine->addEntity(match->getCamera());
-    engine->addEntity(match->getPitch(), engine->getBackgroundLayer());
-    engine->addEntity(match->getMinimap(), engine->getHudLayer());
-    engine->addEntity(match->getBall(), engine->getDefaultLayer());
-    for (auto &player : match->getHomeTeam().players) {
-        engine->addEntity(*player);
-    }
-    for (auto &player : match->getAwayTeam().players) {
-        engine->addEntity(*player);
-    }
-    match->getHomeTeam().goToSetPiecePositions(Situation::KickOff);
-    
     // main loop
-    while (engine->isRunning()) {
-        match->step();
-        engine->step();
+    GameState state = GameState::Main_Menu;
+    while (engine.isRunning()) {
+        switch (state) {
+            case GameState::Main_Menu:
+                state = doMainMenu();
+                break;
+            case GameState::Load_Match:
+                match = std::make_unique<Match>(wnd_size.width, wnd_size.height, KitFactory::makeDefaultRedKit(), KitFactory::makeDefaultBlueKit());
+                if (loadMatch()) {
+                    state = GameState::Match;
+                } else {
+                    // oops
+                }
+                break;
+            case GameState::Match:
+                match->step();
+                if (match->finished()) {
+                    state = GameState::Unload_Match;
+                }
+                break;
+
+            case GameState::Unload_Match:
+                if (unloadMatch()) {
+                    match.reset();
+                    state = GameState::Main_Menu;
+                } else {
+                    // oops
+                }
+                break;
+        }
+        engine.step();
     }
     return 0;
+}
+//
+//
+//
+GameState doMainMenu() {
+    GameState state = GameState::Main_Menu;
+    while (state == GameState::Main_Menu) {
+        state = GameState::Load_Match;
+    }
+    // this would be something selected from the menu
+    return state;
+}
+//
+//
+//
+bool loadMatch() {
+    gamestate.init(*match, match->getHomeTeam(), match->getAwayTeam(), match->getBall(), match->getPitch(), match->getMinimap());
+    Entity::gamestate             = &gamestate;
+    engine.getDebugUI().gamestate = &gamestate;
+
+    // add entities to engine
+    engine.addCamera(match->getCamera());
+    engine.addEntity(match->getPitch(), engine.getBackgroundLayer());
+    engine.addEntity(match->getMinimap(), engine.getHudLayer());
+    engine.addEntity(match->getBall(), engine.getDefaultLayer());
+    for (auto &player : match->getHomeTeam().players) {
+        engine.addEntity(*player);
+    }
+    for (auto &player : match->getAwayTeam().players) {
+        engine.addEntity(*player);
+    }
+    match->getHomeTeam().goToSetPiecePositions(Situation::KickOff);
+    return true;
+}
+//
+//d
+//
+bool unloadMatch() {
+    std::cout << std::endl;
+    engine.reset();
+    gamestate.reset();
+    return true;
 }

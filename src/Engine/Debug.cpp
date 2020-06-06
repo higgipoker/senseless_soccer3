@@ -27,7 +27,7 @@ int       Debug::attacking_team        = 0;
 int Debug::brainstate = static_cast<int>(brain_state::Idle);
 
 int        Debug::active_team = 0;
-GameState *Debug::gamestate   = nullptr;
+Game *Debug::gamestate   = nullptr;
 //
 //
 //
@@ -183,6 +183,12 @@ void Debug::handleInput(sf::Event &in_event) {
 //
 void Debug::show() {
     show_debug_hud = true;
+}
+//
+//
+//
+void Debug::hide(){
+    show_debug_hud = false;
 }
 //
 //

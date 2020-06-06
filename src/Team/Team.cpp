@@ -33,17 +33,6 @@ Team::~Team() {
 //
 //
 //
-void Team::setAttackingGoal(Direction in_dir) {
-    attacking_goal = in_dir;
-    if (attacking_goal == Direction::North) {
-        defending_goal = Direction::South;
-    } else {
-        defending_goal = Direction::North;
-    }
-}
-//
-//
-//
 void Team::update(const float in_dt) {
     // update players
     std::sort(std::begin(players),

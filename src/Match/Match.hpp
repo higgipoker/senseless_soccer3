@@ -46,6 +46,7 @@ class Match : public Entity {
   Pitch& getPitch() { return *pitch; }
   MiniMap& getMinimap() { return *minimap; }
   void setAttackingTeam(const TeamStrip in_which);
+  bool finished(){return false;}
 
   Player* player_in_possession = nullptr;
 

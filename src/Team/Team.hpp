@@ -33,8 +33,7 @@ class Player;
 class Team : public Entity {
  public:
   Team(const std::string& in_name);
-  ~Team();
-  void setAttackingGoal(Direction in_dir);
+  ~Team();  
   void update(const float in_dt) override;
   void addDefaultPlayers(Team& in_other_team);
   void addPlayer(Player* in_player);
@@ -47,6 +46,8 @@ class Team : public Entity {
   Direction getDefendingGoal() const;
   AttackingState getAttackingState() const;
   std::vector<Vector3> getPlayerPositions();
+  Direction attacking_goal = Direction::South;
+  Direction defending_goal = Direction::North;
 
   std::vector<Player*> players;
 
@@ -60,8 +61,6 @@ class Team : public Entity {
   TeamStrip home_or_away = TeamStrip::Home;
   int loose_ball_ticks = 60;
   Vector3 last_ball_position;
-  Direction attacking_goal = Direction::South;
-  Direction defending_goal = Direction::North;
 
   // debugs
   sf::RectangleShape defensive_line;

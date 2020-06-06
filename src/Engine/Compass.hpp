@@ -38,10 +38,11 @@ class Compass {
   Compass(const Vector3 &vec);
   Vector3 toVector();
   void fromVector(const Vector3 &v);
+  static Vector3 toVector(const Direction in_direction);
   Direction direction = Direction::North;
   static Compass getRandomDirection();
   inline std::string print() { return direction_to_string[direction]; }
   inline bool operator==(const Compass &rhs) { return direction == rhs.direction; }
-  inline bool operator!=(const Compass &rhs) { return direction != rhs.direction; }
+  inline bool operator!=(const Compass &rhs) { return direction != rhs.direction; }  
 };
 }  // namespace Senseless

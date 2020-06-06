@@ -67,6 +67,13 @@ Vector3 Compass::toVector() {
   return v;
 }
 //
+//
+//
+Vector3 Compass::toVector(const Direction in_direction){
+    Compass c{in_direction};
+    return c.toVector();
+}
+//
 //  fromVector
 //
 void Compass::fromVector(const Vector3 &v) {

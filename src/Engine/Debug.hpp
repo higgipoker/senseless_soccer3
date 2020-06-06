@@ -23,6 +23,7 @@ class Debug {
     void handleInput        (sf::Event &in_event);
 
     static void show            ();
+    static void hide            ();
     static void toggle          ();
     static bool showHud         ();
     static bool drawBounds      ();
@@ -33,7 +34,7 @@ class Debug {
 
     static Entity*      picked;
     static Vector3      picked_position_screen;
-    static GameState*   gamestate;
+    static Game*   gamestate;
 
    private:
     sf::RenderWindow&   window;

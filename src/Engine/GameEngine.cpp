@@ -17,9 +17,8 @@ static const bool Overlay     = true;
 //
 //
 //
-GameEngine::GameEngine(Camera &in_camera, const std::string &in_window_title, float in_window_width, float in_window_height, int in_flags, bool in_fullscreen)
+GameEngine::GameEngine(const std::string &in_window_title, float in_window_width, float in_window_height, int in_flags, bool in_fullscreen)
     : window(in_window_title, in_window_width, in_window_height, in_flags, in_fullscreen),
-      camera(in_camera),
       debug_gui(window),
       picker(window, entities, debug_gui) {
     // set up the render layers
@@ -28,6 +27,9 @@ GameEngine::GameEngine(Camera &in_camera, const std::string &in_window_title, fl
     sprite_layer     = addLayer(Sortable);
     hud_layer        = addLayer(NotSortable, Overlay);
 
+    default_camera.name = "Default Camera";
+    addEntity(default_camera);
+
     // for fps
     last_time = clock.getElapsedTime().asSeconds();
 }
@@ -35,6 +37,7 @@ GameEngine::GameEngine(Camera &in_camera, const std::string &in_window_title, fl
 //
 //
 GameEngine::~GameEngine() {
+    Debug::show();
     window.close();
 }
 //
@@ -76,22 +79,22 @@ void GameEngine::step() noexcept {
         }
         // render the layer
         if (layer.overlay) {
-            window.setView(camera.getHudView());
+            window.setView(camera->getHudView());
         } else {
-            window.setView(camera.getView());
+            window.setView(camera->getView());
         }
         for (const auto &drawable : layer.sprite_list) {
-            drawable->perspectivize(camera.getHeight());
+            drawable->perspectivize(camera->getHeight());
             drawable->draw(window);
         }
     }
 
     // display debug
     if (Debug::showHud()) {
-        window.setView(camera.getHudView());
+        window.setView(camera->getHudView());
         debug_gui.prep(frame_counter, frametime);
         debug_gui.draw();
-        window.setView(camera.getView());
+        window.setView(camera->getView());
         picker.update();
     }
     window.display();
@@ -136,6 +139,7 @@ void GameEngine::addControllable(Controllable &in_controllable) noexcept {
 //
 //
 void GameEngine::addEntity(Entity &in_entity, layer_id in_layer_id) noexcept {
+    std::cout << "add "  << &in_entity << " ( " << in_entity.name <<")" << std::endl;
     if (in_layer_id == getHudLayer()) {
         in_entity.movable.is_hud = true;
     }
@@ -143,6 +147,19 @@ void GameEngine::addEntity(Entity &in_entity, layer_id in_layer_id) noexcept {
     add_sprite(*in_entity.renderable.sprite, in_layer_id);
     add_sprite(*in_entity.renderable.shadow, shadow_layer);
     entities.push_back(&in_entity);
+}
+//
+//
+//
+void GameEngine::remEntity(Entity &in_entity){
+    std::cout << "rem "  << &in_entity << " ( " << in_entity.name <<")" << std::endl;
+    Sprite* sprite = (in_entity.renderable.sprite.get());
+    Sprite* shadow = (in_entity.renderable.shadow.get());
+    for (auto &layer : render_layers) {
+        layer.sprite_list.erase(std::remove(layer.sprite_list.begin(), layer.sprite_list.end(), sprite), layer.sprite_list.end());
+        layer.sprite_list.erase(std::remove(layer.sprite_list.begin(), layer.sprite_list.end(), shadow), layer.sprite_list.end());
+    }
+    entities.erase(std::remove(entities.begin(), entities.end(), &in_entity), entities.end());
 }
 //
 //
@@ -160,7 +177,7 @@ const sf::RenderTarget &GameEngine::getRenderTarget() const noexcept {
 //
 //
 Camera &GameEngine::getMainCamera() noexcept {
-    return camera;
+    return *camera;
 }
 //
 //
@@ -246,7 +263,9 @@ void GameEngine::poll_input_devices() noexcept {
                 // update the view to the new size of the window
                 // update the view to the new size of the window
                 sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
-                camera.setHudView( sf::View(visibleArea));
+                if(camera){
+                    camera->setHudView( sf::View(visibleArea));
+                }
             } break;
             case sf::Event::LostFocus:
                 break;
@@ -294,5 +313,16 @@ void GameEngine::poll_input_devices() noexcept {
     }
     default_keyboard.update();
     gamepad1.update();
+}
+//
+//
+//
+void GameEngine::reset(){
+    entities.clear();
+    for(auto &layer : render_layers){
+        layer.sprite_list.clear();
+    }
+    camera = &default_camera;
+    addEntity(default_camera);
 }
 }  // namespace Senseless

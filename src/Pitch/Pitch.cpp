@@ -17,6 +17,7 @@ const int BorderLineThickness = 1;
 //
 Pitch::Pitch(const std::string& in_grass_texture) : Entity(std::make_unique<Sprite>(), std::make_unique<Sprite>()){
   type = EntityType::Pitch;
+  name = "pitch";
   draw_dimensions.origin = {100, 100};
   init_bounds();
   init_halfway_line();

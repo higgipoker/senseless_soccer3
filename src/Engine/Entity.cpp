@@ -5,7 +5,7 @@
 #include <cassert>
 #include <iostream>
 namespace Senseless {
-GameState* Entity::gamestate = nullptr;
+Game* Entity::gamestate = nullptr;
 //
 //
 //

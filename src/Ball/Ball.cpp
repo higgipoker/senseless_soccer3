@@ -10,7 +10,7 @@ namespace Senseless {
 //
 //
 Ball::Ball(std::unique_ptr<Sprite> in_sprite, std::unique_ptr<Sprite> in_shadow) : Entity(std::move(in_sprite), std::move(in_shadow)) {
-    radius = 3.F;
+    radius = 4.F;
     collidable.setRadius(radius);
     movable.properties.co_friction   = 0.01F;
     movable.properties.co_bounciness = 0.8F;
