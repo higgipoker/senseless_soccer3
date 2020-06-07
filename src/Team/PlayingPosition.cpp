@@ -100,7 +100,7 @@ Vector3 PlayingPosition::getTargetPosition(const Situation in_situation,
       }
       break;
   }
-  return pitch.toScreenSpace(result);
+  return result;
 }
 //
 //

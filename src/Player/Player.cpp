@@ -10,6 +10,7 @@
 //
 #include <iostream>
 namespace Senseless {
+
 //
 //
 //
@@ -110,7 +111,7 @@ void Player::update(const float in_dt) {
 
     feet.setCenter(movable.position.x, movable.position.y - feet.getRadius());
     control.setCenter(feet.getCenter());
-    distance_from_ball   = Vector3::distance_to(movable.position, gamestate->ball->movable.position);
+    distance_from_ball   = Vector3::distance_to(movable.position, match->ball->movable.position);
     renderable.sprite->z = movable.position.y;
 
 #ifndef NDEBUG
@@ -121,7 +122,7 @@ void Player::update(const float in_dt) {
 //
 //
 void Player::face_ball() {
-    auto direction = Vector3::direction_to(movable.position, gamestate->ball->movable.position);
+    auto direction = Vector3::direction_to(movable.position, match->ball->movable.position);
     direction.roundAngle(45);
     direction.normalizeToUnits();
     Compass to_ball(direction);
@@ -147,7 +148,7 @@ void Player::change_state(const player_state in_state) {
 //
 //
 bool Player::ballInControlRange() {
-    return Collider::contains(control, gamestate->ball->collidable);
+    return Collider::contains(control, match->ball->collidable);
 }
 //
 //
@@ -191,7 +192,7 @@ void Player::kick(const float in_force) {
     Vector3 force = facing.toVector();
     force *= in_force;
     force.z = force.magnitude2d() * 0.2F;
-    gamestate->ball->kick(force);
+    match->ball->kick(force);
 }
 //
 //
@@ -208,7 +209,7 @@ void Player::shortPass(Player &in_receiver) {
 
     Vector3 force = Vector3::direction_to(movable.position, in_receiver.movable.position);
     force.setMagnitude(force_needed);
-    gamestate->ball->kick(force);
+    match->ball->kick(force);
     in_receiver.brain.changeState(brain_state::Retrieve);
 }
 //
@@ -294,7 +295,7 @@ void Player::debug() {
     }
 
     // change color if ball touching feet
-    if (Collider::collides(feet, gamestate->ball->collidable)) {
+    if (Collider::collides(feet, match->ball->collidable)) {
         feet.setFillColor(sf::Color::Green);
     }
 
@@ -327,7 +328,7 @@ void Player::setPlayingPosition(std::unique_ptr<PlayingPosition> in_position) {
 void Player::goToSetPiecePosition(const Situation in_situation, const Direction in_pitch_side) {
     if (auto position = playing_position.get()) {
         brain.changeState(brain_state::Idle);
-        brain.locomotion.seek(position->getTargetPosition(in_situation, *gamestate->ball, in_pitch_side));
+        brain.locomotion.seek(position->getTargetPosition(in_situation, *match->ball, in_pitch_side));
     }
 }
 }  // namespace Senseless

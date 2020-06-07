@@ -20,7 +20,6 @@ bool      unloadMatch();
 GameState doMainMenu(void);
 
 GameEngine engine("senseless soccer", wnd_size.width, wnd_size.height);
-Game gamestate;
 std::unique_ptr<Match> match;
 //
 //
@@ -79,10 +78,9 @@ GameState doMainMenu() {
 //
 //
 //
-bool loadMatch() {
-    gamestate.init(*match, match->getHomeTeam(), match->getAwayTeam(), match->getBall(), match->getPitch(), match->getMinimap());
-    Entity::gamestate             = &gamestate;
-    engine.getDebugUI().gamestate = &gamestate;
+bool loadMatch() {    
+    Entity::match             = match.get();
+    engine.getDebugUI().match = match.get();
 
     // add entities to engine
     engine.addCamera(match->getCamera());
@@ -96,14 +94,14 @@ bool loadMatch() {
         engine.addEntity(*player);
     }
     match->getHomeTeam().goToSetPiecePositions(Situation::KickOff);
+    Player::match = match.get();
     return true;
 }
 //
-//d
+//
 //
 bool unloadMatch() {
     std::cout << std::endl;
-    engine.reset();
-    gamestate.reset();
+    engine.reset();    
     return true;
 }

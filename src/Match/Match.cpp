@@ -50,7 +50,7 @@ Match::Match(float in_window_width, float in_window_height, const Kit &in_home_k
     auto height = home_texture.getSize().y + away_texture.getSize().y + shadow_texture.getSize().y + ball_texture.getSize().y;
 
     match_texture = std::make_unique<sf::RenderTexture>();
-    if (!match_texture->create(width, height)) {
+    if(!match_texture->create(width, height)) {
         std::cout << "Could not create tecture with dimensions " << width << "x" << height << std::endl;
         std::cout << "Max texture dimensions: " << sf::Texture::getMaximumSize() << " x " << sf::Texture::getMaximumSize() << std::endl;
         assert(false);
@@ -81,7 +81,7 @@ Match::Match(float in_window_width, float in_window_height, const Kit &in_home_k
     camera->setHeight(50);
     minimap->movable.position = {10, 10};
 
-    ball->movable.position   = pitch->toScreenSpace({pitch->getDimensions().center_spot.getCenter().x, pitch->getDimensions().center_spot.getCenter().y});
+    ball->movable.position   = {pitch->getPointOfInterest(PitchPointsOfInterest::CenterSpot)};
     ball->movable.position.z = 50;
     camera->follow(*ball);
 
@@ -105,7 +105,7 @@ Match::Match(float in_window_width, float in_window_height, const Kit &in_home_k
     Player &player             = newPlayer(TeamStrip::Home);
     player.name                = right_center_forward->name;
     player.setPlayingPosition(std::move(right_center_forward));
-    player.movable.position = pitch->toScreenSpace({0, pitch->getDimensions().halfway_line.getPosition().y});
+    player.movable.position = {0, pitch->getDimensions().halfway_line.getPosition().y};
     player.my_team          = home_team.get();
     player.other_team       = away_team.get();
 
@@ -148,15 +148,15 @@ void Match::step() {
 //
 void Match::setAttackingTeam(const TeamStrip in_which) {
     auto attacking_team = in_which;
-    switch (attacking_team) {
-        case TeamStrip::Home:
-            gamestate->home_team->setAttackingState(AttackingState::Attacking);
-            gamestate->away_team->setAttackingState(AttackingState::Defending);
-            break;
-        case TeamStrip::Away:
-            gamestate->home_team->setAttackingState(AttackingState::Defending);
-            gamestate->away_team->setAttackingState(AttackingState::Attacking);
-            break;
+    switch(attacking_team) {
+    case TeamStrip::Home:
+        match->home_team->setAttackingState(AttackingState::Attacking);
+        match->away_team->setAttackingState(AttackingState::Defending);
+        break;
+    case TeamStrip::Away:
+        match->home_team->setAttackingState(AttackingState::Defending);
+        match->away_team->setAttackingState(AttackingState::Attacking);
+        break;
     }
 }
 }  // namespace Senseless

@@ -7,7 +7,7 @@
 #include "Sprite.hpp"
 #include "Types.hpp"
 namespace Senseless {
-struct Game;
+class Match;
 static const float SHADOW_OFFSET  = 2;
 static const bool  DRAW_RAYS = false;
 
@@ -37,7 +37,7 @@ class Entity {
     sf::RectangleShape xray;
     sf::RectangleShape yray;
 
-    static Game *gamestate;
+    static Match *match;
 
    protected:
     // -----------------------------------------------------------------------

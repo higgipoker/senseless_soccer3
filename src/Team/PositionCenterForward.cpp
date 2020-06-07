@@ -75,7 +75,7 @@ Vector3 PositionCenterForward::getPlayingPosition(const Ball &in_ball) {
   Vector3 result;
   float middle = pitch.getDimensions().bounds.getSize().x / 2;
 
-  Vector3 ball = pitch.toPitchSpace(in_ball.movable.position);
+  Vector3 ball = in_ball.movable.position;
   // rotate perception of ball if attacking towards south
   if (my_team.getAttackingGoal() == Direction::South) {
     ball.rotate(180, pitch.getDimensions().bounds.getSize().x / 2,

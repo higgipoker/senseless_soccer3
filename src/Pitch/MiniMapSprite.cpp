@@ -5,19 +5,11 @@
 namespace Senseless {
 MiniMapSprite::MiniMapSprite() {
     int i = 0;
-    for (auto& player : players) {
-        ++i;
-        player.position = {0, 0};
-        if (i < 10) {
-            player.color = sf::Color::Red;
-        } else {
-            player.color = sf::Color::Blue;
-        }
-    }
+
     i = 0;
-    for (auto& circle : circles) {
+    for(auto &circle : players) {
         ++i;
-        if (i < 10) {
+        if(i < 10) {
             circle.setRadius(30);
             circle.setFillColor({255, 0, 0, 100});
         } else {
@@ -33,7 +25,7 @@ MiniMapSprite::MiniMapSprite() {
 //
 //
 //
-void MiniMapSprite::init(const PitchDrawDimensions& in_dimensions) {
+void MiniMapSprite::init(const PitchDrawShapes &in_dimensions) {
     // bounds
     // _
     bounds[0].position = {2, 0};
@@ -52,65 +44,63 @@ void MiniMapSprite::init(const PitchDrawDimensions& in_dimensions) {
     bounds[7].position = {2, 0};
 
     {
-        // south 6 box
+        // north 6 box
         // |
-        south_6_box[0] = {{in_dimensions.box_6.getPosition().x, in_dimensions.box_6.getPosition().y + in_dimensions.box_6.getSize().y}};
-        south_6_box[1] = {{in_dimensions.box_6.getPosition().x, in_dimensions.box_6.getPosition().y}};
+        north_6_box[0] = {{in_dimensions.box_6.getPosition().x, in_dimensions.box_6.getPosition().y}};
+        north_6_box[1] = {{in_dimensions.box_6.getPosition().x, in_dimensions.box_6.getPosition().y + in_dimensions.box_6.getSize().y}};
 
         // _
-        south_6_box[2] = south_6_box[1];
-        south_6_box[3] = {{south_6_box[1].position.x + in_dimensions.box_6.getSize().x, south_6_box[1].position.y}};
+        north_6_box[2] = north_6_box[1];
+        north_6_box[3] = {{north_6_box[1].position.x + in_dimensions.box_6.getSize().x, north_6_box[1].position.y}};
 
         // |
-        south_6_box[4] = south_6_box[3];
-        south_6_box[5] = {{south_6_box[3].position.x, south_6_box[0].position.y}};
+        north_6_box[4] = north_6_box[3];
+        north_6_box[5] = {{north_6_box[3].position.x, north_6_box[0].position.y}};
 
-        north_6_box[0] = south_6_box[0];
-        north_6_box[1] = south_6_box[1];
-        north_6_box[2] = south_6_box[2];
-        north_6_box[3] = south_6_box[3];
-        north_6_box[4] = south_6_box[4];
-        north_6_box[5] = south_6_box[5];
-
+        // south 6 yard box
+        south_6_box[0] = north_6_box[0];
+        south_6_box[1] = north_6_box[1];
+        south_6_box[2] = north_6_box[2];
+        south_6_box[3] = north_6_box[3];
+        south_6_box[4] = north_6_box[4];
+        south_6_box[5] = north_6_box[5];
         const float dis_from_box_to_box = in_dimensions.bounds.getSize().y - (in_dimensions.box_6.getSize().y * 2);
-
-        north_6_box[0].position.y -= (dis_from_box_to_box + in_dimensions.box_6.getSize().y);
-        north_6_box[1].position.y -= (dis_from_box_to_box + in_dimensions.box_6.getSize().y);
-        north_6_box[2].position.y -= dis_from_box_to_box;
-        north_6_box[3].position.y -= dis_from_box_to_box;
-        north_6_box[4].position.y -= (dis_from_box_to_box + in_dimensions.box_6.getSize().y);
-        north_6_box[5].position.y -= (dis_from_box_to_box + in_dimensions.box_6.getSize().y);
+        south_6_box[0].position.y += (dis_from_box_to_box + in_dimensions.box_6.getSize().y);
+        south_6_box[1].position.y += (dis_from_box_to_box + in_dimensions.box_6.getSize().y);
+        south_6_box[2].position.y += dis_from_box_to_box;
+        south_6_box[3].position.y += dis_from_box_to_box;
+        south_6_box[4].position.y += (dis_from_box_to_box + in_dimensions.box_6.getSize().y);
+        south_6_box[5].position.y += (dis_from_box_to_box + in_dimensions.box_6.getSize().y);
     }
 
     {
-        // south 18 box
+        // north 18 box
         // |
-        south_18_box[0] = {{in_dimensions.box_18.getPosition().x, in_dimensions.box_18.getPosition().y + in_dimensions.box_18.getSize().y}};
-        south_18_box[1] = {{in_dimensions.box_18.getPosition().x, in_dimensions.box_18.getPosition().y}};
+        north_18_box[0] = {{in_dimensions.box_18.getPosition().x, in_dimensions.box_18.getPosition().y}};
+        north_18_box[1] = {{in_dimensions.box_18.getPosition().x, in_dimensions.box_18.getPosition().y + in_dimensions.box_18.getSize().y}};
 
-        //    // _
-        south_18_box[2] = south_18_box[1];
-        south_18_box[3] = {{south_18_box[1].position.x + in_dimensions.box_18.getSize().x, south_18_box[1].position.y}};
+        // _
+        north_18_box[2] = north_18_box[1];
+        north_18_box[3] = {{north_18_box[1].position.x + in_dimensions.box_18.getSize().x, north_18_box[1].position.y}};
 
-        //    // |
-        south_18_box[4] = south_18_box[3];
-        south_18_box[5] = {{south_18_box[3].position.x, south_18_box[0].position.y}};
+        // |
+        north_18_box[4] = north_18_box[3];
+        north_18_box[5] = {{north_18_box[3].position.x, north_18_box[0].position.y}};
 
-        north_18_box[0] = south_18_box[0];
-        north_18_box[1] = south_18_box[1];
-        north_18_box[2] = south_18_box[2];
-        north_18_box[3] = south_18_box[3];
-        north_18_box[4] = south_18_box[4];
-        north_18_box[5] = south_18_box[5];
-
+        // south 18 yard box
+        south_18_box[0] = north_18_box[0];
+        south_18_box[1] = north_18_box[1];
+        south_18_box[2] = north_18_box[2];
+        south_18_box[3] = north_18_box[3];
+        south_18_box[4] = north_18_box[4];
+        south_18_box[5] = north_18_box[5];
         const float dis_from_box_to_box = in_dimensions.bounds.getSize().y - (in_dimensions.box_18.getSize().y * 2);
-
-        north_18_box[0].position.y -= (dis_from_box_to_box + in_dimensions.box_18.getSize().y);
-        north_18_box[1].position.y -= (dis_from_box_to_box + in_dimensions.box_18.getSize().y);
-        north_18_box[2].position.y -= dis_from_box_to_box;
-        north_18_box[3].position.y -= dis_from_box_to_box;
-        north_18_box[4].position.y -= (dis_from_box_to_box + in_dimensions.box_18.getSize().y);
-        north_18_box[5].position.y -= (dis_from_box_to_box + in_dimensions.box_18.getSize().y);
+        south_18_box[0].position.y += (dis_from_box_to_box + in_dimensions.box_18.getSize().y);
+        south_18_box[1].position.y += (dis_from_box_to_box + in_dimensions.box_18.getSize().y);
+        south_18_box[2].position.y += dis_from_box_to_box;
+        south_18_box[3].position.y += dis_from_box_to_box;
+        south_18_box[4].position.y += (dis_from_box_to_box + in_dimensions.box_18.getSize().y);
+        south_18_box[5].position.y += (dis_from_box_to_box + in_dimensions.box_18.getSize().y);
     }
 
     halfwayline[0] = {{bounds[0].position.x, bounds[3].position.y / 2}};
@@ -125,69 +115,67 @@ void MiniMapSprite::init(const PitchDrawDimensions& in_dimensions) {
 
     ////////////////////////////////////////////
     vlines = {// bounds
-              bounds[0],
-              bounds[1],
-              bounds[2],
-              bounds[3],
-              bounds[4],
-              bounds[5],
-              bounds[6],
-              bounds[7],
+        bounds[0],
+        bounds[1],
+        bounds[2],
+        bounds[3],
+        bounds[4],
+        bounds[5],
+        bounds[6],
+        bounds[7],
 
-              // south 6 yard box
-              south_6_box[0],
-              south_6_box[1],
-              south_6_box[2],
-              south_6_box[3],
-              south_6_box[4],
-              south_6_box[5],
+        // south 6 yard box
+        south_6_box[0],
+        south_6_box[1],
+        south_6_box[2],
+        south_6_box[3],
+        south_6_box[4],
+        south_6_box[5],
 
-              // north 6 yard box
-              north_6_box[0],
-              north_6_box[1],
-              north_6_box[2],
-              north_6_box[3],
-              north_6_box[4],
-              north_6_box[5],
+        // north 6 yard box
+        north_6_box[0],
+        north_6_box[1],
+        north_6_box[2],
+        north_6_box[3],
+        north_6_box[4],
+        north_6_box[5],
 
-              // south 18 yard box
-              south_18_box[0],
-              south_18_box[1],
-              south_18_box[2],
-              south_18_box[3],
-              south_18_box[4],
-              south_18_box[5],
+        // south 18 yard box
+        south_18_box[0],
+        south_18_box[1],
+        south_18_box[2],
+        south_18_box[3],
+        south_18_box[4],
+        south_18_box[5],
 
-              // north 18 yard box
-              north_18_box[0],
-              north_18_box[1],
-              north_18_box[2],
-              north_18_box[3],
-              north_18_box[4],
-              north_18_box[5],
+        // north 18 yard box
+        north_18_box[0],
+        north_18_box[1],
+        north_18_box[2],
+        north_18_box[3],
+        north_18_box[4],
+        north_18_box[5],
 
-              // halfway line
-              halfwayline[0],
-              halfwayline[1]
+        // halfway line
+        halfwayline[0],
+        halfwayline[1]
 
     };
-    for (auto& it : vlines) {
+    for(auto &it : vlines) {
         it.color = {255, 255, 255, 100};
     }
 }
 //
 //
 //
-void MiniMapSprite::update(const std::vector<Vector3>& in_positions, const Vector3 in_ball_position, const sf::RectangleShape in_camera) {
+void MiniMapSprite::update(const Vector3 in_pitch_position, const std::vector<Vector3> &in_positions, const Vector3 in_ball_position, const sf::RectangleShape in_camera) {
     size_t i = 0;
-    for (auto& p : in_positions) {
-        players[i].position = p.toSfVector();
-        circles[i].setCenter(p.toSfVector());
+    for(auto &p : in_positions) {
+        players[i].setCenter(p.toSfVector() - in_pitch_position.toSfVector());
         ++i;
     }
-    ball.setCenter(in_ball_position.toSfVector());
+    ball.setCenter(in_ball_position.toSfVector() - in_pitch_position.toSfVector());
     camera = in_camera;
-    //camera.setCenter(in_camera.getPosition());
 }
 //
 //
@@ -198,17 +186,21 @@ sf::FloatRect MiniMapSprite::getGlobalBounds() const {
 //
 //
 //
-void MiniMapSprite::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-    {  // background
+void MiniMapSprite::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+    {
+        // background
         sf::RectangleShape bg;
-        bg.setPosition(getGlobalBounds().left, getGlobalBounds().top);
         bg.setSize({getGlobalBounds().width, getGlobalBounds().height});
         bg.setFillColor({0, 0, 0, 100});
         bg.setOutlineThickness(0);
-        target.draw(bg);
+        sf::Transform transform;
+        transform.translate(getPosition());
+        states.transform = transform;
+        target.draw(bg, transform);
     }
 
-    {  // lines
+    {
+        // lines
         sf::Transform transform;
         transform.translate(getPosition());
         transform.scale(getScale().x, getScale().x);
@@ -216,16 +208,17 @@ void MiniMapSprite::draw(sf::RenderTarget& target, sf::RenderStates states) cons
         target.draw(vlines.data(), vlines.size(), sf::Lines, states);
     }
 
-    {
-        // center circle
-        sf::Transform transform;
-        transform.translate(getPosition());
-        transform.scale(getScale().x, getScale().x);
-        states.transform = transform;
-        target.draw(center_circle, states);
-    }
+//     {
+//         // center circle
+//         sf::Transform transform;
+//         transform.translate(getPosition());
+//         transform.scale(getScale().x, getScale().x);
+//         states.transform = transform;
+//         target.draw(center_circle, states);
+//     }
 
-    {  // ball
+    {
+        // ball
         sf::Transform transform;
         transform.translate(getPosition());
         transform.scale(getScale().x, getScale().x);
@@ -233,16 +226,18 @@ void MiniMapSprite::draw(sf::RenderTarget& target, sf::RenderStates states) cons
         target.draw(ball, states);
     }
 
-    {  // players
+    {
+        // players
         sf::Transform transform;
         transform.translate(getPosition());
         transform.scale(getScale().x, getScale().x);
         states.transform = transform;
-        for (size_t i = 0; i < circles.size(); ++i) {
-            target.draw(circles.at(i), states);
+        for(size_t i = 0; i < players.size(); ++i) {
+            target.draw(players.at(i), states);
         }
     }
-    {  // camera
+    {
+        // camera
         sf::RectangleShape cam = camera;
         cam.setFillColor({255, 255, 255, 20});
         cam.setOutlineColor(sf::Color::Black);

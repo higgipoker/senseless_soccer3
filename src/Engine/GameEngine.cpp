@@ -112,7 +112,7 @@ int GameEngine::addLayer(const bool in_sortable, const bool in_overlay) noexcept
 //
 void GameEngine::add_sprite(Sprite &in_sprite, layer_id in_layer_id) noexcept {
     if (render_layers.empty()) {
-        std::cout << "addDrawable> no layers" << std::endl;
+            std::cout << "add_sprite> no layers" << std::endl;
         return;
     }
     if (in_layer_id == RenderLayer::INVALID_LAYER) {
@@ -125,7 +125,7 @@ void GameEngine::add_sprite(Sprite &in_sprite, layer_id in_layer_id) noexcept {
             render_layers.at(in_layer_id).sprite_list.push_back(&in_sprite);
 
         } else {
-            std::cout << "addRenderable> Tried to add to non existent layer: " << in_layer_id << std::endl;
+            std::cout << "add_sprite> Tried to add to non existent layer: " << in_layer_id << std::endl;
         }
     }
 }
@@ -138,8 +138,7 @@ void GameEngine::addControllable(Controllable &in_controllable) noexcept {
 //
 //
 //
-void GameEngine::addEntity(Entity &in_entity, layer_id in_layer_id) noexcept {
-    std::cout << "add "  << &in_entity << " ( " << in_entity.name <<")" << std::endl;
+void GameEngine::addEntity(Entity &in_entity, layer_id in_layer_id) noexcept {    
     if (in_layer_id == getHudLayer()) {
         in_entity.movable.is_hud = true;
     }
@@ -151,8 +150,7 @@ void GameEngine::addEntity(Entity &in_entity, layer_id in_layer_id) noexcept {
 //
 //
 //
-void GameEngine::remEntity(Entity &in_entity){
-    std::cout << "rem "  << &in_entity << " ( " << in_entity.name <<")" << std::endl;
+void GameEngine::remEntity(Entity &in_entity){    
     Sprite* sprite = (in_entity.renderable.sprite.get());
     Sprite* shadow = (in_entity.renderable.shadow.get());
     for (auto &layer : render_layers) {

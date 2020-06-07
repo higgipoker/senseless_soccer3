@@ -4,7 +4,7 @@
 #include "Match/Match.hpp"
 #include "Pitch/Pitch.hpp"
 
-#include "Game/Game.hpp"
+#include "Match/Match.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
@@ -34,7 +34,7 @@ class Debug {
 
     static Entity*      picked;
     static Vector3      picked_position_screen;
-    static Game*   gamestate;
+    static Match*   match;
 
    private:
     sf::RenderWindow&   window;

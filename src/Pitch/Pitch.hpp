@@ -6,28 +6,28 @@
 //
 namespace Senseless {
 class Pitch : public Entity {
- public:
-  Pitch(const std::string &in_grass_texture);
-  void update(const float in_dt) override;
-  Vector3 toScreenSpace(const Vector3 &in_vector) const;
-  Vector3 toPitchSpace(const Vector3 &in_vector) const;
-  const PitchDrawDimensions &getDimensions() const { return draw_dimensions; }
-  Vector3 getPointOfInterest(const PitchPointsOfInterest in_which,
-                             const PitchPointOfInterestSide in_side =
-                                 PitchPointOfInterestSide::South) const;
-  PitchDrawDimensions &getDrawDimensions() { return draw_dimensions; };
+public:
+    Pitch(const std::string &in_grass_texture);
 
- private:
-  PitchDrawDimensions draw_dimensions;
-  PitchDimensions dimensions;
+    void                        update(const float in_dt) override;
+    Vector3                     getPointOfInterest(const PitchPointsOfInterest in_which,
+                                                   const PitchPointOfInterestSide in_side = PitchPointOfInterestSide::South) const;
 
-  void init_bounds();
-  void init_6_yard_boxes();
-  void init_18_yard_boxes();
-  void init_center_circle();
-  void init_center_spot();
-  void init_penalty_spots();
-  void init_south_arc();
-  void init_halfway_line();
+    const PitchDrawShapes  &getDimensions() const {
+        return draw_shapes;
+    }
+
+private:
+    PitchDrawShapes draw_shapes;
+    PitchDimensions dimensions;
+
+    void init_bounds();
+    void init_6_yard_boxes();
+    void init_18_yard_boxes();
+    void init_center_circle();
+    void init_center_spot();
+    void init_penalty_spots();
+    void init_penalty_arc();
+    void init_halfway_line();
 };
 }  // namespace Senseless

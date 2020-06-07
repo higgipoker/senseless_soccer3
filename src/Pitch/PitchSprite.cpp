@@ -11,7 +11,7 @@ using namespace Senseless;
 //
 //
 //
-void PitchSprite::init(const PitchDrawDimensions& in_dimensions,
+void PitchSprite::init(const PitchDrawShapes & in_dimensions,
                        const std::string& in_grass_texture) {
   setPosition(in_dimensions.origin.x, in_dimensions.origin.y);
   pitch_texture.create(static_cast<int>(in_dimensions.bounds.getSize().x + 4),

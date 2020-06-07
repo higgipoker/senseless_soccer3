@@ -6,8 +6,8 @@ namespace Senseless {
 //
 bool Window::validVideoMode(unsigned int width, unsigned int height) {
     // search for one that matched the requested width and height
-    for (auto &mode : sf::VideoMode::getFullscreenModes()) {
-        if (mode.width == width && mode.height == height) {
+    for(auto &mode : sf::VideoMode::getFullscreenModes()) {
+        if(mode.width == width && mode.height == height) {
             return true;
         }
     }
@@ -22,7 +22,7 @@ Window::Window(const std::string &title, const int width, const int height, int 
     sf::ContextSettings settings;
     video_mode.width = width;
     video_mode.height = height;
-    if (fullscreen && validVideoMode(video_mode.width, video_mode.height)) {
+    if(fullscreen && validVideoMode(video_mode.width, video_mode.height)) {
         create(video_mode, title, sf::Style::Fullscreen, settings);
     } else {
         video_mode = sf::VideoMode::getDesktopMode();

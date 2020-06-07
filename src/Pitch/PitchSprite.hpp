@@ -17,7 +17,7 @@ class PitchSprite : public Sprite {
   //
   //
   //
-  virtual void init(const PitchDrawDimensions &in_dimensions,
+  virtual void init(const PitchDrawShapes &in_dimensions,
                     const std::string &in_grass_texture = "");
   //
   //

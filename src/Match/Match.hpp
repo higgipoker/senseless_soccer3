@@ -31,38 +31,52 @@ enum class TeamStrip;
 // *                                                                         *
 // ***************************************************************************
 class Match : public Entity {
- public:
-  Match(float in_window_width, float in_window_height, const Kit& in_home_kit,
-        const Kit& in_away_kit);
-  ~Match();
+public:
+    Match(float in_window_width, float in_window_height, const Kit &in_home_kit,
+          const Kit &in_away_kit);
+    ~Match();
 
-  void step();
-  Player& newPlayer(const TeamStrip in_strip);
-  const sf::Texture& getMatchTexture();
-  Camera& getCamera() { return *camera; }
-  Team& getHomeTeam() { return *home_team; }
-  Team& getAwayTeam() { return *away_team; }
-  Ball& getBall() { return *ball; }
-  Pitch& getPitch() { return *pitch; }
-  MiniMap& getMinimap() { return *minimap; }
-  void setAttackingTeam(const TeamStrip in_which);
-  bool finished(){return false;}
+    void step();
+    Player &newPlayer(const TeamStrip in_strip);
+    const sf::Texture &getMatchTexture();
+    Camera &getCamera() {
+        return *camera;
+    }
+    Team &getHomeTeam() {
+        return *home_team;
+    }
+    Team &getAwayTeam() {
+        return *away_team;
+    }
+    Ball &getBall() {
+        return *ball;
+    }
+    Pitch &getPitch() {
+        return *pitch;
+    }
+    MiniMap &getMinimap() {
+        return *minimap;
+    }
+    void setAttackingTeam(const TeamStrip in_which);
+    bool finished() {
+        return false;
+    }
 
-  Player* player_in_possession = nullptr;
+    Player *player_in_possession = nullptr;
 
- protected:
-  std::unique_ptr<Team> home_team;
-  std::unique_ptr<Team> away_team;
-  std::unique_ptr<Ball> ball;
-  std::unique_ptr<Pitch> pitch;
-  std::unique_ptr<MiniMap> minimap;
-  std::unique_ptr<Camera> camera;
-  std::unique_ptr<sf::RenderTexture> match_texture;
+    std::unique_ptr<Team> home_team;
+    std::unique_ptr<Team> away_team;
+    std::unique_ptr<Ball> ball;
+    std::unique_ptr<Pitch> pitch;
+    std::unique_ptr<MiniMap> minimap;
+    std::unique_ptr<Camera> camera;
 
-  std::vector<std::unique_ptr<Player>> players;
+protected:
+    std::unique_ptr<sf::RenderTexture> match_texture;
+    std::vector<std::unique_ptr<Player>> players;
 
-  // debug checking for mem leakst
-  static int instances;
+    // debug checking for mem leakst
+    static int instances;
 };
 
 }  // namespace Senseless

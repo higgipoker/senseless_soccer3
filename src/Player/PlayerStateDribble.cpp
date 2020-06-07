@@ -21,7 +21,7 @@ PlayerStateDribble::PlayerStateDribble(Player &in_player) : PlayerState(in_playe
 //
 //
 void PlayerStateDribble::start() {
-    player.gamestate->match->player_in_possession = &player;
+    player.match->match->player_in_possession = &player;
     player.ball_under_control                     = true;
     already_kicked                                = false;
     player.current_speed                          = dribble_speeds[player.speed];
@@ -33,11 +33,11 @@ void PlayerStateDribble::close_control() {
     already_kicked = false;
     // edge of feet circle in direction of movement
     Vector3 ball_position{player.feet.getCenter()};
-    Vector3 offset = player.facing.toVector() * (player.feet.getRadius() + player.gamestate->ball->collidable.getRadius());
+    Vector3 offset = player.facing.toVector() * (player.feet.getRadius() + player.match->ball->collidable.getRadius());
     ball_position += offset * 1.f;
 
     // put the ball there
-    player.gamestate->ball->movable.place(ball_position);
+    player.match->ball->movable.place(ball_position);
 }
 //
 //
@@ -49,18 +49,20 @@ void PlayerStateDribble::step() {
     Compass old_direction = player.facing;
     Vector3 dir           = player.movable.velocity;
     player.facing.fromVector(dir);
-    if (old_direction.direction != player.facing.direction) {
-        close_control();
-    } else {
-        // check for collision with ball
-        if (Collider::collides(player.feet, player.gamestate->ball->collidable)) {
-            if (!already_kicked) {
-                kick();
-            }
-        } else {
-            already_kicked = false;
+    if(old_direction.direction != player.facing.direction) {
+            close_control();
         }
-    }
+    else {
+            // check for collision with ball
+            if(Collider::collides(player.feet, player.match->ball->collidable)) {
+                    if(!already_kicked) {
+                            kick();
+                        }
+                }
+            else {
+                    already_kicked = false;
+                }
+        }
 
     player.player_sprite.setPlayerAnimation(PlayerAnimationType::Run, player.facing.direction);
 
@@ -70,9 +72,9 @@ void PlayerStateDribble::step() {
 //
 //
 void PlayerStateDribble::stop() {
-    if (player.gamestate->match->player_in_possession == &player) {
-        player.gamestate->match->player_in_possession = nullptr;
-    }
+    if(player.match->match->player_in_possession == &player) {
+            player.match->match->player_in_possession = nullptr;
+        }
     player.ball_under_control = false;
 }
 //
@@ -80,15 +82,15 @@ void PlayerStateDribble::stop() {
 //
 bool PlayerStateDribble::stateOver() {
     // check if ball is outside control range
-    if (!player.ballInControlRange()) {
-        next_state = player_state::Run;
-        return true;
-    }
+    if(!player.ballInControlRange()) {
+            next_state = player_state::Run;
+            return true;
+        }
     // or if we stopped moving
-    if (Math::equal(player.movable.velocity.magnitude2d(), 0)) {
-        next_state = player_state::Stand;
-        return true;
-    }
+    if(Math::equal(player.movable.velocity.magnitude2d(), 0)) {
+            next_state = player_state::Stand;
+            return true;
+        }
 
     return false;
 }
@@ -103,6 +105,6 @@ void PlayerStateDribble::kick() {
     Vector3 kick_force = Compass(player.facing).toVector();
     kick_force.normalise2d();
     kick_force *= force;
-    player.gamestate->ball->kick(kick_force);
+    player.match->ball->kick(kick_force);
 }
 }  // namespace Senseless

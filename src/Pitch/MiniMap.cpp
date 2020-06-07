@@ -12,7 +12,7 @@ MiniMap::MiniMap(Team &in_home_team, Team &in_away_team, Ball &in_ball, Pitch &i
       ball(in_ball),
       pitch(in_pitch),
       camera(in_camera) {
-    getSprite().init(pitch.getDrawDimensions());
+    getSprite().init(pitch.getDimensions());
     name = "mini map";
 }
 //
@@ -22,15 +22,15 @@ void MiniMap::update(const float in_dt) {
     renderable.sprite->setPosition(movable.position.toSfVector());
     movable.setBounds(renderable.sprite->getGlobalBounds());
     auto positions = join_vectors(home_team.getPlayerPositions(), away_team.getPlayerPositions());
-    auto cam = camera.getRect();
-    auto pitchpos = pitch.toPitchSpace(Vector3{cam.getPosition().x, cam.getPosition().y});
-    cam.setPosition(pitchpos.x, pitchpos.y);
-    getSprite().update(positions, pitch.toPitchSpace(ball.movable.position), cam);
+//     auto cam = camera.getRect();
+//     auto pitchpos = Vector3{cam.getPosition().x, cam.getPosition().y};
+//     cam.setPosition(pitchpos.x, pitchpos.y);
+    getSprite().update(pitch.movable.position, positions, ball.movable.position, camera.getRect());
 }
 //
 //
 //
-MiniMapSprite& MiniMap::getSprite() {
-    return static_cast<MiniMapSprite&>(*renderable.sprite);
+MiniMapSprite &MiniMap::getSprite() {
+    return static_cast<MiniMapSprite &>(*renderable.sprite);
 }
 }  // namespace Senseless

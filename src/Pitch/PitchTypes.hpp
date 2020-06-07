@@ -10,58 +10,58 @@ namespace Senseless {
 //
 //
 enum class PitchPointsOfInterest : size_t {
-  Bye,
-  Six,
-  Eighteen,
-  Halfway,
-  CentercircleWest,
-  CentercircleEast,
-  CenterSpot,
-  PenaltySpot,
-  SideWest,
-  SideEast,
-  EighteenArcWest,
-  EighteenArcEast
+    Bye,
+    Six,
+    Eighteen,
+    Halfway,
+    CentercircleWest,
+    CentercircleEast,
+    CenterSpot,
+    PenaltySpot,
+    SideWest,
+    SideEast,
+    EighteenArcWest,
+    EighteenArcEast
 };
 enum class PitchPointOfInterestSide : size_t { South, North };
 //
 //
 //
-struct PitchDrawDimensions {
-  // origin in screen space
-  Vector3 origin;
-  // pitch lines
-  sf::RectangleShape bounds;
-  sf::RectangleShape draw_bounds_north;
-  sf::RectangleShape draw_bounds_south;
-  sf::RectangleShape box_6;
-  sf::RectangleShape box_18;
-  sf::ArcShape arc_18;
-  sf::RectangleShape halfway_line;
-  sf::CircleShape center_circle;
-  sf::CircleShape center_spot;
-  sf::CircleShape penalty_spot;
+struct PitchDrawShapes {
+    // origin in screen space
+    Vector3 origin;
+    // pitch lines
+    sf::RectangleShape bounds;
+    sf::RectangleShape draw_bounds_north;
+    sf::RectangleShape draw_bounds_south;
+    sf::RectangleShape box_6;
+    sf::RectangleShape box_18;
+    sf::ArcShape arc_18;
+    sf::RectangleShape halfway_line;
+    sf::CircleShape center_circle;
+    sf::CircleShape center_spot;
+    sf::CircleShape penalty_spot;
 
-  std::vector<sf::Shape *> all_lines;
+    std::vector<sf::Shape *> all_lines;
 
-  PitchDrawDimensions() {
-    all_lines.push_back(&bounds);
-    all_lines.push_back(&box_6);
-    all_lines.push_back(&box_18);
-    all_lines.push_back(&halfway_line);
-    all_lines.push_back(&center_circle);
-    all_lines.push_back(&center_spot);
-    all_lines.push_back(&penalty_spot);
-    all_lines.push_back(&arc_18);
-  }
+    PitchDrawShapes() {
+        all_lines.push_back(&bounds);
+        all_lines.push_back(&box_6);
+        all_lines.push_back(&box_18);
+        all_lines.push_back(&halfway_line);
+        all_lines.push_back(&center_circle);
+        all_lines.push_back(&center_spot);
+        all_lines.push_back(&penalty_spot);
+        all_lines.push_back(&arc_18);
+    }
 };
 
 //
 //
 //
 struct PitchDimensions {
-  static const size_t NumberPoints = 12;
-  Vector3 points[NumberPoints][2];
+    static const size_t NumberPoints = 12;
+    Vector3 points[NumberPoints][2];
 };
 //
 // gets rid of a lot of static casts etc to make the main file easier to read

@@ -7,17 +7,16 @@
 #include <SFML/Graphics/CircleShape.hpp>
 namespace Senseless {
 class MiniMapSprite : public Sprite {
-   public:
+public:
     MiniMapSprite();
     sf::FloatRect getGlobalBounds() const override;
-    void          init(const PitchDrawDimensions &in_dimensions);
-    void          update(const std::vector<Vector3> &in_positions,
-                                        const Vector3               in_ball_position, const sf::RectangleShape in_camera);
+    void          init(const PitchDrawShapes &in_dimensions);
+    void          update(const Vector3 in_pitch_position, const std::vector<Vector3> &in_positions, const Vector3 in_ball_position, const sf::RectangleShape in_camera);
 
-   protected:
+protected:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
-   private:
+private:
     // pitch lines
     std::array<sf::Vertex, 8> bounds;
     std::array<sf::Vertex, 6> north_6_box;
@@ -30,8 +29,8 @@ class MiniMapSprite : public Sprite {
     sf::RectangleShape        camera;
 
     // players
-    std::array<sf::Vertex, 20>      players;
-    std::array<sf::CircleShape, 20> circles;
+    //std::array<sf::Vertex, 20>      players;
+    std::array<sf::CircleShape, 20> players;
     std::vector<sf::Vertex>         vlines;
 };
 }  // namespace Senseless

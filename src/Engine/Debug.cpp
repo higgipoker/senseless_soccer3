@@ -27,7 +27,7 @@ int       Debug::attacking_team        = 0;
 int Debug::brainstate = static_cast<int>(brain_state::Idle);
 
 int        Debug::active_team = 0;
-Game *Debug::gamestate   = nullptr;
+Match *Debug::match   = nullptr;
 //
 //
 //
@@ -79,8 +79,8 @@ void Debug::draw_main_window() {
         }
         {
             ImGui::Text("Mouse (pitch): %i, %i",
-                        static_cast<int>(gamestate->pitch->toPitchSpace(mouse_position).x),
-                        static_cast<int>(gamestate->pitch->toPitchSpace(mouse_position).x));
+                        static_cast<int>(mouse_position.x),
+                        static_cast<int>(mouse_position.x));
         }
         // draw bounds
         { ImGui::Checkbox("Draw Bounds", &flag_draw_bounds); }
@@ -91,19 +91,18 @@ void Debug::draw_main_window() {
             std::string name = picked ? picked->name : "Nothing";
             ImGui::Text("Picked: %s", name.c_str());
             ImGui::Text("Pitch Space: %4.0f, %4.0f",
-                        gamestate->pitch->toPitchSpace(picked_position_screen).x,
-                        gamestate->pitch->toPitchSpace(picked_position_screen).y);
+                        picked_position_screen.x,
+                        picked_position_screen.y);
             ImGui::Text(
                 "Screen Space: %4.0f, %4.0f", picked_position_screen.x, picked_position_screen.y);
         }
     }
     if (ImGui::CollapsingHeader("Pitch")) {
-        if (gamestate->match) {
-            // mouse pitch position
-            auto p = gamestate->pitch->toPitchSpace({mouse_position.x, mouse_position.y});
-            ImGui::Text("Pitch: %i, %i", static_cast<int>(p.x), static_cast<int>(p.y));
+        if (match->match) {
+            // mouse pitch position            
+            ImGui::Text("Pitch: %i, %i", static_cast<int>(mouse_position.x), static_cast<int>(mouse_position.y));
             // mini map scale factor
-            gamestate->minimap->renderable.sprite->setScale(mini_map_scale_factor,
+            match->minimap->renderable.sprite->setScale(mini_map_scale_factor,
                                                             mini_map_scale_factor);
             { ImGui::SliderFloat("", &mini_map_scale_factor, 0.1f, 0.5f, "radar = %.3f"); }
         }
@@ -115,7 +114,7 @@ void Debug::draw_main_window() {
         ImGui::SameLine();
         ImGui::RadioButton("Away", &attacking_team, 1);
         if (ori_attacking_team != attacking_team) {
-            gamestate->match->setAttackingTeam(attacking_team == 0 ? TeamStrip::Home
+            match->match->setAttackingTeam(attacking_team == 0 ? TeamStrip::Home
                                                                    : TeamStrip::Away);
         }
 
@@ -135,12 +134,13 @@ void Debug::draw_main_window() {
 //
 //
 void Debug::draw_player_window() {
+    picked_position_screen = picked->movable.position;
     brainstate = static_cast<int>(static_cast<Player *>(picked)->getBrainState());
     ImGui::Begin(picked->name.c_str());
     {  // picked player
         ImGui::Text("Pitch Space: %4.0f, %4.0f",
-                    gamestate->pitch->toPitchSpace(picked_position_screen).x,
-                    gamestate->pitch->toPitchSpace(picked_position_screen).y);
+                    picked_position_screen.x,
+                    picked_position_screen.y);
         ImGui::Text(
             "Screen Space: %4.0f, %4.0f", picked_position_screen.x, picked_position_screen.y);
     }
@@ -173,7 +173,7 @@ void Debug::handleInput(sf::Event &in_event) {
         if (picked && picked->name == "mini map") {
             mini_map_scale_factor += in_event.mouseWheelScroll.delta * 0.01F;
             mini_map_scale_factor = std::clamp(mini_map_scale_factor, 0.1F, 0.5F);
-            gamestate->minimap->renderable.sprite->setScale(mini_map_scale_factor,
+            match->minimap->renderable.sprite->setScale(mini_map_scale_factor,
                                                             mini_map_scale_factor);
         }
     }
@@ -233,7 +233,7 @@ void Debug::draw_team_menu(int which_team) {
     int * act_team_positioning = which_team == 0 ? &home_team_positioning : &away_team_positioning;
     int * act_pitch_side       = which_team == 0 ? &home_pitch_side : &away_pitch_side;
     Team &act_team =
-        which_team == 0 ? *gamestate->home_team : *gamestate->away_team;
+        which_team == 0 ? *match->home_team : *match->away_team;
 
     int initial_positioning = *act_team_positioning;
     int initial_pitch_side  = *act_pitch_side;

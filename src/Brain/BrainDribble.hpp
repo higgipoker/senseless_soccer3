@@ -40,8 +40,12 @@ class BrainDribble : public BrainState {
     bool                 waiting_for_reenter_bounds = false;
     Direction            turn_target_direction      = Direction::North;
     float                rotate_direction = 0;
-    void                 turn();
+    void                 turn(Direction target_dir);
     bool                 is_turning();
     int ticks_since_turn = 0;
+
+    // tmp
+    void keep_in_pitch();
+    
 };
 }  // namespace Senseless

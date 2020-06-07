@@ -69,7 +69,7 @@ void PositionFullBack::init() {
 //
 //
 Vector3 PositionFullBack::getPlayingPosition(const Ball &in_ball) {
-  Vector3 ball = pitch.toPitchSpace(in_ball.movable.position);
+  Vector3 ball = in_ball.movable.position;
   // rotate perception of ball if attacking towards south
   if (my_team.getAttackingGoal() == Direction::South) {
     ball.rotate(180, pitch.getDimensions().bounds.getSize().x / 2,
