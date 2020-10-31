@@ -9,7 +9,7 @@ Head::Head(Player& in_player) : Locomotion(in_player) {}
 //
 //
 //
-void Head::init(Vector3 in_direction) { direction = in_direction; }
+void Head::init(sf::Vector3f in_direction) { direction = in_direction; }
 //
 //
 //

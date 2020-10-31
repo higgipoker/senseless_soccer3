@@ -168,14 +168,15 @@ void MiniMapSprite::init(const PitchDrawShapes &in_dimensions) {
 //
 //
 //
-void MiniMapSprite::update(const Vector3 in_pitch_position, const std::vector<Vector3> &in_positions, const Vector3 in_ball_position, const sf::RectangleShape in_camera) {
+void MiniMapSprite::update(const sf::Vector3f in_pitch_position, const std::vector<sf::Vector3f> &in_positions, const sf::Vector3f in_ball_position, const sf::RectangleShape in_camera) {
     size_t i = 0;
     for(auto &p : in_positions) {
-        players[i].setCenter(p.toSfVector() - in_pitch_position.toSfVector());
+        players[i].setCenter(p - in_pitch_position);
         ++i;
     }
-    ball.setCenter(in_ball_position.toSfVector() - in_pitch_position.toSfVector());
+    ball.setCenter(in_ball_position - in_pitch_position);
     camera = in_camera;
+    camera.move(-in_pitch_position.x, -in_pitch_position.y);
 }
 //
 //

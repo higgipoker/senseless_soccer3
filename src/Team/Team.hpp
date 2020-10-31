@@ -45,7 +45,7 @@ class Team : public Entity {
   Direction getAttackingGoal() const;
   Direction getDefendingGoal() const;
   AttackingState getAttackingState() const;
-  std::vector<Vector3> getPlayerPositions();
+  std::vector<sf::Vector3f> getPlayerPositions();
   Direction attacking_goal = Direction::South;
   Direction defending_goal = Direction::North;
 
@@ -60,7 +60,7 @@ class Team : public Entity {
   AttackingState attacking_state = AttackingState::Attacking;
   TeamStrip home_or_away = TeamStrip::Home;
   int loose_ball_ticks = 60;
-  Vector3 last_ball_position;
+  sf::Vector3f last_ball_position;
 
   // debugs
   sf::RectangleShape defensive_line;

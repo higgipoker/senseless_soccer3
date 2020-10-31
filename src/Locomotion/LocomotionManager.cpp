@@ -16,7 +16,7 @@ LocomotionManager::LocomotionManager(Player &in_player)
 //
 //
 //
-void LocomotionManager::seek(const Vector3 in_target) {
+void LocomotionManager::seek(const sf::Vector3f in_target) {
   if (current_locomotion) {
     current_locomotion->stop();
   }
@@ -27,7 +27,7 @@ void LocomotionManager::seek(const Vector3 in_target) {
 //
 //
 //
-void LocomotionManager::head(const Vector3 in_target) {
+void LocomotionManager::head(const sf::Vector3f in_target) {
   if (current_locomotion) {
     current_locomotion->stop();
   }

@@ -31,9 +31,7 @@ class BrainDribble : public BrainState {
     bool stateOver() override;
 
    protected:
-    DribbleObjective     objective = DribbleObjective::WasteTime;
-    DribblePatternRandom pattern_random;
-    DribblePattern*      pattern                    = nullptr;
+    DribbleObjective     objective = DribbleObjective::WasteTime;        
     int                  dribble_ticks              = 0;
     bool                 first_touch                = true;
     bool                 turning                    = false;
@@ -49,3 +47,4 @@ class BrainDribble : public BrainState {
     
 };
 }  // namespace Senseless
+

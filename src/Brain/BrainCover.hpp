@@ -22,6 +22,6 @@ class BrainCover : public BrainState {
     private:
     void change_direction();
     bool should_close_down();
-    Vector3 last_target;
+    sf::Vector3f last_target;
 };
 }  // namespace Senseless

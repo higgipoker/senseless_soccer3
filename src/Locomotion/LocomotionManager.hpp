@@ -19,11 +19,11 @@ class LocomotionManager {
   //
   //
   //
-  void seek(const Vector3 in_target);
+  void seek(const sf::Vector3f in_target);
   //
   //
   //
-  void head(const Vector3 in_target);
+  void head(const sf::Vector3f in_target);
   //
   //
   //

@@ -19,7 +19,7 @@ class Gameplan {
   //
   //
   //
-  Vector3 getDefensiveLine() const;
+  sf::Vector3f getDefensiveLine() const;
   //
   //
   //
@@ -35,7 +35,7 @@ class Gameplan {
   //
   //
   //
-  Vector3 defensive_line;
+  sf::Vector3f defensive_line;
 
  public:
   friend class Team;

@@ -79,7 +79,7 @@ Match::Match(float in_window_width, float in_window_height, const Kit &in_home_k
     pitch       = std::make_unique<Pitch>(graphics_folder.getPath(true) + "grass_checked.png");
     minimap     = std::make_unique<MiniMap>(*home_team, *away_team, *ball, *pitch, *camera);
     camera->setHeight(50);
-    minimap->movable.position = {10, 10};
+    minimap->movable.position = {10, 10, 0};
 
     ball->movable.position   = {pitch->getPointOfInterest(PitchPointsOfInterest::CenterSpot)};
     ball->movable.position.z = 50;
@@ -105,7 +105,7 @@ Match::Match(float in_window_width, float in_window_height, const Kit &in_home_k
     Player &player             = newPlayer(TeamStrip::Home);
     player.name                = right_center_forward->name;
     player.setPlayingPosition(std::move(right_center_forward));
-    player.movable.position = {0, pitch->getDimensions().halfway_line.getPosition().y};
+    player.movable.position = {0, pitch->getDimensions().halfway_line.getPosition().y, 0};
     player.my_team          = home_team.get();
     player.other_team       = away_team.get();
 

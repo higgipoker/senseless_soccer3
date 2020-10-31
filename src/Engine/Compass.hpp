@@ -1,4 +1,7 @@
 #pragma once
+
+#include <SFML/System/Vector3.hpp>
+
 #include <map>
 #include <string>
 
@@ -27,18 +30,14 @@ static std::map<Direction, std::string> direction_to_string = {
 //
 //
 //
-class Vector3;
-//
-//
-//
 class Compass {
  public:
   Compass();
   Compass(Direction dir);
-  Compass(const Vector3 &vec);
-  Vector3 toVector();
-  void fromVector(const Vector3 &v);
-  static Vector3 toVector(const Direction in_direction);
+  Compass(const sf::Vector3f &vec);
+  sf::Vector3f toSfVector();
+  void fromSfVector(const sf::Vector3f &v);  
+  static sf::Vector3f toSfVector(const Direction in_direction);
   Direction direction = Direction::North;
   static Compass getRandomDirection();
   inline std::string print() { return direction_to_string[direction]; }

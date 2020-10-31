@@ -18,7 +18,7 @@ class PositionFullBack : public PositionDefender {
   //
   //
   //
-  Vector3 getPlayingPosition(const Ball &in_ball) override;
+  sf::Vector3f getPlayingPosition(const Ball &in_ball) override;
 };
 
 }  // namespace Senseless

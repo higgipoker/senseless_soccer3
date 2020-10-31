@@ -8,8 +8,8 @@ int PlayingPosition::instances = 0;
 //
 //
 //
-void PlayingPosition::clamp(Vector3 &in_v1, Vector3 &in_v2,
-                            Vector3 &in_v3, Vector3 &in_v4) {
+void PlayingPosition::clamp(sf::Vector3f &in_v1, sf::Vector3f &in_v2,
+                            sf::Vector3f &in_v3, sf::Vector3f &in_v4) {
   in_v1.x = std::clamp(in_v1.x, min_x, max_x);
   in_v1.y = std::clamp(in_v1.y, min_y, max_y);
 
@@ -76,10 +76,10 @@ void PlayingPosition::applyModifier(const PositionModifier in_mod) {
 //
 //
 //
-Vector3 PlayingPosition::getTargetPosition(const Situation in_situation,
+sf::Vector3f PlayingPosition::getTargetPosition(const Situation in_situation,
                                                       const Ball &in_ball,
                                                       const Direction in_pitch_side) {
-  Vector3 result;
+  sf::Vector3f result;
   switch (in_situation) {
     case Situation::Playing:
       result = getPlayingPosition(in_ball);
@@ -94,8 +94,8 @@ Vector3 PlayingPosition::getTargetPosition(const Situation in_situation,
       if (my_team.getAttackingGoal() == Direction::South) {
         // since the team y defensive line has already been calced, only rotate x
         // here
-        Vector3 tmp{result.x, 0};
-        tmp.rotate(180, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).x, 0);
+        sf::Vector3f tmp{result.x, 0, 0};
+        Vector::rotate(tmp, 180, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).x, 0);
         result.x = tmp.x;
       }
       break;
@@ -105,9 +105,9 @@ Vector3 PlayingPosition::getTargetPosition(const Situation in_situation,
 //
 //
 //
-Vector3 PlayingPosition::getSetPiecePosition(const Situation in_situation,
+sf::Vector3f PlayingPosition::getSetPiecePosition(const Situation in_situation,
                                                         const Direction in_pitch_side) {
-  Vector3 result;
+  sf::Vector3f result;
   switch (my_team.getAttackingState()) {
     case AttackingState::Defending:
       if (in_pitch_side == Direction::West) {
@@ -126,8 +126,8 @@ Vector3 PlayingPosition::getSetPiecePosition(const Situation in_situation,
   }
   // rotate south->north?
   if (my_team.getAttackingGoal() == Direction::South) {
-    Vector3 tmp{0, result.y};
-    tmp.rotate(180, 0, pitch.getDimensions().halfway_line.getPosition().y);
+    sf::Vector3f tmp{0, result.y, 0};
+    Vector::rotate(tmp, 180, 0, pitch.getDimensions().halfway_line.getPosition().y);
     result.y = tmp.y;
   }
   return result;

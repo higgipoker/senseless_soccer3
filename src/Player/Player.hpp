@@ -29,25 +29,25 @@ public:
     // -----------------------------------------------------------------------
     // functions
     // -----------------------------------------------------------------------
-    Player(std::unique_ptr<PlayerSprite> in_sprite, std::unique_ptr<PlayerSprite> in_shadow);
+    Player (std::unique_ptr<PlayerSprite> in_sprite, std::unique_ptr<PlayerSprite> in_shadow);
     virtual ~Player();
-    void      update(const float in_dt) override;
+    void      update (const float in_dt) override;
     void      handleInput() override;
-    void      onInputEvent(const InputEvent in_event, const std::vector<int> &in_params) override;
-    void      setTeamData(TeamData in_data);
-    void      kick(const float in_force);
-    void      shortPass(Player &in_receiver);
-    void      run(Compass in_direction);
-    void      run(Vector3 in_direction);
+    void      onInputEvent (const InputEvent in_event, const std::vector<int>& in_params) override;
+    void      setTeamData (TeamData in_data);
+    void      kick (const float in_force);
+    void      shortPass (Player& in_receiver);
+    void      run (Compass in_direction);
+    void      run (sf::Vector3f in_direction);
     void      stopRunning();
-    void      goToSetPiecePosition(const Situation in_situation, const Direction in_pitch_side);
-    void      setPlayingPosition(std::unique_ptr<PlayingPosition> in_position);
+    void      goToSetPiecePosition (const Situation in_situation, const Direction in_pitch_side);
+    void      setPlayingPosition (std::unique_ptr<PlayingPosition> in_position);
     bool      ballInControlRange();
     Compass   getDirection();
-    Brain    &getBrain();
-    
-    Team                         *my_team= nullptr;
-    Team                         *other_team= nullptr;
+    Brain&    getBrain();
+
+    Team*                         my_team = nullptr;
+    Team*                         other_team = nullptr;
 
 protected:
     // -----------------------------------------------------------------------
@@ -56,16 +56,16 @@ protected:
     PlayerStateStand              state_stand;
     PlayerStateRun                state_run;
     PlayerStateDribble            state_dribble;
-    PlayerState                  *state = nullptr;
+    PlayerState*                  state = nullptr;
     Brain                         brain;
-    ProgressBar                  *power_bar = nullptr;
+    ProgressBar*                  power_bar = nullptr;
     sf::TriangleShape             short_pass_triangle;
-    std::vector<Player *>          short_pass_candidates;
+    std::vector<Player*>          short_pass_candidates;
     Compass                       facing;
     sf::CircleShape               feet;
     sf::CircleShape               control;
-    PlayerSprite                 &player_sprite;
-    PlayerSprite                 &player_shadow;
+    PlayerSprite&                 player_sprite;
+    PlayerSprite&                 player_shadow;
     RunningSpeed                  speed = RunningSpeed::Normal;
     TeamData                      team_data;
     Attributes                    attribs;
@@ -78,7 +78,7 @@ protected:
     // functions
     // -----------------------------------------------------------------------
     void face_ball();
-    void change_state(const player_state in_state);
+    void change_state (const player_state in_state);
     void calc_short_pass_candidates();
     void debug();
 
@@ -108,8 +108,8 @@ public:
     brain_state getBrainState() {
         return brain.state;
     }
-    void setBrainState(const brain_state in_state) {
-        brain.changeState(in_state);
+    void setBrainState (const brain_state in_state) {
+        brain.changeState (in_state);
     }
 };
 }  // namespace Senseless

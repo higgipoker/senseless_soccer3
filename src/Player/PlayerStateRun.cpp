@@ -39,7 +39,7 @@ bool PlayerStateRun::stateOver() {
     return true;
   }
   // go to stand
-  if (Math::equal(player.movable.velocity.magnitude2d(), 0)) {
+  if (Math::equal(Vector::magnitude2d(player.movable.velocity), 0)) {
     next_state = player_state::Stand;
     return true;
   }

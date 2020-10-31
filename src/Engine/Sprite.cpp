@@ -1,14 +1,14 @@
 #include "Sprite.hpp"
 
+#include "Debug.hpp"
+#include "Metrics.hpp"
+#include "Vector.hpp"
+
 #include <cmath>
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <cassert>
-
-#include "Debug.hpp"
-#include "Metrics.hpp"
-#include "Vector.hpp"
 //
 //
 //
@@ -141,7 +141,7 @@ void Sprite::perspectivize(const float in_camera_height) {
         }
 
         float angular_diameter    = 2 * (atanf(dimensions / (2 * dist_from_camera)));
-        float degs                = Degrees(angular_diameter);
+        float degs                = Math::Degrees(angular_diameter);
         float sprite_scale_factor = degs / dimensions;
         float sprite_ratio        = dimensions / getLocalBounds().width;
         sprite_scale_factor *= sprite_ratio;

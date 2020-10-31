@@ -15,8 +15,8 @@ static float MetersToPixels(float meters) {
 //
 //
 //
-static Vector3 MetersToPixels(const Vector3 &v) {
-  return Vector3(MetersToPixels(v.x), MetersToPixels(v.y), MetersToPixels(v.z));
+static sf::Vector3f MetersToPixels(const sf::Vector3f &v) {
+  return sf::Vector3f(MetersToPixels(v.x), MetersToPixels(v.y), MetersToPixels(v.z));
 }
 static float CAMERA_HEIGHT = static_cast<float>(MetersToPixels(4.0f));
 

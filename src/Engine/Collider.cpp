@@ -43,7 +43,7 @@ bool Collider::contains(const sf::CircleShape &big,
 //
 //
 //
-bool Collider::contains(const sf::CircleShape &circle, const Vector3 &point) {
+bool Collider::contains(const sf::CircleShape &circle, const sf::Vector3f &point) {
   // Compare radius of circle with distance
   // of its center from given point
   if ((point.x - circle.getCenter().x) * (point.x - circle.getCenter().x) +
@@ -59,20 +59,22 @@ bool Collider::contains(const sf::CircleShape &circle, const Vector3 &point) {
 // the Barycentric Technique using dot products to cleverly avoid roots...
 // see: http://www.blackpawn.com/texts/pointinpoly/default.html
 // -----------------------------------------------------------------------------
-bool Collider::collides(const Vector3 &point,
+bool Collider::collides(const sf::Vector3f &point,
                         const sf::TriangleShape &triangle) {
-  Vector3 v0 = Vector3(triangle.getPoint(2).x, triangle.getPoint(2).y) -
-               Vector3(triangle.getPoint(0).x, triangle.getPoint(0).y);
-  Vector3 v1 = Vector3(triangle.getPoint(1).x, triangle.getPoint(1).y) -
-               Vector3(triangle.getPoint(0).x, triangle.getPoint(0).y);
-  Vector3 v2 = Vector3(point.x, point.y) -
-               Vector3(triangle.getPoint(0).x, triangle.getPoint(0).y);
+  sf::Vector3f v0 = sf::Vector3f(triangle.getPoint(2).x, triangle.getPoint(2).y, 0) -
+               sf::Vector3f(triangle.getPoint(0).x, triangle.getPoint(0).y, 0);
+               
+  sf::Vector3f v1 = sf::Vector3f(triangle.getPoint(1).x, triangle.getPoint(1).y,0) -
+               sf::Vector3f(triangle.getPoint(0).x, triangle.getPoint(0).y, 0);
+               
+  sf::Vector3f v2 = sf::Vector3f(point.x, point.y, 0) -
+               sf::Vector3f(triangle.getPoint(0).x, triangle.getPoint(0).y, 0);
 
-  float dot00 = v0.dotProduct(v0);
-  float dot01 = v0.dotProduct(v1);
-  float dot02 = v0.dotProduct(v2);
-  float dot11 = v1.dotProduct(v1);
-  float dot12 = v1.dotProduct(v2);
+  float dot00 = Vector::dotProduct(v0, v0);
+  float dot01 = Vector::dotProduct(v0, v1);
+  float dot02 = Vector::dotProduct(v0, v2);
+  float dot11 = Vector::dotProduct(v1, v1);
+  float dot12 = Vector::dotProduct(v1, v2);
 
   float inv_denom = 1 / (dot00 * dot11 - dot01 * dot01);
   float u = (dot11 * dot02 - dot01 * dot12) * inv_denom;

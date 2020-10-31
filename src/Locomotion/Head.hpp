@@ -18,7 +18,7 @@ class Head : public Locomotion{
    * @brief init
    * @param in_target
    */
-  void init(Vector3 in_direction);
+  void init(sf::Vector3f in_direction);
   /**
    * @brief start
    */
@@ -38,6 +38,6 @@ void start() override;
    bool finished() override;
 
 private:
-   Vector3 direction;
+   sf::Vector3f direction;
 };
 }

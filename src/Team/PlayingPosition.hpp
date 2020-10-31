@@ -41,7 +41,7 @@ class PlayingPosition {
    * @param in_pitch_side
    * @return
    */
-  virtual Vector3 getTargetPosition(
+  virtual sf::Vector3f getTargetPosition(
       const Situation in_situation, const Ball &in_ball,
       const Direction in_pitch_side = Direction::West);
   /**
@@ -49,14 +49,14 @@ class PlayingPosition {
    * @param in_ball
    * @return
    */
-  virtual Vector3 getPlayingPosition(const Ball &in_ball) = 0;
+  virtual sf::Vector3f getPlayingPosition(const Ball &in_ball) = 0;
   /**
    * @brief getSetPiecePosition
    * @param in_situation
    * @param in_pitch_side
    * @return
    */
-  Vector3 getSetPiecePosition(
+  sf::Vector3f getSetPiecePosition(
       const Situation in_situation,
       const Direction in_pitch_side = Direction::West);
   /**
@@ -64,9 +64,9 @@ class PlayingPosition {
    * @param in_mod
    */
   void applyModifier(const PositionModifier in_mod);
-  std::map<Situation, std::pair<Vector3, Vector3>>
+  std::map<Situation, std::pair<sf::Vector3f, sf::Vector3f>>
       set_piece_positions_defending;
-  std::map<Situation, std::pair<Vector3, Vector3>>
+  std::map<Situation, std::pair<sf::Vector3f, sf::Vector3f>>
       set_piece_positions_attacking;
   std::string name = "PlayingPosition";
 
@@ -88,7 +88,7 @@ class PlayingPosition {
    * @param in_v3
    * @param in_v4
    */
-  void clamp(Vector3 &in_v1, Vector3 &in_v2, Vector3 &in_v3,
-             Vector3 &in_v4);
+  void clamp(sf::Vector3f &in_v1, sf::Vector3f &in_v2, sf::Vector3f &in_v3,
+             sf::Vector3f &in_v4);
 };
 }  // namespace Senseless

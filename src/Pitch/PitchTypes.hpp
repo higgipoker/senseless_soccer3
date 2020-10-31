@@ -1,10 +1,10 @@
 #pragma once
 //
 #include "Engine/ArcShape.hpp"
-#include "Engine/Vector.hpp"
 //
 #include "SFML/Graphics/CircleShape.hpp"
 #include "SFML/Graphics/RectangleShape.hpp"
+#include <SFML/System/Vector3.hpp>
 namespace Senseless {
 //
 //
@@ -29,7 +29,7 @@ enum class PitchPointOfInterestSide : size_t { South, North };
 //
 struct PitchDrawShapes {
     // origin in screen space
-    Vector3 origin;
+    sf::Vector3f origin;
     // pitch lines
     sf::RectangleShape bounds;
     sf::RectangleShape draw_bounds_north;
@@ -61,7 +61,7 @@ struct PitchDrawShapes {
 //
 struct PitchDimensions {
     static const size_t NumberPoints = 12;
-    Vector3 points[NumberPoints][2];
+    sf::Vector3f points[NumberPoints][2];
 };
 //
 // gets rid of a lot of static casts etc to make the main file easier to read

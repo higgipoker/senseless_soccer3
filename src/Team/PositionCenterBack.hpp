@@ -23,6 +23,6 @@ class PositionCenterBack : public PositionDefender {
    * @param in_ball
    * @return
    */
-  Vector3 getPlayingPosition(const Ball &in_ball) override;
+  sf::Vector3f getPlayingPosition(const Ball &in_ball) override;
 };
 }  // namespace Senseless

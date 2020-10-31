@@ -8,8 +8,8 @@ namespace Senseless {
 //
 void PositionFullBack::init() {
   {  // kick off positions
-    Vector3 def{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y * 0.35F};
-    Vector3 att{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y * 0.55F};
+    sf::Vector3f def{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y * 0.35F, 0};
+    sf::Vector3f att{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y * 0.55F, 0};
     if (modifier_mask & modifier_left) {
       def.x = att.x = pitch.getPointOfInterest(PitchPointsOfInterest::SideWest).x + 200;
 
@@ -21,10 +21,10 @@ void PositionFullBack::init() {
   }
 
   {  // goal kick positions
-    Vector3 def_left{0, pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen).y};
-    Vector3 def_right{0, pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen).y};
-    Vector3 att_left{0, pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen).y};
-    Vector3 att_right{0, pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen).y};
+    sf::Vector3f def_left{0, pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen).y, 0};
+    sf::Vector3f def_right{0, pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen).y, 0};
+    sf::Vector3f att_left{0, pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen).y, 0};
+    sf::Vector3f att_right{0, pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen).y, 0};
     if (modifier_mask & modifier_left) {
       def_left.x = def_right.x = att_left.x = att_right.x =
           pitch.getPointOfInterest(PitchPointsOfInterest::SideWest).x + 100;
@@ -43,10 +43,10 @@ void PositionFullBack::init() {
     set_piece_positions_attacking[Situation::GoalKick] = {{att_left}, {att_right}};
   }
   {  // corner
-    Vector3 def_left{0, pitch.getPointOfInterest(PitchPointsOfInterest::Six).y};
-    Vector3 def_right{0, pitch.getPointOfInterest(PitchPointsOfInterest::Six).y};
-    Vector3 att_left{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway).y};
-    Vector3 att_right{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway).y};
+    sf::Vector3f def_left{0, pitch.getPointOfInterest(PitchPointsOfInterest::Six).y, 0};
+    sf::Vector3f def_right{0, pitch.getPointOfInterest(PitchPointsOfInterest::Six).y, 0};
+    sf::Vector3f att_left{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway).y, 0};
+    sf::Vector3f att_right{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway).y, 0};
     if (modifier_mask & modifier_left) {
       def_left.x = def_right.x = att_left.x = att_right.x =
           pitch.getPointOfInterest(PitchPointsOfInterest::SideWest).x + 100;
@@ -68,11 +68,11 @@ void PositionFullBack::init() {
 //
 //
 //
-Vector3 PositionFullBack::getPlayingPosition(const Ball &in_ball) {
-  Vector3 ball = in_ball.movable.position;
+sf::Vector3f PositionFullBack::getPlayingPosition(const Ball &in_ball) {
+  sf::Vector3f ball = in_ball.movable.position;
   // rotate perception of ball if attacking towards south
   if (my_team.getAttackingGoal() == Direction::South) {
-    ball.rotate(180, pitch.getDimensions().bounds.getSize().x / 2,
+    Vector::rotate(ball, 180, pitch.getDimensions().bounds.getSize().x / 2,
                 pitch.getDimensions().bounds.getSize().y / 2);
   }
 
@@ -106,13 +106,13 @@ Vector3 PositionFullBack::getPlayingPosition(const Ball &in_ball) {
     max = pitch.getDimensions().bounds.getSize().x;
   }
   out_x = std::clamp(out_x, min, max);
-  Vector3 result{out_x, my_team.gameplan.getDefensiveLine().y};
+  sf::Vector3f result{out_x, my_team.gameplan.getDefensiveLine().y, 0};
 
   // rotate for other side?
   if (my_team.getAttackingGoal() == Direction::South) {
     // since the team y defensive line has already been rotated, only rotate x here
-    Vector3 tmp{result.x, 0};
-    tmp.rotate(180, middle, 0);
+    sf::Vector3f tmp{result.x, 0, 0};
+    Vector::rotate(tmp, 180, middle, 0);
     result.x = tmp.x;
   }
 

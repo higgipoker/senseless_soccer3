@@ -26,9 +26,9 @@ Ball::Ball(std::unique_ptr<Sprite> in_sprite, std::unique_ptr<Sprite> in_shadow)
 void Ball::update(const float in_dt) {
     Entity::update(in_dt);
     if (recording_distance) {
-        distance   = (movable.position - initial_position).magnitude();
-        float diff = (movable.position - last_position).magnitude();
-        if (Math::equal(movable.velocity.magnitude2d(), 0.F) || Math::less_than(diff, 2.5F)) {
+        distance   = Vector::magnitude(movable.position - initial_position);
+        float diff = Vector::magnitude(movable.position - last_position);
+        if (Math::equal(Vector::magnitude2d(movable.velocity), 0.F) || Math::less_than(diff, 2.5F)) {
             recording_distance = false;
         }
         last_position = movable.position;
@@ -37,10 +37,10 @@ void Ball::update(const float in_dt) {
     collidable.setCenter(movable.position.x, movable.position.y);
 
     // sprite only animates if moving
-    if (Math::greater_than(movable.velocity.magnitude(), 0)) {
+    if (Math::greater_than(Vector::magnitude(movable.velocity), 0)) {
         // sprite rotates in direction of movement (unless spin...later!!)
         const float offset = 180;  // TODO according to the spritesheet image
-        renderable.sprite->setRotation(movable.velocity.angle() + offset);
+        renderable.sprite->setRotation(Vector::angle(movable.velocity) + offset);
         renderable.sprite->startAnimating();
     } else {
         renderable.sprite->stopAnimating();
@@ -69,17 +69,17 @@ void Ball::update(const float in_dt) {
 //
 //
 //
-void Ball::kick(Vector3 in_force) {
+void Ball::kick(sf::Vector3f in_force) {
     movable.resetForces();
     movable.resetVelocity();
     movable.applyForce(in_force);
-    last_force = in_force.magnitude();
+    last_force = Vector::magnitude(in_force);
 }
 //
 //
 //
 void Ball::applyTopSpin(float in_factor) {
-    Vector3 spin{0.F, 0.F, -in_factor};
+    sf::Vector3f spin{0.F, 0.F, -in_factor};
     movable.forces.topspin += spin;
 }
 //
@@ -90,7 +90,7 @@ void Ball::applyBackSpin(float in_factor) {
 //
 //
 //
-void Ball::applySideSpin(Vector3 in_spin) {
+void Ball::applySideSpin(sf::Vector3f in_spin) {
     // todo can't be spinning in opposite dirs at once
     movable.forces.sidespin += in_spin;
 }

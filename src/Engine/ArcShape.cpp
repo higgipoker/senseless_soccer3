@@ -39,7 +39,7 @@ std::size_t ArcShape::getPointCount() const { return (m_pointCount / 2) + 1; }
 //
 //
 Vector2f ArcShape::getPoint(std::size_t index) const {
-  float angle = static_cast<float>(index) * 2 * PI / m_pointCount - PI / 2;
+  float angle = static_cast<float>(index) * 2 * Math::PI / m_pointCount - Math::PI / 2;
   float x = std::cos(angle) * m_radius;
   float y = std::sin(angle) * m_radius;
 

@@ -14,32 +14,32 @@ namespace Senseless {
  * @brief The Debug class
  */
 class Debug {
-   public:
-    Debug   (sf::RenderWindow &in_window);
-    ~Debug  ();
+public:
+    Debug (sf::RenderWindow &in_window);
+    ~Debug ();
 
-    void prep               (const int in_frames, const int in_frametime);
-    void draw               ();
-    void handleInput        (sf::Event &in_event);
+    void prep (const int in_frames, const int in_frametime);
+    void draw ();
+    void handleInput (sf::Event &in_event);
 
-    static void show            ();
-    static void hide            ();
-    static void toggle          ();
-    static bool showHud         ();
-    static bool drawBounds      ();
+    static void show ();
+    static void hide ();
+    static void toggle ();
+    static bool showHud ();
+    static bool drawBounds ();
     static bool drawDiagnostics ();
 
-    static sf::Color defaultBoundsColor         ();
-    static sf::Color defaultDiagnosticsColor    ();
+    static sf::Color defaultBoundsColor ();
+    static sf::Color defaultDiagnosticsColor ();
 
-    static Entity*      picked;
-    static Vector3      picked_position_screen;
-    static Match*   match;
+    static Entity      *picked;
+    static sf::Vector3f      picked_position_screen;
+    static Match   *match;
 
-   private:
-    sf::RenderWindow&   window;
+private:
+    sf::RenderWindow   &window;
     sf::Clock           ui_clock;
-    Vector3             mouse_position;
+    sf::Vector3f             mouse_position;
     int                 framecount = 0;
     int                 frametime = 0;
 
@@ -47,12 +47,12 @@ class Debug {
     static sf::Color    disgnostics_color;
 
 
-    static void draw_team_menu(int which_team=0);
+    static void draw_team_menu (int which_team = 0);
 
     //
     // main window stuff
     //
-    void draw_main_window   ();
+    void draw_main_window ();
     static bool         flag_draw_bounds;
     static bool         flag_draw_diagnostics;
     static bool         show_debug_hud;

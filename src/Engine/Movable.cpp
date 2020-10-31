@@ -32,11 +32,11 @@ void Movable::move(const float in_dx, const float in_dy) {
 //
 //
 //
-void Movable::resetVelocity() { velocity.reset(); }
+void Movable::resetVelocity() { Vector::reset(velocity); }
 //
 //
 //
-void Movable::applyForce(const Vector3 &in_force) { forces.force += in_force; }
+void Senseless::Movable::applyForce (const sf::Vector3f &in_force) { forces.force += in_force; }
 //
 //
 //
@@ -59,8 +59,8 @@ void Movable::step(const float in_dt) {
   integrate_improved_euler(in_dt);
 
   // damp velocity
-  if (Math::equal(velocity.magnitude(), 0)) {
-    velocity.reset();
+  if (Math::equal(Vector::magnitude(velocity), 0)) {
+    Vector::reset(velocity);
   }
 
   // decay spin
@@ -73,28 +73,28 @@ void Movable::step(const float in_dt) {
 //
 //
 void Movable::integrate_improved_euler(const float in_dt) {
-  Vector3 acceleration1 = integrate(in_dt);
-  Vector3 acceleration2 = integrate(in_dt);
-  velocity = velocity + (acceleration1 + acceleration2) / 2;
+  sf::Vector3f acceleration1 = integrate(in_dt);
+  sf::Vector3f acceleration2 = integrate(in_dt);
+  velocity = velocity + (acceleration1 + acceleration2) / 2.F;
   position = position + velocity;
 }
 //
 //
 //
-Vector3 Movable::integrate(const float in_dt) {
+sf::Vector3f Movable::integrate(const float in_dt) {
   if (Math::greater_than(position.z, 0) && affected_by_gravity) {
     // gravity
-    Vector3 gravity;
+    sf::Vector3f gravity;
     gravity.z = -GRAVITATIONAL_CONSTANT;
     forces.force += gravity * properties.mass * in_dt;
 
     // air drag = (air density * co_drag * cross section area) / 2
     // in the opposite direction to velocity
-    Vector3 drag = velocity;
-    drag.reverse();
-    drag.normalise();
+    sf::Vector3f drag = velocity;
+    Vector::reverse(drag);
+    Vector::normalise(drag);
     drag = drag * (environment.air_density * properties.co_air_resistance *
-                   (PI * properties.cross_section * properties.cross_section) / 2);
+                   (Math::PI * properties.cross_section * properties.cross_section) / 2);
     forces.force += drag * in_dt;
 
     // spin in the air (magnus)
@@ -103,9 +103,9 @@ Vector3 Movable::integrate(const float in_dt) {
 
   } else {
     // firction
-    if (Math::greater_than(velocity.magnitude2d(), 0)) {
-      Vector3 friction = velocity;
-      friction.reverse();
+    if (Math::greater_than(Vector::magnitude2d(velocity), 0)) {
+      sf::Vector3f friction = velocity;
+      Vector::reverse(friction);
       friction = friction * properties.co_friction;
       velocity = velocity + friction;
     }
@@ -123,7 +123,7 @@ void Movable::toggleGravity(const bool in_status) { affected_by_gravity = in_sta
 //
 //
 //
-void Movable::place(const Vector3 &in_position) {
+void Movable::place(const sf::Vector3f &in_position) {
   resetVelocity();
   resetForces();
   position = in_position;

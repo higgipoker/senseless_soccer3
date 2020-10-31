@@ -18,7 +18,7 @@ class Seek : public Locomotion {
    * @brief init
    * @param in_target
    */
-  void init(Vector3 in_target);
+  void init(sf::Vector3f in_target);
   /**
    * @brief start
    */
@@ -38,7 +38,7 @@ class Seek : public Locomotion {
   bool finished() override;
 
  private:
-  Vector3 target;
+  sf::Vector3f target;
   float distance = 0;
 };
 }  // namespace Senseless

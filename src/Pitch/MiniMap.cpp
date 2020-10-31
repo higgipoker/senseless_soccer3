@@ -19,7 +19,7 @@ MiniMap::MiniMap(Team &in_home_team, Team &in_away_team, Ball &in_ball, Pitch &i
 //
 //
 void MiniMap::update(const float in_dt) {
-    renderable.sprite->setPosition(movable.position.toSfVector());
+    renderable.sprite->setPosition(movable.position.x, movable.position.y);
     movable.setBounds(renderable.sprite->getGlobalBounds());
     auto positions = join_vectors(home_team.getPlayerPositions(), away_team.getPlayerPositions());
 //     auto cam = camera.getRect();

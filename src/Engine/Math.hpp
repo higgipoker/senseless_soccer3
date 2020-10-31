@@ -1,7 +1,7 @@
 #pragma once
 #include <cmath>
 namespace Senseless {
-
+namespace Math {
 const float TOL = 0.01F;
 const float PI = 3.14159265359F;
 static float Radians(float a) {
@@ -11,11 +11,6 @@ static float Degrees(float a) {
   return a * (180.0F / PI);
 }
 
-/**
- * @brief The Math class
- */
-class Math {
-public:
   //
   //
   //

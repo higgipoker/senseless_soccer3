@@ -26,6 +26,6 @@ void PlayerStateStand::stop() {}
 //
 //
 bool PlayerStateStand::stateOver() {
-  return Math::greater_than(player.movable.velocity.magnitude2d(), 0);
+  return Math::greater_than(Vector::magnitude2d(player.movable.velocity), 0);
 }
 }  // namespace Senseless

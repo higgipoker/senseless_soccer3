@@ -1,5 +1,7 @@
-
+/*
 #include "Vector.hpp"
+
+#include "Line.hpp"
 
 #include <cmath>
 
@@ -7,8 +9,8 @@ namespace Senseless {
 //
 //
 //
-float Vector3::operator[] ( Index idx ) const {
-    switch ( idx ) {
+float Vector3::operator[] (Index idx) const {
+    switch (idx) {
     case Index::X:
         return x;
     case Index::Y:
@@ -21,7 +23,7 @@ float Vector3::operator[] ( Index idx ) const {
 //
 //
 //
-Vector3 &Vector3::operator+= ( const Vector3 &rhs ) {
+Vector3 &Vector3::operator+= (const Vector3 &rhs) {
     x += rhs.x;
     y += rhs.y;
     z += rhs.z;
@@ -30,7 +32,7 @@ Vector3 &Vector3::operator+= ( const Vector3 &rhs ) {
 //
 //
 //
-Vector3 &Vector3::operator-= ( const Vector3 &rhs ) {
+Vector3 &Vector3::operator-= (const Vector3 &rhs) {
     x -= rhs.x;
     y -= rhs.y;
     z -= rhs.z;
@@ -39,7 +41,7 @@ Vector3 &Vector3::operator-= ( const Vector3 &rhs ) {
 //
 //
 //
-Vector3 &Vector3::operator*= ( const Vector3 &rhs ) {
+Vector3 &Vector3::operator*= (const Vector3 &rhs) {
     x *= rhs.x;
     y *= rhs.y;
     z *= rhs.z;
@@ -48,7 +50,7 @@ Vector3 &Vector3::operator*= ( const Vector3 &rhs ) {
 //
 //
 //
-Vector3 &Vector3::operator*= ( const float rhs ) {
+Vector3 &Vector3::operator*= (const float rhs) {
     x *= rhs;
     y *= rhs;
     z *= rhs;
@@ -57,7 +59,7 @@ Vector3 &Vector3::operator*= ( const float rhs ) {
 //
 //
 //
-Vector3 &Vector3::operator/= ( const float rhs ) {
+Vector3 &Vector3::operator/= (const float rhs) {
     x /= rhs;
     y /= rhs;
     z /= rhs;
@@ -66,54 +68,54 @@ Vector3 &Vector3::operator/= ( const float rhs ) {
 //
 //
 //
-Vector3 const Vector3::operator+ ( const Vector3 &rhs ) const {
-    return Vector3 ( *this ) += rhs;
+Vector3 const Vector3::operator+ (const Vector3 &rhs) const {
+    return Vector3 (*this) += rhs;
 }
 //
 //
 //
-Vector3 const Vector3::operator- ( const Vector3 &rhs ) const {
-    return Vector3 ( *this ) -= rhs;
+Vector3 const Vector3::operator- (const Vector3 &rhs) const {
+    return Vector3 (*this) -= rhs;
 }
 //
 //
 //
-Vector3 const Vector3::operator* ( const float rhs ) const {
-    return Vector3 ( *this ) *= rhs;
+Vector3 const Vector3::operator* (const float rhs) const {
+    return Vector3 (*this) *= rhs;
 }
 //
 //
 //
-Vector3 const Vector3::operator/ ( const float rhs ) const {
-    return Vector3 ( *this ) /= rhs;
+Vector3 const Vector3::operator/ (const float rhs) const {
+    return Vector3 (*this) /= rhs;
 }
 //
 //
 //
-Vector3 const Vector3::operator^ ( const Vector3 &rhs ) {
-    return Vector3 ( y * rhs.z - z * rhs.y, -x * rhs.z + z * rhs.x, x * rhs.y - y * rhs.x );
+Vector3 const Vector3::operator^ (const Vector3 &rhs) {
+    return Vector3 (y * rhs.z - z * rhs.y, -x * rhs.z + z * rhs.x, x * rhs.y - y * rhs.x);
 }
 //
 //
 //
-const Vector3 Vector3::operator+ ( const float scalar ) {
-    return Vector3 ( x + scalar, y + scalar, z + scalar );
+const Vector3 Vector3::operator+ (const float scalar) {
+    return Vector3 (x + scalar, y + scalar, z + scalar);
 }
 //
 //
 //
-const Vector3 Vector3::operator- ( const float scalar ) {
-    return Vector3 ( x - scalar, y - scalar, z - scalar );
+const Vector3 Vector3::operator- (const float scalar) {
+    return Vector3 (x - scalar, y - scalar, z - scalar);
 }
 //
 //
 //
 void Vector3::normalise() {
-    if ( Math::equal ( magnitude(), 0 ) ) return;
+    if (Math::equal (magnitude(), 0)) return;
 
-    float m = sqrtf ( x * x + y * y + z * z );
+    float m = sqrtf (x * x + y * y + z * z);
 
-    if ( Math::less_than ( m, 0 ) ) {
+    if (Math::less_than (m, 0)) {
         m = 1;
     }
 
@@ -121,13 +123,13 @@ void Vector3::normalise() {
     y /= m;
     z /= m;
 
-    if ( Math::less_than ( fabsf ( x ), 0 ) ) {
+    if (Math::less_than (fabsf (x), 0)) {
         x = 0;
     }
-    if ( Math::less_than ( fabsf ( y ), 0 ) ) {
+    if (Math::less_than (fabsf (y), 0)) {
         y = 0;
     }
-    if ( Math::less_than ( fabsf ( z ), 0 ) ) {
+    if (Math::less_than (fabsf (z), 0)) {
         z = 0;
     }
 }
@@ -135,19 +137,19 @@ void Vector3::normalise() {
 //
 //
 void Vector3::normalise2d() {
-    float m = sqrtf ( x * x + y * y );
+    float m = sqrtf (x * x + y * y);
 
-    if ( Math::equal ( m, 0 ) ) {
+    if (Math::equal (m, 0)) {
         m = 1;
     }
 
     x /= m;
     y /= m;
 
-    if ( Math::less_than ( fabsf ( x ), 0 ) ) {
+    if (Math::less_than (fabsf (x), 0)) {
         x = 0;
     }
-    if ( Math::less_than ( fabsf ( y ), 0 ) ) {
+    if (Math::less_than (fabsf (y), 0)) {
         y = 0;
     }
     z = 0;
@@ -155,8 +157,8 @@ void Vector3::normalise2d() {
 //
 //
 //
-void Vector3::reflect ( const Vector3 &normal ) {
-    float dot = ( x * normal.x ) + ( y * normal.y );
+void Vector3::reflect (const Vector3 &normal) {
+    float dot = (x * normal.x) + (y * normal.y);
     dot *= 2;
     Vector3 reflected = normal * dot - *this;
     reflected.reverse();
@@ -167,15 +169,15 @@ void Vector3::reflect ( const Vector3 &normal ) {
 //
 //
 //
-float Vector3::projectionOn ( Vector3 line ) {
+float Vector3::projectionOn (Vector3 line) {
     line.normalise();
-    return dotProduct ( line );
+    return dotProduct (line);
 }
 //
 //
 //
-float Vector3::dotProduct ( const Vector3 &rhs ) {
-    return ( x * rhs.x + y * rhs.y + z * rhs.z );
+float Vector3::dotProduct (const Vector3 &rhs) {
+    return (x * rhs.x + y * rhs.y + z * rhs.z);
 }
 //
 //
@@ -188,14 +190,14 @@ void Vector3::perpendicular() {
 //
 //
 //
-void Vector3::rotate ( float a, const float x_origin, const float y_origin ) {
-    a = Radians ( a );
+void Vector3::rotate (float a, const float x_origin, const float y_origin) {
+    a = Math::Radians (a);
 
     x -= x_origin;
     y -= y_origin;
 
-    float nx = cosf ( a ) * x - sinf ( a ) * y;
-    float ny = sinf ( a ) * x + cosf ( a ) * y;
+    float nx = cosf (a) * x - sinf (a) * y;
+    float ny = sinf (a) * x + cosf (a) * y;
 
     x = nx;
     y = ny;
@@ -206,7 +208,7 @@ void Vector3::rotate ( float a, const float x_origin, const float y_origin ) {
 //
 //
 //
-void Vector3::multiply ( const Vector3 &rhs ) {
+void Vector3::multiply (const Vector3 &rhs) {
     x *= rhs.x;
     y *= rhs.y;
     z *= rhs.z;
@@ -214,44 +216,44 @@ void Vector3::multiply ( const Vector3 &rhs ) {
 //
 //
 //
-void Vector3::multiply2d ( const float rhs ) {
+void Vector3::multiply2d (const float rhs) {
     x *= rhs;
     y *= rhs;
 }
 //
 //
 //
-bool Vector3::equals ( const Vector3 &v ) {
-    return Math::equal ( x, v.x ) && Math::equal ( y, v.y ) && Math::equal ( z, v.z );
+bool Vector3::equals (const Vector3 &v) {
+    return Math::equal (x, v.x) && Math::equal (y, v.y) && Math::equal (z, v.z);
 }
 //
 //
 //
-bool Vector3::equals ( const Vector3 &v, float tolerance ) {
-    return ( Math::equal ( x, v.x, tolerance ) && Math::equal ( y, v.y, tolerance ) &&
-             Math::equal ( z, v.z, tolerance ) );
+bool Vector3::equals (const Vector3 &v, float tolerance) {
+    return (Math::equal (x, v.x, tolerance) && Math::equal (y, v.y, tolerance) &&
+            Math::equal (z, v.z, tolerance));
 }
 //
 //
 //
-void Vector3::roundAngle ( int nearest_angle ) {
+void Vector3::roundAngle (int nearest_angle) {
     Vector3 rounded;
-    float nearest_radians = Radians ( static_cast<float> ( nearest_angle ) );
-    float angle = atan2f ( y, x );
-    float remainder = std::fmod ( angle, nearest_radians );
+    float nearest_radians = Math::Radians (static_cast<float> (nearest_angle));
+    float angle = atan2f (y, x);
+    float remainder = std::fmod (angle, nearest_radians);
 
     // if there is a remainder, do the rounding
-    if ( Math::greater_than ( remainder, 0 ) ) {
-        float new_angle = roundf ( angle / nearest_radians ) * nearest_radians;
-        x = cosf ( new_angle );
-        y = sinf ( new_angle );
-        if ( Math::less_than ( fabsf ( x ), 0 ) ) {
+    if (Math::greater_than (remainder, 0)) {
+        float new_angle = roundf (angle / nearest_radians) * nearest_radians;
+        x = cosf (new_angle);
+        y = sinf (new_angle);
+        if (Math::less_than (fabsf (x), 0)) {
             x = 0;
         }
-        if ( Math::less_than ( fabsf ( y ), 0 ) ) {
+        if (Math::less_than (fabsf (y), 0)) {
             y = 0;
         }
-        if ( Math::less_than ( fabsf ( z ), 0 ) ) {
+        if (Math::less_than (fabsf (z), 0)) {
             z = 0;
         }
     }
@@ -262,10 +264,10 @@ void Vector3::roundAngle ( int nearest_angle ) {
 //
 //
 //
-float Vector3::perpProduct ( const Vector3 &rhs, bool right_normal ) {
+float Vector3::perpProduct (const Vector3 &rhs, bool right_normal) {
     float y_component, x_component;
 
-    if ( right_normal ) {
+    if (right_normal) {
         x_component = y * rhs.x;
         y_component = -1 * x * rhs.y;
     } else {
@@ -277,15 +279,15 @@ float Vector3::perpProduct ( const Vector3 &rhs, bool right_normal ) {
 //
 //
 //
-void Vector3::polar ( float mag, float radians ) {
-    x = mag * cosf ( radians );
-    y = mag * sinf ( radians );
+void Vector3::polar (float mag, float radians) {
+    x = mag * cosf (radians);
+    y = mag * sinf (radians);
     z = 0;
 }
 //
 //
 //
-void Vector3::setMagnitude ( float in_mag ) {
+void Vector3::setMagnitude (float in_mag) {
     float mag = magnitude2d();
     x = x * in_mag / mag;
     y = y * in_mag / mag;
@@ -294,24 +296,24 @@ void Vector3::setMagnitude ( float in_mag ) {
 //
 //
 float Vector3::magnitude() const {
-    return sqrtf ( x * x + y * y + z * z );
+    return sqrtf (x * x + y * y + z * z);
 }
 //
 //
 //
 float Vector3::magnitude2d() const {
-    return sqrtf ( x * x + y * y );
+    return sqrtf (x * x + y * y);
 }
 //
 //
 //
 float Vector3::angle() const {
-    return Degrees ( atan2f ( y, x ) );
+    return Math::Degrees (atan2f (y, x));
 }
 //
 //
 //
-void Vector3::unit ( const Vector3& rhs ) {
+void Vector3::unit (const Vector3 &rhs) {
     Vector3 unit = rhs / rhs.magnitude();
     x = unit.x;
     y = unit.y;
@@ -334,46 +336,40 @@ void Vector3::reverse() {
 //
 //
 //
-void Vector3::reset() {
-    x = y = z = 0;
-}
-//
-//
-//
 void Vector3::normalizeToUnits() {
-    if ( x > 0 ) {
+    if (x > 0) {
         x = 1;
-    } else if ( x < 0 ) {
+    } else if (x < 0) {
         x = -1;
     }
 
-    if ( y > 0 ) {
+    if (y > 0) {
         y = 1;
-    } else if ( y < 0 ) {
+    } else if (y < 0) {
         y = -1;
     }
 }
 //
 //
 //
-bool Vector3::isMovingTowards ( Vector3 testPoint, Vector3 objectVelocity ) const {
+bool Vector3::isMovingTowards (Vector3 testPoint, Vector3 objectVelocity) const {
     Vector3 tmp{x, y};
     Vector3 toPoint = testPoint - tmp;
-    float dot = toPoint.dotProduct ( objectVelocity );
+    float dot = toPoint.dotProduct (objectVelocity);
     return dot > 0;
 }
 //
 //
 //
-bool Vector3::isMovingTowards ( const Vector3 pos, const Vector3 vel, const Vector3 test_point ) {
+bool Vector3::isMovingTowards (const Vector3 pos, const Vector3 vel, const Vector3 test_point) {
     Vector3 to_point = test_point - pos;
-    float dot = to_point.dotProduct ( vel );
+    float dot = to_point.dotProduct (vel);
     return dot > 0;
 }
 //
 //
 //
-void Vector3::fromSfVector ( const sf::Vector2f &from ) {
+void Vector3::fromSfVector (const sf::Vector2f &from) {
     x = from.x;
     y = from.y;
 }
@@ -383,5 +379,13 @@ void Vector3::fromSfVector ( const sf::Vector2f &from ) {
 sf::Vector2f Vector3::toSfVector() const {
     return sf::Vector2f{x, y};
 }
-
-}  // namespace Senseless
+//
+//
+//
+float Vector3::distanceToLine (const Line &in_line) const {
+    Vector3 normalised_line { Vector3 (in_line.p2.x, in_line.p2.y) - Vector3 (in_line.p1.x, in_line.p1.y) };
+    normalised_line.normalise();
+    Vector3 point_to_line{Vector3 (in_line.p1.x, in_line.p1.y) - *this};
+    return (point_to_line ^ normalised_line).magnitude();
+}
+}  // namespace Senseless*/

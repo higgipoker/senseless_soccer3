@@ -23,7 +23,7 @@ void BrainSupport::start() {
     // possession
     // change_direction();
     auto r = Compass::getRandomDirection();
-    brain.locomotion.head(r.toVector());
+    brain.locomotion.head(r.toSfVector());
 }
 //
 //
@@ -31,16 +31,16 @@ void BrainSupport::start() {
 void BrainSupport::step() {
     int CHANGE_TICKS = brain.player.support_type % 2 == 0 ? 150 : 50;
 
-    auto pos = brain.player.match->ball->movable.position.toSfVector();
+    auto pos = brain.player.match->ball->movable.position;
     radius.setCenter(pos);
 
-    auto dist = Vector3::distance_to(brain.player.movable.position,
+    auto dist = Vector::distanceTo(brain.player.movable.position,
                                      brain.player.match->ball->movable.position);
     if(dist > radius.getRadius()) {
             ticks_since_change    = 0;
-            Compass new_direction = Vector3::direction_to(
+            Compass new_direction = Vector::directionTo(
                                         brain.player.movable.position, brain.player.match->ball->movable.position);
-            brain.locomotion.head(new_direction.toVector());
+            brain.locomotion.head(new_direction.toSfVector());
         }
 
     else if(++ticks_since_change > CHANGE_TICKS) {
@@ -71,6 +71,6 @@ void BrainSupport::change_direction() {
     while(new_direction == brain.player.getDirection()) {
             new_direction = Compass::getRandomDirection();
         }
-    brain.locomotion.head(new_direction.toVector());
+    brain.locomotion.head(new_direction.toSfVector());
 }
 }  // namespace Senseless

@@ -30,9 +30,9 @@ void BrainCover::start() {
 void BrainCover::step() {
     if(auto position = brain.player.playing_position.get()) {
             auto target = position->getTargetPosition(Situation::Playing, *brain.player.match->ball);
-            auto dist = (brain.player.movable.position - target).magnitude2d();
+            auto dist = Vector::magnitude2d(brain.player.movable.position - target);
             if(Math::greater_than(dist, 1) &&
-                    Math::greater_than((target - last_target).magnitude2d(), 1)) {
+                    Math::greater_than(Vector::magnitude2d(target - last_target), 1)) {
                     brain.locomotion.seek(target);
                     last_target = target;
                 }

@@ -3,18 +3,32 @@
 #include "PitchTypes.hpp"
 //
 #include "Engine/Entity.hpp"
+#include "Engine/Line.hpp"
 //
 namespace Senseless {
 class Pitch : public Entity {
 public:
-    Pitch(const std::string &in_grass_texture);
+    Pitch (const std::string &in_grass_texture);
 
-    void                        update(const float in_dt) override;
-    Vector3                     getPointOfInterest(const PitchPointsOfInterest in_which,
-                                                   const PitchPointOfInterestSide in_side = PitchPointOfInterestSide::South) const;
+    void                        update (const float in_dt) override;
+    sf::Vector3f                     getPointOfInterest (const PitchPointsOfInterest in_which,
+                                                         const PitchPointOfInterestSide in_side = PitchPointOfInterestSide::South) const;
 
     const PitchDrawShapes  &getDimensions() const {
         return draw_shapes;
+    }
+
+    Line northLine() {
+        return north + movable.position;
+    }
+    Line southLine() {
+        return south + movable.position;
+    }
+    Line eastLine() {
+        return east + movable.position;
+    }
+    Line westLine() {
+        return west + movable.position;
     }
 
 private:
@@ -29,5 +43,8 @@ private:
     void init_penalty_spots();
     void init_penalty_arc();
     void init_halfway_line();
+
+    // for easy reference
+    Line north, south, east, west;
 };
 }  // namespace Senseless

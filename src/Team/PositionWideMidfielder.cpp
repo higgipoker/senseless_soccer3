@@ -8,8 +8,8 @@ namespace Senseless {
 //
 void PositionWideMidfielder::init() {
   {  // kick off positions
-    Vector3 def{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y * 0.65F};
-    Vector3 att{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y * 0.85F};
+    sf::Vector3f def{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y * 0.65F, 0};
+    sf::Vector3f att{0, pitch.getPointOfInterest(PitchPointsOfInterest::CenterSpot).y * 0.85F, 0};
     if (modifier_mask & modifier_left) {
       def.x = att.x = pitch.getPointOfInterest(PitchPointsOfInterest::SideWest).x + 200;
 
@@ -21,10 +21,10 @@ void PositionWideMidfielder::init() {
   }
 
   {  // goal kick positions
-    Vector3 def_left{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway).y * 0.6F};
-    Vector3 att_left{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway).y * 0.6F};
-    Vector3 def_right{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway).y * 0.6F};
-    Vector3 att_right{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway).y * 0.6F};
+    sf::Vector3f def_left{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway).y * 0.6F, 0};
+    sf::Vector3f att_left{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway).y * 0.6F, 0};
+    sf::Vector3f def_right{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway).y * 0.6F, 0};
+    sf::Vector3f att_right{0, pitch.getPointOfInterest(PitchPointsOfInterest::Halfway).y * 0.6F, 0};
     if (modifier_mask & modifier_left) {
       def_left.x = def_right.x = att_left.x = att_right.x =
           pitch.getPointOfInterest(PitchPointsOfInterest::SideWest).x + 100;
@@ -44,22 +44,22 @@ void PositionWideMidfielder::init() {
     set_piece_positions_attacking[Situation::GoalKick] = {{att_left}, {att_right}};
   }
   {  // corner
-    Vector3 def_left{
+    sf::Vector3f def_left{
         0,
         pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen, PitchPointOfInterestSide::South)
-            .y};
-    Vector3 att_left{
+            .y, 0};
+    sf::Vector3f att_left{
         0,
         pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen, PitchPointOfInterestSide::North)
-            .y};
-    Vector3 def_right{
+            .y, 0};
+    sf::Vector3f def_right{
         0,
         pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen, PitchPointOfInterestSide::South)
-            .y};
-    Vector3 att_right{
+            .y, 0};
+    sf::Vector3f att_right{
         0,
         pitch.getPointOfInterest(PitchPointsOfInterest::Eighteen, PitchPointOfInterestSide::North)
-            .y};
+            .y, 0};
     if (modifier_mask & modifier_left) {
       def_left.x = def_right.x = pitch.getPointOfInterest(PitchPointsOfInterest::EighteenArcWest).x;
       att_left.x = att_right.x = pitch.getPointOfInterest(PitchPointsOfInterest::SideWest).x + 100;
@@ -80,11 +80,11 @@ void PositionWideMidfielder::init() {
 //
 //
 //
-Vector3 PositionWideMidfielder::getPlayingPosition(const Ball &in_ball) {
-  Vector3 ball = in_ball.movable.position;
+sf::Vector3f PositionWideMidfielder::getPlayingPosition(const Ball &in_ball) {
+  sf::Vector3f ball = in_ball.movable.position;
   // rotate perception of ball if attacking towards south
   if (my_team.getAttackingGoal() == Direction::South) {
-    ball.rotate(180, pitch.getDimensions().bounds.getSize().x / 2,
+    Vector::rotate(ball, 180, pitch.getDimensions().bounds.getSize().x / 2,
                 pitch.getDimensions().bounds.getSize().y / 2);
   }
 
@@ -118,19 +118,19 @@ Vector3 PositionWideMidfielder::getPlayingPosition(const Ball &in_ball) {
     max = pitch.getDimensions().bounds.getSize().x;
   }
   out_x = std::clamp(out_x, min, max);
-  Vector3 result{out_x, ball.y - 100};
+  sf::Vector3f result{out_x, ball.y - 100, 0};
 
   // rotate for other side?
   if (my_team.getAttackingGoal() == Direction::South) {
     {  // rotate on x
-      Vector3 tmp{result.x, 0};
-      tmp.rotate(180, middle, 0);
+      sf::Vector3f tmp{result.x, 0, 0};
+      Vector::rotate(tmp, 180, middle, 0);
       result.x = tmp.x;
     }
 
     {  // rotate on y
-      Vector3 tmp{0, result.y};
-      tmp.rotate(180, 0, pitch.getDimensions().bounds.getSize().y / 2);
+      sf::Vector3f tmp{0, result.y, 0};
+      Vector::rotate(tmp, 180, 0, pitch.getDimensions().bounds.getSize().y / 2);
       result.y = tmp.y;
     }
   }

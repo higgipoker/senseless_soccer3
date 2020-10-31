@@ -15,12 +15,10 @@ Compass ::Compass(Direction dir) : direction(dir) {}
 //
 //  constructor
 //
-Compass::Compass(const Vector3 &vec) { fromVector(vec); }
-//
-//  toVector
-//
-Vector3 Compass::toVector() {
-  Vector3 v;
+Compass::Compass(const sf::Vector3f &vec) { fromSfVector(vec); }
+
+sf::Vector3f Compass::toSfVector() {
+  sf::Vector3f v;
 
   switch (direction) {
     case Direction::North:
@@ -69,14 +67,11 @@ Vector3 Compass::toVector() {
 //
 //
 //
-Vector3 Compass::toVector(const Direction in_direction){
+sf::Vector3f Compass::toSfVector(const Direction in_direction){
     Compass c{in_direction};
-    return c.toVector();
+    return c.toSfVector();
 }
-//
-//  fromVector
-//
-void Compass::fromVector(const Vector3 &v) {
+void Compass::fromSfVector(const sf::Vector3f &v) {
   if (Math::equal(v.x, 0) && Math::less_than(v.y, 0))
     direction = Direction::North;
 

@@ -3,6 +3,7 @@
 #include "Vector.hpp"
 //
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/System/Vector3.hpp>
 //
 #include <string>
 
@@ -21,8 +22,8 @@ class Movable {
     void            setPosition    (const float in_x, const float in_y);
     void            setPosition    (const sf::Vector2f in_point);
     void            move           (const float in_dx, const float in_dy);
-    void            place          (const Vector3& in_position);
-    void            applyForce     (const Vector3& in_force);
+    void            place          (const sf::Vector3f& in_position);
+    void            applyForce     (const sf::Vector3f& in_force);
     void            step           (const float in_dt);
     void            toggleGravity  (const bool in_status);
     void            setBounds      (sf::FloatRect in_bounds);
@@ -33,8 +34,8 @@ class Movable {
     // -----------------------------------------------------------------------
     // members
     // -----------------------------------------------------------------------
-    Vector3 position;
-    Vector3 velocity;
+    sf::Vector3f position;
+    sf::Vector3f velocity;
     float speed = 1.F;
     struct {
         float mass = 1;
@@ -50,11 +51,11 @@ class Movable {
     } environment;
 
     struct {
-        Vector3 sidespin;
-        Vector3 topspin;
-        Vector3 force;
+        sf::Vector3f sidespin;
+        sf::Vector3f topspin;
+        sf::Vector3f force;
         void reset() {
-            force.reset();
+            Vector::reset(force);
         }
     }forces;
 
@@ -62,7 +63,7 @@ class Movable {
 
     private:
     void integrate_improved_euler(const float in_dt);
-    Vector3 integrate(const float in_dt);
+    sf::Vector3f integrate(const float in_dt);
     bool affected_by_gravity = true;
     sf::FloatRect bounds;
 };
